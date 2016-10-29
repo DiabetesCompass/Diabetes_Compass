@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9531" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" placeholderIntrinsicWidth="320" placeholderIntrinsicHeight="190" restorationIdentifier="CollapsedTrend" id="eTr-Vb-25P" customClass="CollapsedTrendView">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="BG" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AeI-9K-7ta">
+                    <rect key="frame" x="20" y="503" width="147" height="45"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="45" id="3J3-Fh-hiU"/>
+                        <constraint firstAttribute="width" constant="147" id="ZaO-6f-HLk"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="HelveticaNeue-UltraLight" family="Helvetica Neue" pointSize="50"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="100" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ViG-aW-jH1">
+                    <rect key="frame" x="175" y="503" width="125" height="45"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="125" id="iov-dM-MHa"/>
+                        <constraint firstAttribute="height" constant="45" id="qhf-OG-gcM"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="HelveticaNeue-UltraLight" family="Helvetica Neue" pointSize="40"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <color key="backgroundColor" red="0.21382577720000001" green="0.36344900730000002" blue="0.55075273719999995" alpha="1" colorSpace="calibratedRGB"/>
+            <constraints>
+                <constraint firstItem="AeI-9K-7ta" firstAttribute="leading" secondItem="eTr-Vb-25P" secondAttribute="leading" constant="20" id="D0q-St-4dk"/>
+                <constraint firstAttribute="trailing" secondItem="ViG-aW-jH1" secondAttribute="trailing" constant="20" id="EbY-t7-Src"/>
+                <constraint firstAttribute="bottom" secondItem="AeI-9K-7ta" secondAttribute="bottom" constant="20" id="Iq8-Vv-pbK"/>
+                <constraint firstAttribute="bottom" secondItem="ViG-aW-jH1" secondAttribute="bottom" constant="20" id="vv5-6i-lYt"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <connections>
+                <outlet property="trendTitleLabel" destination="AeI-9K-7ta" id="1Rh-eM-KMN"/>
+                <outlet property="valueLabel" destination="ViG-aW-jH1" id="Mqm-Xe-Dr0"/>
+            </connections>
+        </view>
+    </objects>
+</document>

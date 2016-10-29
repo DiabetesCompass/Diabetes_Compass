@@ -1,0 +1,85 @@
+PODS:
+  - AFNetworking (1.3.4)
+  - BlurryModalSegue (1.0.0):
+    - MZAppearance (~> 1.1.1)
+    - UIImage+BlurredFrame (~> 0.0.4)
+  - CorePlot (1.5.1)
+  - EAIntroView (2.2.2)
+  - EFCircularSlider (0.1.0)
+  - FontAwesome+iOS (0.1.1)
+  - JVFloatLabeledTextField (0.0.8)
+  - MagicalRecord (2.2):
+    - MagicalRecord/Core
+  - MagicalRecord/Core (2.2)
+  - MZAppearance (1.1.3)
+  - PPiAwesomeButton (1.4.7):
+    - FontAwesome+iOS
+  - PPiFlatSegmentedControl (1.3.8):
+    - PPiAwesomeButton
+  - Reachability (3.1.1)
+  - REFormattedNumberField (1.1.2)
+  - RestKit (0.20.3):
+    - RestKit/Core
+  - RestKit/Core (0.20.3):
+    - RestKit/CoreData
+    - RestKit/Network
+    - RestKit/ObjectMapping
+  - RestKit/CoreData (0.20.3)
+  - RestKit/Network (0.20.3):
+    - AFNetworking (~> 1.3.0)
+    - RestKit/ObjectMapping
+    - RestKit/Support
+    - SOCKit
+  - RestKit/ObjectMapping (0.20.3)
+  - RestKit/Search (0.20.3):
+    - RestKit/CoreData
+  - RestKit/Support (0.20.3):
+    - TransitionKit (= 1.1.1)
+  - RestKit/Testing (0.20.3)
+  - RETableViewManager (1.5.10):
+    - REFormattedNumberField (~> 1.1.2)
+    - REValidation (~> 0.1.4)
+  - REValidation (0.1.4)
+  - RMDateSelectionViewController (1.1.0)
+  - SOCKit (1.1)
+  - TransitionKit (1.1.1)
+  - UIImage+BlurredFrame (0.0.4)
+
+DEPENDENCIES:
+  - BlurryModalSegue
+  - CorePlot (~> 1.5.1)
+  - EAIntroView (~> 2.2.0)
+  - EFCircularSlider (~> 0.1.0)
+  - JVFloatLabeledTextField
+  - MagicalRecord
+  - PPiFlatSegmentedControl (~> 1.3.3)
+  - Reachability
+  - RestKit (~> 0.20.3)
+  - RestKit/Search (~> 0.20.3)
+  - RestKit/Testing (~> 0.20.3)
+  - RETableViewManager
+  - RMDateSelectionViewController (~> 1.1.0)
+
+SPEC CHECKSUMS:
+  AFNetworking: 80c4e0652b08eb34e25b9c0ff3c82556fe5967b4
+  BlurryModalSegue: 8f7d9d0ac4804520d86c48bbad37394232d0ac69
+  CorePlot: 4abaf1be82ff7d1220f4aed16996a93970ea5a0e
+  EAIntroView: 3188eef75604f0b21eaad2e18ff825f696a188e6
+  EFCircularSlider: 562fa7fe850a272f4cd7ffbf27f39fd927da0721
+  FontAwesome+iOS: 3c574273fb301c2e0a88f983551562bf8768b623
+  JVFloatLabeledTextField: 16dea87b899a7b62026eb8d8cf9902c08b1953da
+  MagicalRecord: 2b471584fc9e3137f3d0a56967917baa4979e224
+  MZAppearance: c88502c0c2345120630c34e09d5ff09e2969ba30
+  PPiAwesomeButton: efcaafab6c0207427a3216f34933c89c2bc93a70
+  PPiFlatSegmentedControl: 978ac3a6de615a734c5988b24101b1c14983ce13
+  Reachability: 8e9635e3cb4f98e7f825e51147f677ecc694d0e7
+  REFormattedNumberField: 321bf62160e6dc480844ac99ab6821ef4dd20802
+  RestKit: 7f9490e709ee745e166c4d2aa7a8d132831275b0
+  RETableViewManager: 534104717ea10a71b203e80ee0dd3c4c79648be3
+  REValidation: a0033a582415848854e875dfcbe69c107de19f81
+  RMDateSelectionViewController: 3d08c9d05a4ae0a9a80795b7070cb968bd9009fc
+  SOCKit: d8d0dd3688ae1026c12367570da8fa8e1a6980fb
+  TransitionKit: b573f93c422f6aedf7d40e93e7c2f202d1295063
+  UIImage+BlurredFrame: 0c38f5760d72125c47d16001a88faaac573bd35d
+
+COCOAPODS: 0.33.1
