@@ -29,7 +29,7 @@
  *  The default formatter uses @ref NSDateFormatterMediumStyle for dates and times.
  *  @return The new instance.
  **/
--(id)init
+-(instancetype)init
 {
     NSDateFormatter *newDateFormatter = [[NSDateFormatter alloc] init];
 
@@ -37,7 +37,6 @@
     newDateFormatter.timeStyle = NSDateFormatterMediumStyle;
 
     self = [self initWithDateFormatter:newDateFormatter];
-    [newDateFormatter release];
 
     return self;
 }
@@ -48,25 +47,14 @@
  *  @param aDateFormatter The date formatter.
  *  @return The new instance.
  **/
--(id)initWithDateFormatter:(NSDateFormatter *)aDateFormatter
+-(instancetype)initWithDateFormatter:(NSDateFormatter *)aDateFormatter
 {
     if ( (self = [super init]) ) {
-        dateFormatter = [aDateFormatter retain];
+        dateFormatter = aDateFormatter;
         referenceDate = nil;
     }
     return self;
 }
-
-/// @cond
-
--(void)dealloc
-{
-    [referenceDate release];
-    [dateFormatter release];
-    [super dealloc];
-}
-
-/// @endcond
 
 #pragma mark -
 #pragma mark NSCoding Methods
@@ -81,16 +69,20 @@
     [coder encodeObject:self.referenceDate forKey:@"CPTTimeFormatter.referenceDate"];
 }
 
--(id)initWithCoder:(NSCoder *)coder
+/// @endcond
+
+/** @brief Returns an object initialized from data in a given unarchiver.
+ *  @param coder An unarchiver object.
+ *  @return An object initialized from data in a given unarchiver.
+ */
+-(instancetype)initWithCoder:(NSCoder *)coder
 {
     if ( (self = [super initWithCoder:coder]) ) {
-        dateFormatter = [[coder decodeObjectForKey:@"CPTTimeFormatter.dateFormatter"] retain];
+        dateFormatter = [coder decodeObjectForKey:@"CPTTimeFormatter.dateFormatter"];
         referenceDate = [[coder decodeObjectForKey:@"CPTTimeFormatter.referenceDate"] copy];
     }
     return self;
 }
-
-/// @endcond
 
 #pragma mark -
 #pragma mark NSCopying Methods
@@ -102,8 +94,8 @@
     CPTTimeFormatter *newFormatter = [[CPTTimeFormatter allocWithZone:zone] init];
 
     if ( newFormatter ) {
-        newFormatter->dateFormatter = [self->dateFormatter copyWithZone:zone];
-        newFormatter->referenceDate = [self->referenceDate copyWithZone:zone];
+        newFormatter.dateFormatter = self.dateFormatter;
+        newFormatter.referenceDate = self.referenceDate;
     }
     return newFormatter;
 }
@@ -138,7 +130,6 @@
             date = [[NSDate alloc] initWithTimeIntervalSinceReferenceDate:[coordinateValue doubleValue]];
         }
         string = [self.dateFormatter stringFromDate:date];
-        [date release];
     }
 
     return string;

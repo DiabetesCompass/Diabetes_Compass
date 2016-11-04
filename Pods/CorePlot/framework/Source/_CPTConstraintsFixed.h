@@ -1,15 +1,12 @@
 #import "CPTConstraints.h"
 
-@interface _CPTConstraintsFixed : CPTConstraints {
-    @private
-    CGFloat offset;
-    BOOL isFixedToLower;
-}
+@interface _CPTConstraintsFixed : CPTConstraints
 
 /// @name Initialization
 /// @{
--(id)initWithLowerOffset:(CGFloat)newOffset;
--(id)initWithUpperOffset:(CGFloat)newOffset;
+-(instancetype)initWithLowerOffset:(CGFloat)newOffset NS_DESIGNATED_INITIALIZER;
+-(instancetype)initWithUpperOffset:(CGFloat)newOffset NS_DESIGNATED_INITIALIZER;
+-(instancetype)initWithCoder:(NSCoder *)decoder NS_DESIGNATED_INITIALIZER;
 /// @}
 
 /// @name Comparison

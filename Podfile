@@ -1,9 +1,12 @@
-# Uncomment this line to define a global platform for your project
-platform :ios, '9.0'
-# Uncomment this line if you're using Swift
-# use_frameworks!
+# Uncomment the next line to define a global platform for your project
+# platform :ios, '9.0'
 
 target 'BGCompass' do
+# Uncomment the next line if you're using Swift or would like to use dynamic frameworks
+# use_frameworks!
+
+# Pods for BGCompass
+
 pod 'MagicalRecord'
 pod 'RestKit', '~> 0.20.3'
 pod 'RestKit/Testing', '~> 0.20.3'
@@ -17,9 +20,10 @@ pod 'EFCircularSlider', '~> 0.1.0'
 pod 'BlurryModalSegue'
 pod 'RMDateSelectionViewController', '~> 1.1.0'
 pod 'Reachability'
-end
 
 target 'BGCompassTests' do
-    inherit! :search_paths
-    pod 'CorePlot', '~> 1.6'
+inherit! :search_paths
+pod 'CorePlot', '~> 1.6'
+end
+
 end

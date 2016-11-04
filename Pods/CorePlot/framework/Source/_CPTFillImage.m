@@ -30,23 +30,13 @@
  *  @param anImage The image.
  *  @return The initialized _CPTFillImage object.
  **/
--(id)initWithImage:(CPTImage *)anImage
+-(instancetype)initWithImage:(CPTImage *)anImage
 {
     if ( (self = [super init]) ) {
-        fillImage = [anImage retain];
+        fillImage = anImage;
     }
     return self;
 }
-
-/// @cond
-
--(void)dealloc
-{
-    [fillImage release];
-    [super dealloc];
-}
-
-/// @endcond
 
 #pragma mark -
 #pragma mark Drawing
@@ -91,7 +81,7 @@
 {
     _CPTFillImage *copy = [[[self class] allocWithZone:zone] init];
 
-    copy->fillImage = [self->fillImage copyWithZone:zone];
+    copy.fillImage = self.fillImage;
 
     return copy;
 }
@@ -113,14 +103,18 @@
     [coder encodeObject:self.fillImage forKey:@"_CPTFillImage.fillImage"];
 }
 
--(id)initWithCoder:(NSCoder *)coder
+/// @endcond
+
+/** @brief Returns an object initialized from data in a given unarchiver.
+ *  @param coder An unarchiver object.
+ *  @return An object initialized from data in a given unarchiver.
+ */
+-(instancetype)initWithCoder:(NSCoder *)coder
 {
     if ( (self = [super init]) ) {
-        fillImage = [[coder decodeObjectForKey:@"_CPTFillImage.fillImage"] retain];
+        fillImage = [coder decodeObjectForKey:@"_CPTFillImage.fillImage"];
     }
     return self;
 }
-
-/// @endcond
 
 @end

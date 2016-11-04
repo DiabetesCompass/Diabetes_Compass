@@ -26,9 +26,9 @@
  *  @param newFill The fill used to draw the interior of the band.
  *  @return A new CPTLimitBand instance initialized with the provided range and fill.
  **/
-+(CPTLimitBand *)limitBandWithRange:(CPTPlotRange *)newRange fill:(CPTFill *)newFill
++(instancetype)limitBandWithRange:(CPTPlotRange *)newRange fill:(CPTFill *)newFill
 {
-    return [[[CPTLimitBand alloc] initWithRange:newRange fill:newFill] autorelease];
+    return [[CPTLimitBand alloc] initWithRange:newRange fill:newFill];
 }
 
 /** @brief Initializes a newly allocated CPTLimitBand object with the provided range and fill.
@@ -36,25 +36,14 @@
  *  @param newFill The fill used to draw the interior of the band.
  *  @return The initialized CPTLimitBand object.
  **/
--(id)initWithRange:(CPTPlotRange *)newRange fill:(CPTFill *)newFill
+-(instancetype)initWithRange:(CPTPlotRange *)newRange fill:(CPTFill *)newFill
 {
     if ( (self = [super init]) ) {
-        range = [newRange retain];
-        fill  = [newFill retain];
+        range = newRange;
+        fill  = newFill;
     }
     return self;
 }
-
-/// @cond
-
--(void)dealloc
-{
-    [range release];
-    [fill release];
-    [super dealloc];
-}
-
-/// @endcond
 
 #pragma mark -
 #pragma mark NSCopying Methods
@@ -66,8 +55,8 @@
     CPTLimitBand *newBand = [[CPTLimitBand allocWithZone:zone] init];
 
     if ( newBand ) {
-        newBand->range = [self->range copyWithZone:zone];
-        newBand->fill  = [self->fill copyWithZone:zone];
+        newBand.range = self.range;
+        newBand.fill  = self.fill;
     }
     return newBand;
 }
@@ -82,33 +71,35 @@
 -(void)encodeWithCoder:(NSCoder *)encoder
 {
     if ( [encoder allowsKeyedCoding] ) {
-        [encoder encodeObject:range forKey:@"CPTLimitBand.range"];
-        [encoder encodeObject:fill forKey:@"CPTLimitBand.fill"];
+        [encoder encodeObject:self.range forKey:@"CPTLimitBand.range"];
+        [encoder encodeObject:self.fill forKey:@"CPTLimitBand.fill"];
     }
     else {
-        [encoder encodeObject:range];
-        [encoder encodeObject:fill];
+        [encoder encodeObject:self.range];
+        [encoder encodeObject:self.fill];
     }
-}
-
--(id)initWithCoder:(NSCoder *)decoder
-{
-    CPTPlotRange *newRange;
-    CPTFill *newFill;
-
-    if ( [decoder allowsKeyedCoding] ) {
-        newRange = [decoder decodeObjectForKey:@"CPTLimitBand.range"];
-        newFill  = [decoder decodeObjectForKey:@"CPTLimitBand.fill"];
-    }
-    else {
-        newRange = [decoder decodeObject];
-        newFill  = [decoder decodeObject];
-    }
-
-    return [self initWithRange:newRange fill:newFill];
 }
 
 /// @endcond
+
+/** @brief Returns an object initialized from data in a given unarchiver.
+ *  @param decoder An unarchiver object.
+ *  @return An object initialized from data in a given unarchiver.
+ */
+-(instancetype)initWithCoder:(NSCoder *)decoder
+{
+    if ( (self = [super init]) ) {
+        if ( [decoder allowsKeyedCoding] ) {
+            range = [decoder decodeObjectForKey:@"CPTLimitBand.range"];
+            fill  = [decoder decodeObjectForKey:@"CPTLimitBand.fill"];
+        }
+        else {
+            range = [decoder decodeObject];
+            fill  = [decoder decodeObject];
+        }
+    }
+    return self;
+}
 
 #pragma mark -
 #pragma mark Description

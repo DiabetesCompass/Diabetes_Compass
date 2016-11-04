@@ -12,7 +12,7 @@
 
 /// @cond
 
--(id)initWithCoder:(NSCoder *)coder
+-(instancetype)initWithCoder:(NSCoder *)coder
 {
     if ( (self = [super initWithCoder:coder]) ) {
         // support old archives
@@ -64,6 +64,11 @@
 #pragma mark Drawing
 
 /// @cond
+
+-(void)display
+{
+    // nothing to draw
+}
 
 -(void)renderAsVectorInContext:(CGContextRef)context
 {

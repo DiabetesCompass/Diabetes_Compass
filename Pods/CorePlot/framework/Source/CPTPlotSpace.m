@@ -6,6 +6,26 @@
 
 NSString *const CPTPlotSpaceCoordinateMappingDidChangeNotification = @"CPTPlotSpaceCoordinateMappingDidChangeNotification";
 
+NSString *const CPTPlotSpaceCoordinateKey   = @"CPTPlotSpaceCoordinateKey";
+NSString *const CPTPlotSpaceScrollingKey    = @"CPTPlotSpaceScrollingKey";
+NSString *const CPTPlotSpaceDisplacementKey = @"CPTPlotSpaceDisplacementKey";
+
+/// @cond
+
+@interface CPTPlotSpace()
+
+@property (nonatomic, readwrite, strong) NSMutableDictionary *categoryNames;
+
+@property (nonatomic, readwrite) BOOL isDragging;
+
+-(NSMutableOrderedSet *)orderedSetForCoordinate:(CPTCoordinate)coordinate;
+
+@end
+
+/// @endcond
+
+#pragma mark -
+
 /**
  *  @brief Defines the coordinate system of a plot.
  *
@@ -24,6 +44,11 @@ NSString *const CPTPlotSpaceCoordinateMappingDidChangeNotification = @"CPTPlotSp
  **/
 @synthesize allowsUserInteraction;
 
+/** @property BOOL isDragging
+ *  @brief Returns @YES when the user is actively dragging the plot space.
+ **/
+@synthesize isDragging;
+
 /** @property __cpt_weak CPTGraph *graph
  *  @brief The graph of the space.
  **/
@@ -39,6 +64,13 @@ NSString *const CPTPlotSpaceCoordinateMappingDidChangeNotification = @"CPTPlotSp
  **/
 @dynamic numberOfCoordinates;
 
+/** @internal
+ *  @property NSMutableDictionary *categoryNames
+ *  @brief The names of the data categories for each coordinate with a #CPTScaleTypeCategory scale type.
+ *  The keys are the CPTCoordinate enumeration values and the values are arrays of strings.
+ **/
+@synthesize categoryNames;
+
 #pragma mark -
 #pragma mark Init/Dealloc
 
@@ -50,18 +82,21 @@ NSString *const CPTPlotSpaceCoordinateMappingDidChangeNotification = @"CPTPlotSp
  *  The initialized object will have the following properties:
  *  - @ref identifier = @nil
  *  - @ref allowsUserInteraction = @NO
+ *  - @ref isDragging = @NO
  *  - @ref graph = @nil
  *  - @ref delegate = @nil
  *
  *  @return The initialized object.
  **/
--(id)init
+-(instancetype)init
 {
     if ( (self = [super init]) ) {
         identifier            = nil;
         allowsUserInteraction = NO;
+        isDragging            = NO;
         graph                 = nil;
         delegate              = nil;
+        categoryNames         = nil;
     }
     return self;
 }
@@ -74,8 +109,6 @@ NSString *const CPTPlotSpaceCoordinateMappingDidChangeNotification = @"CPTPlotSp
 {
     delegate = nil;
     graph    = nil;
-    [identifier release];
-    [super dealloc];
 }
 
 /// @endcond
@@ -89,24 +122,193 @@ NSString *const CPTPlotSpaceCoordinateMappingDidChangeNotification = @"CPTPlotSp
 {
     [coder encodeConditionalObject:self.graph forKey:@"CPTPlotSpace.graph"];
     [coder encodeObject:self.identifier forKey:@"CPTPlotSpace.identifier"];
-    if ( [self.delegate conformsToProtocol:@protocol(NSCoding)] ) {
-        [coder encodeConditionalObject:self.delegate forKey:@"CPTPlotSpace.delegate"];
+    id<CPTPlotSpaceDelegate> theDelegate = self.delegate;
+    if ( [theDelegate conformsToProtocol:@protocol(NSCoding)] ) {
+        [coder encodeConditionalObject:theDelegate forKey:@"CPTPlotSpace.delegate"];
     }
     [coder encodeBool:self.allowsUserInteraction forKey:@"CPTPlotSpace.allowsUserInteraction"];
+    [coder encodeObject:self.categoryNames forKey:@"CPTPlotSpace.categoryNames"];
+
+    // No need to archive these properties:
+    // isDragging
 }
 
--(id)initWithCoder:(NSCoder *)coder
+/// @endcond
+
+/** @brief Returns an object initialized from data in a given unarchiver.
+ *  @param coder An unarchiver object.
+ *  @return An object initialized from data in a given unarchiver.
+ */
+-(instancetype)initWithCoder:(NSCoder *)coder
 {
     if ( (self = [super init]) ) {
         graph                 = [coder decodeObjectForKey:@"CPTPlotSpace.graph"];
         identifier            = [[coder decodeObjectForKey:@"CPTPlotSpace.identifier"] copy];
         delegate              = [coder decodeObjectForKey:@"CPTPlotSpace.delegate"];
         allowsUserInteraction = [coder decodeBoolForKey:@"CPTPlotSpace.allowsUserInteraction"];
+        categoryNames         = [[coder decodeObjectForKey:@"CPTPlotSpace.categoryNames"] mutableCopy];
+
+        isDragging = NO;
     }
     return self;
 }
 
-/// @endcond
+#pragma mark -
+#pragma mark Categorical Data
+
+/** @internal
+ *  @brief Gets the ordered set of categories for the given coordinate, creating it if necessary.
+ *  @param coordinate The axis coordinate.
+ *  @return The ordered set of categories for the given coordinate.
+ */
+-(NSMutableOrderedSet *)orderedSetForCoordinate:(CPTCoordinate)coordinate
+{
+    NSMutableDictionary *names = self.categoryNames;
+
+    if ( !names ) {
+        names = [[NSMutableDictionary alloc] init];
+
+        self.categoryNames = names;
+    }
+
+    NSNumber *cacheKey = @(coordinate);
+
+    NSMutableOrderedSet *categories = names[cacheKey];
+
+    if ( !categories ) {
+        categories = [[NSMutableOrderedSet alloc] init];
+
+        names[cacheKey] = categories;
+    }
+
+    return categories;
+}
+
+/**
+ *  @brief Add a new category name for the given coordinate.
+ *
+ *  Category names must be unique for each coordinate. Adding the same name more than once has no effect.
+ *
+ *  @param category The category name.
+ *  @param coordinate The axis coordinate.
+ */
+-(void)addCategory:(NSString *)category forCoordinate:(CPTCoordinate)coordinate
+{
+    NSParameterAssert(category);
+
+    NSMutableOrderedSet *categories = [self orderedSetForCoordinate:coordinate];
+
+    [categories addObject:category];
+}
+
+/**
+ *  @brief Removes the named category for the given coordinate.
+ *  @param category The category name.
+ *  @param coordinate The axis coordinate.
+ */
+-(void)removeCategory:(NSString *)category forCoordinate:(CPTCoordinate)coordinate
+{
+    NSParameterAssert(category);
+
+    NSMutableOrderedSet *categories = [self orderedSetForCoordinate:coordinate];
+
+    [categories removeObject:category];
+}
+
+/**
+ *  @brief Add a new category name for the given coordinate at the given index in the list of category names.
+ *
+ *  Category names must be unique for each coordinate. Adding the same name more than once has no effect.
+ *
+ *  @param category The category name.
+ *  @param coordinate The axis coordinate.
+ *  @param idx The index in the list of category names.
+ */
+-(void)insertCategory:(NSString *)category forCoordinate:(CPTCoordinate)coordinate atIndex:(NSUInteger)idx
+{
+    NSParameterAssert(category);
+
+    NSMutableOrderedSet *categories = [self orderedSetForCoordinate:coordinate];
+
+    NSParameterAssert(idx <= categories.count);
+
+    [categories insertObject:category atIndex:idx];
+}
+
+/**
+ *  @brief Replace all category names for the given coordinate with the names in the supplied array.
+ *  @param newCategories An array of category names.
+ *  @param coordinate The axis coordinate.
+ */
+-(void)setCategories:(NSArray *)newCategories forCoordinate:(CPTCoordinate)coordinate
+{
+    NSMutableDictionary *names = self.categoryNames;
+
+    if ( !names ) {
+        names = [[NSMutableDictionary alloc] init];
+
+        self.categoryNames = names;
+    }
+
+    NSNumber *cacheKey = @(coordinate);
+
+    if ( [newCategories isKindOfClass:[NSArray class]] ) {
+        names[cacheKey] = [NSMutableOrderedSet orderedSetWithArray:newCategories];
+    }
+    else {
+        [names removeObjectForKey:cacheKey];
+    }
+}
+
+/**
+ *  @brief Remove all categories for every coordinate.
+ */
+-(void)removeAllCategories
+{
+    self.categoryNames = nil;
+}
+
+/**
+ *  @brief Returns a list of all category names for the given coordinate.
+ *  @param coordinate The axis coordinate.
+ *  @return An array of category names.
+ */
+-(NSArray *)categoriesForCoordinate:(CPTCoordinate)coordinate
+{
+    NSMutableOrderedSet *categories = [self orderedSetForCoordinate:coordinate];
+
+    return [categories array];
+}
+
+/**
+ *  @brief Returns the category name for the given coordinate at the given index in the list of category names.
+ *  @param coordinate The axis coordinate.
+ *  @param idx The index in the list of category names.
+ *  @return The category name.
+ */
+-(NSString *)categoryForCoordinate:(CPTCoordinate)coordinate atIndex:(NSUInteger)idx
+{
+    NSMutableOrderedSet *categories = [self orderedSetForCoordinate:coordinate];
+
+    NSParameterAssert(idx < categories.count);
+
+    return categories[idx];
+}
+
+/**
+ *  @brief Returns the index of the given category name in the list of category names for the given coordinate.
+ *  @param category The category name.
+ *  @param coordinate The axis coordinate.
+ *  @return The category index.
+ */
+-(NSUInteger)indexOfCategory:(NSString *)category forCoordinate:(CPTCoordinate)coordinate
+{
+    NSParameterAssert(category);
+
+    NSMutableOrderedSet *categories = [self orderedSetForCoordinate:coordinate];
+
+    return [categories indexOfObject:category];
+}
 
 #pragma mark -
 #pragma mark Responder Chain and User interaction
@@ -134,8 +336,10 @@ NSString *const CPTPlotSpaceCoordinateMappingDidChangeNotification = @"CPTPlotSp
 {
     BOOL handledByDelegate = NO;
 
-    if ( [delegate respondsToSelector:@selector(plotSpace:shouldHandlePointingDeviceDownEvent:atPoint:)] ) {
-        handledByDelegate = ![delegate plotSpace:self shouldHandlePointingDeviceDownEvent:event atPoint:interactionPoint];
+    id<CPTPlotSpaceDelegate> theDelegate = self.delegate;
+
+    if ( [theDelegate respondsToSelector:@selector(plotSpace:shouldHandlePointingDeviceDownEvent:atPoint:)] ) {
+        handledByDelegate = ![theDelegate plotSpace:self shouldHandlePointingDeviceDownEvent:event atPoint:interactionPoint];
     }
     return handledByDelegate;
 }
@@ -160,8 +364,10 @@ NSString *const CPTPlotSpaceCoordinateMappingDidChangeNotification = @"CPTPlotSp
 {
     BOOL handledByDelegate = NO;
 
-    if ( [delegate respondsToSelector:@selector(plotSpace:shouldHandlePointingDeviceUpEvent:atPoint:)] ) {
-        handledByDelegate = ![delegate plotSpace:self shouldHandlePointingDeviceUpEvent:event atPoint:interactionPoint];
+    id<CPTPlotSpaceDelegate> theDelegate = self.delegate;
+
+    if ( [theDelegate respondsToSelector:@selector(plotSpace:shouldHandlePointingDeviceUpEvent:atPoint:)] ) {
+        handledByDelegate = ![theDelegate plotSpace:self shouldHandlePointingDeviceUpEvent:event atPoint:interactionPoint];
     }
     return handledByDelegate;
 }
@@ -186,8 +392,10 @@ NSString *const CPTPlotSpaceCoordinateMappingDidChangeNotification = @"CPTPlotSp
 {
     BOOL handledByDelegate = NO;
 
-    if ( [delegate respondsToSelector:@selector(plotSpace:shouldHandlePointingDeviceDraggedEvent:atPoint:)] ) {
-        handledByDelegate = ![delegate plotSpace:self shouldHandlePointingDeviceDraggedEvent:event atPoint:interactionPoint];
+    id<CPTPlotSpaceDelegate> theDelegate = self.delegate;
+
+    if ( [theDelegate respondsToSelector:@selector(plotSpace:shouldHandlePointingDeviceDraggedEvent:atPoint:)] ) {
+        handledByDelegate = ![theDelegate plotSpace:self shouldHandlePointingDeviceDraggedEvent:event atPoint:interactionPoint];
     }
     return handledByDelegate;
 }
@@ -212,11 +420,44 @@ NSString *const CPTPlotSpaceCoordinateMappingDidChangeNotification = @"CPTPlotSp
 {
     BOOL handledByDelegate = NO;
 
-    if ( [delegate respondsToSelector:@selector(plotSpace:shouldHandlePointingDeviceCancelledEvent:)] ) {
-        handledByDelegate = ![delegate plotSpace:self shouldHandlePointingDeviceCancelledEvent:event];
+    id<CPTPlotSpaceDelegate> theDelegate = self.delegate;
+
+    if ( [theDelegate respondsToSelector:@selector(plotSpace:shouldHandlePointingDeviceCancelledEvent:)] ) {
+        handledByDelegate = ![theDelegate plotSpace:self shouldHandlePointingDeviceCancelledEvent:event];
     }
     return handledByDelegate;
 }
+
+#if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
+#else
+
+/**
+ *  @brief Informs the receiver that the user has moved the scroll wheel.
+ *
+ *
+ *  If the receiver does not have a @ref delegate,
+ *  this method always returns @NO. Otherwise, the
+ *  @link CPTPlotSpaceDelegate::plotSpace:shouldHandleScrollWheelEvent:fromPoint:toPoint: -plotSpace:shouldHandleScrollWheelEvent:fromPoint:toPoint: @endlink
+ *  delegate method is called. If it returns @NO, this method returns @YES
+ *  to indicate that the event has been handled and no further processing should occur.
+ *
+ *  @param event The OS event.
+ *  @param fromPoint The starting coordinates of the interaction.
+ *  @param toPoint The ending coordinates of the interaction.
+ *  @return Whether the event was handled or not.
+ **/
+-(BOOL)scrollWheelEvent:(CPTNativeEvent *)event fromPoint:(CGPoint)fromPoint toPoint:(CGPoint)toPoint
+{
+    BOOL handledByDelegate = NO;
+
+    id<CPTPlotSpaceDelegate> theDelegate = self.delegate;
+
+    if ( [theDelegate respondsToSelector:@selector(plotSpace:shouldHandleScrollWheelEvent:fromPoint:toPoint:)] ) {
+        handledByDelegate = ![theDelegate plotSpace:self shouldHandleScrollWheelEvent:event fromPoint:fromPoint toPoint:toPoint];
+    }
+    return handledByDelegate;
+}
+#endif
 
 /// @}
 
@@ -237,17 +478,6 @@ NSString *const CPTPlotSpaceCoordinateMappingDidChangeNotification = @"CPTPlotSp
 
 /** @brief Converts a data point to plot area drawing coordinates.
  *  @param plotPoint A c-style array of data point coordinates (as NSDecimal structs).
- *  @return The drawing coordinates of the data point.
- *  @deprecated This method will be removed in the 2.0 release. Use
- *  @link CPTPlotSpace::plotAreaViewPointForPlotPoint:numberOfCoordinates: -plotAreaViewPointForPlotPoint:numberOfCoordinates: @endlink instead.
- **/
--(CGPoint)plotAreaViewPointForPlotPoint:(NSDecimal *)plotPoint
-{
-    return [self plotAreaViewPointForPlotPoint:plotPoint numberOfCoordinates:self.numberOfCoordinates];
-}
-
-/** @brief Converts a data point to plot area drawing coordinates.
- *  @param plotPoint A c-style array of data point coordinates (as NSDecimal structs).
  *  @param count The number of coordinate values in the @par{plotPoint} array.
  *  @return The drawing coordinates of the data point.
  **/
@@ -256,17 +486,6 @@ NSString *const CPTPlotSpaceCoordinateMappingDidChangeNotification = @"CPTPlotSp
     NSParameterAssert(count == self.numberOfCoordinates);
 
     return CGPointZero;
-}
-
-/** @brief Converts a data point to plot area drawing coordinates.
- *  @param plotPoint A c-style array of data point coordinates (as @double values).
- *  @return The drawing coordinates of the data point.
- *  @deprecated This method will be removed in the 2.0 release. Use
- *  @link CPTPlotSpace::plotAreaViewPointForDoublePrecisionPlotPoint:numberOfCoordinates: -plotAreaViewPointForDoublePrecisionPlotPoint:numberOfCoordinates: @endlink instead.
- **/
--(CGPoint)plotAreaViewPointForDoublePrecisionPlotPoint:(double *)plotPoint
-{
-    return [self plotAreaViewPointForDoublePrecisionPlotPoint:plotPoint numberOfCoordinates:self.numberOfCoordinates];
 }
 
 /** @brief Converts a data point to plot area drawing coordinates.
@@ -283,34 +502,12 @@ NSString *const CPTPlotSpaceCoordinateMappingDidChangeNotification = @"CPTPlotSp
 
 /** @brief Converts a point given in plot area drawing coordinates to the data coordinate space.
  *  @param plotPoint A c-style array of data point coordinates (as NSDecimal structs).
- *  @param point The drawing coordinates of the data point.
- *  @deprecated This method will be removed in the 2.0 release. Use
- *  @link CPTPlotSpace::plotPoint:numberOfCoordinates:forPlotAreaViewPoint: -plotPoint:numberOfCoordinates:forPlotAreaViewPoint: @endlink instead.
- **/
--(void)plotPoint:(NSDecimal *)plotPoint forPlotAreaViewPoint:(CGPoint)point
-{
-    [self plotPoint:plotPoint numberOfCoordinates:self.numberOfCoordinates forPlotAreaViewPoint:point];
-}
-
-/** @brief Converts a point given in plot area drawing coordinates to the data coordinate space.
- *  @param plotPoint A c-style array of data point coordinates (as NSDecimal structs).
  *  @param count The number of coordinate values in the @par{plotPoint} array.
  *  @param point The drawing coordinates of the data point.
  **/
 -(void)plotPoint:(NSDecimal *)plotPoint numberOfCoordinates:(NSUInteger)count forPlotAreaViewPoint:(CGPoint)point
 {
     NSParameterAssert(count == self.numberOfCoordinates);
-}
-
-/** @brief Converts a point given in drawing coordinates to the data coordinate space.
- *  @param plotPoint A c-style array of data point coordinates (as @double values).
- *  @param point The drawing coordinates of the data point.
- *  @deprecated This method will be removed in the 2.0 release. Use
- *  @link CPTPlotSpace::doublePrecisionPlotPoint:numberOfCoordinates:forPlotAreaViewPoint: -doublePrecisionPlotPoint:numberOfCoordinates:forPlotAreaViewPoint: @endlink instead.
- **/
--(void)doublePrecisionPlotPoint:(double *)plotPoint forPlotAreaViewPoint:(CGPoint)point
-{
-    [self doublePrecisionPlotPoint:plotPoint numberOfCoordinates:self.numberOfCoordinates forPlotAreaViewPoint:point];
 }
 
 /** @brief Converts a point given in drawing coordinates to the data coordinate space.
@@ -334,34 +531,12 @@ NSString *const CPTPlotSpaceCoordinateMappingDidChangeNotification = @"CPTPlotSp
 
 /** @brief Converts the interaction point of an OS event to the data coordinate space.
  *  @param plotPoint A c-style array of data point coordinates (as NSDecimal structs).
- *  @param event The event.
- *  @deprecated This method will be removed in the 2.0 release. Use
- *  @link CPTPlotSpace::plotPoint:numberOfCoordinates:forEvent: -plotPoint:numberOfCoordinates:forEvent: @endlink instead.
- **/
--(void)plotPoint:(NSDecimal *)plotPoint forEvent:(CPTNativeEvent *)event
-{
-    [self plotPoint:plotPoint numberOfCoordinates:self.numberOfCoordinates forEvent:event];
-}
-
-/** @brief Converts the interaction point of an OS event to the data coordinate space.
- *  @param plotPoint A c-style array of data point coordinates (as NSDecimal structs).
  *  @param count The number of coordinate values in the @par{plotPoint} array.
  *  @param event The event.
  **/
 -(void)plotPoint:(NSDecimal *)plotPoint numberOfCoordinates:(NSUInteger)count forEvent:(CPTNativeEvent *)event
 {
     NSParameterAssert(count == self.numberOfCoordinates);
-}
-
-/** @brief Converts the interaction point of an OS event to the data coordinate space.
- *  @param plotPoint A c-style array of data point coordinates (as @double values).
- *  @param event The event.
- *  @deprecated This method will be removed in the 2.0 release. Use
- *  @link CPTPlotSpace::doublePrecisionPlotPoint:numberOfCoordinates:forEvent: -doublePrecisionPlotPoint:numberOfCoordinates:forEvent: @endlink instead.
- **/
--(void)doublePrecisionPlotPoint:(double *)plotPoint forEvent:(CPTNativeEvent *)event
-{
-    [self doublePrecisionPlotPoint:plotPoint numberOfCoordinates:self.numberOfCoordinates forEvent:event];
 }
 
 /** @brief Converts the interaction point of an OS event to the data coordinate space.
@@ -442,8 +617,6 @@ NSString *const CPTPlotSpaceCoordinateMappingDidChangeNotification = @"CPTPlotSp
         }
         [self setPlotRange:unionRange forCoordinate:coordinate];
     }
-
-    [unionRange release];
 }
 
 /** @brief Zooms the plot space equally in each dimension.

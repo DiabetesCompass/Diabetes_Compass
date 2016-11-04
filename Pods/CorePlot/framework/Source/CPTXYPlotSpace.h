@@ -4,27 +4,7 @@
 
 @class CPTPlotRange;
 
-@interface CPTXYPlotSpace : CPTPlotSpace<CPTAnimationDelegate> {
-    @private
-    CPTPlotRange *xRange;
-    CPTPlotRange *yRange;
-    CPTPlotRange *globalXRange;
-    CPTPlotRange *globalYRange;
-    CPTScaleType xScaleType;
-    CPTScaleType yScaleType;
-    CGPoint lastDragPoint;
-    CGPoint lastDisplacement;
-    NSTimeInterval lastDragTime;
-    NSTimeInterval lastDeltaTime;
-    BOOL isDragging;
-    BOOL allowsMomentumX;
-    BOOL allowsMomentumY;
-    NSMutableArray *animations;
-    CPTAnimationCurve momentumAnimationCurve;
-    CPTAnimationCurve bounceAnimationCurve;
-    CGFloat momentumAcceleration;
-    CGFloat bounceAcceleration;
-}
+@interface CPTXYPlotSpace : CPTPlotSpace<CPTAnimationDelegate>
 
 @property (nonatomic, readwrite, copy) CPTPlotRange *xRange;
 @property (nonatomic, readwrite, copy) CPTPlotRange *yRange;
@@ -40,5 +20,8 @@
 @property (nonatomic, readwrite) CPTAnimationCurve bounceAnimationCurve;
 @property (nonatomic, readwrite) CGFloat momentumAcceleration;
 @property (nonatomic, readwrite) CGFloat bounceAcceleration;
+@property (nonatomic, readwrite) CGFloat minimumDisplacementToDrag;
+
+-(void)cancelAnimations;
 
 @end
