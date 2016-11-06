@@ -12,6 +12,16 @@ Installation can be made easilly thanks to Pod in this repository. The only thin
 
 pod 'PPiFlatSegmentedControl', :git => 'https://github.com/pepibumur/PPiFlatSegmentedControl.git'
 
+## Try the demo project
+If you want to try the demo project you have to:
+
+1. Clone the repo
+2. `cd into the PPiFlatSegmentedControl-Demo/ folder`
+3. run `pod install`
+
+open the PPiFlatSegmentedControl-Demo.xcworkspace file using Xcode.
+
+
 ## How to use
 To start using PPiFlatSC you have to import the class wherever you want to use:
 ```#import "PPiFlatSegmentedControl.h"```
