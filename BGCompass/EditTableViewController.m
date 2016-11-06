@@ -135,11 +135,8 @@
     self.numberOfServingsItem.keyboardType = UIKeyboardTypeDecimalPad;
     self.servingSizeItem.keyboardType = UIKeyboardTypeNumbersAndPunctuation;
     self.carbsItem.keyboardType = UIKeyboardTypeDecimalPad;
-    
-    if (REUIKitIsFlatMode()) {
-        self.dateTimeItem.inlineDatePicker = YES;
-    }
-    
+
+    self.dateTimeItem.inlineDatePicker = YES;
     
     [section addItem:self.typeItem];
     [section2 addItem:self.nameItem];
@@ -186,11 +183,8 @@
     
     self.valueItem = [RETextItem itemWithTitle:@"Value" value:bg.itemValue placeholder:nil];
     self.valueItem.keyboardType = UIKeyboardTypeDecimalPad;
-    
-    if (REUIKitIsFlatMode()) {
-        self.dateTimeItem.inlineDatePicker = YES;
-    }
-    
+
+    self.dateTimeItem.inlineDatePicker = YES;
     
     [section addItem:self.typeItem];
     [section2 addItem:self.nameItem];
@@ -233,12 +227,9 @@
     
     self.valueItem = [RETextItem itemWithTitle:@"Value" value:insulin.itemValue placeholder:nil];
     self.valueItem.keyboardType = UIKeyboardTypeDecimalPad;
-    
-    if (REUIKitIsFlatMode()) {
-        self.dateTimeItem.inlineDatePicker = YES;
-    }
-    
-    
+
+    self.dateTimeItem.inlineDatePicker = YES;
+
     [section addItem:self.typeItem];
     [section2 addItem:self.nameItem];
     [section2 addItem:self.dateTimeItem];
