@@ -338,12 +338,14 @@
         case 0:
             firstReading = [[[TrendsAlgorithmModel sharedInstance] ha1cArray] firstObject];
             lastReading = [[[TrendsAlgorithmModel sharedInstance] ha1cArray] lastObject];
-            plotSpace.yRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromFloat(0) length:CPTDecimalFromFloat(15)];
+            plotSpace.yRange = [CPTPlotRange plotRangeWithLocation: [NSNumber numberWithFloat: 0]
+                                                            length: [NSNumber numberWithFloat: 15]];
             break;
         case 1:
             firstReading = [[[TrendsAlgorithmModel sharedInstance] bgArray] firstObject];
             lastReading = [[[TrendsAlgorithmModel sharedInstance] bgArray] lastObject];
-            plotSpace.yRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromFloat(0) length:CPTDecimalFromFloat(300)];
+            plotSpace.yRange = [CPTPlotRange plotRangeWithLocation: [NSNumber numberWithFloat: 0]
+                                                            length: [NSNumber numberWithFloat: 300]];
             break;
             /*
         case 2:
@@ -360,8 +362,10 @@
     //Minutes between the last reading and the first reading.
     total_minutes = [lastReading.timeStamp timeIntervalSinceDate:firstReading.timeStamp]/SECONDS_IN_ONE_MINUTE;
     float one_week = MINUTES_IN_ONE_HOUR*HOURS_IN_ONE_DAY*DAYS_IN_ONE_WEEK;
-    plotSpace.xRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromFloat(total_minutes - one_week) length:CPTDecimalFromFloat(one_week)];
-    plotSpace.globalXRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromFloat(0) length:CPTDecimalFromFloat(total_minutes)];;
+    plotSpace.xRange = [CPTPlotRange plotRangeWithLocation: [NSNumber numberWithFloat: (total_minutes - one_week)]
+                                                    length: [NSNumber numberWithFloat: one_week]];
+    plotSpace.globalXRange = [CPTPlotRange plotRangeWithLocation: [NSNumber numberWithFloat:0]
+                                                          length: [NSNumber numberWithFloat: total_minutes]];
     plotSpace.delegate = self;
     
     CPTXYAxisSet *axisSet = (CPTXYAxisSet *)graph.axisSet;
