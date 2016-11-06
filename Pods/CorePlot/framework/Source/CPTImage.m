@@ -1,5 +1,6 @@
 #import "CPTImage.h"
 
+#import "CPTPlatformSpecificDefines.h"
 #import "CPTUtilities.h"
 #import "NSCoderExtensions.h"
 
@@ -18,7 +19,7 @@ typedef NS_ENUM (NSInteger, CPTSlice) {
 };
 
 typedef struct _CPTImageSlices {
-    CGImageRef slice[9]; ///< The image slices used to render a stretchable image.
+    __nonnull CGImageRef slice[9]; ///< The image slices used to render a stretchable image.
 }
 CPTImageSlices;
 
@@ -28,7 +29,7 @@ CPTImageSlices;
 @property (nonatomic, readwrite, assign) CPTImageSlices slices;
 
 -(void)makeImageSlices;
--(void)drawImage:(CGImageRef)theImage inContext:(CGContextRef)context rect:(CGRect)rect scaleRatio:(CGFloat)scaleRatio;
+-(void)drawImage:(nonnull CGImageRef)theImage inContext:(nonnull CGContextRef)context rect:(CGRect)rect scaleRatio:(CGFloat)scaleRatio;
 
 @end
 
@@ -47,12 +48,12 @@ CPTImageSlices;
 
 @implementation CPTImage
 
-/** @property CPTNativeImage *nativeImage
+/** @property nullable CPTNativeImage *nativeImage
  *  @brief A platform-native representation of the image.
  **/
 @synthesize nativeImage;
 
-/** @property CGImageRef image
+/** @property nullable CGImageRef image
  *  @brief The image drawn into a @ref CGImageRef.
  **/
 @synthesize image;
@@ -118,7 +119,7 @@ CPTImageSlices;
  *  @param path The full or partial path to the image file.
  *  @return A CPTImage instance initialized from the file at the given path.
  **/
--(instancetype)initWithContentsOfFile:(NSString *)path
+-(nonnull instancetype)initWithContentsOfFile:(nonnull NSString *)path
 {
     return [self initWithNativeImage:[[CPTNativeImage alloc] initWithContentsOfFile:path]];
 }
@@ -131,9 +132,9 @@ CPTImageSlices;
  *  @param newScale The image scale. Must be greater than zero.
  *  @return A CPTImage instance initialized with the provided @ref CGImageRef.
  **/
--(instancetype)initWithCGImage:(CGImageRef)anImage scale:(CGFloat)newScale
+-(nonnull instancetype)initWithCGImage:(nullable CGImageRef)anImage scale:(CGFloat)newScale
 {
-    NSParameterAssert(newScale > 0.0);
+    NSParameterAssert( newScale > CPTFloat(0.0) );
 
     if ( (self = [super init]) ) {
         CGImageRetain(anImage);
@@ -152,7 +153,7 @@ CPTImageSlices;
  *  @param anImage The image to wrap.
  *  @return A CPTImage instance initialized with the provided @ref CGImageRef.
  **/
--(instancetype)initWithCGImage:(CGImageRef)anImage
+-(nonnull instancetype)initWithCGImage:(nullable CGImageRef)anImage
 {
     return [self initWithCGImage:anImage scale:CPTFloat(1.0)];
 }
@@ -163,7 +164,7 @@ CPTImageSlices;
 /** @brief Initializes a newly allocated CPTImage object with a @NULL image.
  *  @return The initialized object.
  **/
--(instancetype)init
+-(nonnull instancetype)init
 {
     return [self initWithCGImage:NULL];
 }
@@ -188,7 +189,7 @@ CPTImageSlices;
 
 /// @cond
 
--(void)encodeWithCoder:(NSCoder *)coder
+-(void)encodeWithCoder:(nonnull NSCoder *)coder
 {
     [coder encodeObject:self.nativeImage forKey:@"CPTImage.nativeImage"];
     [coder encodeCGImage:self.image forKey:@"CPTImage.image"];
@@ -212,10 +213,11 @@ CPTImageSlices;
  *  @param coder An unarchiver object.
  *  @return An object initialized from data in a given unarchiver.
  */
--(instancetype)initWithCoder:(NSCoder *)coder
+-(nullable instancetype)initWithCoder:(nonnull NSCoder *)coder
 {
     if ( (self = [super init]) ) {
-        nativeImage           = [[coder decodeObjectForKey:@"CPTImage.nativeImage"] copy];
+        nativeImage = [[coder decodeObjectOfClass:[CPTNativeImage class]
+                                           forKey:@"CPTImage.nativeImage"] copy];
         image                 = [coder newCGImageDecodeForKey:@"CPTImage.image"];
         scale                 = [coder decodeCGFloatForKey:@"CPTImage.scale"];
         tiled                 = [coder decodeBoolForKey:@"CPTImage.tiled"];
@@ -231,11 +233,23 @@ CPTImageSlices;
 }
 
 #pragma mark -
+#pragma mark NSSecureCoding Methods
+
+/// @cond
+
++(BOOL)supportsSecureCoding
+{
+    return YES;
+}
+
+/// @endcond
+
+#pragma mark -
 #pragma mark NSCopying Methods
 
 /// @cond
 
--(id)copyWithZone:(NSZone *)zone
+-(nonnull id)copyWithZone:(nullable NSZone *)zone
 {
     CPTImage *copy = [[[self class] allocWithZone:zone] init];
 
@@ -268,7 +282,7 @@ CPTImageSlices;
  *  @param name The name of the image to load.
  *  @return A new CPTImage instance initialized with the named image.
  **/
-+(instancetype)imageNamed:(NSString *)name
++(nonnull instancetype)imageNamed:(nonnull NSString *)name
 {
     return [self imageWithNativeImage:[CPTNativeImage imageNamed:name]];
 }
@@ -278,7 +292,7 @@ CPTImageSlices;
  *  @param anImage The platform-native image.
  *  @return A new CPTImage instance initialized with the provided image.
  **/
-+(instancetype)imageWithNativeImage:(CPTNativeImage *)anImage
++(nonnull instancetype)imageWithNativeImage:(nullable CPTNativeImage *)anImage
 {
     return [[self alloc] initWithNativeImage:anImage];
 }
@@ -288,7 +302,7 @@ CPTImageSlices;
  *  @param path The full or partial path to the image file.
  *  @return A new CPTImage instance initialized from the file at the given path.
  **/
-+(instancetype)imageWithContentsOfFile:(NSString *)path
++(nonnull instancetype)imageWithContentsOfFile:(nonnull NSString *)path
 {
     return [[self alloc] initWithContentsOfFile:path];
 }
@@ -298,7 +312,7 @@ CPTImageSlices;
  *  @param newScale The image scale.
  *  @return A new CPTImage instance initialized with the provided @ref CGImageRef.
  **/
-+(instancetype)imageWithCGImage:(CGImageRef)anImage scale:(CGFloat)newScale
++(nonnull instancetype)imageWithCGImage:(nullable CGImageRef)anImage scale:(CGFloat)newScale
 {
     return [[self alloc] initWithCGImage:anImage scale:newScale];
 }
@@ -307,9 +321,9 @@ CPTImageSlices;
  *  @param anImage The image to wrap.
  *  @return A new CPTImage instance initialized with the provided @ref CGImageRef.
  **/
-+(instancetype)imageWithCGImage:(CGImageRef)anImage
++(nonnull instancetype)imageWithCGImage:(nullable CGImageRef)anImage
 {
-    return [[self alloc] initWithCGImage:anImage];
+    return [self imageWithCGImage:anImage scale:CPTFloat(1.0)];
 }
 
 /** @brief Creates and returns a new CPTImage instance initialized with the contents of a PNG file.
@@ -321,7 +335,7 @@ CPTImageSlices;
  *  @param path The file system path of the file.
  *  @return A new CPTImage instance initialized with the contents of the PNG file.
  **/
-+(instancetype)imageForPNGFile:(NSString *)path
++(nonnull instancetype)imageForPNGFile:(nonnull NSString *)path
 {
     return [[self alloc] initForPNGFile:path];
 }
@@ -337,7 +351,7 @@ CPTImageSlices;
  *  @param object The object to be compared with the receiver.
  *  @return @YES if @par{object} is equal to the receiver, @NO otherwise.
  **/
--(BOOL)isEqual:(id)object
+-(BOOL)isEqual:(nullable id)object
 {
     if ( self == object ) {
         return YES;
@@ -428,7 +442,7 @@ CPTImageSlices;
             CFDataRef otherProviderData     = CGDataProviderCopyData(otherProvider);
 
             if ( selfProviderData && otherProviderData ) {
-                equalImages = [(__bridge NSData *)selfProviderData isEqualToData : (__bridge NSData *)otherProviderData];
+                equalImages = [(__bridge NSData *) selfProviderData isEqualToData:(__bridge NSData *)otherProviderData];
             }
             else {
                 equalImages = (selfProviderData == otherProviderData);
@@ -486,7 +500,7 @@ CPTImageSlices;
 
 /// @cond
 
--(void)setImage:(CGImageRef)newImage
+-(void)setImage:(nullable CGImageRef)newImage
 {
     if ( newImage != image ) {
         CGImageRetain(newImage);
@@ -495,7 +509,7 @@ CPTImageSlices;
     }
 }
 
--(void)setNativeImage:(CPTNativeImage *)newImage
+-(void)setNativeImage:(nullable CPTNativeImage *)newImage
 {
     if ( newImage != nativeImage ) {
         nativeImage = [newImage copy];
@@ -504,12 +518,12 @@ CPTImageSlices;
     }
 }
 
--(CPTNativeImage *)nativeImage
+-(nullable CPTNativeImage *)nativeImage
 {
     if ( !nativeImage ) {
         CGImageRef imageRef = self.image;
 
-#if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
+#if TARGET_OS_SIMULATOR || TARGET_OS_IPHONE
         CGFloat theScale = self.scale;
 
         if ( imageRef && ( theScale > CPTFloat(0.0) ) ) {
@@ -536,7 +550,7 @@ CPTImageSlices;
                                                                                bitsPerPixel:32];
 
             NSGraphicsContext *bitmapContext = [NSGraphicsContext graphicsContextWithBitmapImageRep:imageRep];
-            CGContextRef context             = (CGContextRef)[bitmapContext graphicsPort];
+            CGContextRef context             = (CGContextRef)bitmapContext.graphicsPort;
 
             CGContextDrawImage(context, CPTRectMake(0.0, 0.0, imageSize.width, imageSize.height), imageRef);
 
@@ -551,7 +565,7 @@ CPTImageSlices;
 
 -(void)setScale:(CGFloat)newScale
 {
-    NSParameterAssert(newScale > 0.0);
+    NSParameterAssert( newScale > CPTFloat(0.0) );
 
     if ( newScale != scale ) {
         scale = newScale;
@@ -563,7 +577,7 @@ CPTImageSlices;
     if ( !CPTEdgeInsetsEqualToEdgeInsets(edgeInsets, newEdgeInsets) ) {
         edgeInsets = newEdgeInsets;
 
-        CPTImageSlices imageSlices;
+        CPTImageSlices imageSlices = {};
 
         for ( NSUInteger i = 0; i < 9; i++ ) {
             imageSlices.slice[i] = NULL;
@@ -578,7 +592,10 @@ CPTImageSlices;
     for ( NSUInteger i = 0; i < 9; i++ ) {
         CGImageRelease(slices.slice[i]);
 
-        slices.slice[i] = CGImageRetain(newSlices.slice[i]);
+        CGImageRef slice = CGImageRetain(newSlices.slice[i]);
+        if ( slice ) {
+            slices.slice[i] = slice;
+        }
     }
 }
 
@@ -607,7 +624,7 @@ CPTImageSlices;
     CGSize centerSize = CGSizeMake(width - capLeft - capRight,
                                    height - capTop - capBottom);
 
-    CPTImageSlices imageSlices;
+    CPTImageSlices imageSlices = {};
 
     for ( NSUInteger i = 0; i < 9; i++ ) {
         imageSlices.slice[i] = NULL;
@@ -616,45 +633,54 @@ CPTImageSlices;
     // top row
     if ( capTop > CPTFloat(0.0) ) {
         if ( capLeft > CPTFloat(0.0) ) {
-            imageSlices.slice[CPTSliceTopLeft] = CGImageCreateWithImageInRect( theImage, CPTRectMake(0.0, 0.0, capLeft, capTop) );
+            CGImageRef sliceImage = CGImageCreateWithImageInRect( theImage, CPTRectMake(0.0, 0.0, capLeft, capTop) );
+            imageSlices.slice[CPTSliceTopLeft] = sliceImage;
         }
 
         if ( centerSize.width > CPTFloat(0.0) ) {
-            imageSlices.slice[CPTSliceTop] = CGImageCreateWithImageInRect( theImage, CPTRectMake(capLeft, 0.0, centerSize.width, capTop) );
+            CGImageRef sliceImage = CGImageCreateWithImageInRect( theImage, CPTRectMake(capLeft, 0.0, centerSize.width, capTop) );
+            imageSlices.slice[CPTSliceTop] = sliceImage;
         }
 
         if ( capRight > CPTFloat(0.0) ) {
-            imageSlices.slice[CPTSliceTopRight] = CGImageCreateWithImageInRect( theImage, CPTRectMake(width - capRight, 0.0, capRight, capTop) );
+            CGImageRef sliceImage = CGImageCreateWithImageInRect( theImage, CPTRectMake(width - capRight, 0.0, capRight, capTop) );
+            imageSlices.slice[CPTSliceTopRight] = sliceImage;
         }
     }
 
     // middle row
     if ( centerSize.height > CPTFloat(0.0) ) {
         if ( capLeft > CPTFloat(0.0) ) {
-            imageSlices.slice[CPTSliceLeft] = CGImageCreateWithImageInRect( theImage, CPTRectMake(0.0, capTop, capLeft, centerSize.height) );
+            CGImageRef sliceImage = CGImageCreateWithImageInRect( theImage, CPTRectMake(0.0, capTop, capLeft, centerSize.height) );
+            imageSlices.slice[CPTSliceLeft] = sliceImage;
         }
 
         if ( centerSize.width > CPTFloat(0.0) ) {
-            imageSlices.slice[CPTSliceMiddle] = CGImageCreateWithImageInRect( theImage, CPTRectMake(capLeft, capTop, centerSize.width, centerSize.height) );
+            CGImageRef sliceImage = CGImageCreateWithImageInRect( theImage, CPTRectMake(capLeft, capTop, centerSize.width, centerSize.height) );
+            imageSlices.slice[CPTSliceMiddle] = sliceImage;
         }
 
         if ( capRight > CPTFloat(0.0) ) {
-            imageSlices.slice[CPTSliceRight] = CGImageCreateWithImageInRect( theImage, CPTRectMake(width - capRight, capTop, capRight, centerSize.height) );
+            CGImageRef sliceImage = CGImageCreateWithImageInRect( theImage, CPTRectMake(width - capRight, capTop, capRight, centerSize.height) );
+            imageSlices.slice[CPTSliceRight] = sliceImage;
         }
     }
 
     // bottom row
     if ( capBottom > CPTFloat(0.0) ) {
         if ( capLeft > CPTFloat(0.0) ) {
-            imageSlices.slice[CPTSliceBottomLeft] = CGImageCreateWithImageInRect( theImage, CPTRectMake(0.0, height - capBottom, capLeft, capBottom) );
+            CGImageRef sliceImage = CGImageCreateWithImageInRect( theImage, CPTRectMake(0.0, height - capBottom, capLeft, capBottom) );
+            imageSlices.slice[CPTSliceBottomLeft] = sliceImage;
         }
 
         if ( centerSize.width > CPTFloat(0.0) ) {
-            imageSlices.slice[CPTSliceBottom] = CGImageCreateWithImageInRect( theImage, CPTRectMake(capLeft, height - capBottom, centerSize.width, capBottom) );
+            CGImageRef sliceImage = CGImageCreateWithImageInRect( theImage, CPTRectMake(capLeft, height - capBottom, centerSize.width, capBottom) );
+            imageSlices.slice[CPTSliceBottom] = sliceImage;
         }
 
         if ( capRight > CPTFloat(0.0) ) {
-            imageSlices.slice[CPTSliceBottomRight] = CGImageCreateWithImageInRect( theImage, CPTRectMake(width - capRight, height - capBottom, capRight, capBottom) );
+            CGImageRef sliceImage = CGImageCreateWithImageInRect( theImage, CPTRectMake(width - capRight, height - capBottom, capRight, capBottom) );
+            imageSlices.slice[CPTSliceBottomRight] = sliceImage;
         }
     }
 
@@ -664,7 +690,7 @@ CPTImageSlices;
     }
 }
 
--(void)drawImage:(CGImageRef)theImage inContext:(CGContextRef)context rect:(CGRect)rect scaleRatio:(CGFloat)scaleRatio
+-(void)drawImage:(nonnull CGImageRef)theImage inContext:(nonnull CGContextRef)context rect:(CGRect)rect scaleRatio:(CGFloat)scaleRatio
 {
     if ( theImage && ( rect.size.width > CPTFloat(0.0) ) && ( rect.size.height > CPTFloat(0.0) ) ) {
         CGFloat imageScale = self.scale;
@@ -701,7 +727,7 @@ CPTImageSlices;
  *  @param rect The rectangle to draw into.
  *  @param context The graphics context to draw into.
  **/
--(void)drawInRect:(CGRect)rect inContext:(CGContextRef)context
+-(void)drawInRect:(CGRect)rect inContext:(nonnull CGContextRef)context
 {
     CGImageRef theImage = self.image;
 
@@ -719,7 +745,7 @@ CPTImageSlices;
         CPTNativeImage *theNativeImage = self.nativeImage;
 
         if ( theNativeImage ) {
-#if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
+#if TARGET_OS_SIMULATOR || TARGET_OS_IPHONE
             theImage   = theNativeImage.CGImage;
             self.scale = theNativeImage.scale;
 #else
@@ -736,6 +762,10 @@ CPTImageSlices;
 #endif
             self.image = theImage;
         }
+    }
+
+    if ( !theImage ) {
+        return;
     }
 
     // draw the image
@@ -817,5 +847,17 @@ CPTImageSlices;
 
     self.lastDrawnScale = contextScale;
 }
+
+#pragma mark -
+#pragma mark Debugging
+
+/// @cond
+
+-(nullable id)debugQuickLookObject
+{
+    return self.nativeImage;
+}
+
+/// @endcond
 
 @end

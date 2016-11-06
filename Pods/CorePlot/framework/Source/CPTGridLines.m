@@ -7,7 +7,7 @@
  **/
 @implementation CPTGridLines
 
-/** @property __cpt_weak CPTAxis *axis
+/** @property nullable CPTAxis *axis
  *  @brief The axis.
  **/
 @synthesize axis;
@@ -33,7 +33,7 @@
  *  @param newFrame The frame rectangle.
  *  @return The initialized CPTGridLines object.
  **/
--(instancetype)initWithFrame:(CGRect)newFrame
+-(nonnull instancetype)initWithFrame:(CGRect)newFrame
 {
     if ( (self = [super initWithFrame:newFrame]) ) {
         axis  = nil;
@@ -48,7 +48,7 @@
 
 /// @cond
 
--(instancetype)initWithLayer:(id)layer
+-(nonnull instancetype)initWithLayer:(nonnull id)layer
 {
     if ( (self = [super initWithLayer:layer]) ) {
         CPTGridLines *theLayer = (CPTGridLines *)layer;
@@ -66,7 +66,7 @@
 
 /// @cond
 
--(void)encodeWithCoder:(NSCoder *)coder
+-(void)encodeWithCoder:(nonnull NSCoder *)coder
 {
     [super encodeWithCoder:coder];
 
@@ -74,13 +74,26 @@
     [coder encodeBool:self.major forKey:@"CPTGridLines.major"];
 }
 
--(instancetype)initWithCoder:(NSCoder *)coder
+-(nullable instancetype)initWithCoder:(nonnull NSCoder *)coder
 {
     if ( (self = [super initWithCoder:coder]) ) {
-        axis  = [coder decodeObjectForKey:@"CPTGridLines.axis"];
+        axis = [coder decodeObjectOfClass:[CPTAxis class]
+                                   forKey:@"CPTGridLines.axis"];
         major = [coder decodeBoolForKey:@"CPTGridLines.major"];
     }
     return self;
+}
+
+/// @endcond
+
+#pragma mark -
+#pragma mark NSSecureCoding Methods
+
+/// @cond
+
++(BOOL)supportsSecureCoding
+{
+    return YES;
 }
 
 /// @endcond
@@ -90,7 +103,7 @@
 
 /// @cond
 
--(void)renderAsVectorInContext:(CGContextRef)context
+-(void)renderAsVectorInContext:(nonnull CGContextRef)context
 {
     if ( self.hidden ) {
         return;
@@ -107,7 +120,7 @@
 
 /// @cond
 
--(void)setAxis:(CPTAxis *)newAxis
+-(void)setAxis:(nullable CPTAxis *)newAxis
 {
     if ( newAxis != axis ) {
         axis = newAxis;

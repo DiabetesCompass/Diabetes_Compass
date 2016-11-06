@@ -2,6 +2,7 @@
 
 #import "CPTGraph.h"
 #import "CPTPathExtensions.h"
+#import "CPTPlatformSpecificCategories.h"
 #import "CPTPlatformSpecificFunctions.h"
 #import "CPTShadow.h"
 #import "CPTUtilities.h"
@@ -10,7 +11,7 @@
 #import <objc/runtime.h>
 #import <tgmath.h>
 
-NSString *const CPTLayerBoundsDidChangeNotification = @"CPTLayerBoundsDidChangeNotification";
+CPTLayerNotification const CPTLayerBoundsDidChangeNotification = @"CPTLayerBoundsDidChangeNotification";
 
 /** @defgroup animation Animatable Properties
  *  @brief Custom layer properties that can be animated using Core Animation.
@@ -24,13 +25,14 @@ NSString *const CPTLayerBoundsDidChangeNotification = @"CPTLayerBoundsDidChangeN
  **/
 
 /// @cond
+
 @interface CPTLayer()
 
 @property (nonatomic, readwrite, getter = isRenderingRecursively) BOOL renderingRecursively;
 @property (nonatomic, readwrite, assign) BOOL useFastRendering;
 
--(void)applyTransform:(CATransform3D)transform toContext:(CGContextRef)context;
--(NSString *)subLayersAtIndex:(NSUInteger)idx;
+-(void)applyTransform:(CATransform3D)transform toContext:(nonnull CGContextRef)context;
+-(nonnull NSString *)subLayersAtIndex:(NSUInteger)idx;
 
 @end
 
@@ -49,7 +51,7 @@ NSString *const CPTLayerBoundsDidChangeNotification = @"CPTLayerBoundsDidChangeN
  **/
 @implementation CPTLayer
 
-/** @property __cpt_weak CPTGraph *graph
+/** @property nullable CPTGraph *graph
  *  @brief The graph for the layer.
  **/
 @synthesize graph;
@@ -94,17 +96,17 @@ NSString *const CPTLayerBoundsDidChangeNotification = @"CPTLayerBoundsDidChangeN
  **/
 @dynamic shadowMargin;
 
-/** @property CGPathRef outerBorderPath
+/** @property nullable CGPathRef outerBorderPath
  *  @brief A drawing path that encompasses the outer boundary of the layer border.
  **/
 @synthesize outerBorderPath;
 
-/** @property CGPathRef innerBorderPath
+/** @property nullable CGPathRef innerBorderPath
  *  @brief A drawing path that encompasses the inner boundary of the layer border.
  **/
 @synthesize innerBorderPath;
 
-/** @property CGPathRef maskingPath
+/** @property nullable CGPathRef maskingPath
  *  @brief A drawing path that encompasses the layer content including any borders. Set to @NULL when no masking is desired.
  *
  *  This path defines the outline of the layer and is used to mask all drawing. Set to @NULL when no masking is desired.
@@ -112,7 +114,7 @@ NSString *const CPTLayerBoundsDidChangeNotification = @"CPTLayerBoundsDidChangeN
  **/
 @dynamic maskingPath;
 
-/** @property CGPathRef sublayerMaskingPath
+/** @property nullable CGPathRef sublayerMaskingPath
  *  @brief A drawing path that encompasses the layer content excluding any borders. Set to @NULL when no masking is desired.
  *
  *  This path defines the outline of the part of the layer where sublayers should draw and is used to mask all sublayer drawing.
@@ -121,7 +123,7 @@ NSString *const CPTLayerBoundsDidChangeNotification = @"CPTLayerBoundsDidChangeN
  **/
 @dynamic sublayerMaskingPath;
 
-/** @property NSSet *sublayersExcludedFromAutomaticLayout
+/** @property nullable CPTSublayerSet *sublayersExcludedFromAutomaticLayout
  *  @brief A set of sublayers that should be excluded from the automatic sublayer layout.
  **/
 @dynamic sublayersExcludedFromAutomaticLayout;
@@ -131,7 +133,7 @@ NSString *const CPTLayerBoundsDidChangeNotification = @"CPTLayerBoundsDidChangeN
  **/
 @synthesize useFastRendering;
 
-/** @property id<NSCopying, NSCoding, NSObject> identifier
+/** @property nullable id<NSCopying, NSCoding, NSObject> identifier
  *  @brief An object used to identify the layer in collections.
  **/
 @synthesize identifier;
@@ -163,7 +165,7 @@ NSString *const CPTLayerBoundsDidChangeNotification = @"CPTLayerBoundsDidChangeN
  *  @param newFrame The frame rectangle.
  *  @return The initialized object.
  **/
--(instancetype)initWithFrame:(CGRect)newFrame
+-(nonnull instancetype)initWithFrame:(CGRect)newFrame
 {
     if ( (self = [super init]) ) {
         paddingLeft          = CPTFloat(0.0);
@@ -193,7 +195,7 @@ NSString *const CPTLayerBoundsDidChangeNotification = @"CPTLayerBoundsDidChangeN
 /** @brief Initializes a newly allocated CPTLayer object with an empty frame rectangle.
  *  @return The initialized object.
  **/
--(instancetype)init
+-(nonnull instancetype)init
 {
     return [self initWithFrame:CGRectZero];
 }
@@ -204,7 +206,7 @@ NSString *const CPTLayerBoundsDidChangeNotification = @"CPTLayerBoundsDidChangeN
  *  @param layer The layer from which custom fields should be copied.
  *  @return A layer instance with any custom instance variables copied from @par{layer}.
  */
--(instancetype)initWithLayer:(id)layer
+-(nonnull instancetype)initWithLayer:(nonnull id)layer
 {
     if ( (self = [super initWithLayer:layer]) ) {
         CPTLayer *theLayer = (CPTLayer *)layer;
@@ -240,7 +242,7 @@ NSString *const CPTLayerBoundsDidChangeNotification = @"CPTLayerBoundsDidChangeN
 
 /// @cond
 
--(void)encodeWithCoder:(NSCoder *)coder
+-(void)encodeWithCoder:(nonnull NSCoder *)coder
 {
     [super encodeWithCoder:coder];
 
@@ -265,7 +267,7 @@ NSString *const CPTLayerBoundsDidChangeNotification = @"CPTLayerBoundsDidChangeN
  *  @param coder An unarchiver object.
  *  @return An object initialized from data in a given unarchiver.
  */
--(instancetype)initWithCoder:(NSCoder *)coder
+-(nullable instancetype)initWithCoder:(nonnull NSCoder *)coder
 {
     if ( (self = [super initWithCoder:coder]) ) {
         paddingLeft   = [coder decodeCGFloatForKey:@"CPTLayer.paddingLeft"];
@@ -273,9 +275,12 @@ NSString *const CPTLayerBoundsDidChangeNotification = @"CPTLayerBoundsDidChangeN
         paddingRight  = [coder decodeCGFloatForKey:@"CPTLayer.paddingRight"];
         paddingBottom = [coder decodeCGFloatForKey:@"CPTLayer.paddingBottom"];
         masksToBorder = [coder decodeBoolForKey:@"CPTLayer.masksToBorder"];
-        shadow        = [[coder decodeObjectForKey:@"CPTLayer.shadow"] copy];
-        graph         = [coder decodeObjectForKey:@"CPTLayer.graph"];
-        identifier    = [[coder decodeObjectForKey:@"CPTLayer.identifier"] copy];
+        shadow        = [[coder decodeObjectOfClass:[CPTShadow class]
+                                             forKey:@"CPTLayer.shadow"] copy];
+        graph = [coder decodeObjectOfClass:[CPTGraph class]
+                                    forKey:@"CPTLayer.graph"];
+        identifier = [[coder decodeObjectOfClass:[NSObject class]
+                                          forKey:@"CPTLayer.identifier"] copy];
 
         renderingRecursively = NO;
         outerBorderPath      = NULL;
@@ -285,11 +290,23 @@ NSString *const CPTLayerBoundsDidChangeNotification = @"CPTLayerBoundsDidChangeN
 }
 
 #pragma mark -
+#pragma mark NSSecureCoding Methods
+
+/// @cond
+
++(BOOL)supportsSecureCoding
+{
+    return YES;
+}
+
+/// @endcond
+
+#pragma mark -
 #pragma mark Animation
 
 /// @cond
 
--(id<CAAction>)actionForKey:(NSString *)aKey
+-(id<CAAction>)actionForKey:(nonnull NSString *)aKey
 {
     return nil;
 }
@@ -311,7 +328,7 @@ NSString *const CPTLayerBoundsDidChangeNotification = @"CPTLayerBoundsDidChangeN
     }
 }
 
--(void)drawInContext:(CGContextRef)context
+-(void)drawInContext:(nonnull CGContextRef)context
 {
     if ( context ) {
         self.useFastRendering = YES;
@@ -334,7 +351,7 @@ NSString *const CPTLayerBoundsDidChangeNotification = @"CPTLayerBoundsDidChangeN
  *
  *  @param context The graphics context to draw into.
  **/
--(void)renderAsVectorInContext:(CGContextRef)context
+-(void)renderAsVectorInContext:(nonnull CGContextRef)context
 {
     // This is where subclasses do their drawing
     if ( self.renderingRecursively ) {
@@ -346,7 +363,7 @@ NSString *const CPTLayerBoundsDidChangeNotification = @"CPTLayerBoundsDidChangeN
 /** @brief Draws layer content and the content of all sublayers into the provided graphics context.
  *  @param context The graphics context to draw into.
  **/
--(void)recursivelyRenderInContext:(CGContextRef)context
+-(void)recursivelyRenderInContext:(nonnull CGContextRef)context
 {
     if ( !self.hidden ) {
         // render self
@@ -365,7 +382,7 @@ NSString *const CPTLayerBoundsDidChangeNotification = @"CPTLayerBoundsDidChangeN
         self.renderingRecursively = NO;
 
         // render sublayers
-        NSArray *sublayersCopy = [self.sublayers copy];
+        CPTSublayerArray *sublayersCopy = [self.sublayers copy];
         for ( CALayer *currentSublayer in sublayersCopy ) {
             CGContextSaveGState(context);
 
@@ -377,7 +394,7 @@ NSString *const CPTLayerBoundsDidChangeNotification = @"CPTLayerBoundsDidChangeN
                                   currentSublayerFrameOrigin.y - currentSublayerBounds.origin.y);
             [self applyTransform:self.sublayerTransform toContext:context];
             if ( [currentSublayer isKindOfClass:[CPTLayer class]] ) {
-                [(CPTLayer *)currentSublayer recursivelyRenderInContext : context];
+                [(CPTLayer *) currentSublayer recursivelyRenderInContext:context];
             }
             else {
                 if ( self.masksToBounds ) {
@@ -394,7 +411,7 @@ NSString *const CPTLayerBoundsDidChangeNotification = @"CPTLayerBoundsDidChangeN
 
 /// @cond
 
--(void)applyTransform:(CATransform3D)transform3D toContext:(CGContextRef)context
+-(void)applyTransform:(CATransform3D)transform3D toContext:(nonnull CGContextRef)context
 {
     if ( !CATransform3DIsIdentity(transform3D) ) {
         if ( CATransform3DIsAffine(transform3D) ) {
@@ -420,7 +437,7 @@ NSString *const CPTLayerBoundsDidChangeNotification = @"CPTLayerBoundsDidChangeN
 /** @brief Updates the layer layout if needed and then draws layer content and the content of all sublayers into the provided graphics context.
  *  @param context The graphics context to draw into.
  */
--(void)layoutAndRenderInContext:(CGContextRef)context
+-(void)layoutAndRenderInContext:(nonnull CGContextRef)context
 {
     [self layoutIfNeeded];
     [self recursivelyRenderInContext:context];
@@ -429,7 +446,7 @@ NSString *const CPTLayerBoundsDidChangeNotification = @"CPTLayerBoundsDidChangeN
 /** @brief Draws layer content and the content of all sublayers into a PDF document.
  *  @return PDF representation of the layer content.
  **/
--(NSData *)dataForPDFRepresentationOfLayer
+-(nonnull NSData *)dataForPDFRepresentationOfLayer
 {
     NSMutableData *pdfData         = [[NSMutableData alloc] init];
     CGDataConsumerRef dataConsumer = CGDataConsumerCreateWithCFData( (__bridge CFMutableDataRef)pdfData );
@@ -458,29 +475,29 @@ NSString *const CPTLayerBoundsDidChangeNotification = @"CPTLayerBoundsDidChangeN
 /// @name User Interaction
 /// @{
 
--(BOOL)pointingDeviceDownEvent:(CPTNativeEvent *)event atPoint:(CGPoint)interactionPoint
+-(BOOL)pointingDeviceDownEvent:(nonnull CPTNativeEvent *)event atPoint:(CGPoint)interactionPoint
 {
     return NO;
 }
 
--(BOOL)pointingDeviceUpEvent:(CPTNativeEvent *)event atPoint:(CGPoint)interactionPoint
+-(BOOL)pointingDeviceUpEvent:(nonnull CPTNativeEvent *)event atPoint:(CGPoint)interactionPoint
 {
     return NO;
 }
 
--(BOOL)pointingDeviceDraggedEvent:(CPTNativeEvent *)event atPoint:(CGPoint)interactionPoint
+-(BOOL)pointingDeviceDraggedEvent:(nonnull CPTNativeEvent *)event atPoint:(CGPoint)interactionPoint
 {
     return NO;
 }
 
--(BOOL)pointingDeviceCancelledEvent:(CPTNativeEvent *)event
+-(BOOL)pointingDeviceCancelledEvent:(nonnull CPTNativeEvent *)event
 {
     return NO;
 }
 
-#if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
+#if TARGET_OS_SIMULATOR || TARGET_OS_IPHONE
 #else
--(BOOL)scrollWheelEvent:(CPTNativeEvent *)event fromPoint:(CGPoint)fromPoint toPoint:(CGPoint)toPoint
+-(BOOL)scrollWheelEvent:(nonnull CPTNativeEvent *)event fromPoint:(CGPoint)fromPoint toPoint:(CGPoint)toPoint
 {
     return NO;
 }
@@ -611,8 +628,9 @@ NSString *const CPTLayerBoundsDidChangeNotification = @"CPTLayerBoundsDidChangeN
  **/
 -(void)layoutSublayers
 {
-    CGRect selfBounds    = self.bounds;
-    NSArray *mySublayers = self.sublayers;
+    CGRect selfBounds = self.bounds;
+
+    CPTSublayerArray *mySublayers = self.sublayers;
 
     if ( mySublayers.count > 0 ) {
         CGFloat leftPadding, topPadding, rightPadding, bottomPadding;
@@ -631,8 +649,8 @@ NSString *const CPTLayerBoundsDidChangeNotification = @"CPTLayerBoundsDidChangeN
         subLayerFrame.origin = CGPointMake( round(leftPadding), round(bottomPadding) );
         subLayerFrame.size   = subLayerSize;
 
-        NSSet *excludedSublayers = [self sublayersExcludedFromAutomaticLayout];
-        Class layerClass         = [CPTLayer class];
+        CPTSublayerSet *excludedSublayers = self.sublayersExcludedFromAutomaticLayout;
+        Class layerClass                  = [CPTLayer class];
         for ( CALayer *subLayer in mySublayers ) {
             if ( [subLayer isKindOfClass:layerClass] && ![excludedSublayers containsObject:subLayer] ) {
                 subLayer.frame = subLayerFrame;
@@ -643,10 +661,14 @@ NSString *const CPTLayerBoundsDidChangeNotification = @"CPTLayerBoundsDidChangeN
 
 /// @}
 
--(NSSet *)sublayersExcludedFromAutomaticLayout
+/// @cond
+
+-(nullable CPTSublayerSet *)sublayersExcludedFromAutomaticLayout
 {
     return nil;
 }
+
+/// @endcond
 
 /** @brief Returns the margins that should be left between the bounds of the receiver and all sublayers.
  *  @param left The left margin.
@@ -654,7 +676,7 @@ NSString *const CPTLayerBoundsDidChangeNotification = @"CPTLayerBoundsDidChangeN
  *  @param right The right margin.
  *  @param bottom The bottom margin.
  **/
--(void)sublayerMarginLeft:(CGFloat *)left top:(CGFloat *)top right:(CGFloat *)right bottom:(CGFloat *)bottom
+-(void)sublayerMarginLeft:(nonnull CGFloat *)left top:(nonnull CGFloat *)top right:(nonnull CGFloat *)right bottom:(nonnull CGFloat *)bottom
 {
     *left   = self.paddingLeft;
     *top    = self.paddingTop;
@@ -667,9 +689,9 @@ NSString *const CPTLayerBoundsDidChangeNotification = @"CPTLayerBoundsDidChangeN
 
 /// @cond
 
--(void)setSublayers:(NSArray *)sublayers
+-(void)setSublayers:(nullable CPTSublayerArray *)sublayers
 {
-    [super setSublayers:sublayers];
+    super.sublayers = sublayers;
 
     Class layerClass = [CPTLayer class];
     CGFloat scale    = self.contentsScale;
@@ -680,7 +702,7 @@ NSString *const CPTLayerBoundsDidChangeNotification = @"CPTLayerBoundsDidChangeN
     }
 }
 
--(void)addSublayer:(CALayer *)layer
+-(void)addSublayer:(nonnull CALayer *)layer
 {
     [super addSublayer:layer];
 
@@ -689,7 +711,7 @@ NSString *const CPTLayerBoundsDidChangeNotification = @"CPTLayerBoundsDidChangeN
     }
 }
 
--(void)insertSublayer:(CALayer *)layer atIndex:(unsigned)idx
+-(void)insertSublayer:(nonnull CALayer *)layer atIndex:(unsigned)idx
 {
     [super insertSublayer:layer atIndex:idx];
 
@@ -698,7 +720,7 @@ NSString *const CPTLayerBoundsDidChangeNotification = @"CPTLayerBoundsDidChangeN
     }
 }
 
--(void)insertSublayer:(CALayer *)layer below:(CALayer *)sibling
+-(void)insertSublayer:(nonnull CALayer *)layer below:(nullable CALayer *)sibling
 {
     [super insertSublayer:layer below:sibling];
 
@@ -707,7 +729,7 @@ NSString *const CPTLayerBoundsDidChangeNotification = @"CPTLayerBoundsDidChangeN
     }
 }
 
--(void)insertSublayer:(CALayer *)layer above:(CALayer *)sibling
+-(void)insertSublayer:(nonnull CALayer *)layer above:(nullable CALayer *)sibling
 {
     [super insertSublayer:layer above:sibling];
 
@@ -716,7 +738,7 @@ NSString *const CPTLayerBoundsDidChangeNotification = @"CPTLayerBoundsDidChangeN
     }
 }
 
--(void)replaceSublayer:(CALayer *)layer with:(CALayer *)layer2
+-(void)replaceSublayer:(nonnull CALayer *)layer with:(nonnull CALayer *)layer2
 {
     [super replaceSublayer:layer with:layer2];
 
@@ -730,8 +752,10 @@ NSString *const CPTLayerBoundsDidChangeNotification = @"CPTLayerBoundsDidChangeN
 #pragma mark -
 #pragma mark Masking
 
+/// @cond
+
 // default path is the rounded rect layer bounds
--(CGPathRef)maskingPath
+-(nullable CGPathRef)maskingPath
 {
     if ( self.masksToBounds ) {
         CGPathRef path = self.outerBorderPath;
@@ -739,7 +763,7 @@ NSString *const CPTLayerBoundsDidChangeNotification = @"CPTLayerBoundsDidChangeN
             return path;
         }
 
-        path                 = CreateRoundedRectPath(self.bounds, self.cornerRadius);
+        path                 = CPTCreateRoundedRectPath(self.bounds, self.cornerRadius);
         self.outerBorderPath = path;
         CGPathRelease(path);
 
@@ -750,10 +774,12 @@ NSString *const CPTLayerBoundsDidChangeNotification = @"CPTLayerBoundsDidChangeN
     }
 }
 
--(CGPathRef)sublayerMaskingPath
+-(nullable CGPathRef)sublayerMaskingPath
 {
     return self.innerBorderPath;
 }
+
+/// @endcond
 
 /** @brief Recursively sets the clipping path of the given graphics context to the sublayer masking paths of its superlayers.
  *
@@ -764,7 +790,7 @@ NSString *const CPTLayerBoundsDidChangeNotification = @"CPTLayerBoundsDidChangeN
  *  @param sublayer The sublayer that called this method.
  *  @param offset The cumulative position offset between the receiver and the first layer in the recursive calling chain.
  **/
--(void)applySublayerMaskToContext:(CGContextRef)context forSublayer:(CPTLayer *)sublayer withOffset:(CGPoint)offset
+-(void)applySublayerMaskToContext:(nonnull CGContextRef)context forSublayer:(nonnull CPTLayer *)sublayer withOffset:(CGPoint)offset
 {
     CGPoint sublayerBoundsOrigin = sublayer.bounds.origin;
     CGPoint layerOffset          = offset;
@@ -780,7 +806,7 @@ NSString *const CPTLayerBoundsDidChangeNotification = @"CPTLayerBoundsDidChangeN
 
     CALayer *superlayer = self.superlayer;
     if ( [superlayer isKindOfClass:[CPTLayer class]] ) {
-        [(CPTLayer *)superlayer applySublayerMaskToContext : context forSublayer : self withOffset : layerOffset];
+        [(CPTLayer *) superlayer applySublayerMaskToContext:context forSublayer:self withOffset:layerOffset];
     }
 
     CGPathRef maskPath = self.sublayerMaskingPath;
@@ -801,7 +827,7 @@ NSString *const CPTLayerBoundsDidChangeNotification = @"CPTLayerBoundsDidChangeN
  *
  *  @param context The graphics context to clip.
  **/
--(void)applyMaskToContext:(CGContextRef)context
+-(void)applyMaskToContext:(nonnull CGContextRef)context
 {
     CPTLayer *mySuperlayer = (CPTLayer *)self.superlayer;
 
@@ -849,15 +875,15 @@ NSString *const CPTLayerBoundsDidChangeNotification = @"CPTLayerBoundsDidChangeN
 
 -(void)setPosition:(CGPoint)newPosition
 {
-    [super setPosition:newPosition];
+    super.position = newPosition;
     if ( COREPLOT_LAYER_POSITION_CHANGE_ENABLED() ) {
         CGRect currentFrame = self.frame;
         if ( !CGRectEqualToRect( currentFrame, CGRectIntegral(self.frame) ) ) {
-            COREPLOT_LAYER_POSITION_CHANGE( (char *)class_getName([self class]),
-                                            (int)lrint( ceil(currentFrame.origin.x * 1000.0) ),
-                                            (int)lrint( ceil(currentFrame.origin.y * 1000.0) ),
-                                            (int)lrint( ceil(currentFrame.size.width * 1000.0) ),
-                                            (int)lrint( ceil(currentFrame.size.height * 1000.0) ) );
+            COREPLOT_LAYER_POSITION_CHANGE( (const char *)class_getName([self class]),
+                                            (int)lrint( ceil( currentFrame.origin.x * CPTFloat(1000.0) ) ),
+                                            (int)lrint( ceil( currentFrame.origin.y * CPTFloat(1000.0) ) ),
+                                            (int)lrint( ceil( currentFrame.size.width * CPTFloat(1000.0) ) ),
+                                            (int)lrint( ceil( currentFrame.size.height * CPTFloat(1000.0) ) ) );
         }
     }
 }
@@ -865,7 +891,7 @@ NSString *const CPTLayerBoundsDidChangeNotification = @"CPTLayerBoundsDidChangeN
 -(void)setHidden:(BOOL)newHidden
 {
     if ( newHidden != self.hidden ) {
-        [super setHidden:newHidden];
+        super.hidden = newHidden;
         if ( !newHidden ) {
             [self setNeedsDisplay];
         }
@@ -874,7 +900,7 @@ NSString *const CPTLayerBoundsDidChangeNotification = @"CPTLayerBoundsDidChangeN
 
 -(void)setContentsScale:(CGFloat)newContentsScale
 {
-    NSParameterAssert(newContentsScale > 0.0);
+    NSParameterAssert( newContentsScale > CPTFloat(0.0) );
 
     if ( self.contentsScale != newContentsScale ) {
         if ( [CALayer instancesRespondToSelector:@selector(setContentsScale:)] ) {
@@ -902,7 +928,7 @@ NSString *const CPTLayerBoundsDidChangeNotification = @"CPTLayerBoundsDidChangeN
     return scale;
 }
 
--(void)setShadow:(CPTShadow *)newShadow
+-(void)setShadow:(nullable CPTShadow *)newShadow
 {
     if ( newShadow != shadow ) {
         shadow = [newShadow copy];
@@ -911,7 +937,7 @@ NSString *const CPTLayerBoundsDidChangeNotification = @"CPTLayerBoundsDidChangeN
     }
 }
 
--(void)setOuterBorderPath:(CGPathRef)newPath
+-(void)setOuterBorderPath:(nullable CGPathRef)newPath
 {
     if ( newPath != outerBorderPath ) {
         CGPathRelease(outerBorderPath);
@@ -919,7 +945,7 @@ NSString *const CPTLayerBoundsDidChangeNotification = @"CPTLayerBoundsDidChangeN
     }
 }
 
--(void)setInnerBorderPath:(CGPathRef)newPath
+-(void)setInnerBorderPath:(nullable CGPathRef)newPath
 {
     if ( newPath != innerBorderPath ) {
         CGPathRelease(innerBorderPath);
@@ -956,7 +982,7 @@ NSString *const CPTLayerBoundsDidChangeNotification = @"CPTLayerBoundsDidChangeN
             newBounds.size.height += sizeOffset.height * CPTFloat(2.0);
         }
 
-        [super setBounds:newBounds];
+        super.bounds = newBounds;
 
         self.outerBorderPath = NULL;
         self.innerBorderPath = NULL;
@@ -1003,7 +1029,7 @@ NSString *const CPTLayerBoundsDidChangeNotification = @"CPTLayerBoundsDidChangeN
         }
     }
 
-    [super setAnchorPoint:newAnchorPoint];
+    super.anchorPoint = newAnchorPoint;
 }
 
 -(void)setCornerRadius:(CGFloat)newRadius
@@ -1025,9 +1051,9 @@ NSString *const CPTLayerBoundsDidChangeNotification = @"CPTLayerBoundsDidChangeN
 
 /// @cond
 
--(NSString *)description
+-(nullable NSString *)description
 {
-    return [NSString stringWithFormat:@"<%@ bounds: %@>", [super description], CPTStringFromRect(self.bounds)];
+    return [NSString stringWithFormat:@"<%@ bounds: %@>", super.description, CPTStringFromRect(self.bounds)];
 }
 
 /// @endcond
@@ -1042,14 +1068,14 @@ NSString *const CPTLayerBoundsDidChangeNotification = @"CPTLayerBoundsDidChangeN
 
 /// @cond
 
--(NSString *)subLayersAtIndex:(NSUInteger)idx
+-(nonnull NSString *)subLayersAtIndex:(NSUInteger)idx
 {
     NSMutableString *result = [NSMutableString string];
 
     for ( NSUInteger i = 0; i < idx; i++ ) {
         [result appendString:@".   "];
     }
-    [result appendString:[self description]];
+    [result appendString:self.description];
 
     for ( CPTLayer *sublayer in self.sublayers ) {
         [result appendString:@"\n"];
@@ -1058,11 +1084,23 @@ NSString *const CPTLayerBoundsDidChangeNotification = @"CPTLayerBoundsDidChangeN
             [result appendString:[sublayer subLayersAtIndex:idx + 1]];
         }
         else {
-            [result appendString:[sublayer description]];
+            [result appendString:sublayer.description];
         }
     }
 
     return result;
+}
+
+/// @endcond
+
+#pragma mark -
+#pragma mark Debugging
+
+/// @cond
+
+-(nullable id)debugQuickLookObject
+{
+    return [self imageOfLayer];
 }
 
 /// @endcond

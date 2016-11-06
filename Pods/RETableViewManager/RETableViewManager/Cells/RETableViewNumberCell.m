@@ -30,9 +30,13 @@
 
 @property (strong, readwrite, nonatomic) REFormattedNumberField *textField;
 
+@property (assign, readwrite, nonatomic) BOOL enabled;
+
 @end
 
 @implementation RETableViewNumberCell
+
+@synthesize item = _item;
 
 + (BOOL)canFocusWithItem:(RETableViewItem *)item
 {
@@ -42,13 +46,19 @@
 #pragma mark -
 #pragma mark Lifecycle
 
+- (void)dealloc {
+    if (_item != nil) {
+        [_item removeObserver:self forKeyPath:@"enabled"];
+    }
+}
+
 - (void)cellDidLoad
 {
     [super cellDidLoad];
     self.selectionStyle = UITableViewCellSelectionStyleNone;
     self.textLabel.backgroundColor = [UIColor clearColor];
     
-    self.textField = [[REFormattedNumberField alloc] initWithFrame:CGRectNull];
+    self.textField = [[REFormattedNumberField alloc] initWithFrame:CGRectZero];
     self.textField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
     self.textField.inputAccessoryView = self.actionBar;
     self.textField.autoresizingMask = UIViewAutoresizingFlexibleWidth;
@@ -68,6 +78,8 @@
     self.textField.font = [UIFont systemFontOfSize:17];
     self.textField.keyboardAppearance = self.item.keyboardAppearance;
     self.textField.keyboardType = UIKeyboardTypeNumberPad;
+    
+    self.enabled = self.item.enabled;
 }
 
 - (void)layoutSubviews
@@ -78,11 +90,45 @@
 }
 
 #pragma mark -
+#pragma mark Handle state
+
+- (void)setItem:(RENumberItem *)item
+{
+    if (_item != nil) {
+        [_item removeObserver:self forKeyPath:@"enabled"];
+    }
+    
+    _item = item;
+    
+    [_item addObserver:self forKeyPath:@"enabled" options:NSKeyValueObservingOptionNew context:NULL];
+}
+
+- (void)setEnabled:(BOOL)enabled {
+    _enabled = enabled;
+    
+    self.userInteractionEnabled = _enabled;
+    
+    self.textLabel.enabled = _enabled;
+    self.textField.enabled = _enabled;
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+    if ([object isKindOfClass:[RENumberItem class]] && [keyPath isEqualToString:@"enabled"]) {
+        BOOL newValue = [[change objectForKey: NSKeyValueChangeNewKey] boolValue];
+        
+        self.enabled = newValue;
+    }
+}
+
+#pragma mark -
 #pragma mark Handle events
 
 - (void)textFieldDidChange:(REFormattedNumberField *)textField
 {
     self.item.value = textField.unformattedText;
+    if (self.item.onChange)
+        self.item.onChange(self.item);
 }
 - (void)textFieldDidEndEditing:(UITextField *)textField{
     if (self.item.onEndEditing)

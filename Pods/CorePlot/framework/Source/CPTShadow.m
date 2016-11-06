@@ -40,7 +40,7 @@
  **/
 @synthesize shadowBlurRadius;
 
-/** @property CPTColor *shadowColor
+/** @property nullable CPTColor *shadowColor
  *  @brief The shadow color. If @nil (the default), the shadow will not be drawn.
  **/
 @synthesize shadowColor;
@@ -51,7 +51,7 @@
 /** @brief Creates and returns a new CPTShadow instance.
  *  @return A new CPTShadow instance.
  **/
-+(instancetype)shadow
++(nonnull instancetype)shadow
 {
     return [[self alloc] init];
 }
@@ -68,7 +68,7 @@
  *
  *  @return The initialized object.
  **/
--(instancetype)init
+-(nonnull instancetype)init
 {
     if ( (self = [super init]) ) {
         shadowOffset     = CGSizeZero;
@@ -85,21 +85,34 @@
 
 /// @cond
 
--(void)encodeWithCoder:(NSCoder *)coder
+-(void)encodeWithCoder:(nonnull NSCoder *)coder
 {
     [coder encodeCPTSize:self.shadowOffset forKey:@"CPTShadow.shadowOffset"];
     [coder encodeCGFloat:self.shadowBlurRadius forKey:@"CPTShadow.shadowBlurRadius"];
     [coder encodeObject:self.shadowColor forKey:@"CPTShadow.shadowColor"];
 }
 
--(instancetype)initWithCoder:(NSCoder *)coder
+-(nullable instancetype)initWithCoder:(nonnull NSCoder *)coder
 {
     if ( (self = [super init]) ) {
         shadowOffset     = [coder decodeCPTSizeForKey:@"CPTShadow.shadowOffset"];
         shadowBlurRadius = [coder decodeCGFloatForKey:@"CPTShadow.shadowBlurRadius"];
-        shadowColor      = [coder decodeObjectForKey:@"CPTShadow.shadowColor"];
+        shadowColor      = [coder decodeObjectOfClass:[CPTColor class]
+                                               forKey:@"CPTShadow.shadowColor"];
     }
     return self;
+}
+
+/// @endcond
+
+#pragma mark -
+#pragma mark NSSecureCoding Methods
+
+/// @cond
+
++(BOOL)supportsSecureCoding
+{
+    return YES;
 }
 
 /// @endcond
@@ -110,7 +123,7 @@
 /** @brief Sets the shadow properties in the given graphics context.
  *  @param context The graphics context.
  **/
--(void)setShadowInContext:(CGContextRef)context
+-(void)setShadowInContext:(nonnull CGContextRef)context
 {
     CGContextSetShadowWithColor(context,
                                 self.shadowOffset,
@@ -123,7 +136,7 @@
 
 /// @cond
 
--(id)copyWithZone:(NSZone *)zone
+-(nonnull id)copyWithZone:(nullable NSZone *)zone
 {
     CPTShadow *shadowCopy = [[CPTShadow allocWithZone:zone] init];
 
@@ -141,7 +154,7 @@
 
 /// @cond
 
--(id)mutableCopyWithZone:(NSZone *)zone
+-(nonnull id)mutableCopyWithZone:(nullable NSZone *)zone
 {
     CPTShadow *shadowCopy = [[CPTMutableShadow allocWithZone:zone] init];
 
@@ -161,7 +174,7 @@
 
 -(void)setShadowBlurRadius:(CGFloat)newShadowBlurRadius
 {
-    NSParameterAssert(newShadowBlurRadius >= 0.0);
+    NSParameterAssert( newShadowBlurRadius >= CPTFloat(0.0) );
 
     if ( newShadowBlurRadius != shadowBlurRadius ) {
         shadowBlurRadius = newShadowBlurRadius;

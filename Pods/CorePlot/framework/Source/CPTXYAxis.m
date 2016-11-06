@@ -16,10 +16,12 @@
 /// @cond
 @interface CPTXYAxis()
 
--(void)drawTicksInContext:(CGContextRef)context atLocations:(NSSet *)locations withLength:(CGFloat)length inRange:(CPTPlotRange *)labeledRange isMajor:(BOOL)major;
+-(void)drawTicksInContext:(nonnull CGContextRef)context atLocations:(nullable CPTNumberSet *)locations withLength:(CGFloat)length inRange:(nullable CPTPlotRange *)labeledRange isMajor:(BOOL)major;
 
--(void)orthogonalCoordinateViewLowerBound:(CGFloat *)lower upperBound:(CGFloat *)upper;
--(CGPoint)viewPointForOrthogonalCoordinateDecimal:(NSDecimal)orthogonalCoord axisCoordinateDecimal:(NSDecimal)coordinateDecimalNumber;
+-(void)orthogonalCoordinateViewLowerBound:(nonnull CGFloat *)lower upperBound:(nonnull CGFloat *)upper;
+-(CGPoint)viewPointForOrthogonalCoordinate:(nullable NSNumber *)orthogonalCoord axisCoordinate:(nullable NSNumber *)coordinateValue;
+
+-(NSUInteger)initialBandIndexForSortedLocations:(nonnull CPTNumberArray *)sortedLocations inRange:(nullable CPTMutablePlotRange *)range;
 
 @end
 
@@ -32,19 +34,19 @@
  **/
 @implementation CPTXYAxis
 
-/** @property NSDecimal orthogonalCoordinateDecimal
+/** @property nullable NSNumber *orthogonalPosition
  *  @brief The data coordinate value where the axis crosses the orthogonal axis.
  *  If the @ref axisConstraints is non-nil, the constraints take priority and this property is ignored.
  *  @see @ref axisConstraints
  **/
-@synthesize orthogonalCoordinateDecimal;
+@synthesize orthogonalPosition;
 
-/** @property CPTConstraints *axisConstraints
+/** @property nullable CPTConstraints *axisConstraints
  *  @brief The constraints used when positioning relative to the plot area.
  *  If @nil (the default), the axis is fixed relative to the plot space coordinates,
- *  crossing the orthogonal axis at @ref orthogonalCoordinateDecimal and moves only
+ *  crossing the orthogonal axis at @ref orthogonalPosition and moves only
  *  whenever the plot space ranges change.
- *  @see @ref orthogonalCoordinateDecimal
+ *  @see @ref orthogonalPosition
  **/
 @synthesize axisConstraints;
 
@@ -57,18 +59,18 @@
 /** @brief Initializes a newly allocated CPTXYAxis object with the provided frame rectangle.
  *
  *  This is the designated initializer. The initialized layer will have the following properties:
- *  - @ref orthogonalCoordinateDecimal = @num{0}
+ *  - @ref orthogonalPosition = @num{0}
  *  - @ref axisConstraints = @nil
  *
  *  @param newFrame The frame rectangle.
  *  @return The initialized CPTXYAxis object.
  **/
--(instancetype)initWithFrame:(CGRect)newFrame
+-(nonnull instancetype)initWithFrame:(CGRect)newFrame
 {
     if ( (self = [super initWithFrame:newFrame]) ) {
-        orthogonalCoordinateDecimal = CPTDecimalFromInteger(0);
-        axisConstraints             = nil;
-        self.tickDirection          = CPTSignNone;
+        orthogonalPosition = @0.0;
+        axisConstraints    = nil;
+        self.tickDirection = CPTSignNone;
     }
     return self;
 }
@@ -77,13 +79,13 @@
 
 /// @cond
 
--(instancetype)initWithLayer:(id)layer
+-(nonnull instancetype)initWithLayer:(nonnull id)layer
 {
     if ( (self = [super initWithLayer:layer]) ) {
         CPTXYAxis *theLayer = (CPTXYAxis *)layer;
 
-        orthogonalCoordinateDecimal = theLayer->orthogonalCoordinateDecimal;
-        axisConstraints             = theLayer->axisConstraints;
+        orthogonalPosition = theLayer->orthogonalPosition;
+        axisConstraints    = theLayer->axisConstraints;
     }
     return self;
 }
@@ -95,21 +97,35 @@
 
 /// @cond
 
--(void)encodeWithCoder:(NSCoder *)coder
+-(void)encodeWithCoder:(nonnull NSCoder *)coder
 {
     [super encodeWithCoder:coder];
 
-    [coder encodeDecimal:self.orthogonalCoordinateDecimal forKey:@"CPTXYAxis.orthogonalCoordinateDecimal"];
+    [coder encodeObject:self.orthogonalPosition forKey:@"CPTXYAxis.orthogonalPosition"];
     [coder encodeObject:self.axisConstraints forKey:@"CPTXYAxis.axisConstraints"];
 }
 
--(instancetype)initWithCoder:(NSCoder *)coder
+-(nullable instancetype)initWithCoder:(nonnull NSCoder *)coder
 {
     if ( (self = [super initWithCoder:coder]) ) {
-        orthogonalCoordinateDecimal = [coder decodeDecimalForKey:@"CPTXYAxis.orthogonalCoordinateDecimal"];
-        axisConstraints             = [coder decodeObjectForKey:@"CPTXYAxis.axisConstraints"];
+        orthogonalPosition = [coder decodeObjectOfClass:[NSNumber class]
+                                                 forKey:@"CPTXYAxis.orthogonalPosition"];
+        axisConstraints = [coder decodeObjectOfClass:[CPTConstraints class]
+                                              forKey:@"CPTXYAxis.axisConstraints"];
     }
     return self;
+}
+
+/// @endcond
+
+#pragma mark -
+#pragma mark NSSecureCoding Methods
+
+/// @cond
+
++(BOOL)supportsSecureCoding
+{
+    return YES;
 }
 
 /// @endcond
@@ -119,7 +135,7 @@
 
 /// @cond
 
--(void)orthogonalCoordinateViewLowerBound:(CGFloat *)lower upperBound:(CGFloat *)upper
+-(void)orthogonalCoordinateViewLowerBound:(nonnull CGFloat *)lower upperBound:(nonnull CGFloat *)upper
 {
     CPTCoordinate orthogonalCoordinate = CPTOrthogonalCoordinate(self.coordinate);
     CPTXYPlotSpace *xyPlotSpace        = (CPTXYPlotSpace *)self.plotSpace;
@@ -127,9 +143,8 @@
 
     NSAssert(orthogonalRange != nil, @"The orthogonalRange was nil in orthogonalCoordinateViewLowerBound:upperBound:");
 
-    NSDecimal zero          = CPTDecimalFromInteger(0);
-    CGPoint lowerBoundPoint = [self viewPointForOrthogonalCoordinateDecimal:orthogonalRange.location axisCoordinateDecimal:zero];
-    CGPoint upperBoundPoint = [self viewPointForOrthogonalCoordinateDecimal:orthogonalRange.end axisCoordinateDecimal:zero];
+    CGPoint lowerBoundPoint = [self viewPointForOrthogonalCoordinate:orthogonalRange.location axisCoordinate:@0];
+    CGPoint upperBoundPoint = [self viewPointForOrthogonalCoordinate:orthogonalRange.end axisCoordinate:@0];
 
     switch ( self.coordinate ) {
         case CPTCoordinateX:
@@ -143,31 +158,31 @@
             break;
 
         default:
-            *lower = NAN;
-            *upper = NAN;
+            *lower = CPTNAN;
+            *upper = CPTNAN;
             break;
     }
 }
 
--(CGPoint)viewPointForOrthogonalCoordinateDecimal:(NSDecimal)orthogonalCoord axisCoordinateDecimal:(NSDecimal)coordinateDecimalNumber
+-(CGPoint)viewPointForOrthogonalCoordinate:(nullable NSNumber *)orthogonalCoord axisCoordinate:(nullable NSNumber *)coordinateValue
 {
     CPTCoordinate myCoordinate         = self.coordinate;
     CPTCoordinate orthogonalCoordinate = CPTOrthogonalCoordinate(myCoordinate);
 
     NSDecimal plotPoint[2];
 
-    plotPoint[myCoordinate]         = coordinateDecimalNumber;
-    plotPoint[orthogonalCoordinate] = orthogonalCoord;
+    plotPoint[myCoordinate]         = coordinateValue.decimalValue;
+    plotPoint[orthogonalCoordinate] = orthogonalCoord.decimalValue;
 
     CPTPlotArea *thePlotArea = self.plotArea;
 
     return [self convertPoint:[self.plotSpace plotAreaViewPointForPlotPoint:plotPoint numberOfCoordinates:2] fromLayer:thePlotArea];
 }
 
--(CGPoint)viewPointForCoordinateDecimalNumber:(NSDecimal)coordinateDecimalNumber
+-(CGPoint)viewPointForCoordinateValue:(nullable NSNumber *)coordinateValue
 {
-    CGPoint point = [self viewPointForOrthogonalCoordinateDecimal:self.orthogonalCoordinateDecimal
-                                            axisCoordinateDecimal:coordinateDecimalNumber];
+    CGPoint point = [self viewPointForOrthogonalCoordinate:self.orthogonalPosition
+                                            axisCoordinate:coordinateValue];
 
     CPTConstraints *theAxisConstraints = self.axisConstraints;
 
@@ -191,7 +206,7 @@
     }
 
     if ( isnan(point.x) || isnan(point.y) ) {
-        NSLog( @"[CPTXYAxis viewPointForCoordinateDecimalNumber:%@] was %@", NSDecimalString(&coordinateDecimalNumber, nil), CPTStringFromPoint(point) );
+        NSLog( @"[CPTXYAxis viewPointForCoordinateValue:%@] was %@", coordinateValue, CPTStringFromPoint(point) );
 
         if ( isnan(point.x) ) {
             point.x = CPTFloat(0.0);
@@ -211,7 +226,7 @@
 
 /// @cond
 
--(void)drawTicksInContext:(CGContextRef)context atLocations:(NSSet *)locations withLength:(CGFloat)length inRange:(CPTPlotRange *)labeledRange isMajor:(BOOL)major
+-(void)drawTicksInContext:(nonnull CGContextRef)context atLocations:(nullable CPTNumberSet *)locations withLength:(CGFloat)length inRange:(nullable CPTPlotRange *)labeledRange isMajor:(BOOL)major
 {
     CPTLineStyle *lineStyle = (major ? self.majorTickLineStyle : self.minorTickLineStyle);
 
@@ -233,14 +248,12 @@
     CGContextBeginPath(context);
 
     for ( NSDecimalNumber *tickLocation in locations ) {
-        NSDecimal locationDecimal = tickLocation.decimalValue;
-
-        if ( labeledRange && ![labeledRange contains:locationDecimal] ) {
+        if ( labeledRange && ![labeledRange containsNumber:tickLocation] ) {
             continue;
         }
 
         // Tick end points
-        CGPoint baseViewPoint  = [self viewPointForCoordinateDecimalNumber:locationDecimal];
+        CGPoint baseViewPoint  = [self viewPointForCoordinateValue:tickLocation];
         CGPoint startViewPoint = baseViewPoint;
         CGPoint endViewPoint   = baseViewPoint;
 
@@ -287,7 +300,7 @@
     [lineStyle strokePathInContext:context];
 }
 
--(void)renderAsVectorInContext:(CGContextRef)context
+-(void)renderAsVectorInContext:(nonnull CGContextRef)context
 {
     if ( self.hidden ) {
         return;
@@ -339,8 +352,8 @@
                 alignmentFunction = CPTAlignIntegralPointToUserSpace;
             }
 
-            CGPoint startViewPoint = alignmentFunction(context, [self viewPointForCoordinateDecimalNumber:range.location]);
-            CGPoint endViewPoint   = alignmentFunction(context, [self viewPointForCoordinateDecimalNumber:range.end]);
+            CGPoint startViewPoint = alignmentFunction(context, [self viewPointForCoordinateValue:range.location]);
+            CGPoint endViewPoint   = alignmentFunction(context, [self viewPointForCoordinateValue:range.end]);
             [theLineStyle setLineStyleInContext:context];
             CGContextBeginPath(context);
             CGContextMoveToPoint(context, startViewPoint.x, startViewPoint.y);
@@ -352,11 +365,11 @@
         if ( minCap || maxCap ) {
             switch ( self.coordinate ) {
                 case CPTCoordinateX:
-                    axisDirection = ( range.lengthDouble >= CPTFloat(0.0) ) ? CPTPointMake(1.0, 0.0) : CPTPointMake(-1.0, 0.0);
+                    axisDirection = (range.lengthDouble >= 0.0) ? CPTPointMake(1.0, 0.0) : CPTPointMake(-1.0, 0.0);
                     break;
 
                 case CPTCoordinateY:
-                    axisDirection = ( range.lengthDouble >= CPTFloat(0.0) ) ? CPTPointMake(0.0, 1.0) : CPTPointMake(0.0, -1.0);
+                    axisDirection = (range.lengthDouble >= 0.0) ? CPTPointMake(0.0, 1.0) : CPTPointMake(0.0, -1.0);
                     break;
 
                 default:
@@ -365,14 +378,12 @@
         }
 
         if ( minCap ) {
-            NSDecimal endPoint = range.minLimit;
-            CGPoint viewPoint  = alignmentFunction(context, [self viewPointForCoordinateDecimalNumber:endPoint]);
+            CGPoint viewPoint = alignmentFunction(context, [self viewPointForCoordinateValue:range.minLimit]);
             [minCap renderAsVectorInContext:context atPoint:viewPoint inDirection:CPTPointMake(-axisDirection.x, -axisDirection.y)];
         }
 
         if ( maxCap ) {
-            NSDecimal endPoint = range.maxLimit;
-            CGPoint viewPoint  = alignmentFunction(context, [self viewPointForCoordinateDecimalNumber:endPoint]);
+            CGPoint viewPoint = alignmentFunction(context, [self viewPointForCoordinateValue:range.maxLimit]);
             [maxCap renderAsVectorInContext:context atPoint:viewPoint inDirection:axisDirection];
         }
     }
@@ -385,7 +396,7 @@
 
 /// @cond
 
--(void)drawGridLinesInContext:(CGContextRef)context isMajor:(BOOL)major
+-(void)drawGridLinesInContext:(nonnull CGContextRef)context isMajor:(BOOL)major
 {
     CPTLineStyle *lineStyle = (major ? self.majorGridLineStyle : self.minorGridLineStyle);
 
@@ -395,7 +406,7 @@
         [self relabel];
 
         CPTPlotSpace *thePlotSpace           = self.plotSpace;
-        NSSet *locations                     = (major ? self.majorTickLocations : self.minorTickLocations);
+        CPTNumberSet *locations              = (major ? self.majorTickLocations : self.minorTickLocations);
         CPTCoordinate selfCoordinate         = self.coordinate;
         CPTCoordinate orthogonalCoordinate   = CPTOrthogonalCoordinate(selfCoordinate);
         CPTMutablePlotRange *orthogonalRange = [[thePlotSpace plotRangeForCoordinate:orthogonalCoordinate] mutableCopy];
@@ -425,8 +436,8 @@
         CPTPlotArea *thePlotArea = self.plotArea;
         NSDecimal startPlotPoint[2];
         NSDecimal endPlotPoint[2];
-        startPlotPoint[orthogonalCoordinate] = orthogonalRange.location;
-        endPlotPoint[orthogonalCoordinate]   = orthogonalRange.end;
+        startPlotPoint[orthogonalCoordinate] = orthogonalRange.locationDecimal;
+        endPlotPoint[orthogonalCoordinate]   = orthogonalRange.endDecimal;
         CGPoint originTransformed = [self convertPoint:self.bounds.origin fromLayer:thePlotArea];
 
         CGFloat lineWidth = lineStyle.lineWidth;
@@ -483,13 +494,110 @@
 
 /// @cond
 
--(void)drawBackgroundBandsInContext:(CGContextRef)context
+-(NSUInteger)initialBandIndexForSortedLocations:(CPTNumberArray *)sortedLocations inRange:(CPTMutablePlotRange *)range
 {
-    NSArray *bandArray   = self.alternatingBandFills;
-    NSUInteger bandCount = bandArray.count;
+    NSUInteger bandIndex = 0;
+
+    NSNumber *bandAnchor = self.alternatingBandAnchor;
+    NSUInteger bandCount = self.alternatingBandFills.count;
+
+    if ( bandAnchor && (bandCount > 0) ) {
+        NSDecimal anchor = bandAnchor.decimalValue;
+
+        CPTPlotRange *theVisibleRange = self.visibleRange;
+        if ( theVisibleRange ) {
+            [range intersectionPlotRange:theVisibleRange];
+        }
+
+        NSDecimal rangeStart;
+        if ( range.lengthDouble >= 0.0 ) {
+            rangeStart = range.minLimitDecimal;
+        }
+        else {
+            rangeStart = range.maxLimitDecimal;
+        }
+
+        NSDecimal origin = self.labelingOrigin.decimalValue;
+        NSDecimal offset = CPTDecimalSubtract(anchor, origin);
+        NSDecimalRound(&offset, &offset, 0, NSRoundDown);
+
+        const NSDecimal zero = CPTDecimalFromInteger(0);
+
+        // Set starting coord--should be the smallest value >= rangeMin that is a whole multiple of majorInterval away from the alternatingBandAnchor
+        NSDecimal coord         = zero;
+        NSDecimal majorInterval = zero;
+
+        switch ( self.labelingPolicy ) {
+            case CPTAxisLabelingPolicyAutomatic:
+            case CPTAxisLabelingPolicyEqualDivisions:
+                if ( sortedLocations.count > 1 ) {
+                    if ( range.lengthDouble >= 0.0 ) {
+                        majorInterval = CPTDecimalSubtract(sortedLocations[1].decimalValue, sortedLocations[0].decimalValue);
+                    }
+                    else {
+                        majorInterval = CPTDecimalSubtract(sortedLocations[0].decimalValue, sortedLocations[1].decimalValue);
+                    }
+                }
+                break;
+
+            case CPTAxisLabelingPolicyFixedInterval:
+            {
+                majorInterval = self.majorIntervalLength.decimalValue;
+            }
+            break;
+
+            case CPTAxisLabelingPolicyLocationsProvided:
+            case CPTAxisLabelingPolicyNone:
+            {
+                // user provided tick locations; they're not guaranteed to be evenly spaced, but band drawing always starts with the first location
+                if ( range.lengthDouble >= 0.0 ) {
+                    for ( NSNumber *location in sortedLocations ) {
+                        if ( CPTDecimalLessThan(anchor, location.decimalValue) ) {
+                            break;
+                        }
+
+                        bandIndex++;
+                    }
+                }
+                else {
+                    for ( NSNumber *location in sortedLocations ) {
+                        if ( CPTDecimalGreaterThanOrEqualTo(anchor, location.decimalValue) ) {
+                            break;
+                        }
+
+                        bandIndex++;
+                    }
+                }
+
+                bandIndex = bandIndex % bandCount;
+            }
+            break;
+        }
+
+        if ( !CPTDecimalEquals(majorInterval, zero) ) {
+            coord = CPTDecimalDivide(CPTDecimalSubtract(rangeStart, origin), majorInterval);
+            NSDecimalRound(&coord, &coord, 0, NSRoundUp);
+            NSInteger stepCount = CPTDecimalIntegerValue(coord) + CPTDecimalIntegerValue(offset) + 1;
+
+            if ( stepCount >= 0 ) {
+                bandIndex = (NSUInteger)(stepCount % (NSInteger)bandCount);
+            }
+            else {
+                bandIndex = (NSUInteger)(-stepCount % (NSInteger)bandCount);
+            }
+        }
+    }
+
+    return bandIndex;
+}
+
+-(void)drawBackgroundBandsInContext:(nonnull CGContextRef)context
+{
+    CPTFillArray *bandArray = self.alternatingBandFills;
+    NSUInteger bandCount    = bandArray.count;
 
     if ( bandCount > 0 ) {
-        NSArray *locations = [self.majorTickLocations allObjects];
+        CPTNumberArray *locations = self.majorTickLocations.allObjects;
 
         if ( locations.count > 0 ) {
             CPTPlotSpace *thePlotSpace = self.plotSpace;
@@ -511,10 +619,10 @@
                 [orthogonalRange intersectionPlotRange:theGridLineRange];
             }
 
-            NSDecimal zero                   = CPTDecimalFromInteger(0);
+            const NSDecimal zero             = CPTDecimalFromInteger(0);
             NSSortDescriptor *sortDescriptor = nil;
             if ( range ) {
-                if ( CPTDecimalGreaterThanOrEqualTo(range.length, zero) ) {
+                if ( CPTDecimalGreaterThanOrEqualTo(range.lengthDecimal, zero) ) {
                     sortDescriptor = [[NSSortDescriptor alloc] initWithKey:nil ascending:YES];
                 }
                 else {
@@ -526,11 +634,13 @@
             }
             locations = [locations sortedArrayUsingDescriptors:@[sortDescriptor]];
 
-            NSUInteger bandIndex = 0;
-            id null              = [NSNull null];
+            NSUInteger bandIndex = [self initialBandIndexForSortedLocations:locations inRange:range];
+
+            const id null = [NSNull null];
+
             NSDecimal lastLocation;
             if ( range ) {
-                lastLocation = range.location;
+                lastLocation = range.locationDecimal;
             }
             else {
                 lastLocation = CPTDecimalNaN();
@@ -539,8 +649,8 @@
             NSDecimal startPlotPoint[2];
             NSDecimal endPlotPoint[2];
             if ( orthogonalRange ) {
-                startPlotPoint[orthogonalCoordinate] = orthogonalRange.location;
-                endPlotPoint[orthogonalCoordinate]   = orthogonalRange.end;
+                startPlotPoint[orthogonalCoordinate] = orthogonalRange.locationDecimal;
+                endPlotPoint[orthogonalCoordinate]   = orthogonalRange.endDecimal;
             }
             else {
                 startPlotPoint[orthogonalCoordinate] = CPTDecimalNaN();
@@ -548,7 +658,7 @@
             }
 
             for ( NSDecimalNumber *location in locations ) {
-                NSDecimal currentLocation = [location decimalValue];
+                NSDecimal currentLocation = location.decimalValue;
                 if ( !CPTDecimalEquals(CPTDecimalSubtract(currentLocation, lastLocation), zero) ) {
                     CPTFill *bandFill = bandArray[bandIndex++];
                     bandIndex %= bandCount;
@@ -577,7 +687,7 @@
             // Fill space between last location and the range end
             NSDecimal endLocation;
             if ( range ) {
-                endLocation = range.end;
+                endLocation = range.endDecimal;
             }
             else {
                 endLocation = CPTDecimalNaN();
@@ -606,9 +716,9 @@
     }
 }
 
--(void)drawBackgroundLimitsInContext:(CGContextRef)context
+-(void)drawBackgroundLimitsInContext:(nonnull CGContextRef)context
 {
-    NSArray *limitArray = self.backgroundLimitBands;
+    CPTLimitBandArray *limitArray = self.backgroundLimitBands;
 
     if ( limitArray.count > 0 ) {
         CPTPlotSpace *thePlotSpace = self.plotSpace;
@@ -633,8 +743,8 @@
 
         NSDecimal startPlotPoint[2];
         NSDecimal endPlotPoint[2];
-        startPlotPoint[orthogonalCoordinate] = orthogonalRange.location;
-        endPlotPoint[orthogonalCoordinate]   = orthogonalRange.end;
+        startPlotPoint[orthogonalCoordinate] = orthogonalRange.locationDecimal;
+        endPlotPoint[orthogonalCoordinate]   = orthogonalRange.endDecimal;
 
         for ( CPTLimitBand *band in self.backgroundLimitBands ) {
             CPTFill *bandFill = band.fill;
@@ -645,11 +755,11 @@
                     [bandRange intersectionPlotRange:range];
 
                     // Start point
-                    startPlotPoint[selfCoordinate] = bandRange.location;
+                    startPlotPoint[selfCoordinate] = bandRange.locationDecimal;
                     CGPoint startViewPoint = [thePlotSpace plotAreaViewPointForPlotPoint:startPlotPoint numberOfCoordinates:2];
 
                     // End point
-                    endPlotPoint[selfCoordinate] = bandRange.end;
+                    endPlotPoint[selfCoordinate] = bandRange.endDecimal;
                     CGPoint endViewPoint = [thePlotSpace plotAreaViewPointForPlotPoint:endPlotPoint numberOfCoordinates:2];
 
                     // Fill band
@@ -671,14 +781,14 @@
 
 /// @cond
 
--(NSString *)description
+-(nullable NSString *)description
 {
     CPTPlotRange *range    = [self.plotSpace plotRangeForCoordinate:self.coordinate];
-    CGPoint startViewPoint = [self viewPointForCoordinateDecimalNumber:range.location];
-    CGPoint endViewPoint   = [self viewPointForCoordinateDecimalNumber:range.end];
+    CGPoint startViewPoint = [self viewPointForCoordinateValue:range.location];
+    CGPoint endViewPoint   = [self viewPointForCoordinateValue:range.end];
 
     return [NSString stringWithFormat:@"<%@ with range: %@ viewCoordinates: %@ to %@>",
-            [super description],
+            super.description,
             range,
             CPTStringFromPoint(startViewPoint),
             CPTStringFromPoint(endViewPoint)];
@@ -692,9 +802,9 @@
 /// @cond
 
 // Center title in the plot range by default
--(NSDecimal)defaultTitleLocation
+-(nonnull NSNumber *)defaultTitleLocation
 {
-    NSDecimal location;
+    NSNumber *location;
 
     CPTPlotSpace *thePlotSpace  = self.plotSpace;
     CPTCoordinate theCoordinate = self.coordinate;
@@ -715,11 +825,20 @@
                 double end = axisRange.endDouble;
 
                 if ( (loc > 0.0) && (end >= 0.0) ) {
-                    location = CPTDecimalFromDouble( pow(10.0, ( log10(loc) + log10(end) ) / 2.0) );
+                    location = @( pow(10.0, ( log10(loc) + log10(end) ) / 2.0) );
                 }
                 else {
                     location = axisRange.midPoint;
                 }
+            }
+            break;
+
+            case CPTScaleTypeLogModulus:
+            {
+                double loc = axisRange.locationDouble;
+                double end = axisRange.endDouble;
+
+                location = @( CPTInverseLogModulus( ( CPTLogModulus(loc) + CPTLogModulus(end) ) / 2.0 ) );
             }
             break;
 
@@ -729,7 +848,7 @@
         }
     }
     else {
-        location = CPTDecimalFromInteger(0);
+        location = @0;
     }
 
     return location;
@@ -742,7 +861,7 @@
 
 /// @cond
 
--(void)setAxisConstraints:(CPTConstraints *)newConstraints
+-(void)setAxisConstraints:(nullable CPTConstraints *)newConstraints
 {
     if ( ![axisConstraints isEqualToConstraint:newConstraints] ) {
         axisConstraints = newConstraints;
@@ -751,10 +870,17 @@
     }
 }
 
--(void)setOrthogonalCoordinateDecimal:(NSDecimal)newCoord
+-(void)setOrthogonalPosition:(nullable NSNumber *)newPosition
 {
-    if ( NSDecimalCompare(&orthogonalCoordinateDecimal, &newCoord) != NSOrderedSame ) {
-        orthogonalCoordinateDecimal = newCoord;
+    BOOL needsUpdate = YES;
+
+    if ( newPosition ) {
+        NSNumber *position = newPosition;
+        needsUpdate = ![orthogonalPosition isEqualToNumber:position];
+    }
+
+    if ( needsUpdate ) {
+        orthogonalPosition = newPosition;
         [self setNeedsDisplay];
         [self setNeedsLayout];
     }
@@ -763,7 +889,7 @@
 -(void)setCoordinate:(CPTCoordinate)newCoordinate
 {
     if ( self.coordinate != newCoordinate ) {
-        [super setCoordinate:newCoordinate];
+        super.coordinate = newCoordinate;
         switch ( newCoordinate ) {
             case CPTCoordinateX:
                 switch ( self.labelAlignment ) {

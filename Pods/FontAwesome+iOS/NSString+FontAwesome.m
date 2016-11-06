@@ -85,7 +85,11 @@
                                       @"\uf164", @"\uf165", @"\uf166", @"\uf167", @"\uf168", @"\uf169", @"\uf16a", @"\uf16b", @"\uf16c", @"\uf16d",
                                       @"\uf16e", @"\uf170", @"\uf171", @"\uf172", @"\uf173", @"\uf174", @"\uf175", @"\uf176", @"\uf177", @"\uf178",
                                       @"\uf179", @"\uf17a", @"\uf17b", @"\uf17c", @"\uf17d", @"\uf17e", @"\uf180", @"\uf181", @"\uf182", @"\uf183",
-                                      @"\uf184", @"\uf185", @"\uf186", @"\uf187", @"\uf188", @"\uf189", @"\uf18a", @"\uf18b"];
+                                      @"\uf184", @"\uf185", @"\uf186", @"\uf187", @"\uf188", @"\uf189", @"\uf18a", @"\uf18b", @"\uf209", @"\uf207",
+                                      @"\uf1f2", @"\uf1ee", @"\uf203", @"\uf1fc", @"\uf20b", @"\uf204", @"\uf1e8", @"\uf1fe", @"\uf206", @"\uf1ec",
+                                      @"\uf1f1", @"\uf1f9", @"\uf201", @"\uf1ed", @"\uf205", @"\uf1eb", @"\uf1fa", @"\uf1e5", @"\uf20a", @"\uf1f4",
+                                      @"\uf1fb", @"\uf208", @"\uf20c", @"\uf200", @"\uf1e7", @"\uf1f8", @"\uf1e9", @"\uf1f6", @"\uf1fd", @"\uf1f3",
+                                      @"\uf1f5", @"\uf1e3", @"\uf202", @"\uf1ea", @"\uf1e6", @"\uf1e4"];
 
     });
     
@@ -478,6 +482,44 @@
         tmp[@"icon-vk"]             = @(FAIconVk);
         tmp[@"icon-weibo"]          = @(FAIconWeibo);
         tmp[@"icon-renren"]         = @(FAIconRenren);
+        tmp[@"icon-angel-list"]     = @(FAIconAngelList);
+        tmp[@"icon-bus"]     = @(FAIconBus);
+        tmp[@"icon-cc-discover"]     = @(FACCDiscover);
+        tmp[@"icon-google-wallet"]     = @(FAGoogleWallet);
+        tmp[@"icon-last-fm-square"]     = @(FALastFMSquare);
+        tmp[@"icon-paint-brush"]     = @(FAPaintBrush);
+        tmp[@"icon-ils"]     = @(FAIls);
+        tmp[@"icon-toggle-off"]     = @(FAToggleOff);
+        tmp[@"icon-switch"]     = @(FATwitch);
+        tmp[@"icon-area-chart"]     = @(FAAreaChart);
+        tmp[@"icon-bicycle"]     = @(FABicycle);
+        tmp[@"icon-calculator"]     = @(FACalculator);
+        tmp[@"icon-cc-mastercard"]     = @(FACCMastercard);
+        tmp[@"icon-copyright"]     = @(FACopyright);
+        tmp[@"icon-line-chart"]     = @(FALineChart);
+        tmp[@"icon-paypal"]     = @(FAPaypal);
+        tmp[@"icon-toggle-on"]     = @(FAToggleOn);
+        tmp[@"icon-wifi"]     = @(FAWifi);
+        tmp[@"icon-at"]     = @(FAAt);
+        tmp[@"icon-binoculars"]     = @(FABinoculars);
+        tmp[@"icon-cc"]     = @(FACc);
+        tmp[@"icon-cc-paypal"]     = @(FACcpaypal);
+        tmp[@"icon-eye-dropper"]     = @(FAEyeDropper);
+        tmp[@"icon-iox-host"]     = @(FAIoxHost);
+        tmp[@"icon-mean-path"]     = @(FAMeanPath);
+        tmp[@"icon-pie-chart"]     = @(FAPieChart);
+        tmp[@"icon-slide-share"]     = @(FASlideShare);
+        tmp[@"icon-trash"]     = @(FATrash);
+        tmp[@"icon-yelp"]     = @(FAYelp);
+        tmp[@"icon-bell-slash"]     = @(FABellSlash);
+        tmp[@"icon-birthday-cake"]     = @(FABirthdayCake);
+        tmp[@"icon-cc-amex"]     = @(FACCAmex);
+        tmp[@"icon-cc-stripe"]     = @(FACCStripe);
+        tmp[@"icon-futbol-o"]     = @(FAFutbolO);
+        tmp[@"icon-last-fm"]     = @(FALastFM);
+        tmp[@"icon-newspaper-o"]     = @(FANewspaperO);
+        tmp[@"icon-plug"]     = @(FAPlug);
+        tmp[@"icon-tty"]     = @(FATty);
 		enumDictionary = tmp;
 	});
     

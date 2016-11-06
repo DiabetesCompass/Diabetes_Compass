@@ -12,7 +12,7 @@
  *  @param anImage The platform-native image.
  *  @return A CPTImage instance initialized with the provided image.
  **/
--(instancetype)initWithNativeImage:(CPTNativeImage *)anImage
+-(nonnull instancetype)initWithNativeImage:(nullable CPTNativeImage *)anImage
 {
     if ( (self = [self initWithCGImage:NULL scale:anImage.scale]) ) {
         self.nativeImage = anImage;
@@ -33,7 +33,7 @@
  *  @param path The file system path of the file.
  *  @return A CPTImage instance initialized with the contents of the PNG file.
  **/
--(instancetype)initForPNGFile:(NSString *)path
+-(nonnull instancetype)initForPNGFile:(nonnull NSString *)path
 {
     CGFloat imageScale = CPTFloat(1.0);
 
@@ -45,7 +45,7 @@
         imageScale = MAX(imageScale, screen.scale);
     }
 
-    if ( imageScale > 1.0 ) {
+    if ( imageScale > CPTFloat(1.0) ) {
         NSMutableString *hiDpiPath = [path mutableCopy];
         NSUInteger replaceCount    = [hiDpiPath replaceOccurrencesOfString:@".png"
                                                                 withString:[NSString stringWithFormat:@"@%dx.png", (int)imageScale]

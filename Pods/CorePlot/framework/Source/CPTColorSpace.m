@@ -9,7 +9,7 @@
 
 @implementation CPTColorSpace
 
-/** @property CGColorSpaceRef cgColorSpace
+/** @property nonnull CGColorSpaceRef cgColorSpace
  *  @brief The @ref CGColorSpaceRef to wrap around.
  **/
 @synthesize cgColorSpace;
@@ -25,14 +25,14 @@
  *
  *  @return A shared CPTColorSpace object initialized with the standard RGB colorspace.
  **/
-+(instancetype)genericRGBSpace
++(nonnull instancetype)genericRGBSpace
 {
     static CPTColorSpace *space      = nil;
     static dispatch_once_t onceToken = 0;
 
     dispatch_once(&onceToken, ^{
         CGColorSpaceRef cgSpace = NULL;
-#if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
+#if TARGET_OS_SIMULATOR || TARGET_OS_IPHONE
         cgSpace = CGColorSpaceCreateDeviceRGB();
 #else
         cgSpace = CGColorSpaceCreateWithName(kCGColorSpaceGenericRGB);
@@ -53,7 +53,7 @@
  *  @param colorSpace The color space.
  *  @return The initialized CPTColorSpace object.
  **/
--(instancetype)initWithCGColorSpace:(CGColorSpaceRef)colorSpace
+-(nonnull instancetype)initWithCGColorSpace:(nonnull CGColorSpaceRef)colorSpace
 {
     if ( (self = [super init]) ) {
         CGColorSpaceRetain(colorSpace);
@@ -63,6 +63,23 @@
 }
 
 /// @cond
+
+-(nonnull instancetype)init
+{
+    CGColorSpaceRef cgSpace = NULL;
+
+#if TARGET_OS_SIMULATOR || TARGET_OS_IPHONE
+    cgSpace = CGColorSpaceCreateDeviceRGB();
+#else
+    cgSpace = CGColorSpaceCreateWithName(kCGColorSpaceGenericRGB);
+#endif
+
+    self = [self initWithCGColorSpace:cgSpace];
+
+    CGColorSpaceRelease(cgSpace);
+
+    return self;
+}
 
 -(void)dealloc
 {
@@ -76,7 +93,7 @@
 
 /// @cond
 
--(void)encodeWithCoder:(NSCoder *)coder
+-(void)encodeWithCoder:(nonnull NSCoder *)coder
 {
     [coder encodeCGColorSpace:self.cgColorSpace forKey:@"CPTColorSpace.cgColorSpace"];
 }
@@ -87,12 +104,31 @@
  *  @param coder An unarchiver object.
  *  @return An object initialized from data in a given unarchiver.
  */
--(instancetype)initWithCoder:(NSCoder *)coder
+-(nullable instancetype)initWithCoder:(nonnull NSCoder *)coder
 {
     if ( (self = [super init]) ) {
-        cgColorSpace = [coder newCGColorSpaceDecodeForKey:@"CPTColorSpace.cgColorSpace"];
+        CGColorSpaceRef colorSpace = [coder newCGColorSpaceDecodeForKey:@"CPTColorSpace.cgColorSpace"];
+
+        if ( colorSpace ) {
+            cgColorSpace = colorSpace;
+        }
+        else {
+            self = nil;
+        }
     }
     return self;
 }
+
+#pragma mark -
+#pragma mark NSSecureCoding Methods
+
+/// @cond
+
++(BOOL)supportsSecureCoding
+{
+    return YES;
+}
+
+/// @endcond
 
 @end

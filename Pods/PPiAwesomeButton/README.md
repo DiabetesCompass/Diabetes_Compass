@@ -2,8 +2,14 @@ PPiAwesomeButton
 ================
 
 UIButton category with new methods to setup a button with text + FontAwesome Icon.
+<a href="eightfit://workouts/123">Open App</a>
+
 
 ### Updates
+
+##### 28 -June-2014 - Cocoapods version - 1.3.7
+- Updated demo project that didn't work due to UIView+Autolayout category
+
 ##### 26-March-2014 - Cocoapods version - 1.3.7
 Added the feature to set the icon passing an UIImageView
 ```objc

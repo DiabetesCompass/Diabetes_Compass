@@ -2,6 +2,7 @@
 
 #import "CPTColorSpace.h"
 #import "CPTDefinitions.h"
+#import "CPTPlatformSpecificCategories.h"
 #import "NSCoderExtensions.h"
 
 /** @brief An immutable color.
@@ -13,7 +14,7 @@
  **/
 @implementation CPTColor
 
-/** @property CGColorRef cgColor
+/** @property nonnull CGColorRef cgColor
  *  @brief The @ref CGColorRef to wrap around.
  **/
 @synthesize cgColor;
@@ -30,7 +31,7 @@
  *
  *  @return A shared CPTColor object initialized with a fully transparent color.
  **/
-+(instancetype)clearColor
++(nonnull instancetype)clearColor
 {
     static CPTColor *color           = nil;
     static dispatch_once_t onceToken = 0;
@@ -52,7 +53,7 @@
  *
  *  @return A shared CPTColor object initialized with a fully opaque white color.
  **/
-+(instancetype)whiteColor
++(nonnull instancetype)whiteColor
 {
     static CPTColor *color           = nil;
     static dispatch_once_t onceToken = 0;
@@ -68,7 +69,7 @@
  *
  *  @return A shared CPTColor object initialized with a fully opaque 67% gray color.
  **/
-+(instancetype)lightGrayColor
++(nonnull instancetype)lightGrayColor
 {
     static CPTColor *color           = nil;
     static dispatch_once_t onceToken = 0;
@@ -84,7 +85,7 @@
  *
  *  @return A shared CPTColor object initialized with a fully opaque 50% gray color.
  **/
-+(instancetype)grayColor
++(nonnull instancetype)grayColor
 {
     static CPTColor *color           = nil;
     static dispatch_once_t onceToken = 0;
@@ -100,7 +101,7 @@
  *
  *  @return A shared CPTColor object initialized with a fully opaque 33% gray color.
  **/
-+(instancetype)darkGrayColor
++(nonnull instancetype)darkGrayColor
 {
     static CPTColor *color           = nil;
     static dispatch_once_t onceToken = 0;
@@ -116,7 +117,7 @@
  *
  *  @return A shared CPTColor object initialized with a fully opaque black color.
  **/
-+(instancetype)blackColor
++(nonnull instancetype)blackColor
 {
     static CPTColor *color           = nil;
     static dispatch_once_t onceToken = 0;
@@ -132,7 +133,7 @@
  *
  *  @return A shared CPTColor object initialized with a fully opaque red color.
  **/
-+(instancetype)redColor
++(nonnull instancetype)redColor
 {
     static CPTColor *color           = nil;
     static dispatch_once_t onceToken = 0;
@@ -151,7 +152,7 @@
  *
  *  @return A shared CPTColor object initialized with a fully opaque green color.
  **/
-+(instancetype)greenColor
++(nonnull instancetype)greenColor
 {
     static CPTColor *color           = nil;
     static dispatch_once_t onceToken = 0;
@@ -170,7 +171,7 @@
  *
  *  @return A shared CPTColor object initialized with a fully opaque blue color.
  **/
-+(instancetype)blueColor
++(nonnull instancetype)blueColor
 {
     static CPTColor *color           = nil;
     static dispatch_once_t onceToken = 0;
@@ -189,7 +190,7 @@
  *
  *  @return A shared CPTColor object initialized with a fully opaque cyan color.
  **/
-+(instancetype)cyanColor
++(nonnull instancetype)cyanColor
 {
     static CPTColor *color           = nil;
     static dispatch_once_t onceToken = 0;
@@ -208,7 +209,7 @@
  *
  *  @return A shared CPTColor object initialized with a fully opaque yellow color.
  **/
-+(instancetype)yellowColor
++(nonnull instancetype)yellowColor
 {
     static CPTColor *color           = nil;
     static dispatch_once_t onceToken = 0;
@@ -224,7 +225,7 @@
  *
  *  @return A shared CPTColor object initialized with a fully opaque magenta color.
  **/
-+(instancetype)magentaColor
++(nonnull instancetype)magentaColor
 {
     static CPTColor *color = nil;
 
@@ -238,7 +239,7 @@
  *
  *  @return A shared CPTColor object initialized with a fully opaque orange color.
  **/
-+(instancetype)orangeColor
++(nonnull instancetype)orangeColor
 {
     static CPTColor *color           = nil;
     static dispatch_once_t onceToken = 0;
@@ -254,7 +255,7 @@
  *
  *  @return A shared CPTColor object initialized with a fully opaque purple color.
  **/
-+(instancetype)purpleColor
++(nonnull instancetype)purpleColor
 {
     static CPTColor *color           = nil;
     static dispatch_once_t onceToken = 0;
@@ -270,7 +271,7 @@
  *
  *  @return A shared CPTColor object initialized with a fully opaque brown color.
  **/
-+(instancetype)brownColor
++(nonnull instancetype)brownColor
 {
     static CPTColor *color           = nil;
     static dispatch_once_t onceToken = 0;
@@ -286,7 +287,7 @@
  *  @param newCGColor The color to wrap.
  *  @return A new CPTColor instance initialized with the provided @ref CGColorRef.
  **/
-+(instancetype)colorWithCGColor:(CGColorRef)newCGColor
++(nonnull instancetype)colorWithCGColor:(nonnull CGColorRef)newCGColor
 {
     return [[CPTColor alloc] initWithCGColor:newCGColor];
 }
@@ -298,7 +299,7 @@
  *  @param alpha The alpha component (@num{0} ≤ @par{alpha} ≤ @num{1}).
  *  @return A new CPTColor instance initialized with the provided RGBA color components.
  **/
-+(instancetype)colorWithComponentRed:(CGFloat)red green:(CGFloat)green blue:(CGFloat)blue alpha:(CGFloat)alpha
++(nonnull instancetype)colorWithComponentRed:(CGFloat)red green:(CGFloat)green blue:(CGFloat)blue alpha:(CGFloat)alpha
 {
     return [[CPTColor alloc] initWithComponentRed:red green:green blue:blue alpha:alpha];
 }
@@ -307,7 +308,7 @@
  *  @param gray The gray level (@num{0} ≤ @par{gray} ≤ @num{1}).
  *  @return A new CPTColor instance initialized with the provided gray level.
  **/
-+(instancetype)colorWithGenericGray:(CGFloat)gray
++(nonnull instancetype)colorWithGenericGray:(CGFloat)gray
 {
     CGFloat values[4]   = { gray, gray, gray, CPTFloat(1.0) };
     CGColorRef colorRef = CGColorCreate([CPTColorSpace genericRGBSpace].cgColorSpace, values);
@@ -325,7 +326,7 @@
  *  @param newCGColor The color to wrap.
  *  @return The initialized CPTColor object.
  **/
--(instancetype)initWithCGColor:(CGColorRef)newCGColor
+-(nonnull instancetype)initWithCGColor:(nonnull CGColorRef)newCGColor
 {
     if ( (self = [super init]) ) {
         CGColorRetain(newCGColor);
@@ -342,7 +343,7 @@
  *  @param alpha The alpha component (@num{0} ≤ @par{alpha} ≤ @num{1}).
  *  @return The initialized CPTColor object.
  **/
--(instancetype)initWithComponentRed:(CGFloat)red green:(CGFloat)green blue:(CGFloat)blue alpha:(CGFloat)alpha
+-(nonnull instancetype)initWithComponentRed:(CGFloat)red green:(CGFloat)green blue:(CGFloat)blue alpha:(CGFloat)alpha
 {
     CGFloat colorComponents[4];
 
@@ -357,6 +358,11 @@
 }
 
 /// @cond
+
+-(nonnull instancetype)init
+{
+    return [self initWithComponentRed:0.0 green:0.0 blue:0.0 alpha:0.0];
+}
 
 -(void)dealloc
 {
@@ -373,7 +379,7 @@
  *  @param alpha The alpha component (@num{0} ≤ @par{alpha} ≤ @num{1}).
  *  @return A new CPTColor instance having the provided alpha component.
  **/
--(instancetype)colorWithAlphaComponent:(CGFloat)alpha
+-(nonnull instancetype)colorWithAlphaComponent:(CGFloat)alpha
 {
     CGColorRef newCGColor = CGColorCreateCopyWithAlpha(self.cgColor, alpha);
     CPTColor *newColor    = [CPTColor colorWithCGColor:newCGColor];
@@ -385,17 +391,21 @@
 #pragma mark -
 #pragma mark Opacity
 
+/// @cond
+
 -(BOOL)isOpaque
 {
     return CGColorGetAlpha(self.cgColor) >= CPTFloat(1.0);
 }
+
+/// @endcond
 
 #pragma mark -
 #pragma mark NSCoding Methods
 
 /// @cond
 
--(void)encodeWithCoder:(NSCoder *)coder
+-(void)encodeWithCoder:(nonnull NSCoder *)coder
 {
     CGColorRef theColor = self.cgColor;
 
@@ -418,12 +428,12 @@
  *  @param coder An unarchiver object.
  *  @return An object initialized from data in a given unarchiver.
  */
--(instancetype)initWithCoder:(NSCoder *)coder
+-(nullable instancetype)initWithCoder:(nonnull NSCoder *)coder
 {
     if ( (self = [super init]) ) {
         CGColorSpaceRef colorSpace = [coder newCGColorSpaceDecodeForKey:@"CPTColor.colorSpace"];
 
-        size_t numberOfComponents = (size_t)[coder decodeInt64ForKey : @"CPTColor.numberOfComponents"];
+        size_t numberOfComponents = (size_t)[coder decodeInt64ForKey:@"CPTColor.numberOfComponents"];
 
         CGFloat *colorComponents = malloc( numberOfComponents * sizeof(CGFloat) );
 
@@ -432,7 +442,9 @@
             colorComponents[i] = [coder decodeCGFloatForKey:newKey];
         }
 
-        cgColor = CGColorCreate(colorSpace, colorComponents);
+        CGColorRef color = CGColorCreate(colorSpace, colorComponents);
+        cgColor = color;
+
         CGColorSpaceRelease(colorSpace);
         free(colorComponents);
     }
@@ -440,11 +452,23 @@
 }
 
 #pragma mark -
+#pragma mark NSSecureCoding Methods
+
+/// @cond
+
++(BOOL)supportsSecureCoding
+{
+    return YES;
+}
+
+/// @endcond
+
+#pragma mark -
 #pragma mark NSCopying Methods
 
 /// @cond
 
--(id)copyWithZone:(NSZone *)zone
+-(nonnull id)copyWithZone:(nullable NSZone *)zone
 {
     CGColorRef cgColorCopy = NULL;
 
@@ -452,10 +476,13 @@
 
     if ( myColor ) {
         cgColorCopy = CGColorCreateCopy(myColor);
+        CPTColor *colorCopy = [[[self class] allocWithZone:zone] initWithCGColor:cgColorCopy];
+        CGColorRelease(cgColorCopy);
+        return colorCopy;
     }
-    CPTColor *colorCopy = [[[self class] allocWithZone:zone] initWithCGColor:cgColorCopy];
-    CGColorRelease(cgColorCopy);
-    return colorCopy;
+    else {
+        return nil;
+    }
 }
 
 /// @endcond
@@ -471,7 +498,7 @@
  *  @param object The object to be compared with the receiver.
  *  @return @YES if @par{object} is equal to the receiver, @NO otherwise.
  **/
--(BOOL)isEqual:(id)object
+-(BOOL)isEqual:(nullable id)object
 {
     if ( self == object ) {
         return YES;
@@ -504,6 +531,23 @@
     }
 
     return (NSUInteger)theHash;
+}
+
+/// @endcond
+
+#pragma mark -
+#pragma mark Debugging
+
+/// @cond
+
+-(nullable id)debugQuickLookObject
+{
+#if TARGET_OS_SIMULATOR || TARGET_OS_IPHONE
+    return self.uiColor;
+
+#else
+    return self.nsColor;
+#endif
 }
 
 /// @endcond

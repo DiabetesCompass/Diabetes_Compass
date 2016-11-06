@@ -14,18 +14,18 @@
  **/
 @implementation CPTCalendarFormatter
 
-/** @property NSDateFormatter *dateFormatter
+/** @property nullable NSDateFormatter *dateFormatter
  *  @brief The date formatter used to generate strings from date calculations.
  **/
 @synthesize dateFormatter;
 
-/** @property NSDate *referenceDate
+/** @property nullable NSDate *referenceDate
  *  @brief Date from which time intervals are computed.
  *  If @nil, the standard reference date (1 January 2001, GMT) is used.
  **/
 @synthesize referenceDate;
 
-/** @property NSCalendar *referenceCalendar
+/** @property nullable NSCalendar *referenceCalendar
  *  @brief Calendar which is used for date calculations.
  *  If @nil, the current calendar is used.
  **/
@@ -47,7 +47,7 @@
  *  The default formatter uses @ref NSDateFormatterMediumStyle for dates and times.
  *  @return The initialized object.
  **/
--(instancetype)init
+-(nonnull instancetype)init
 {
     NSDateFormatter *newDateFormatter = [[NSDateFormatter alloc] init];
 
@@ -65,7 +65,7 @@
  *  @param aDateFormatter The date formatter.
  *  @return The new instance.
  **/
--(instancetype)initWithDateFormatter:(NSDateFormatter *)aDateFormatter
+-(nonnull instancetype)initWithDateFormatter:(nullable NSDateFormatter *)aDateFormatter
 {
     if ( (self = [super init]) ) {
         dateFormatter         = aDateFormatter;
@@ -81,7 +81,7 @@
 
 /// @cond
 
--(void)encodeWithCoder:(NSCoder *)coder
+-(void)encodeWithCoder:(nonnull NSCoder *)coder
 {
     [super encodeWithCoder:coder];
 
@@ -97,13 +97,13 @@
  *  @param coder An unarchiver object.
  *  @return An object initialized from data in a given unarchiver.
  */
--(instancetype)initWithCoder:(NSCoder *)coder
+-(nullable instancetype)initWithCoder:(nonnull NSCoder *)coder
 {
-    if ( (self = [super initWithCoder:coder]) ) {
+    if ( (self = [super init]) ) {
         dateFormatter         = [coder decodeObjectForKey:@"CPTCalendarFormatter.dateFormatter"];
         referenceDate         = [[coder decodeObjectForKey:@"CPTCalendarFormatter.referenceDate"] copy];
         referenceCalendar     = [[coder decodeObjectForKey:@"CPTCalendarFormatter.referenceCalendar"] copy];
-        referenceCalendarUnit = (NSCalendarUnit)[coder decodeIntegerForKey : @"CPTCalendarFormatter.referenceCalendarUnit"];
+        referenceCalendarUnit = (NSCalendarUnit)[coder decodeIntegerForKey:@"CPTCalendarFormatter.referenceCalendarUnit"];
     }
     return self;
 }
@@ -113,7 +113,7 @@
 
 /// @cond
 
--(id)copyWithZone:(NSZone *)zone
+-(nonnull id)copyWithZone:(nullable NSZone *)zone
 {
     CPTCalendarFormatter *newFormatter = [[CPTCalendarFormatter allocWithZone:zone] init];
 
@@ -142,7 +142,7 @@
  *  @param coordinateValue The time value.
  *  @return The date string.
  **/
--(NSString *)stringForObjectValue:(id)coordinateValue
+-(nullable NSString *)stringForObjectValue:(nullable id)coordinateValue
 {
     NSInteger componentIncrement = 0;
 
@@ -189,7 +189,7 @@
             dateComponents.weekdayOrdinal = componentIncrement;
             break;
 
-#if MAC_OS_X_VERSION_10_5 < MAC_OS_X_VERSION_MAX_ALLOWED || __IPHONE_3_0 < __IPHONE_OS_VERSION_MAX_ALLOWED
+#if MAC_OS_X_VERSION_10_5<MAC_OS_X_VERSION_MAX_ALLOWED || __IPHONE_3_0<__IPHONE_OS_VERSION_MAX_ALLOWED
         case NSCalendarUnitQuarter:
             if ( [dateComponents respondsToSelector:@selector(setQuarter:)] ) {
                 dateComponents.quarter = componentIncrement;
@@ -199,7 +199,7 @@
             }
             break;
 #endif
-#if MAC_OS_X_VERSION_10_6 < MAC_OS_X_VERSION_MAX_ALLOWED || __IPHONE_4_0 < __IPHONE_OS_VERSION_MAX_ALLOWED
+#if MAC_OS_X_VERSION_10_6<MAC_OS_X_VERSION_MAX_ALLOWED || __IPHONE_4_0<__IPHONE_OS_VERSION_MAX_ALLOWED
         case NSCalendarUnitWeekOfMonth:
             if ( [dateComponents respondsToSelector:@selector(setWeekOfMonth:)] ) {
                 dateComponents.weekOfMonth = componentIncrement;
@@ -227,7 +227,7 @@
             }
             break;
 #endif
-#if MAC_OS_X_VERSION_10_7 < MAC_OS_X_VERSION_MAX_ALLOWED || __IPHONE_4_0 < __IPHONE_OS_VERSION_MAX_ALLOWED
+#if MAC_OS_X_VERSION_10_7<MAC_OS_X_VERSION_MAX_ALLOWED || __IPHONE_4_0<__IPHONE_OS_VERSION_MAX_ALLOWED
         case NSCalendarUnitCalendar:
             [NSException raise:CPTException format:@"Unsupported calendar unit: NSCalendarCalendarUnit"];
             break;
@@ -236,7 +236,7 @@
             [NSException raise:CPTException format:@"Unsupported calendar unit: NSTimeZoneCalendarUnit"];
             break;
 #endif
-#if MAC_OS_X_VERSION_10_8 < MAC_OS_X_VERSION_MAX_ALLOWED || __IPHONE_4_0 < __IPHONE_OS_VERSION_MAX_ALLOWED
+#if MAC_OS_X_VERSION_10_8<MAC_OS_X_VERSION_MAX_ALLOWED || __IPHONE_4_0<__IPHONE_OS_VERSION_MAX_ALLOWED
         default:
             [NSException raise:CPTException format:@"Unsupported calendar unit"];
             break;

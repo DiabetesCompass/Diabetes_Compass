@@ -13,7 +13,7 @@
  **/
 @implementation CPTAxisLabel
 
-/** @property CPTLayer *contentLayer
+/** @property nullable CPTLayer *contentLayer
  *  @brief The label content.
  **/
 @synthesize contentLayer;
@@ -33,7 +33,7 @@
  **/
 @synthesize alignment;
 
-/** @property NSDecimal tickLocation
+/** @property nonnull NSNumber *tickLocation
  *  @brief The data coordinate of the tick location.
  **/
 @synthesize tickLocation;
@@ -47,7 +47,7 @@
  *  @param newStyle The text style for the label.
  *  @return The initialized CPTAxisLabel object.
  **/
--(instancetype)initWithText:(NSString *)newText textStyle:(CPTTextStyle *)newStyle
+-(nonnull instancetype)initWithText:(nullable NSString *)newText textStyle:(nullable CPTTextStyle *)newStyle
 {
     CPTTextLayer *newLayer = [[CPTTextLayer alloc] initWithText:newText style:newStyle];
 
@@ -61,35 +61,40 @@
  *  @param layer The label content.
  *  @return The initialized CPTAxisLabel object.
  **/
--(instancetype)initWithContentLayer:(CPTLayer *)layer
+-(nonnull instancetype)initWithContentLayer:(nonnull CPTLayer *)layer
 {
-    if ( layer ) {
-        if ( (self = [super init]) ) {
-            contentLayer = layer;
-            offset       = CPTFloat(20.0);
-            rotation     = CPTFloat(0.0);
-            alignment    = CPTAlignmentCenter;
-            tickLocation = CPTDecimalFromInteger(0);
-        }
+    if ( (self = [super init]) ) {
+        contentLayer = layer;
+        offset       = CPTFloat(20.0);
+        rotation     = CPTFloat(0.0);
+        alignment    = CPTAlignmentCenter;
+        tickLocation = @0.0;
     }
-    else {
-        self = nil;
-    }
+
     return self;
 }
+
+/// @cond
+
+-(nonnull instancetype)init
+{
+    return [self initWithText:nil textStyle:nil];
+}
+
+/// @endcond
 
 #pragma mark -
 #pragma mark NSCoding Methods
 
 /// @cond
 
--(void)encodeWithCoder:(NSCoder *)coder
+-(void)encodeWithCoder:(nonnull NSCoder *)coder
 {
     [coder encodeObject:self.contentLayer forKey:@"CPTAxisLabel.contentLayer"];
     [coder encodeCGFloat:self.offset forKey:@"CPTAxisLabel.offset"];
     [coder encodeCGFloat:self.rotation forKey:@"CPTAxisLabel.rotation"];
     [coder encodeInteger:self.alignment forKey:@"CPTAxisLabel.alignment"];
-    [coder encodeDecimal:self.tickLocation forKey:@"CPTAxisLabel.tickLocation"];
+    [coder encodeObject:self.tickLocation forKey:@"CPTAxisLabel.tickLocation"];
 }
 
 /// @endcond
@@ -98,17 +103,32 @@
  *  @param coder An unarchiver object.
  *  @return An object initialized from data in a given unarchiver.
  */
--(instancetype)initWithCoder:(NSCoder *)coder
+-(nullable instancetype)initWithCoder:(nonnull NSCoder *)coder
 {
     if ( (self = [super init]) ) {
-        contentLayer = [coder decodeObjectForKey:@"CPTAxisLabel.contentLayer"];
-        offset       = [coder decodeCGFloatForKey:@"CPTAxisLabel.offset"];
-        rotation     = [coder decodeCGFloatForKey:@"CPTAxisLabel.rotation"];
-        alignment    = (CPTAlignment)[coder decodeIntegerForKey : @"CPTAxisLabel.alignment"];
-        tickLocation = [coder decodeDecimalForKey:@"CPTAxisLabel.tickLocation"];
+        contentLayer = [coder decodeObjectOfClass:[CPTLayer class]
+                                           forKey:@"CPTAxisLabel.contentLayer"];
+        offset    = [coder decodeCGFloatForKey:@"CPTAxisLabel.offset"];
+        rotation  = [coder decodeCGFloatForKey:@"CPTAxisLabel.rotation"];
+        alignment = (CPTAlignment)[coder decodeIntegerForKey:@"CPTAxisLabel.alignment"];
+        NSNumber *location = [coder decodeObjectOfClass:[NSNumber class]
+                                                 forKey:@"CPTAxisLabel.tickLocation"];
+        tickLocation = location ? location : @0.0;
     }
     return self;
 }
+
+#pragma mark -
+#pragma mark NSSecureCoding Methods
+
+/// @cond
+
++(BOOL)supportsSecureCoding
+{
+    return YES;
+}
+
+/// @endcond
 
 #pragma mark -
 #pragma mark Layout
@@ -285,9 +305,9 @@
 
 /// @cond
 
--(NSString *)description
+-(nullable NSString *)description
 {
-    return [NSString stringWithFormat:@"<%@ {%@}>", [super description], self.contentLayer];
+    return [NSString stringWithFormat:@"<%@ {%@}>", super.description, self.contentLayer];
 }
 
 /// @endcond
@@ -303,13 +323,20 @@
  *  @param object The object to be compared with the receiver.
  *  @return @YES if @par{object} is equal to the receiver, @NO otherwise.
  **/
--(BOOL)isEqual:(id)object
+-(BOOL)isEqual:(nullable id)object
 {
     if ( self == object ) {
         return YES;
     }
     else if ( [object isKindOfClass:[self class]] ) {
-        return CPTDecimalEquals(self.tickLocation, ( (CPTAxisLabel *)object ).tickLocation);
+        NSNumber *location = ( (CPTAxisLabel *)object ).tickLocation;
+
+        if ( location ) {
+            return [self.tickLocation isEqualToNumber:location];
+        }
+        else {
+            return NO;
+        }
     }
     else {
         return NO;
@@ -325,7 +352,7 @@
     NSUInteger hashValue = 0;
 
     // Equal objects must hash the same.
-    double tickLocationAsDouble = CPTDecimalDoubleValue(self.tickLocation);
+    double tickLocationAsDouble = self.tickLocation.doubleValue;
 
     if ( !isnan(tickLocationAsDouble) ) {
         hashValue = (NSUInteger)lrint( fmod(ABS(tickLocationAsDouble), (double)NSUIntegerMax) );

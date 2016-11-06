@@ -6,13 +6,9 @@
 #import "CPTPlatformSpecificFunctions.h"
 #import "tgmath.h"
 
-// disable warnings when compiling with deployment target of iOS 6+
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wtautological-pointer-compare"
-
 @implementation CPTTextStyle(CPTPlatformSpecificTextStyleExtensions)
 
-/** @property NSDictionary *attributes
+/** @property nonnull CPTDictionary *attributes
  *  @brief A dictionary of standard text attributes suitable for formatting an NSAttributedString.
  *
  *  The dictionary will contain values for the following keys that represent the receiver's text style:
@@ -38,41 +34,29 @@
  *  @param attributes A dictionary of standard text attributes.
  *  @return A new CPTTextStyle instance.
  **/
-+(instancetype)textStyleWithAttributes:(NSDictionary *)attributes
++(nonnull instancetype)textStyleWithAttributes:(nullable CPTDictionary *)attributes
 {
     CPTMutableTextStyle *newStyle = [CPTMutableTextStyle textStyle];
 
     // Font
-    BOOL hasFontAttributeName = (&NSFontAttributeName != NULL);
+    UIFont *styleFont = attributes[NSFontAttributeName];
 
-    if ( hasFontAttributeName ) {
-        UIFont *styleFont = attributes[NSFontAttributeName];
-
-        if ( styleFont ) {
-            newStyle.fontName = styleFont.fontName;
-            newStyle.fontSize = styleFont.pointSize;
-        }
+    if ( styleFont ) {
+        newStyle.fontName = styleFont.fontName;
+        newStyle.fontSize = styleFont.pointSize;
     }
 
     // Color
-    BOOL hasColorAttributeName = (&NSForegroundColorAttributeName != NULL);
-
-    if ( hasColorAttributeName ) {
-        UIColor *styleColor = attributes[NSForegroundColorAttributeName];
-        if ( styleColor ) {
-            newStyle.color = [CPTColor colorWithCGColor:styleColor.CGColor];
-        }
+    UIColor *styleColor = attributes[NSForegroundColorAttributeName];
+    if ( styleColor ) {
+        newStyle.color = [CPTColor colorWithCGColor:styleColor.CGColor];
     }
 
     // Text alignment and line break mode
-    BOOL hasParagraphAttributeName = (&NSParagraphStyleAttributeName != NULL);
-
-    if ( hasParagraphAttributeName ) {
-        NSParagraphStyle *paragraphStyle = attributes[NSParagraphStyleAttributeName];
-        if ( paragraphStyle ) {
-            newStyle.textAlignment = (CPTTextAlignment)paragraphStyle.alignment;
-            newStyle.lineBreakMode = paragraphStyle.lineBreakMode;
-        }
+    NSParagraphStyle *paragraphStyle = attributes[NSParagraphStyleAttributeName];
+    if ( paragraphStyle ) {
+        newStyle.textAlignment = (CPTTextAlignment)paragraphStyle.alignment;
+        newStyle.lineBreakMode = paragraphStyle.lineBreakMode;
     }
 
     return [newStyle copy];
@@ -83,45 +67,38 @@
 
 /// @cond
 
--(NSDictionary *)attributes
+-(nonnull CPTDictionary *)attributes
 {
-    NSMutableDictionary *myAttributes = [NSMutableDictionary dictionary];
+    CPTMutableDictionary *myAttributes = [NSMutableDictionary dictionary];
 
     // Font
-    BOOL hasFontAttributeName = (&NSFontAttributeName != NULL);
+    UIFont *styleFont  = nil;
+    NSString *fontName = self.fontName;
 
-    if ( hasFontAttributeName ) {
-        UIFont *styleFont = [UIFont fontWithName:self.fontName size:self.fontSize];
+    if ( fontName ) {
+        styleFont = [UIFont fontWithName:fontName size:self.fontSize];
+    }
 
-        if ( styleFont ) {
-            [myAttributes setValue:styleFont
-                            forKey:NSFontAttributeName];
-        }
+    if ( styleFont ) {
+        [myAttributes setValue:styleFont
+                        forKey:NSFontAttributeName];
     }
 
     // Color
-    BOOL hasColorAttributeName = (&NSForegroundColorAttributeName != NULL);
+    UIColor *styleColor = self.color.uiColor;
 
-    if ( hasColorAttributeName ) {
-        UIColor *styleColor = self.color.uiColor;
-
-        if ( styleColor ) {
-            [myAttributes setValue:styleColor
-                            forKey:NSForegroundColorAttributeName];
-        }
+    if ( styleColor ) {
+        [myAttributes setValue:styleColor
+                        forKey:NSForegroundColorAttributeName];
     }
 
     // Text alignment and line break mode
-    BOOL hasParagraphAttributeName = (&NSParagraphStyleAttributeName != NULL);
+    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+    paragraphStyle.alignment     = (NSTextAlignment)self.textAlignment;
+    paragraphStyle.lineBreakMode = self.lineBreakMode;
 
-    if ( hasParagraphAttributeName ) {
-        NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-        paragraphStyle.alignment     = (NSTextAlignment)self.textAlignment;
-        paragraphStyle.lineBreakMode = self.lineBreakMode;
-
-        [myAttributes setValue:paragraphStyle
-                        forKey:NSParagraphStyleAttributeName];
-    }
+    [myAttributes setValue:paragraphStyle
+                    forKey:NSParagraphStyleAttributeName];
 
     return [myAttributes copy];
 }
@@ -134,51 +111,48 @@
 
 @implementation CPTMutableTextStyle(CPTPlatformSpecificMutableTextStyleExtensions)
 
-/// @cond
-
-+(instancetype)textStyleWithAttributes:(NSDictionary *)attributes
+/** @brief Creates and returns a new CPTMutableTextStyle instance initialized from a dictionary of text attributes.
+ *
+ *  The text style will be initalized with values associated with the following keys:
+ *  - #NSFontAttributeName: Sets the @link CPTMutableTextStyle::fontName fontName @endlink
+ *  and @link CPTMutableTextStyle::fontSize fontSize @endlink.
+ *  - #NSForegroundColorAttributeName: Sets the @link CPTMutableTextStyle::color color @endlink.
+ *  - #NSParagraphStyleAttributeName: Sets the @link CPTMutableTextStyle::textAlignment textAlignment @endlink and @link CPTMutableTextStyle::lineBreakMode lineBreakMode @endlink.
+ *
+ *  Properties associated with missing keys will be inialized to their default values.
+ *
+ *  @param attributes A dictionary of standard text attributes.
+ *  @return A new CPTMutableTextStyle instance.
+ **/
++(nonnull instancetype)textStyleWithAttributes:(nullable CPTDictionary *)attributes
 {
     CPTMutableTextStyle *newStyle = [CPTMutableTextStyle textStyle];
 
     // Font
-    BOOL hasFontAttributeName = (&NSFontAttributeName != NULL);
+    UIFont *styleFont = attributes[NSFontAttributeName];
 
-    if ( hasFontAttributeName ) {
-        UIFont *styleFont = attributes[NSFontAttributeName];
-
-        if ( styleFont ) {
-            newStyle.fontName = styleFont.fontName;
-            newStyle.fontSize = styleFont.pointSize;
-        }
+    if ( styleFont ) {
+        newStyle.fontName = styleFont.fontName;
+        newStyle.fontSize = styleFont.pointSize;
     }
 
     // Color
-    BOOL hasColorAttributeName = (&NSForegroundColorAttributeName != NULL);
+    UIColor *styleColor = attributes[NSForegroundColorAttributeName];
 
-    if ( hasColorAttributeName ) {
-        UIColor *styleColor = attributes[NSForegroundColorAttributeName];
-
-        if ( styleColor ) {
-            newStyle.color = [CPTColor colorWithCGColor:styleColor.CGColor];
-        }
+    if ( styleColor ) {
+        newStyle.color = [CPTColor colorWithCGColor:styleColor.CGColor];
     }
 
     // Text alignment and line break mode
-    BOOL hasParagraphAttributeName = (&NSParagraphStyleAttributeName != NULL);
+    NSParagraphStyle *paragraphStyle = attributes[NSParagraphStyleAttributeName];
 
-    if ( hasParagraphAttributeName ) {
-        NSParagraphStyle *paragraphStyle = attributes[NSParagraphStyleAttributeName];
-
-        if ( paragraphStyle ) {
-            newStyle.textAlignment = (CPTTextAlignment)paragraphStyle.alignment;
-            newStyle.lineBreakMode = paragraphStyle.lineBreakMode;
-        }
+    if ( paragraphStyle ) {
+        newStyle.textAlignment = (CPTTextAlignment)paragraphStyle.alignment;
+        newStyle.lineBreakMode = paragraphStyle.lineBreakMode;
     }
 
     return newStyle;
 }
-
-/// @endcond
 
 @end
 
@@ -193,28 +167,17 @@
  *  @param style The text style.
  *  @return The size of the text when drawn with the given style.
  **/
--(CGSize)sizeWithTextStyle:(CPTTextStyle *)style
+-(CGSize)sizeWithTextStyle:(nullable CPTTextStyle *)style
 {
-    CGSize textSize;
+    CGRect rect = [self boundingRectWithSize:CPTSizeMake(10000.0, 10000.0)
+                                     options:CPTStringDrawingOptions
+                                  attributes:style.attributes
+                                     context:nil];
 
-    // -boundingRectWithSize:options:attributes:context: is available in iOS 7.0 and later
-    if ( [self respondsToSelector:@selector(boundingRectWithSize:options:attributes:context:)] ) {
-        CGRect rect = [self boundingRectWithSize:CPTSizeMake(10000.0, 10000.0)
-                                         options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading | NSStringDrawingTruncatesLastVisibleLine
-                                      attributes:style.attributes
-                                         context:nil];
-        textSize        = rect.size;
-        textSize.width  = ceil(textSize.width);
-        textSize.height = ceil(textSize.height);
-    }
-    else {
-        UIFont *theFont = [UIFont fontWithName:style.fontName size:style.fontSize];
+    CGSize textSize = rect.size;
 
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-        textSize = [self sizeWithFont:theFont constrainedToSize:CPTSizeMake(10000.0, 10000.0)];
-#pragma clang diagnostic pop
-    }
+    textSize.width  = ceil(textSize.width);
+    textSize.height = ceil(textSize.height);
 
     return textSize;
 }
@@ -227,7 +190,7 @@
  *  @param style The text style.
  *  @param context The graphics context to draw into.
  **/
--(void)drawInRect:(CGRect)rect withTextStyle:(CPTTextStyle *)style inContext:(CGContextRef)context
+-(void)drawInRect:(CGRect)rect withTextStyle:(nullable CPTTextStyle *)style inContext:(nonnull CGContextRef)context
 {
     if ( style.color == nil ) {
         return;
@@ -241,11 +204,17 @@
 
     CPTPushCGContext(context);
 
+#if TARGET_OS_SIMULATOR || TARGET_OS_TV
+    [self drawWithRect:rect
+               options:CPTStringDrawingOptions
+            attributes:style.attributes
+               context:nil];
+#else
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 70000
     // -drawWithRect:options:attributes:context: method is available in iOS 7.0 and later
     if ( [self respondsToSelector:@selector(drawWithRect:options:attributes:context:)] ) {
         [self drawWithRect:rect
-                   options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading | NSStringDrawingTruncatesLastVisibleLine
+                   options:CPTStringDrawingOptions
                 attributes:style.attributes
                    context:nil];
     }
@@ -253,7 +222,12 @@
         UIColor *styleColor = style.attributes[NSForegroundColorAttributeName];
         [styleColor set];
 
-        UIFont *theFont = [UIFont fontWithName:style.fontName size:style.fontSize];
+        UIFont *theFont    = nil;
+        NSString *fontName = style.fontName;
+
+        if ( fontName ) {
+            theFont = [UIFont fontWithName:fontName size:style.fontSize];
+        }
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
@@ -274,11 +248,10 @@
        lineBreakMode:style.lineBreakMode
            alignment:(NSTextAlignment)style.textAlignment];
 #endif
+#endif
 
     CGContextRestoreGState(context);
     CPTPopCGContext();
 }
-
-#pragma clang diagnostic pop
 
 @end

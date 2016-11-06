@@ -5,7 +5,7 @@
 /// @cond
 @interface _CPTAnimationCGFloatPeriod()
 
-CGFloat currentFloatValue(id boundObject, SEL boundGetter);
+CGFloat CPTCurrentFloatValue(id __nonnull boundObject, SEL __nonnull boundGetter);
 
 @end
 /// @endcond
@@ -14,12 +14,12 @@ CGFloat currentFloatValue(id boundObject, SEL boundGetter);
 
 @implementation _CPTAnimationCGFloatPeriod
 
-CGFloat currentFloatValue(id boundObject, SEL boundGetter)
+CGFloat CPTCurrentFloatValue(id __nonnull boundObject, SEL __nonnull boundGetter)
 {
     NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:[boundObject methodSignatureForSelector:boundGetter]];
 
-    [invocation setTarget:boundObject];
-    [invocation setSelector:boundGetter];
+    invocation.target   = boundObject;
+    invocation.selector = boundGetter;
 
     [invocation invoke];
 
@@ -29,14 +29,14 @@ CGFloat currentFloatValue(id boundObject, SEL boundGetter)
     return value;
 }
 
--(void)setStartValueFromObject:(id)boundObject propertyGetter:(SEL)boundGetter
+-(void)setStartValueFromObject:(nonnull id)boundObject propertyGetter:(nonnull SEL)boundGetter
 {
-    self.startValue = @( currentFloatValue(boundObject, boundGetter) );
+    self.startValue = @( CPTCurrentFloatValue(boundObject, boundGetter) );
 }
 
--(BOOL)canStartWithValueFromObject:(id)boundObject propertyGetter:(SEL)boundGetter
+-(BOOL)canStartWithValueFromObject:(nonnull id)boundObject propertyGetter:(nonnull SEL)boundGetter
 {
-    CGFloat current = currentFloatValue(boundObject, boundGetter);
+    CGFloat current = CPTCurrentFloatValue(boundObject, boundGetter);
     CGFloat start;
     CGFloat end;
 
@@ -50,7 +50,7 @@ CGFloat currentFloatValue(id boundObject, SEL boundGetter)
     return ( (current >= start) && (current <= end) ) || ( (current >= end) && (current <= start) );
 }
 
--(NSValue *)tweenedValueForProgress:(CGFloat)progress
+-(nonnull NSValue *)tweenedValueForProgress:(CGFloat)progress
 {
     CGFloat start;
     CGFloat end;

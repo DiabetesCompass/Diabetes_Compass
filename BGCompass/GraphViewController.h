@@ -7,7 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <CorePlot-CocoaTouch.h>
+
+// https://github.com/core-plot/core-plot/issues/204
+#import <CorePlot/ios/CorePlot.h>
+
 #import "InsulinReading.h"
 #import "FoodReading.h"
 

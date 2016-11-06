@@ -3,7 +3,7 @@
 /// @cond
 @interface _CPTAnimationCGRectPeriod()
 
-CGRect currentRectValue(id boundObject, SEL boundGetter);
+CGRect CPTCurrentRectValue(id __nonnull boundObject, SEL __nonnull boundGetter);
 
 @end
 /// @endcond
@@ -12,12 +12,12 @@ CGRect currentRectValue(id boundObject, SEL boundGetter);
 
 @implementation _CPTAnimationCGRectPeriod
 
-CGRect currentRectValue(id boundObject, SEL boundGetter)
+CGRect CPTCurrentRectValue(id __nonnull boundObject, SEL __nonnull boundGetter)
 {
     NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:[boundObject methodSignatureForSelector:boundGetter]];
 
-    [invocation setTarget:boundObject];
-    [invocation setSelector:boundGetter];
+    invocation.target   = boundObject;
+    invocation.selector = boundGetter;
 
     [invocation invoke];
 
@@ -27,16 +27,16 @@ CGRect currentRectValue(id boundObject, SEL boundGetter)
     return value;
 }
 
--(void)setStartValueFromObject:(id)boundObject propertyGetter:(SEL)boundGetter
+-(void)setStartValueFromObject:(nonnull id)boundObject propertyGetter:(nonnull SEL)boundGetter
 {
-    CGRect start = currentRectValue(boundObject, boundGetter);
+    CGRect start = CPTCurrentRectValue(boundObject, boundGetter);
 
     self.startValue = [NSValue valueWithBytes:&start objCType:@encode(CGRect)];
 }
 
--(BOOL)canStartWithValueFromObject:(id)boundObject propertyGetter:(SEL)boundGetter
+-(BOOL)canStartWithValueFromObject:(nonnull id)boundObject propertyGetter:(nonnull SEL)boundGetter
 {
-    CGRect current = currentRectValue(boundObject, boundGetter);
+    CGRect current = CPTCurrentRectValue(boundObject, boundGetter);
     CGRect start;
     CGRect end;
 
@@ -53,7 +53,7 @@ CGRect currentRectValue(id boundObject, SEL boundGetter)
            ( ( (current.size.height >= start.size.height) && (current.size.height <= end.size.height) ) || ( (current.size.height >= end.size.height) && (current.size.height <= start.size.height) ) );
 }
 
--(NSValue *)tweenedValueForProgress:(CGFloat)progress
+-(nonnull NSValue *)tweenedValueForProgress:(CGFloat)progress
 {
     CGRect start;
     CGRect end;

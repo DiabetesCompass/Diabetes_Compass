@@ -9,10 +9,13 @@
 /// @cond
 @interface CPTGraphHostingView()
 
-@property (nonatomic, readwrite, cpt_weak_property) __cpt_weak UIPinchGestureRecognizer *pinchGestureRecognizer;
+#if (TARGET_OS_SIMULATOR || TARGET_OS_IPHONE) && !TARGET_OS_TV
+@property (nonatomic, readwrite, nullable, cpt_weak_property) UIPinchGestureRecognizer *pinchGestureRecognizer;
 
--(void)graphNeedsRedraw:(NSNotification *)notification;
--(void)handlePinchGesture:(UIPinchGestureRecognizer *)aPinchGestureRecognizer;
+-(void)handlePinchGesture:(nonnull UIPinchGestureRecognizer *)aPinchGestureRecognizer;
+#endif
+
+-(void)graphNeedsRedraw:(nonnull NSNotification *)notification;
 
 @end
 
@@ -25,7 +28,7 @@
  **/
 @implementation CPTGraphHostingView
 
-/** @property CPTGraph *hostedGraph
+/** @property nullable CPTGraph *hostedGraph
  *  @brief The CPTLayer hosted inside this view.
  **/
 @synthesize hostedGraph;
@@ -44,11 +47,15 @@
 
 /// @cond
 
+#if (TARGET_OS_SIMULATOR || TARGET_OS_IPHONE) && !TARGET_OS_TV
+
 /** @internal
- *  @property __cpt_weak id pinchGestureRecognizer
+ *  @property nullable UIPinchGestureRecognizer *pinchGestureRecognizer
  *  @brief The pinch gesture recognizer for this view.
+ *  @since Not available on tvOS.
  **/
 @synthesize pinchGestureRecognizer;
+#endif
 
 /// @endcond
 
@@ -57,7 +64,7 @@
 
 /// @cond
 
-+(Class)layerClass
++(nonnull Class)layerClass
 {
     return [CALayer class];
 }
@@ -75,7 +82,7 @@
     self.layer.sublayerTransform = CATransform3DMakeScale( CPTFloat(1.0), CPTFloat(-1.0), CPTFloat(1.0) );
 }
 
--(instancetype)initWithFrame:(CGRect)frame
+-(nonnull instancetype)initWithFrame:(CGRect)frame
 {
     if ( (self = [super initWithFrame:frame]) ) {
         [self commonInit];
@@ -95,7 +102,7 @@
 
 /// @cond
 
--(void)encodeWithCoder:(NSCoder *)coder
+-(void)encodeWithCoder:(nonnull NSCoder *)coder
 {
     [super encodeWithCoder:coder];
 
@@ -107,13 +114,14 @@
     // pinchGestureRecognizer
 }
 
--(instancetype)initWithCoder:(NSCoder *)coder
+-(nullable instancetype)initWithCoder:(nonnull NSCoder *)coder
 {
     if ( (self = [super initWithCoder:coder]) ) {
         [self commonInit];
 
         collapsesLayers  = [coder decodeBoolForKey:@"CPTGraphHostingView.collapsesLayers"];
-        self.hostedGraph = [coder decodeObjectForKey:@"CPTGraphHostingView.hostedGraph"]; // setup layers
+        self.hostedGraph = [coder decodeObjectOfClass:[CPTGraph class]
+                                               forKey:@"CPTGraphHostingView.hostedGraph"]; // setup layers
 
         if ( [coder containsValueForKey:@"CPTGraphHostingView.allowPinchScaling"] ) {
             self.allowPinchScaling = [coder decodeBoolForKey:@"CPTGraphHostingView.allowPinchScaling"]; // set gesture recognizer if needed
@@ -125,95 +133,114 @@
 /// @endcond
 
 #pragma mark -
+#pragma mark NSSecureCoding Methods
+
+/// @cond
+
++(BOOL)supportsSecureCoding
+{
+    return YES;
+}
+
+/// @endcond
+
+#pragma mark -
 #pragma mark Touch handling
 
 /// @cond
 
--(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+-(void)touchesBegan:(nonnull NSSet<UITouch *> *)touches withEvent:(nullable UIEvent *)event
 {
-    [super touchesBegan:touches withEvent:event];
+    BOOL handled = NO;
 
     // Ignore pinch or other multitouch gestures
-    if ( [[event allTouches] count] > 1 ) {
-        return;
+    if ( [event allTouches].count == 1 ) {
+        CPTGraph *theHostedGraph = self.hostedGraph;
+        UIEvent *theEvent        = event;
+
+        theHostedGraph.frame = self.bounds;
+        [theHostedGraph layoutIfNeeded];
+
+        CGPoint pointOfTouch = [[[theEvent touchesForView:self] anyObject] locationInView:self];
+
+        if ( self.collapsesLayers ) {
+            pointOfTouch.y = self.frame.size.height - pointOfTouch.y;
+        }
+        else {
+            pointOfTouch = [self.layer convertPoint:pointOfTouch toLayer:theHostedGraph];
+        }
+        handled = [theHostedGraph pointingDeviceDownEvent:theEvent atPoint:pointOfTouch];
     }
-
-    CPTGraph *theHostedGraph = self.hostedGraph;
-
-    theHostedGraph.frame = self.bounds;
-    [theHostedGraph layoutIfNeeded];
-
-    CGPoint pointOfTouch = [[[event touchesForView:self] anyObject] locationInView:self];
-
-    if ( self.collapsesLayers ) {
-        pointOfTouch.y = self.frame.size.height - pointOfTouch.y;
-    }
-    else {
-        pointOfTouch = [self.layer convertPoint:pointOfTouch toLayer:theHostedGraph];
-    }
-    BOOL handled = [theHostedGraph pointingDeviceDownEvent:event atPoint:pointOfTouch];
 
     if ( !handled ) {
-        [self.nextResponder touchesBegan:touches withEvent:event];
+        [super touchesBegan:touches withEvent:event];
     }
 }
 
--(void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
+-(void)touchesMoved:(nonnull NSSet<UITouch *> *)touches withEvent:(nullable UIEvent *)event
 {
-    [super touchesMoved:touches withEvent:event];
+    BOOL handled = NO;
 
-    CPTGraph *theHostedGraph = self.hostedGraph;
+    if ( event ) {
+        CPTGraph *theHostedGraph = self.hostedGraph;
+        UIEvent *theEvent        = event;
 
-    theHostedGraph.frame = self.bounds;
-    [theHostedGraph layoutIfNeeded];
+        theHostedGraph.frame = self.bounds;
+        [theHostedGraph layoutIfNeeded];
 
-    CGPoint pointOfTouch = [[[event touchesForView:self] anyObject] locationInView:self];
+        CGPoint pointOfTouch = [[[theEvent touchesForView:self] anyObject] locationInView:self];
 
-    if ( self.collapsesLayers ) {
-        pointOfTouch.y = self.frame.size.height - pointOfTouch.y;
+        if ( self.collapsesLayers ) {
+            pointOfTouch.y = self.frame.size.height - pointOfTouch.y;
+        }
+        else {
+            pointOfTouch = [self.layer convertPoint:pointOfTouch toLayer:theHostedGraph];
+        }
+        handled = [theHostedGraph pointingDeviceDraggedEvent:theEvent atPoint:pointOfTouch];
     }
-    else {
-        pointOfTouch = [self.layer convertPoint:pointOfTouch toLayer:theHostedGraph];
-    }
-    BOOL handled = [theHostedGraph pointingDeviceDraggedEvent:event atPoint:pointOfTouch];
-
     if ( !handled ) {
-        [self.nextResponder touchesMoved:touches withEvent:event];
+        [super touchesMoved:touches withEvent:event];
     }
 }
 
--(void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
+-(void)touchesEnded:(nonnull NSSet<UITouch *> *)touches withEvent:(nullable UIEvent *)event
 {
-    [super touchesEnded:touches withEvent:event];
+    BOOL handled = NO;
 
-    CPTGraph *theHostedGraph = self.hostedGraph;
+    if ( event ) {
+        CPTGraph *theHostedGraph = self.hostedGraph;
+        UIEvent *theEvent        = event;
 
-    theHostedGraph.frame = self.bounds;
-    [theHostedGraph layoutIfNeeded];
+        theHostedGraph.frame = self.bounds;
+        [theHostedGraph layoutIfNeeded];
 
-    CGPoint pointOfTouch = [[[event touchesForView:self] anyObject] locationInView:self];
+        CGPoint pointOfTouch = [[[theEvent touchesForView:self] anyObject] locationInView:self];
 
-    if ( self.collapsesLayers ) {
-        pointOfTouch.y = self.frame.size.height - pointOfTouch.y;
+        if ( self.collapsesLayers ) {
+            pointOfTouch.y = self.frame.size.height - pointOfTouch.y;
+        }
+        else {
+            pointOfTouch = [self.layer convertPoint:pointOfTouch toLayer:theHostedGraph];
+        }
+        handled = [theHostedGraph pointingDeviceUpEvent:theEvent atPoint:pointOfTouch];
     }
-    else {
-        pointOfTouch = [self.layer convertPoint:pointOfTouch toLayer:theHostedGraph];
-    }
-    BOOL handled = [theHostedGraph pointingDeviceUpEvent:event atPoint:pointOfTouch];
 
     if ( !handled ) {
-        [self.nextResponder touchesEnded:touches withEvent:event];
+        [super touchesEnded:touches withEvent:event];
     }
 }
 
--(void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
+-(void)touchesCancelled:(nonnull NSSet<UITouch *> *)touches withEvent:(nullable UIEvent *)event
 {
-    [super touchesCancelled:touches withEvent:event];
+    BOOL handled = NO;
 
-    BOOL handled = [self.hostedGraph pointingDeviceCancelledEvent:event];
+    if ( event ) {
+        UIEvent *theEvent = event;
+        handled = [self.hostedGraph pointingDeviceCancelledEvent:theEvent];
+    }
 
     if ( !handled ) {
-        [self.nextResponder touchesCancelled:touches withEvent:event];
+        [super touchesCancelled:touches withEvent:event];
     }
 }
 
@@ -224,6 +251,7 @@
 
 /// @cond
 
+#if (TARGET_OS_SIMULATOR || TARGET_OS_IPHONE) && !TARGET_OS_TV
 -(void)setAllowPinchScaling:(BOOL)allowScaling
 {
     if ( allowPinchScaling != allowScaling ) {
@@ -244,7 +272,7 @@
     }
 }
 
--(void)handlePinchGesture:(UIPinchGestureRecognizer *)aPinchGestureRecognizer
+-(void)handlePinchGesture:(nonnull UIPinchGestureRecognizer *)aPinchGestureRecognizer
 {
     CGPoint interactionPoint = [aPinchGestureRecognizer locationInView:self];
     CPTGraph *theHostedGraph = self.hostedGraph;
@@ -273,6 +301,22 @@
 
     pinchRecognizer.scale = 1.0;
 }
+#endif
+
+/// @endcond
+
+#pragma mark -
+#pragma mark TV Focus
+
+/// @cond
+
+#if TARGET_OS_TV
+
+-(BOOL)canBecomeFocused
+{
+    return YES;
+}
+#endif
 
 /// @endcond
 
@@ -294,7 +338,7 @@
     }
 }
 
--(void)graphNeedsRedraw:(NSNotification *)notification
+-(void)graphNeedsRedraw:(nonnull NSNotification *)notification
 {
     [self setNeedsDisplay];
 }
@@ -306,7 +350,7 @@
 
 /// @cond
 
--(void)setHostedGraph:(CPTGraph *)newLayer
+-(void)setHostedGraph:(nullable CPTGraph *)newLayer
 {
     NSParameterAssert( (newLayer == nil) || [newLayer isKindOfClass:[CPTGraph class]] );
 
@@ -342,9 +386,11 @@
         }
     }
     else {
-        if ( hostedGraph ) {
-            hostedGraph.frame = self.layer.bounds;
-            [self.layer addSublayer:hostedGraph];
+        if ( newLayer ) {
+            CPTGraph *newGraph = newLayer;
+
+            newGraph.frame = self.layer.bounds;
+            [self.layer addSublayer:newGraph];
         }
     }
 }
@@ -356,9 +402,10 @@
 
         CPTGraph *theHostedGraph = self.hostedGraph;
 
+        [self setNeedsDisplay];
+
         if ( collapsesLayers ) {
             [theHostedGraph removeFromSuperlayer];
-            [self setNeedsDisplay];
 
             if ( theHostedGraph ) {
                 [[NSNotificationCenter defaultCenter] addObserver:self
@@ -381,7 +428,7 @@
 
 -(void)setFrame:(CGRect)newFrame
 {
-    [super setFrame:newFrame];
+    super.frame = newFrame;
 
     CPTGraph *theHostedGraph = self.hostedGraph;
     [theHostedGraph setNeedsLayout];
@@ -396,7 +443,7 @@
 
 -(void)setBounds:(CGRect)newBounds
 {
-    [super setBounds:newBounds];
+    super.bounds = newBounds;
 
     CPTGraph *theHostedGraph = self.hostedGraph;
     [theHostedGraph setNeedsLayout];

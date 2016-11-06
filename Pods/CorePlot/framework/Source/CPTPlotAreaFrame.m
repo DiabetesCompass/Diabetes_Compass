@@ -7,7 +7,7 @@
 /// @cond
 @interface CPTPlotAreaFrame()
 
-@property (nonatomic, readwrite, strong) CPTPlotArea *plotArea;
+@property (nonatomic, readwrite, strong, nullable) CPTPlotArea *plotArea;
 
 @end
 
@@ -23,17 +23,17 @@
  **/
 @implementation CPTPlotAreaFrame
 
-/** @property CPTPlotArea *plotArea
+/** @property nullable CPTPlotArea *plotArea
  *  @brief The plot area.
  **/
 @synthesize plotArea;
 
-/** @property CPTAxisSet *axisSet
+/** @property nullable CPTAxisSet *axisSet
  *  @brief The axis set.
  **/
 @dynamic axisSet;
 
-/** @property CPTPlotGroup *plotGroup
+/** @property nullable CPTPlotGroup *plotGroup
  *  @brief The plot group.
  **/
 @dynamic plotGroup;
@@ -54,7 +54,7 @@
  *  @param newFrame The frame rectangle.
  *  @return The initialized CPTPlotAreaFrame object.
  **/
--(instancetype)initWithFrame:(CGRect)newFrame
+-(nonnull instancetype)initWithFrame:(CGRect)newFrame
 {
     if ( (self = [super initWithFrame:newFrame]) ) {
         plotArea = nil;
@@ -72,7 +72,7 @@
 
 /// @cond
 
--(instancetype)initWithLayer:(id)layer
+-(nonnull instancetype)initWithLayer:(nonnull id)layer
 {
     if ( (self = [super initWithLayer:layer]) ) {
         CPTPlotAreaFrame *theLayer = (CPTPlotAreaFrame *)layer;
@@ -89,19 +89,32 @@
 
 /// @cond
 
--(void)encodeWithCoder:(NSCoder *)coder
+-(void)encodeWithCoder:(nonnull NSCoder *)coder
 {
     [super encodeWithCoder:coder];
 
     [coder encodeObject:self.plotArea forKey:@"CPTPlotAreaFrame.plotArea"];
 }
 
--(instancetype)initWithCoder:(NSCoder *)coder
+-(nullable instancetype)initWithCoder:(nonnull NSCoder *)coder
 {
     if ( (self = [super initWithCoder:coder]) ) {
-        plotArea = [coder decodeObjectForKey:@"CPTPlotAreaFrame.plotArea"];
+        plotArea = [coder decodeObjectOfClass:[CPTPlotArea class]
+                                       forKey:@"CPTPlotAreaFrame.plotArea"];
     }
     return self;
+}
+
+/// @endcond
+
+#pragma mark -
+#pragma mark NSSecureCoding Methods
+
+/// @cond
+
++(BOOL)supportsSecureCoding
+{
+    return YES;
 }
 
 /// @endcond
@@ -121,7 +134,7 @@
  *  @param interactionPoint The coordinates of the interaction.
  *  @return Whether the event was handled or not.
  **/
--(BOOL)pointingDeviceDownEvent:(CPTNativeEvent *)event atPoint:(CGPoint)interactionPoint
+-(BOOL)pointingDeviceDownEvent:(nonnull CPTNativeEvent *)event atPoint:(CGPoint)interactionPoint
 {
     if ( [self.plotArea pointingDeviceDownEvent:event atPoint:interactionPoint] ) {
         return YES;
@@ -140,7 +153,7 @@
  *  @param interactionPoint The coordinates of the interaction.
  *  @return Whether the event was handled or not.
  **/
--(BOOL)pointingDeviceUpEvent:(CPTNativeEvent *)event atPoint:(CGPoint)interactionPoint
+-(BOOL)pointingDeviceUpEvent:(nonnull CPTNativeEvent *)event atPoint:(CGPoint)interactionPoint
 {
     if ( [self.plotArea pointingDeviceUpEvent:event atPoint:interactionPoint] ) {
         return YES;
@@ -159,7 +172,7 @@
  *  @param interactionPoint The coordinates of the interaction.
  *  @return Whether the event was handled or not.
  **/
--(BOOL)pointingDeviceDraggedEvent:(CPTNativeEvent *)event atPoint:(CGPoint)interactionPoint
+-(BOOL)pointingDeviceDraggedEvent:(nonnull CPTNativeEvent *)event atPoint:(CGPoint)interactionPoint
 {
     if ( [self.plotArea pointingDeviceDraggedEvent:event atPoint:interactionPoint] ) {
         return YES;
@@ -178,7 +191,7 @@
  *  @param event The OS event.
  *  @return Whether the event was handled or not.
  **/
--(BOOL)pointingDeviceCancelledEvent:(CPTNativeEvent *)event
+-(BOOL)pointingDeviceCancelledEvent:(nonnull CPTNativeEvent *)event
 {
     if ( [self.plotArea pointingDeviceCancelledEvent:event] ) {
         return YES;
@@ -195,43 +208,47 @@
 
 /// @cond
 
--(void)setPlotArea:(CPTPlotArea *)newPlotArea
+-(void)setPlotArea:(nullable CPTPlotArea *)newPlotArea
 {
     if ( newPlotArea != plotArea ) {
         [plotArea removeFromSuperlayer];
         plotArea = newPlotArea;
-        if ( plotArea ) {
-            [self insertSublayer:plotArea atIndex:0];
-            plotArea.graph = self.graph;
+
+        if ( newPlotArea ) {
+            CPTPlotArea *theArea = newPlotArea;
+
+            [self insertSublayer:theArea atIndex:0];
+            theArea.graph = self.graph;
         }
+
         [self setNeedsLayout];
     }
 }
 
--(CPTAxisSet *)axisSet
+-(nullable CPTAxisSet *)axisSet
 {
     return self.plotArea.axisSet;
 }
 
--(void)setAxisSet:(CPTAxisSet *)newAxisSet
+-(void)setAxisSet:(nullable CPTAxisSet *)newAxisSet
 {
     self.plotArea.axisSet = newAxisSet;
 }
 
--(CPTPlotGroup *)plotGroup
+-(nullable CPTPlotGroup *)plotGroup
 {
     return self.plotArea.plotGroup;
 }
 
--(void)setPlotGroup:(CPTPlotGroup *)newPlotGroup
+-(void)setPlotGroup:(nullable CPTPlotGroup *)newPlotGroup
 {
     self.plotArea.plotGroup = newPlotGroup;
 }
 
--(void)setGraph:(CPTGraph *)newGraph
+-(void)setGraph:(nullable CPTGraph *)newGraph
 {
     if ( newGraph != self.graph ) {
-        [super setGraph:newGraph];
+        super.graph = newGraph;
 
         self.plotArea.graph = newGraph;
     }

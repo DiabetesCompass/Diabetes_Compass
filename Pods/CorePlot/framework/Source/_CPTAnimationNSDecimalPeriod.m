@@ -5,7 +5,7 @@
 /// @cond
 @interface _CPTAnimationNSDecimalPeriod()
 
-NSDecimal currentDecimalValue(id boundObject, SEL boundGetter);
+NSDecimal CPTCurrentDecimalValue(id __nonnull boundObject, SEL __nonnull boundGetter);
 
 @end
 /// @endcond
@@ -14,12 +14,12 @@ NSDecimal currentDecimalValue(id boundObject, SEL boundGetter);
 
 @implementation _CPTAnimationNSDecimalPeriod
 
-NSDecimal currentDecimalValue(id boundObject, SEL boundGetter)
+NSDecimal CPTCurrentDecimalValue(id __nonnull boundObject, SEL __nonnull boundGetter)
 {
     NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:[boundObject methodSignatureForSelector:boundGetter]];
 
-    [invocation setTarget:boundObject];
-    [invocation setSelector:boundGetter];
+    invocation.target   = boundObject;
+    invocation.selector = boundGetter;
 
     [invocation invoke];
 
@@ -29,31 +29,31 @@ NSDecimal currentDecimalValue(id boundObject, SEL boundGetter)
     return value;
 }
 
--(void)setStartValueFromObject:(id)boundObject propertyGetter:(SEL)boundGetter
+-(void)setStartValueFromObject:(nonnull id)boundObject propertyGetter:(nonnull SEL)boundGetter
 {
-    NSDecimal start = currentDecimalValue(boundObject, boundGetter);
+    NSDecimal start = CPTCurrentDecimalValue(boundObject, boundGetter);
 
     self.startValue = [NSDecimalNumber decimalNumberWithDecimal:start];
 }
 
--(BOOL)canStartWithValueFromObject:(id)boundObject propertyGetter:(SEL)boundGetter
+-(BOOL)canStartWithValueFromObject:(nonnull id)boundObject propertyGetter:(nonnull SEL)boundGetter
 {
     if ( !self.startValue ) {
         [self setStartValueFromObject:boundObject propertyGetter:boundGetter];
     }
 
-    NSDecimal current = currentDecimalValue(boundObject, boundGetter);
-    NSDecimal start   = [(NSDecimalNumber *)self.startValue decimalValue];
-    NSDecimal end     = [(NSDecimalNumber *)self.endValue decimalValue];
+    NSDecimal current = CPTCurrentDecimalValue(boundObject, boundGetter);
+    NSDecimal start   = ( (NSDecimalNumber *)self.startValue ).decimalValue;
+    NSDecimal end     = ( (NSDecimalNumber *)self.endValue ).decimalValue;
 
     return ( CPTDecimalGreaterThanOrEqualTo(current, start) && CPTDecimalLessThanOrEqualTo(current, end) ) ||
            ( CPTDecimalGreaterThanOrEqualTo(current, end) && CPTDecimalLessThanOrEqualTo(current, start) );
 }
 
--(NSValue *)tweenedValueForProgress:(CGFloat)progress
+-(nonnull NSValue *)tweenedValueForProgress:(CGFloat)progress
 {
-    NSDecimal start = [(NSDecimalNumber *)self.startValue decimalValue];
-    NSDecimal end   = [(NSDecimalNumber *)self.endValue decimalValue];
+    NSDecimal start = ( (NSDecimalNumber *)self.startValue ).decimalValue;
+    NSDecimal end   = ( (NSDecimalNumber *)self.endValue ).decimalValue;
 
     NSDecimal length       = CPTDecimalSubtract(end, start);
     NSDecimal tweenedValue = CPTDecimalAdd( start, CPTDecimalMultiply(CPTDecimalFromCGFloat(progress), length) );

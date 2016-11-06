@@ -30,9 +30,13 @@
 
 @property (strong, readwrite, nonatomic) REPlaceholderTextView *textView;
 
+@property (assign, readwrite, nonatomic) BOOL enabled;
+
 @end
 
 @implementation RETableViewLongTextCell
+
+@synthesize item = _item;
 
 + (BOOL)canFocusWithItem:(RELongTextItem *)item
 {
@@ -42,10 +46,15 @@
 #pragma mark -
 #pragma mark Lifecycle
 
+- (void)dealloc {
+    if (_item != nil) {
+        [_item removeObserver:self forKeyPath:@"enabled"];
+    }
+}
+
 - (void)cellDidLoad
 {
     [super cellDidLoad];
-    self.selectionStyle = UITableViewCellSelectionStyleNone;
     self.textLabel.backgroundColor = [UIColor clearColor];
     
     self.textView = [[REPlaceholderTextView alloc] init];
@@ -55,6 +64,15 @@
     self.textView.backgroundColor = [UIColor clearColor];
     self.textView.delegate = self;
     [self.contentView addSubview:self.textView];
+
+    UILabel *label = self.textLabel;
+    
+    CGFloat padding = (self.section.style.contentViewMargin <= 0) ? 7 : 2;
+    NSDictionary *metrics = @{ @"padding": @(padding) };
+    UITextView *textView = self.textView;
+    [self.contentView removeConstraints:self.contentView.constraints];
+    [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[textView]-2-|" options:0 metrics:metrics views:NSDictionaryOfVariableBindings(textView, label)]];
+    [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-padding-[textView]-padding-|" options:0 metrics:metrics views:NSDictionaryOfVariableBindings(textView, label)]];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
@@ -68,16 +86,8 @@
 - (void)cellWillAppear
 {
     [super cellWillAppear];
+    self.selectionStyle = UITableViewCellSelectionStyleNone;
 
-    UILabel *label = self.textLabel;
-    
-    CGFloat padding = (REUIKitIsFlatMode() && self.section.style.contentViewMargin <= 0) ? 7 : 2;
-    NSDictionary *metrics = @{ @"padding": @(padding) };
-    UITextView *textView = self.textView;
-    [self.contentView removeConstraints:self.contentView.constraints];
-    [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[textView]-2-|" options:0 metrics:metrics views:NSDictionaryOfVariableBindings(textView, label)]];
-    [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-padding-[textView]-padding-|" options:0 metrics:metrics views:NSDictionaryOfVariableBindings(textView, label)]];
-    
     self.textView.editable = self.item.editable;
     self.textView.inputAccessoryView = self.textView.editable ?  self.actionBar : nil;
     
@@ -94,6 +104,10 @@
     self.textView.enablesReturnKeyAutomatically = self.item.enablesReturnKeyAutomatically;
     self.textView.secureTextEntry = self.item.secureTextEntry;
     [self.textView setNeedsDisplay];
+    
+    self.actionBar.barStyle = self.item.keyboardAppearance == UIKeyboardAppearanceAlert ? UIBarStyleBlack : UIBarStyleDefault;
+    
+    self.enabled = self.item.enabled;
 }
 
 - (UIResponder *)responder
@@ -111,6 +125,38 @@
         [self.tableViewManager.delegate tableView:self.tableViewManager.tableView willLayoutCellSubviews:self forRowAtIndexPath:[self.tableViewManager.tableView indexPathForCell:self]];
 }
 
+
+#pragma mark -
+#pragma mark Handle state
+
+- (void)setItem:(RELongTextItem *)item
+{
+    if (_item != nil) {
+        [_item removeObserver:self forKeyPath:@"enabled"];
+    }
+    
+    _item = item;
+    
+    [_item addObserver:self forKeyPath:@"enabled" options:NSKeyValueObservingOptionNew context:NULL];
+}
+
+- (void)setEnabled:(BOOL)enabled {
+    _enabled = enabled;
+    
+    self.userInteractionEnabled = _enabled;
+    
+    self.textLabel.enabled = _enabled;
+    self.textView.userInteractionEnabled = _enabled;
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+    if ([object isKindOfClass:[RELongTextItem class]] && [keyPath isEqualToString:@"enabled"]) {
+        BOOL newValue = [[change objectForKey: NSKeyValueChangeNewKey] boolValue];
+        
+        self.enabled = newValue;
+    }
+}
 
 #pragma mark -
 #pragma mark UITextView delegate

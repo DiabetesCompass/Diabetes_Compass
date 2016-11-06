@@ -1,0 +1,6 @@
+framework module UIImage_BlurredFrame {
+  umbrella header "UIImage+BlurredFrame-umbrella.h"
+
+  export *
+  module * { export * }
+}

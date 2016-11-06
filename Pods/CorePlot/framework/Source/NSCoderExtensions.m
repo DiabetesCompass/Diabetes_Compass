@@ -3,7 +3,7 @@
 #import "CPTUtilities.h"
 #import "NSNumberExtensions.h"
 
-void MyCGPathApplierFunc(void *info, const CGPathElement *element);
+void CPTPathApplierFunc(void *info, const CGPathElement *element);
 
 #pragma mark -
 
@@ -16,7 +16,7 @@ void MyCGPathApplierFunc(void *info, const CGPathElement *element);
  *  @param number The number to encode.
  *  @param key The key to associate with the number.
  **/
--(void)encodeCGFloat:(CGFloat)number forKey:(NSString *)key
+-(void)encodeCGFloat:(CGFloat)number forKey:(nonnull NSString *)key
 {
 #if CGFLOAT_IS_DOUBLE
     [self encodeDouble:number forKey:key];
@@ -29,7 +29,7 @@ void MyCGPathApplierFunc(void *info, const CGPathElement *element);
  *  @param point The point to encode.
  *  @param key The key to associate with the point.
  **/
--(void)encodeCPTPoint:(CGPoint)point forKey:(NSString *)key
+-(void)encodeCPTPoint:(CGPoint)point forKey:(nonnull NSString *)key
 {
     NSString *newKey = [[NSString alloc] initWithFormat:@"%@.x", key];
 
@@ -43,7 +43,7 @@ void MyCGPathApplierFunc(void *info, const CGPathElement *element);
  *  @param size The size to encode.
  *  @param key The key to associate with the size.
  **/
--(void)encodeCPTSize:(CGSize)size forKey:(NSString *)key
+-(void)encodeCPTSize:(CGSize)size forKey:(nonnull NSString *)key
 {
     NSString *newKey = [[NSString alloc] initWithFormat:@"%@.width", key];
 
@@ -57,7 +57,7 @@ void MyCGPathApplierFunc(void *info, const CGPathElement *element);
  *  @param rect The rectangle to encode.
  *  @param key The key to associate with the rectangle.
  **/
--(void)encodeCPTRect:(CGRect)rect forKey:(NSString *)key
+-(void)encodeCPTRect:(CGRect)rect forKey:(nonnull NSString *)key
 {
     NSString *newKey = [[NSString alloc] initWithFormat:@"%@.origin", key];
 
@@ -72,9 +72,9 @@ void MyCGPathApplierFunc(void *info, const CGPathElement *element);
  *  @param key The key to associate with the color space.
  *  @note The current implementation only works with named color spaces.
  **/
--(void)encodeCGColorSpace:(CGColorSpaceRef)colorSpace forKey:(NSString *)key
+-(void)encodeCGColorSpace:(nullable CGColorSpaceRef)colorSpace forKey:(nonnull NSString *)key
 {
-#if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
+#if TARGET_OS_SIMULATOR || TARGET_OS_IPHONE
     NSLog(@"Color space encoding is not supported on iOS. Decoding will return a generic RGB color space.");
 #else
     if ( colorSpace ) {
@@ -87,9 +87,9 @@ void MyCGPathApplierFunc(void *info, const CGPathElement *element);
 
 /// @cond
 
-void MyCGPathApplierFunc(void *info, const CGPathElement *element)
+void CPTPathApplierFunc(void *__nullable info, const CGPathElement *__nonnull element)
 {
-    NSMutableDictionary *elementData = [[NSMutableDictionary alloc] init];
+    NSMutableDictionary<NSString *, NSNumber *> *elementData = [[NSMutableDictionary alloc] init];
 
     elementData[@"type"] = @(element->type);
 
@@ -112,7 +112,7 @@ void MyCGPathApplierFunc(void *info, const CGPathElement *element)
             break;
     }
 
-    NSMutableArray *pathData = (__bridge NSMutableArray *)info;
+    NSMutableArray<NSMutableDictionary<NSString *, NSNumber *> *> *pathData = (__bridge NSMutableArray<NSMutableDictionary<NSString *, NSNumber *> *> *)info;
     [pathData addObject:elementData];
 }
 
@@ -122,12 +122,12 @@ void MyCGPathApplierFunc(void *info, const CGPathElement *element)
  *  @param path The @ref CGPathRef to encode.
  *  @param key The key to associate with the path.
  **/
--(void)encodeCGPath:(CGPathRef)path forKey:(NSString *)key
+-(void)encodeCGPath:(nullable CGPathRef)path forKey:(nonnull NSString *)key
 {
-    NSMutableArray *pathData = [[NSMutableArray alloc] init];
+    NSMutableArray<NSMutableDictionary<NSString *, NSNumber *> *> *pathData = [[NSMutableArray alloc] init];
 
     // walk the path and gather data for each element
-    CGPathApply(path, (__bridge void *)(pathData), &MyCGPathApplierFunc);
+    CGPathApply(path, (__bridge void *)(pathData), &CPTPathApplierFunc);
 
     // encode data count
     NSUInteger dataCount = pathData.count;
@@ -136,9 +136,9 @@ void MyCGPathApplierFunc(void *info, const CGPathElement *element)
 
     // encode data elements
     for ( NSUInteger i = 0; i < dataCount; i++ ) {
-        NSDictionary *elementData = pathData[i];
+        NSDictionary<NSString *, NSNumber *> *elementData = pathData[i];
 
-        CGPathElementType type = (CGPathElementType)[elementData[@"type"] intValue];
+        CGPathElementType type = (CGPathElementType)elementData[@"type"].intValue;
         newKey = [[NSString alloc] initWithFormat:@"%@[%lu].type", key, (unsigned long)i];
         [self encodeInt:type forKey:newKey];
 
@@ -175,7 +175,7 @@ void MyCGPathApplierFunc(void *info, const CGPathElement *element)
  *  @param image The @ref CGImageRef to encode.
  *  @param key The key to associate with the image.
  **/
--(void)encodeCGImage:(CGImageRef)image forKey:(NSString *)key
+-(void)encodeCGImage:(nullable CGImageRef)image forKey:(nonnull NSString *)key
 {
     NSString *newKey = [[NSString alloc] initWithFormat:@"%@.width", key];
 
@@ -235,7 +235,7 @@ void MyCGPathApplierFunc(void *info, const CGPathElement *element)
  *  @param number The number to encode.
  *  @param key The key to associate with the number.
  **/
--(void)encodeDecimal:(NSDecimal)number forKey:(NSString *)key
+-(void)encodeDecimal:(NSDecimal)number forKey:(nonnull NSString *)key
 {
     [self encodeObject:[NSDecimalNumber decimalNumberWithDecimal:number] forKey:key];
 }
@@ -249,7 +249,7 @@ void MyCGPathApplierFunc(void *info, const CGPathElement *element)
  *  @param key The key associated with the number.
  *  @return The number as a @ref CGFloat.
  **/
--(CGFloat)decodeCGFloatForKey:(NSString *)key
+-(CGFloat)decodeCGFloatForKey:(nonnull NSString *)key
 {
 #if CGFLOAT_IS_DOUBLE
     return [self decodeDoubleForKey:key];
@@ -265,7 +265,7 @@ void MyCGPathApplierFunc(void *info, const CGPathElement *element)
  *  @param key The key associated with the point.
  *  @return The point.
  **/
--(CGPoint)decodeCPTPointForKey:(NSString *)key
+-(CGPoint)decodeCPTPointForKey:(nonnull NSString *)key
 {
     CGPoint point;
 
@@ -285,7 +285,7 @@ void MyCGPathApplierFunc(void *info, const CGPathElement *element)
  *  @param key The key associated with the size.
  *  @return The size.
  **/
--(CGSize)decodeCPTSizeForKey:(NSString *)key
+-(CGSize)decodeCPTSizeForKey:(nonnull NSString *)key
 {
     CGSize size;
 
@@ -305,7 +305,7 @@ void MyCGPathApplierFunc(void *info, const CGPathElement *element)
  *  @param key The key associated with the rectangle.
  *  @return The rectangle.
  **/
--(CGRect)decodeCPTRectForKey:(NSString *)key
+-(CGRect)decodeCPTRectForKey:(nonnull NSString *)key
 {
     CGRect rect;
 
@@ -326,15 +326,16 @@ void MyCGPathApplierFunc(void *info, const CGPathElement *element)
  *  @return The new path.
  *  @note The current implementation only works with named color spaces.
  **/
--(CGColorSpaceRef)newCGColorSpaceDecodeForKey:(NSString *)key
+-(nullable CGColorSpaceRef)newCGColorSpaceDecodeForKey:(nonnull NSString *)key
 {
     CGColorSpaceRef colorSpace = NULL;
 
-#if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
+#if TARGET_OS_SIMULATOR || TARGET_OS_IPHONE
     NSLog(@"Color space decoding is not supported on iOS. Using generic RGB color space.");
     colorSpace = CGColorSpaceCreateDeviceRGB();
 #else
-    NSData *iccProfile = [self decodeObjectForKey:key];
+    NSData *iccProfile = [self decodeObjectOfClass:[NSData class]
+                                            forKey:key];
     if ( iccProfile ) {
         colorSpace = CGColorSpaceCreateWithICCProfile( (__bridge CFDataRef)iccProfile );
     }
@@ -353,18 +354,18 @@ void MyCGPathApplierFunc(void *info, const CGPathElement *element)
  *  @param key The key associated with the path.
  *  @return The new path.
  **/
--(CGPathRef)newCGPathDecodeForKey:(NSString *)key
+-(nullable CGPathRef)newCGPathDecodeForKey:(nonnull NSString *)key
 {
     CGMutablePathRef newPath = CGPathCreateMutable();
 
     // decode count
     NSString *newKey = [[NSString alloc] initWithFormat:@"%@.count", key];
-    NSUInteger count = (NSUInteger)[self decodeIntegerForKey : newKey];
+    NSUInteger count = (NSUInteger)[self decodeIntegerForKey:newKey];
 
     // decode elements
     for ( NSUInteger i = 0; i < count; i++ ) {
         newKey = [[NSString alloc] initWithFormat:@"%@[%lu].type", key, (unsigned long)i];
-        CGPathElementType type = (CGPathElementType)[self decodeIntForKey : newKey];
+        CGPathElementType type = (CGPathElementType)[self decodeIntForKey:newKey];
 
         CGPoint point1 = CGPointZero;
         CGPoint point2 = CGPointZero;
@@ -421,22 +422,22 @@ void MyCGPathApplierFunc(void *info, const CGPathElement *element)
  *  @param key The key associated with the image.
  *  @return The new image.
  **/
--(CGImageRef)newCGImageDecodeForKey:(NSString *)key
+-(nullable CGImageRef)newCGImageDecodeForKey:(nonnull NSString *)key
 {
     NSString *newKey = [[NSString alloc] initWithFormat:@"%@.width", key];
-    size_t width     = (size_t)[self decodeInt64ForKey : newKey];
+    size_t width     = (size_t)[self decodeInt64ForKey:newKey];
 
     newKey = [[NSString alloc] initWithFormat:@"%@.height", key];
-    size_t height = (size_t)[self decodeInt64ForKey : newKey];
+    size_t height = (size_t)[self decodeInt64ForKey:newKey];
 
     newKey = [[NSString alloc] initWithFormat:@"%@.bitsPerComponent", key];
-    size_t bitsPerComponent = (size_t)[self decodeInt64ForKey : newKey];
+    size_t bitsPerComponent = (size_t)[self decodeInt64ForKey:newKey];
 
     newKey = [[NSString alloc] initWithFormat:@"%@.bitsPerPixel", key];
-    size_t bitsPerPixel = (size_t)[self decodeInt64ForKey : newKey];
+    size_t bitsPerPixel = (size_t)[self decodeInt64ForKey:newKey];
 
     newKey = [[NSString alloc] initWithFormat:@"%@.bytesPerRow", key];
-    size_t bytesPerRow = (size_t)[self decodeInt64ForKey : newKey];
+    size_t bytesPerRow = (size_t)[self decodeInt64ForKey:newKey];
 
     newKey = [[NSString alloc] initWithFormat:@"%@.colorSpace", key];
     CGColorSpaceRef colorSpace = [self newCGColorSpaceDecodeForKey:newKey];
@@ -446,10 +447,11 @@ void MyCGPathApplierFunc(void *info, const CGPathElement *element)
     const CGBitmapInfo *bitmapInfo = (const void *)[self decodeBytesForKey:newKey returnedLength:&length];
 
     newKey = [[NSString alloc] initWithFormat:@"%@.provider", key];
-    CGDataProviderRef provider = CGDataProviderCreateWithCFData( (__bridge CFDataRef)[self decodeObjectForKey:newKey] );
+    CGDataProviderRef provider = CGDataProviderCreateWithCFData( (__bridge CFDataRef)[self decodeObjectOfClass:[NSData class]
+                                                                                                        forKey:newKey] );
 
     newKey = [[NSString alloc] initWithFormat:@"%@.numberOfComponents", key];
-    size_t numberOfComponents = (size_t)[self decodeInt64ForKey : newKey];
+    size_t numberOfComponents = (size_t)[self decodeInt64ForKey:newKey];
 
     CGFloat *decodeArray = NULL;
     if ( numberOfComponents ) {
@@ -468,7 +470,7 @@ void MyCGPathApplierFunc(void *info, const CGPathElement *element)
     bool shouldInterpolate = [self decodeBoolForKey:newKey];
 
     newKey = [[NSString alloc] initWithFormat:@"%@.renderingIntent", key];
-    CGColorRenderingIntent intent = (CGColorRenderingIntent)[self decodeIntForKey : newKey];
+    CGColorRenderingIntent intent = (CGColorRenderingIntent)[self decodeIntForKey:newKey];
 
     CGImageRef newImage = CGImageCreate(width,
                                         height,
@@ -497,14 +499,15 @@ void MyCGPathApplierFunc(void *info, const CGPathElement *element)
  *  @param key The key associated with the number.
  *  @return The number as an @ref NSDecimal.
  **/
--(NSDecimal)decodeDecimalForKey:(NSString *)key
+-(NSDecimal)decodeDecimalForKey:(nonnull NSString *)key
 {
     NSDecimal result;
 
-    NSNumber *number = [self decodeObjectForKey:key];
+    NSNumber *number = [self decodeObjectOfClass:[NSDecimalNumber class]
+                                          forKey:key];
 
     if ( [number respondsToSelector:@selector(decimalValue)] ) {
-        result = [number decimalValue];
+        result = number.decimalValue;
     }
     else {
         result = CPTDecimalNaN();

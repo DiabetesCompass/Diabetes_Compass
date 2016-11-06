@@ -12,12 +12,12 @@
 #import "CPTXYAxisSet.h"
 #import "CPTXYGraph.h"
 
-NSString *const kCPTDarkGradientTheme = @"Dark Gradients";
+CPTThemeName const kCPTDarkGradientTheme = @"Dark Gradients";
 
 /// @cond
 @interface _CPTDarkGradientTheme()
 
--(void)applyThemeToAxis:(CPTXYAxis *)axis usingMajorLineStyle:(CPTLineStyle *)majorLineStyle minorLineStyle:(CPTLineStyle *)minorLineStyle textStyle:(CPTMutableTextStyle *)textStyle minorTickTextStyle:(CPTMutableTextStyle *)minorTickTextStyle;
+-(void)applyThemeToAxis:(CPTXYAxis *)axis usingMajorLineStyle:(nonnull CPTLineStyle *)majorLineStyle minorLineStyle:(nonnull CPTLineStyle *)minorLineStyle textStyle:(nonnull CPTMutableTextStyle *)textStyle minorTickTextStyle:(nonnull CPTMutableTextStyle *)minorTickTextStyle;
 
 @end
 
@@ -35,31 +35,31 @@ NSString *const kCPTDarkGradientTheme = @"Dark Gradients";
     [self registerTheme:self];
 }
 
-+(NSString *)name
++(nonnull NSString *)name
 {
     return kCPTDarkGradientTheme;
 }
 
 #pragma mark -
 
--(void)applyThemeToAxis:(CPTXYAxis *)axis usingMajorLineStyle:(CPTLineStyle *)majorLineStyle minorLineStyle:(CPTLineStyle *)minorLineStyle textStyle:(CPTMutableTextStyle *)textStyle minorTickTextStyle:(CPTMutableTextStyle *)minorTickTextStyle
+-(void)applyThemeToAxis:(CPTXYAxis *)axis usingMajorLineStyle:(nonnull CPTLineStyle *)majorLineStyle minorLineStyle:(nonnull CPTLineStyle *)minorLineStyle textStyle:(nonnull CPTMutableTextStyle *)textStyle minorTickTextStyle:(nonnull CPTMutableTextStyle *)minorTickTextStyle
 {
-    axis.labelingPolicy              = CPTAxisLabelingPolicyFixedInterval;
-    axis.majorIntervalLength         = CPTDecimalFromDouble(0.5);
-    axis.orthogonalCoordinateDecimal = CPTDecimalFromDouble(0.0);
-    axis.tickDirection               = CPTSignNone;
-    axis.minorTicksPerInterval       = 4;
-    axis.majorTickLineStyle          = majorLineStyle;
-    axis.minorTickLineStyle          = minorLineStyle;
-    axis.axisLineStyle               = majorLineStyle;
-    axis.majorTickLength             = CPTFloat(7.0);
-    axis.minorTickLength             = CPTFloat(5.0);
-    axis.labelTextStyle              = textStyle;
-    axis.minorTickLabelTextStyle     = minorTickTextStyle;
-    axis.titleTextStyle              = textStyle;
+    axis.labelingPolicy          = CPTAxisLabelingPolicyFixedInterval;
+    axis.majorIntervalLength     = @0.5;
+    axis.orthogonalPosition      = @0.0;
+    axis.tickDirection           = CPTSignNone;
+    axis.minorTicksPerInterval   = 4;
+    axis.majorTickLineStyle      = majorLineStyle;
+    axis.minorTickLineStyle      = minorLineStyle;
+    axis.axisLineStyle           = majorLineStyle;
+    axis.majorTickLength         = CPTFloat(7.0);
+    axis.minorTickLength         = CPTFloat(5.0);
+    axis.labelTextStyle          = textStyle;
+    axis.minorTickLabelTextStyle = minorTickTextStyle;
+    axis.titleTextStyle          = textStyle;
 }
 
--(void)applyThemeToBackground:(CPTGraph *)graph
+-(void)applyThemeToBackground:(nonnull CPTGraph *)graph
 {
     CPTColor *endColor         = [CPTColor colorWithGenericGray:CPTFloat(0.1)];
     CPTGradient *graphGradient = [CPTGradient gradientWithBeginningColor:endColor endingColor:endColor];
@@ -71,7 +71,7 @@ NSString *const kCPTDarkGradientTheme = @"Dark Gradients";
     graph.fill          = [CPTFill fillWithGradient:graphGradient];
 }
 
--(void)applyThemeToPlotArea:(CPTPlotAreaFrame *)plotAreaFrame
+-(void)applyThemeToPlotArea:(nonnull CPTPlotAreaFrame *)plotAreaFrame
 {
     CPTGradient *gradient = [CPTGradient gradientWithBeginningColor:[CPTColor colorWithGenericGray:CPTFloat(0.1)] endingColor:[CPTColor colorWithGenericGray:CPTFloat(0.3)]];
 
@@ -86,7 +86,7 @@ NSString *const kCPTDarkGradientTheme = @"Dark Gradients";
     plotAreaFrame.cornerRadius    = CPTFloat(10.0);
 }
 
--(void)applyThemeToAxisSet:(CPTAxisSet *)axisSet
+-(void)applyThemeToAxisSet:(nonnull CPTAxisSet *)axisSet
 {
     CPTMutableLineStyle *majorLineStyle = [CPTMutableLineStyle lineStyle];
 
@@ -115,7 +115,7 @@ NSString *const kCPTDarkGradientTheme = @"Dark Gradients";
 #pragma mark -
 #pragma mark NSCoding Methods
 
--(Class)classForCoder
+-(nonnull Class)classForCoder
 {
     return [CPTTheme class];
 }

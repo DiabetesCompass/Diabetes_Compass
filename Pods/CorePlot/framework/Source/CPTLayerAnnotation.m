@@ -2,12 +2,13 @@
 
 #import "CPTAnnotationHostLayer.h"
 #import "CPTConstraints.h"
+#import "CPTExceptions.h"
 
 /// @cond
 @interface CPTLayerAnnotation()
 
-@property (nonatomic, readwrite, strong) CPTConstraints *xConstraints;
-@property (nonatomic, readwrite, strong) CPTConstraints *yConstraints;
+@property (nonatomic, readwrite, strong, nullable) CPTConstraints *xConstraints;
+@property (nonatomic, readwrite, strong, nullable) CPTConstraints *yConstraints;
 
 -(void)setConstraints;
 
@@ -25,7 +26,7 @@
  **/
 @implementation CPTLayerAnnotation
 
-/** @property __cpt_weak CPTLayer *anchorLayer
+/** @property nullable CPTLayer *anchorLayer
  *  @brief The reference layer.
  **/
 @synthesize anchorLayer;
@@ -52,7 +53,7 @@
  *  @param newAnchorLayer The reference layer. Must be non-@nil.
  *  @return The initialized CPTLayerAnnotation object.
  **/
--(instancetype)initWithAnchorLayer:(CPTLayer *)newAnchorLayer
+-(nonnull instancetype)initWithAnchorLayer:(nonnull CPTLayer *)newAnchorLayer
 {
     NSParameterAssert(newAnchorLayer);
 
@@ -75,10 +76,11 @@
 
 /// @cond
 
-// anchorLayer is required; this will fail the assertion in -initWithAnchorLayer:
--(instancetype)init
+// anchorLayer is required
+-(nonnull instancetype)init
 {
-    return [self initWithAnchorLayer:nil];
+    [NSException raise:CPTException format:@"%@ must be initialized with an anchor layer.", NSStringFromClass([self class])];
+    return [self initWithAnchorLayer:[CPTLayer layer]];
 }
 
 -(void)dealloc
@@ -94,7 +96,7 @@
 
 /// @cond
 
--(void)encodeWithCoder:(NSCoder *)coder
+-(void)encodeWithCoder:(nonnull NSCoder *)coder
 {
     [super encodeWithCoder:coder];
 
@@ -110,13 +112,16 @@
  *  @param coder An unarchiver object.
  *  @return An object initialized from data in a given unarchiver.
  */
--(instancetype)initWithCoder:(NSCoder *)coder
+-(nullable instancetype)initWithCoder:(nonnull NSCoder *)coder
 {
     if ( (self = [super initWithCoder:coder]) ) {
-        anchorLayer  = [coder decodeObjectForKey:@"CPTLayerAnnotation.anchorLayer"];
-        xConstraints = [coder decodeObjectForKey:@"CPTLayerAnnotation.xConstraints"];
-        yConstraints = [coder decodeObjectForKey:@"CPTLayerAnnotation.yConstraints"];
-        rectAnchor   = (CPTRectAnchor)[coder decodeIntegerForKey : @"CPTLayerAnnotation.rectAnchor"];
+        anchorLayer = [coder decodeObjectOfClass:[CPTLayer class]
+                                          forKey:@"CPTLayerAnnotation.anchorLayer"];
+        xConstraints = [coder decodeObjectOfClass:[CPTConstraints class]
+                                           forKey:@"CPTLayerAnnotation.xConstraints"];
+        yConstraints = [coder decodeObjectOfClass:[CPTConstraints class]
+                                           forKey:@"CPTLayerAnnotation.yConstraints"];
+        rectAnchor = (CPTRectAnchor)[coder decodeIntegerForKey:@"CPTLayerAnnotation.rectAnchor"];
     }
     return self;
 }
@@ -154,6 +159,18 @@
             [content pixelAlign];
         }
     }
+}
+
+/// @endcond
+
+#pragma mark -
+#pragma mark NSSecureCoding Methods
+
+/// @cond
+
++(BOOL)supportsSecureCoding
+{
+    return YES;
 }
 
 /// @endcond

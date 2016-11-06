@@ -10,7 +10,7 @@
  **/
 @implementation CPTBorderLayer
 
-/** @property CPTBorderedLayer *maskedLayer
+/** @property nullable CPTBorderedLayer *maskedLayer
  *  @brief The CPTBorderedLayer masked being masked.
  *  Its fill and border are drawn into this layer so that they are outside the mask applied to the @par{maskedLayer}.
  **/
@@ -31,7 +31,7 @@
  *  @param newFrame The frame rectangle.
  *  @return The initialized CPTBorderLayer object.
  **/
--(instancetype)initWithFrame:(CGRect)newFrame
+-(nonnull instancetype)initWithFrame:(CGRect)newFrame
 {
     if ( (self = [super initWithFrame:newFrame]) ) {
         maskedLayer = nil;
@@ -45,7 +45,7 @@
 
 /// @cond
 
--(instancetype)initWithLayer:(id)layer
+-(nonnull instancetype)initWithLayer:(nonnull id)layer
 {
     if ( (self = [super initWithLayer:layer]) ) {
         CPTBorderLayer *theLayer = (CPTBorderLayer *)layer;
@@ -62,19 +62,32 @@
 
 /// @cond
 
--(void)encodeWithCoder:(NSCoder *)coder
+-(void)encodeWithCoder:(nonnull NSCoder *)coder
 {
     [super encodeWithCoder:coder];
 
     [coder encodeObject:self.maskedLayer forKey:@"CPTBorderLayer.maskedLayer"];
 }
 
--(instancetype)initWithCoder:(NSCoder *)coder
+-(nullable instancetype)initWithCoder:(nonnull NSCoder *)coder
 {
     if ( (self = [super initWithCoder:coder]) ) {
-        maskedLayer = [coder decodeObjectForKey:@"CPTBorderLayer.maskedLayer"];
+        maskedLayer = [coder decodeObjectOfClass:[CPTBorderedLayer class]
+                                          forKey:@"CPTBorderLayer.maskedLayer"];
     }
     return self;
+}
+
+/// @endcond
+
+#pragma mark -
+#pragma mark NSSecureCoding Methods
+
+/// @cond
+
++(BOOL)supportsSecureCoding
+{
+    return YES;
 }
 
 /// @endcond
@@ -84,7 +97,7 @@
 
 /// @cond
 
--(void)renderAsVectorInContext:(CGContextRef)context
+-(void)renderAsVectorInContext:(nonnull CGContextRef)context
 {
     if ( self.hidden ) {
         return;
@@ -130,12 +143,12 @@
     }
 }
 
--(NSSet *)sublayersExcludedFromAutomaticLayout
+-(nullable CPTSublayerSet *)sublayersExcludedFromAutomaticLayout
 {
     CPTBorderedLayer *excludedLayer = self.maskedLayer;
 
     if ( excludedLayer ) {
-        NSMutableSet *excludedSublayers = [[super sublayersExcludedFromAutomaticLayout] mutableCopy];
+        CPTMutableSublayerSet *excludedSublayers = [super.sublayersExcludedFromAutomaticLayout mutableCopy];
         if ( !excludedSublayers ) {
             excludedSublayers = [NSMutableSet set];
         }
@@ -143,7 +156,7 @@
         return excludedSublayers;
     }
     else {
-        return [super sublayersExcludedFromAutomaticLayout];
+        return super.sublayersExcludedFromAutomaticLayout;
     }
 }
 
@@ -154,7 +167,7 @@
 
 /// @cond
 
--(void)setMaskedLayer:(CPTBorderedLayer *)newLayer
+-(void)setMaskedLayer:(nullable CPTBorderedLayer *)newLayer
 {
     if ( newLayer != maskedLayer ) {
         maskedLayer = newLayer;
@@ -165,7 +178,7 @@
 -(void)setBounds:(CGRect)newBounds
 {
     if ( !CGRectEqualToRect(newBounds, self.bounds) ) {
-        [super setBounds:newBounds];
+        super.bounds = newBounds;
         [self setNeedsLayout];
     }
 }

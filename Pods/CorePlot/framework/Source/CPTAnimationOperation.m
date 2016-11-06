@@ -6,7 +6,7 @@
 **/
 @implementation CPTAnimationOperation
 
-/** @property CPTAnimationPeriod *period
+/** @property nonnull CPTAnimationPeriod *period
  *  @brief The start value, end value, and duration of this animation operation.
  **/
 @synthesize period;
@@ -16,7 +16,7 @@
  **/
 @synthesize animationCurve;
 
-/** @property id boundObject
+/** @property nonnull id boundObject
  *  @brief The object to update for each animation frame.
  **/
 @synthesize boundObject;
@@ -31,7 +31,7 @@
  **/
 @synthesize boundSetter;
 
-/** @property __cpt_weak id<CPTAnimationDelegate>delegate
+/** @property nullable id<CPTAnimationDelegate>delegate
  *  @brief The animation delegate.
  **/
 @synthesize delegate;
@@ -41,12 +41,12 @@
  **/
 @synthesize canceled;
 
-/** @property id<NSCopying, NSObject> identifier
- *  @brief An object used to identify the layer in collections.
+/** @property nullable id<NSCopying, NSObject> identifier
+ *  @brief An object used to identify the animation operation in collections.
  **/
 @synthesize identifier;
 
-/** @property NSDictionary *userInfo
+/** @property nullable NSDictionary *userInfo
  *  @brief Application-specific user info that can be attached to the operation.
  **/
 @synthesize userInfo;
@@ -57,26 +57,32 @@
 /** @brief Initializes a newly allocated CPTAnimationOperation object.
  *
  *  This is the designated initializer. The initialized object will have the following properties:
- *  - @ref period = @nil
- *  - @ref animationCurve = #CPTAnimationCurveDefault
- *  - @ref boundObject = @nil
- *  - @ref boundGetter = @NULL
- *  - @ref boundSetter = @NULL
+ *  - @ref period = @par{animationPeriod}
+ *  - @ref animationCurve = @par{curve}
+ *  - @ref boundObject = @par{object}
+ *  - @ref boundGetter = @par{getter}
+ *  - @ref boundSetter = @par{setter}
  *  - @ref delegate = @nil
  *  - @ref canceled = @NO
  *  - @ref identifier = @nil
  *  - @ref userInfo = @nil
  *
+ *  @param animationPeriod The animation period.
+ *  @param curve The animation curve.
+ *  @param object The object to update for each animation frame.
+ *  @param getter The @ref boundObject getter method for the property to update for each animation frame.
+ *  @param setter The @ref boundObject setter method for the property to update for each animation frame.
+ *
  *  @return The initialized object.
  **/
--(instancetype)init
+-(nonnull instancetype)initWithAnimationPeriod:(nonnull CPTAnimationPeriod *)animationPeriod animationCurve:(CPTAnimationCurve)curve object:(nonnull id)object getter:(nonnull SEL)getter setter:(nonnull SEL)setter
 {
     if ( (self = [super init]) ) {
-        period         = nil;
-        animationCurve = CPTAnimationCurveDefault;
-        boundObject    = nil;
-        boundGetter    = NULL;
-        boundSetter    = NULL;
+        period         = animationPeriod;
+        animationCurve = curve;
+        boundObject    = object;
+        boundGetter    = getter;
+        boundSetter    = setter;
         delegate       = nil;
         canceled       = NO;
         identifier     = nil;
@@ -88,14 +94,29 @@
 
 /// @}
 
+/// @cond
+
+-(nonnull instancetype)init
+{
+    NSAssert(NO, @"Must call -initWithAnimationPeriod:animationCurve:object:getter:setter: to initialize a CPTAnimationOperation.");
+
+    return [self initWithAnimationPeriod:[[CPTAnimationPeriod alloc] init]
+                          animationCurve:CPTAnimationCurveDefault
+                                  object:[[NSObject alloc] init]
+                                  getter:@selector(init)
+                                  setter:@selector(init)];
+}
+
+/// @endcond
+
 #pragma mark -
 #pragma mark Description
 
 /// @cond
 
--(NSString *)description
+-(nullable NSString *)description
 {
-    return [NSString stringWithFormat:@"<%@ animate %@ %@ with period %@>", [super description], self.boundObject, NSStringFromSelector(self.boundGetter), self.period];
+    return [NSString stringWithFormat:@"<%@ animate %@ %@ with period %@>", super.description, self.boundObject, NSStringFromSelector(self.boundGetter), self.period];
 }
 
 /// @endcond

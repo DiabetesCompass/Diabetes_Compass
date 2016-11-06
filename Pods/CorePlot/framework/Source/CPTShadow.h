@@ -1,19 +1,19 @@
 @class CPTColor;
 
-@interface CPTShadow : NSObject<NSCoding, NSCopying, NSMutableCopying>
+@interface CPTShadow : NSObject<NSCopying, NSMutableCopying, NSCoding, NSSecureCoding>
 
 @property (nonatomic, readonly) CGSize shadowOffset;
 @property (nonatomic, readonly) CGFloat shadowBlurRadius;
-@property (nonatomic, readonly) CPTColor *shadowColor;
+@property (nonatomic, readonly, nullable) CPTColor *shadowColor;
 
 /// @name Factory Methods
 /// @{
-+(instancetype)shadow;
++(nonnull instancetype)shadow;
 /// @}
 
 /// @name Drawing
 /// @{
--(void)setShadowInContext:(CGContextRef)context;
+-(void)setShadowInContext:(nonnull CGContextRef)context;
 /// @}
 
 @end

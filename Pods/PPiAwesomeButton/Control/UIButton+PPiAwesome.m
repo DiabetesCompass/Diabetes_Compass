@@ -149,25 +149,31 @@ static char separationKey;
     self.layer.cornerRadius=radius;
 }
 
+- (void)setBorderWidth:(CGFloat)width
+           borderColor:(UIColor *)color{
+    [self.layer setBorderWidth:width];
+    [self.layer setBorderColor:color.CGColor];
+}
+
 #pragma mark -
 #pragma mark Touches
 
 - (void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
-	[super touchesBegan:touches withEvent:event];
     if([self isAwesome])
         [self updateButtonFormatForUIControlState:UIControlStateHighlighted];
+    [super touchesBegan:touches withEvent:event];
 }
 
 - (void) touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event {
-	[super touchesCancelled:touches withEvent:event];
     if([self isAwesome])
         [self updateButtonFormatForUIControlState:UIControlStateNormal];
+    [super touchesCancelled:touches withEvent:event];
 }
 
 - (void) touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
-    [super touchesEnded:touches withEvent:event];
-    //if([self isAwesome])
+    if([self isAwesome])
         [self updateButtonFormatForUIControlState:UIControlStateNormal];
+    [super touchesEnded:touches withEvent:event];
 }
 
 
@@ -255,12 +261,44 @@ static char separationKey;
 }
 
 // override enabled
--(void)setEnabled:(BOOL)enabled {
-    [super setEnabled:enabled];
+-(void)swizzle_setEnabled:(BOOL)enabled {
+    [self swizzle_setEnabled:enabled];
     if (enabled) {
         [self updateButtonFormatForUIControlState:UIControlStateNormal];
     } else {
         [self updateButtonFormatForUIControlState:UIControlStateDisabled];
     }
 }
+
++ (void)load {
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        Class class = [self class];
+        
+        // When swizzling a class method, use the following:
+        // Class class = object_getClass((id)self);
+        
+        SEL originalSelector = @selector(setEnabled:);
+        SEL swizzledSelector = @selector(swizzle_setEnabled:);
+        
+        Method originalMethod = class_getInstanceMethod(class, originalSelector);
+        Method swizzledMethod = class_getInstanceMethod(class, swizzledSelector);
+        
+        BOOL didAddMethod =
+        class_addMethod(class,
+                        originalSelector,
+                        method_getImplementation(swizzledMethod),
+                        method_getTypeEncoding(swizzledMethod));
+        
+        if (didAddMethod) {
+            class_replaceMethod(class,
+                                swizzledSelector,
+                                method_getImplementation(originalMethod),
+                                method_getTypeEncoding(originalMethod));
+        } else {
+            method_exchangeImplementations(originalMethod, swizzledMethod);
+        }
+    });
+}
+
 @end

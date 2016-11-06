@@ -13,14 +13,13 @@
 #pragma mark -
 #pragma mark Init/Dealloc
 
-/// @name Initialization
-/// @{
+/// @cond
 
--(instancetype)initWithContentLayer:(CPTLayer *)layer
+-(nonnull instancetype)initWithContentLayer:(nonnull CPTLayer *)layer
 {
     if ( layer ) {
         if ( (self = [super initWithContentLayer:layer]) ) {
-            self.rotation = NAN;
+            self.rotation = CPTNAN;
         }
     }
     else {
@@ -29,7 +28,7 @@
     return self;
 }
 
-/// @}
+/// @endcond
 
 #pragma mark -
 #pragma mark Label comparison
@@ -42,7 +41,7 @@
  *  @param object The object to be compared with the receiver.
  *  @return @YES if @par{object} is equal to the receiver, @NO otherwise.
  **/
--(BOOL)isEqual:(id)object
+-(BOOL)isEqual:(nullable id)object
 {
     if ( self == object ) {
         return YES;
@@ -56,7 +55,15 @@
         if ( ![self.contentLayer isEqual:otherTitle] ) {
             return NO;
         }
-        return CPTDecimalEquals(self.tickLocation, ( (CPTAxisLabel *)object ).tickLocation);
+
+        NSNumber *location = ( (CPTAxisLabel *)object ).tickLocation;
+
+        if ( location ) {
+            return [self.tickLocation isEqualToNumber:location];
+        }
+        else {
+            return NO;
+        }
     }
     else {
         return NO;
@@ -72,7 +79,7 @@
     NSUInteger hashValue = 0;
 
     // Equal objects must hash the same.
-    double tickLocationAsDouble = CPTDecimalDoubleValue(self.tickLocation);
+    double tickLocationAsDouble = self.tickLocation.doubleValue;
 
     if ( !isnan(tickLocationAsDouble) ) {
         hashValue = (NSUInteger)lrint( fmod(ABS(tickLocationAsDouble), (double)NSUIntegerMax) );
