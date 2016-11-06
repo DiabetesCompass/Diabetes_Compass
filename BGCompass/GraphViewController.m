@@ -337,7 +337,7 @@
     thinWhiteStyle.lineColor = [[CPTColor whiteColor] colorWithAlphaComponent:0.15f];
     thinWhiteStyle.lineWidth = 1.0f;
     
-    x.majorIntervalLength = [[NSNumber numberWithInt:30] decimalValue];
+    x.majorIntervalLength = [NSNumber numberWithInt:30]];
     x.minorTicksPerInterval = 1;
     x.majorTickLineStyle = clearStyle;
     x.minorTickLineStyle = clearStyle;
@@ -351,7 +351,7 @@
     whiteText.color = [[CPTColor whiteColor] colorWithAlphaComponent:1.0f];
     x.labelTextStyle = whiteText;
     
-    y.majorIntervalLength = [[NSNumber numberWithFloat:(max_range/3)] decimalValue];
+    y.majorIntervalLength = [NSNumber numberWithFloat:(max_range/3)];
     y.minorTicksPerInterval = 1;
     y.majorTickLineStyle = clearStyle;
     y.minorTickLineStyle = clearStyle;
