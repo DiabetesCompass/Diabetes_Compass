@@ -414,7 +414,7 @@
     NSMutableArray *customLabels = [NSMutableArray arrayWithCapacity:[xAxisLabels count]];
     for (NSNumber *location in labelLocations) {
         CPTAxisLabel *newLabel = [[CPTAxisLabel alloc] initWithText: [xAxisLabels objectAtIndex:labelLocation++] textStyle:x.labelTextStyle];
-        newLabel.tickLocation = [location decimalValue];
+        newLabel.tickLocation = location;
         newLabel.offset = x.labelOffset + x.majorTickLength;
         
 
@@ -448,7 +448,7 @@
     customLabels = [NSMutableArray arrayWithCapacity:[yAxisLabels count]];
     for (NSNumber *tickLocation in customTickLocations) {
         CPTAxisLabel *newLabel = [[CPTAxisLabel alloc] initWithText: [yAxisLabels objectAtIndex:labelLocation++] textStyle:y.labelTextStyle];
-        newLabel.tickLocation = [tickLocation decimalValue];
+        newLabel.tickLocation = tickLocation;
         newLabel.offset = y.labelOffset + y.majorTickLength;
         [customLabels addObject:newLabel];
     }
