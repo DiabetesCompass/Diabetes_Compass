@@ -208,7 +208,7 @@
         [self updateLabels];
         if ([newRange lengthDouble] < 90) {
             return [CPTPlotRange plotRangeWithLocation:[newRange location]
-                                                length: [NSNumber numberWithInt:90]];
+                                                length: [NSNumber numberWithFloat: 90]];
         }
     }
     return newRange;
