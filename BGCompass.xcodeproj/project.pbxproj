@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		176AF338B70A0324DC32D7D4 /* Pods_BGCompassTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FEE93CFE190E071FBBDD0B97 /* Pods_BGCompassTests.framework */; };
+		263F7A7654A4CEDAFD7A44B7 /* libPods-BGCompassTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 93F419889DB780CD5430F893 /* libPods-BGCompassTests.a */; };
 		2C0739911840342000B413BE /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2C233120182B6C82008A6F88 /* InfoPlist.strings */; };
 		2C1334531854DA0800CECB76 /* CollapsedTrendMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2C1334521854DA0800CECB76 /* CollapsedTrendMenu.xib */; };
 		2C1334561854DA2000CECB76 /* CollapsedTrendMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C1334551854DA2000CECB76 /* CollapsedTrendMenu.m */; };
@@ -135,7 +135,7 @@
 		83EAFABD182F521000CE5FA9 /* BGReading.m in Sources */ = {isa = PBXBuildFile; fileRef = 83EAFABA182F521000CE5FA9 /* BGReading.m */; };
 		83FD930E1830529600F4F19E /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = 83FD930D1830529600F4F19E /* Constants.m */; };
 		845D246A1BA52C2F00981091 /* WarningViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 845D24691BA52C2F00981091 /* WarningViewController.m */; };
-		F50B7C400FB640842A39B767 /* Pods_BGCompass.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CFB80745219C33121D284861 /* Pods_BGCompass.framework */; };
+		A54FA2F73D40CA0B36D34869 /* libPods-BGCompass.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3133369E67CCE31E3141673B /* libPods-BGCompass.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -284,6 +284,7 @@
 		2CD96E8018C2FCF100361C64 /* EditItemViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditItemViewController.m; sourceTree = "<group>"; };
 		2CF6D27218480F3E00872B8F /* compass.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = compass.png; sourceTree = "<group>"; };
 		2CF6D2741848121200872B8F /* solid.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = solid.png; sourceTree = "<group>"; };
+		3133369E67CCE31E3141673B /* libPods-BGCompass.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BGCompass.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7FC63F7E66C515C78A6B48C4 /* Pods-BGCompassTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BGCompassTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-BGCompassTests/Pods-BGCompassTests.release.xcconfig"; sourceTree = "<group>"; };
 		8337DF2B18EA332A00055E59 /* UPCScannerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UPCScannerViewController.h; sourceTree = "<group>"; };
 		8337DF2C18EA332A00055E59 /* UPCScannerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UPCScannerViewController.m; sourceTree = "<group>"; };
@@ -331,9 +332,8 @@
 		845D24691BA52C2F00981091 /* WarningViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WarningViewController.m; sourceTree = "<group>"; };
 		848D6EAF19CC023F003C611F /* BGCompass.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = BGCompass.entitlements; sourceTree = "<group>"; };
 		8BDCB62A0108EFA37CBB1497 /* Pods-BGCompass.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BGCompass.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BGCompass/Pods-BGCompass.debug.xcconfig"; sourceTree = "<group>"; };
-		CFB80745219C33121D284861 /* Pods_BGCompass.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BGCompass.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		93F419889DB780CD5430F893 /* libPods-BGCompassTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BGCompassTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA8767A213B9617639CF29F3 /* Pods-BGCompassTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BGCompassTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BGCompassTests/Pods-BGCompassTests.debug.xcconfig"; sourceTree = "<group>"; };
-		FEE93CFE190E071FBBDD0B97 /* Pods_BGCompassTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BGCompassTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -346,7 +346,7 @@
 				2C2330F3182B6C82008A6F88 /* CoreData.framework in Frameworks */,
 				2C2330F1182B6C82008A6F88 /* UIKit.framework in Frameworks */,
 				2C2330ED182B6C82008A6F88 /* Foundation.framework in Frameworks */,
-				F50B7C400FB640842A39B767 /* Pods_BGCompass.framework in Frameworks */,
+				A54FA2F73D40CA0B36D34869 /* libPods-BGCompass.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -358,7 +358,7 @@
 				2C23311A182B6C82008A6F88 /* CoreData.framework in Frameworks */,
 				2C233119182B6C82008A6F88 /* UIKit.framework in Frameworks */,
 				2C233118182B6C82008A6F88 /* Foundation.framework in Frameworks */,
-				176AF338B70A0324DC32D7D4 /* Pods_BGCompassTests.framework in Frameworks */,
+				263F7A7654A4CEDAFD7A44B7 /* libPods-BGCompassTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -395,8 +395,8 @@
 				2C2330F0182B6C82008A6F88 /* UIKit.framework */,
 				2C2330F2182B6C82008A6F88 /* CoreData.framework */,
 				2C233116182B6C82008A6F88 /* XCTest.framework */,
-				CFB80745219C33121D284861 /* Pods_BGCompass.framework */,
-				FEE93CFE190E071FBBDD0B97 /* Pods_BGCompassTests.framework */,
+				3133369E67CCE31E3141673B /* libPods-BGCompass.a */,
+				93F419889DB780CD5430F893 /* libPods-BGCompassTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";

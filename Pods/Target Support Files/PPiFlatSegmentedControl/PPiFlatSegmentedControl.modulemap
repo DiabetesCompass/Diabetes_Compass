@@ -1,6 +1,0 @@
-framework module PPiFlatSegmentedControl {
-  umbrella header "PPiFlatSegmentedControl-umbrella.h"
-
-  export *
-  module * { export * }
-}
