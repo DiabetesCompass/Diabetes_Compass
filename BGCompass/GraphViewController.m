@@ -337,7 +337,7 @@
     thinWhiteStyle.lineColor = [[CPTColor whiteColor] colorWithAlphaComponent:0.15f];
     thinWhiteStyle.lineWidth = 1.0f;
     
-    x.majorIntervalLength = [NSNumber numberWithInt:30]];
+    x.majorIntervalLength = [NSNumber numberWithInt:30];
     x.minorTicksPerInterval = 1;
     x.majorTickLineStyle = clearStyle;
     x.minorTickLineStyle = clearStyle;
