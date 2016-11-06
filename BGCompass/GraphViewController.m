@@ -465,9 +465,12 @@
     NSLog(@"The value of max_range is: %d", max_range);
     if (self.graph) {
         CPTXYPlotSpace *plotSpace = (CPTXYPlotSpace *)self.graph.defaultPlotSpace;
-        self.range = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromFloat(0) length:CPTDecimalFromFloat(max_range)];
+        self.range = [CPTPlotRange plotRangeWithLocation: [NSNumber numberWithFloat: 0]
+                                                  length: [NSNumber numberWithFloat: max_range]];
         plotSpace.yRange = self.range;
-        plotSpace.globalYRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromFloat(0) length:CPTDecimalFromFloat(max_range)];
+        plotSpace.globalYRange = [CPTPlotRange
+                                  plotRangeWithLocation: [NSNumber numberWithFloat: 0]
+                                  length: [NSNumber numberWithFloat:max_range]];
         [self updateLabels];
         return;
     }
@@ -497,12 +500,19 @@
     plotSpace.allowsUserInteraction = YES;
     //plotSpace.allowsMomentum = YES; //this is buggy. And doesn't even help.
     
-    plotSpace.xRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromFloat(0) length:CPTDecimalFromFloat(PREDICT_MINUTES)];
-    self.range = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromFloat(0) length:CPTDecimalFromFloat(max_range)];
+    plotSpace.xRange = [CPTPlotRange
+                        plotRangeWithLocation: [NSNumber numberWithFloat: 0]
+                        length: [NSNumber numberWithFloat: PREDICT_MINUTES]];
+    self.range = [CPTPlotRange plotRangeWithLocation: [NSNumber numberWithFloat: 0]
+                                              length: [NSNumber numberWithFloat: max_range]];
+
     plotSpace.yRange = self.range;
     plotSpace.delegate = self;
-    
-    plotSpace.globalXRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromFloat(0) length:CPTDecimalFromInteger(PREDICT_MINUTES+[[CurveModel sharedInstance] getInsulinDuration])];
+
+    plotSpace.globalXRange = [CPTPlotRange
+                              plotRangeWithLocation: [NSNumber numberWithFloat: 0]
+                              length: [NSNumber numberWithInt: PREDICT_MINUTES
+                                       + [[CurveModel sharedInstance] getInsulinDuration]]];
     plotSpace.globalYRange = self.range;
 
     [self updateLabels];
