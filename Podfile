@@ -8,9 +8,9 @@ target 'BGCompass' do
 # Pods for BGCompass
 
 pod 'MagicalRecord'
-pod 'RestKit', '~> 0.20.3'
-pod 'RestKit/Testing', '~> 0.20.3'
-pod 'RestKit/Search', '~> 0.20.3'
+pod 'RestKit', '~> 0.27.0'
+pod 'RestKit/Testing', '~> 0.27.0'
+pod 'RestKit/Search', '~> 0.27.0'
 pod 'CorePlot', '~> 2.2'
 pod 'PPiFlatSegmentedControl', '~> 1.4.0'
 pod 'JVFloatLabeledTextField'

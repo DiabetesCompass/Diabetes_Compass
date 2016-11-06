@@ -23,17 +23,15 @@
 #import "RKRelationshipMapping.h"
 #import "RKPropertyInspector.h"
 #import "RKLog.h"
-#import "RKISO8601DateFormatter.h"
 #import "RKAttributeMapping.h"
 #import "RKRelationshipMapping.h"
+#import "RKValueTransformers.h"
+#import "ISO8601DateFormatterValueTransformer.h"
 
-typedef NSString * (^RKSourceToDesinationKeyTransformationBlock)(RKObjectMapping *, NSString *sourceKey);
+typedef NSString * (^RKSourceToDesinationKeyTransformationBlock)(RKObjectMapping *, NSString *);
 
 // Constants
 NSString * const RKObjectMappingNestingAttributeKeyName = @"<RK_NESTING_ATTRIBUTE>";
-
-// Private declaration
-NSDate *RKDateFromStringWithFormatters(NSString *dateString, NSArray *formatters);
 
 static RKSourceToDesinationKeyTransformationBlock defaultSourceToDestinationKeyTransformationBlock = nil;
 
@@ -45,13 +43,13 @@ static RKSourceToDesinationKeyTransformationBlock defaultSourceToDestinationKeyT
 @property (nonatomic, strong) RKObjectMapping *mapping;
 @property (nonatomic, strong) NSMutableDictionary *invertedMappings;
 
-- (id)initWithMapping:(RKObjectMapping *)mapping;
+- (instancetype)initWithMapping:(RKObjectMapping *)mapping;
 - (RKObjectMapping *)inverseMappingWithPredicate:(BOOL (^)(RKPropertyMapping *propertyMapping))predicate;
 @end
 
 @implementation RKMappingInverter
 
-- (id)initWithMapping:(RKObjectMapping *)mapping
+- (instancetype)initWithMapping:(RKObjectMapping *)mapping
 {
     self = [self init];
     if (self) {
@@ -65,12 +63,14 @@ static RKSourceToDesinationKeyTransformationBlock defaultSourceToDestinationKeyT
 {
     // Use an NSValue to obtain a non-copied key into our inversed mappings dictionary
     NSValue *dictionaryKey = [NSValue valueWithNonretainedObject:mapping];
-    RKObjectMapping *inverseMapping = [self.invertedMappings objectForKey:dictionaryKey];
+    RKObjectMapping *inverseMapping = (self.invertedMappings)[dictionaryKey];
     if (inverseMapping) return inverseMapping;
     
-    inverseMapping = [RKObjectMapping mappingForClass:[NSMutableDictionary class]];
-    [self.invertedMappings setObject:inverseMapping forKey:dictionaryKey];
+    inverseMapping = [RKObjectMapping requestMapping];
+    (self.invertedMappings)[dictionaryKey] = inverseMapping;
     [inverseMapping copyPropertiesFromMapping:mapping];
+    // We want to serialize `nil` values
+    inverseMapping.assignsDefaultValueForMissingAttributes = YES;
     
     for (RKAttributeMapping *attributeMapping in mapping.attributeMappings) {
         if (predicate && !predicate(attributeMapping)) continue;
@@ -104,7 +104,14 @@ static RKSourceToDesinationKeyTransformationBlock defaultSourceToDestinationKeyT
 
 @interface RKObjectMapping ()
 @property (nonatomic, weak, readwrite) Class objectClass;
-@property (nonatomic, strong) NSMutableArray *mutablePropertyMappings;
+@property (nonatomic, copy, readwrite) NSArray *propertyMappings;
+
+@property (nonatomic, strong) NSArray *relationshipMappings;
+@property (nonatomic, strong) NSArray *attributeMappings;
+@property (nonatomic, strong) NSArray *keyAttributeMappings;
+@property (nonatomic, strong) NSArray *keyPathAttributeMappings;
+@property (nonatomic, strong) NSMutableDictionary *propertiesBySourceKeyPath;
+@property (nonatomic, strong) NSMutableDictionary *propertiesByDestinationKeyPath;
 
 @property (nonatomic, weak, readonly) NSArray *mappedKeyPaths;
 @property (nonatomic, copy) RKSourceToDesinationKeyTransformationBlock sourceToDestinationKeyTransformationBlock;
@@ -126,20 +133,49 @@ static RKSourceToDesinationKeyTransformationBlock defaultSourceToDestinationKeyT
                                                NSStringFromClass(self)]
                                      userInfo:nil];
     }
-    return [self mappingForClass:[NSMutableDictionary class]];
+
+    // TODO: Hook up value transformers from `RKObjectParameterization`
+    RKObjectMapping *objectMapping = [self mappingForClass:[NSMutableDictionary class]];
+    objectMapping.assignsDefaultValueForMissingAttributes = YES;
+    return objectMapping;
 }
 
-- (id)initWithClass:(Class)objectClass
++ (void)initialize
+{
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        // Add an ISO8601DateFormatter to the transformation stack for backwards compatibility
+        RKISO8601DateFormatter *dateFormatter = [RKISO8601DateFormatter defaultISO8601DateFormatter];
+        [[RKValueTransformer defaultValueTransformer] insertValueTransformer:dateFormatter atIndex:0];
+    });
+}
+
+// Compiler requires we override this.
+- (instancetype)init
+{
+    self = [self initWithClass:nil];
+    NSAssert(NO, @"Failed to call designated initializer of %@", self);
+    return self;
+}
+
+- (instancetype)initWithClass:(Class)objectClass
 {
     self = [super init];
     if (self) {
         self.objectClass = objectClass;
-        self.mutablePropertyMappings = [NSMutableArray new];
-        self.setDefaultValueForMissingAttributes = NO;
-        self.setNilForMissingRelationships = NO;
+        self.propertyMappings = [NSArray new];
+        self.relationshipMappings = [NSArray new];
+        self.attributeMappings = [NSArray new];
+        self.keyAttributeMappings = [NSArray new];
+        self.keyPathAttributeMappings = [NSArray new];
+        self.propertiesBySourceKeyPath = [NSMutableDictionary new];
+        self.propertiesByDestinationKeyPath = [NSMutableDictionary new];
+        self.assignsDefaultValueForMissingAttributes = NO;
+        self.assignsNilForMissingRelationships = NO;
         self.forceCollectionMapping = NO;
-        self.performKeyValueValidation = YES;
+        self.performsKeyValueValidation = YES;
         self.sourceToDestinationKeyTransformationBlock = defaultSourceToDestinationKeyTransformationBlock;
+        self.valueTransformer = [[RKValueTransformer defaultValueTransformer] copy];
     }
 
     return self;
@@ -147,21 +183,18 @@ static RKSourceToDesinationKeyTransformationBlock defaultSourceToDestinationKeyT
 
 - (void)copyPropertiesFromMapping:(RKObjectMapping *)mapping
 {
-    self.setDefaultValueForMissingAttributes = mapping.setDefaultValueForMissingAttributes;
-    self.setNilForMissingRelationships = mapping.setNilForMissingRelationships;
+    self.assignsDefaultValueForMissingAttributes = mapping.assignsDefaultValueForMissingAttributes;
+    self.assignsNilForMissingRelationships = mapping.assignsNilForMissingRelationships;
     self.forceCollectionMapping = mapping.forceCollectionMapping;
-    self.performKeyValueValidation = mapping.performKeyValueValidation;
-    self.dateFormatters = mapping.dateFormatters;
-    self.preferredDateFormatter = mapping.preferredDateFormatter;
-    self.sourceToDestinationKeyTransformationBlock = self.sourceToDestinationKeyTransformationBlock;
+    self.performsKeyValueValidation = mapping.performsKeyValueValidation;
+    self.valueTransformer = mapping.valueTransformer;
+    self.sourceToDestinationKeyTransformationBlock = mapping.sourceToDestinationKeyTransformationBlock;
 }
 
 - (id)copyWithZone:(NSZone *)zone
 {
-    RKObjectMapping *copy = [[[self class] allocWithZone:zone] init];
-    copy.objectClass = self.objectClass;
+    RKObjectMapping *copy = [[[self class] allocWithZone:zone] initWithClass:self.objectClass];
     [copy copyPropertiesFromMapping:self];
-    copy.mutablePropertyMappings = [NSMutableArray new];
 
     for (RKPropertyMapping *propertyMapping in self.propertyMappings) {
         [copy addPropertyMapping:[propertyMapping copy]];
@@ -175,31 +208,14 @@ static RKSourceToDesinationKeyTransformationBlock defaultSourceToDestinationKeyT
     defaultSourceToDestinationKeyTransformationBlock = block;
 }
 
-- (NSArray *)propertyMappings
-{
-    return [NSArray arrayWithArray:_mutablePropertyMappings];
-}
-
 - (NSDictionary *)propertyMappingsBySourceKeyPath
 {
-    NSMutableDictionary *dictionary = [NSMutableDictionary dictionaryWithCapacity:[self.propertyMappings count]];
-    for (RKPropertyMapping *propertyMapping in self.propertyMappings) {
-        if (! propertyMapping.sourceKeyPath) continue;
-        [dictionary setObject:propertyMapping forKey:propertyMapping.sourceKeyPath];
-    }
-    
-    return dictionary;
+    return [self.propertiesBySourceKeyPath copy];
 }
 
 - (NSDictionary *)propertyMappingsByDestinationKeyPath
 {
-    NSMutableDictionary *dictionary = [NSMutableDictionary dictionaryWithCapacity:[self.propertyMappings count]];
-    for (RKPropertyMapping *propertyMapping in self.propertyMappings) {
-        if (! propertyMapping.destinationKeyPath) continue;
-        [dictionary setObject:propertyMapping forKey:propertyMapping.destinationKeyPath];
-    }
-    
-    return dictionary;
+    return [self.propertiesByDestinationKeyPath copy];
 }
 
 - (NSArray *)mappedKeyPaths
@@ -209,36 +225,64 @@ static RKSourceToDesinationKeyTransformationBlock defaultSourceToDestinationKeyT
 
 - (NSArray *)attributeMappings
 {
-    NSMutableArray *mappings = [NSMutableArray array];
-    for (RKAttributeMapping *mapping in self.propertyMappings) {
-        if ([mapping isMemberOfClass:[RKAttributeMapping class]]) {
-            [mappings addObject:mapping];
-        }
-    }
-
-    return mappings;
+    return _attributeMappings;
 }
 
 - (NSArray *)relationshipMappings
 {
-    NSMutableArray *mappings = [NSMutableArray array];
-    for (RKAttributeMapping *mapping in self.propertyMappings) {
-        if ([mapping isMemberOfClass:[RKRelationshipMapping class]]) {
-            [mappings addObject:mapping];
-        }
-    }
+    return _relationshipMappings;
+}
 
-    return mappings;
+- (NSArray *)keyAttributeMappings
+{
+    return _keyAttributeMappings;
+}
+
+- (NSArray *)keyPathAttributeMappings
+{
+    return _keyPathAttributeMappings;
+}
+
+static NSArray *RKAddProperty(NSArray *array, RKPropertyMapping *mapping)
+{
+    return (array)? [array arrayByAddingObject:mapping] : @[mapping];
+}
+
+static NSArray *RKRemoveProperty(NSArray *array, RKPropertyMapping *mapping)
+{
+    if (![array containsObject:mapping]) return array;
+    NSMutableArray *mappings = [[NSMutableArray alloc] initWithArray:array]; //alloc/init avoids autorelease
+    [mappings removeObject:mapping];
+    return [mappings copy];
 }
 
 - (void)addPropertyMapping:(RKPropertyMapping *)propertyMapping
 {
     NSAssert1([[self mappedKeyPaths] containsObject:propertyMapping.destinationKeyPath] == NO,
               @"Unable to add mapping for keyPath %@, one already exists...", propertyMapping.destinationKeyPath);
-    NSAssert(self.mutablePropertyMappings, @"self.mutablePropertyMappings is nil");
+    NSAssert(self.propertyMappings, @"self.propertyMappings is nil");
     NSAssert(propertyMapping.objectMapping == nil, @"Cannot add a property mapping object that has already been added to another `RKObjectMapping` object. You probably want to obtain a copy of the mapping: `[propertyMapping copy]`");
     propertyMapping.objectMapping = self;
-    [self.mutablePropertyMappings addObject:propertyMapping];
+    self.propertyMappings = [self.propertyMappings arrayByAddingObject:propertyMapping];
+    [self.propertiesBySourceKeyPath setObject:propertyMapping forKey:propertyMapping.sourceKeyPath ?: [NSNull null]];
+    if (propertyMapping.destinationKeyPath) (self.propertiesByDestinationKeyPath)[propertyMapping.destinationKeyPath] = propertyMapping;
+    if ([propertyMapping isMemberOfClass:[RKRelationshipMapping class]]) {
+        self.relationshipMappings = RKAddProperty(self.relationshipMappings, propertyMapping);
+    }
+    else if ([propertyMapping isMemberOfClass:[RKAttributeMapping class]])
+    {
+        self.attributeMappings = RKAddProperty(self.attributeMappings, propertyMapping);
+        if ([propertyMapping.sourceKeyPath rangeOfString:@"." options:NSLiteralSearch].length == 0) {
+            self.keyAttributeMappings = RKAddProperty(self.keyAttributeMappings, propertyMapping);
+        }
+        else {
+            self.keyPathAttributeMappings = RKAddProperty(self.keyPathAttributeMappings, propertyMapping);
+        }
+    }
+    
+    if (propertyMapping.propertyValueClass == Nil && ![self.objectClass isSubclassOfClass:[NSDictionary class]]) {
+        propertyMapping.propertyValueClass = [self classForKeyPath:propertyMapping.destinationKeyPath];
+    }
 }
 
 - (void)addPropertyMappingsFromArray:(NSArray *)arrayOfPropertyMappings
@@ -257,31 +301,24 @@ static RKSourceToDesinationKeyTransformationBlock defaultSourceToDestinationKeyT
 
 - (id)mappingForSourceKeyPath:(NSString *)sourceKeyPath
 {
-    for (RKPropertyMapping *mapping in self.propertyMappings) {
-        if ([mapping.sourceKeyPath isEqualToString:sourceKeyPath]) {
-            return mapping;
-        }
-    }
-
-    return nil;
+    return _propertiesBySourceKeyPath[sourceKeyPath ?: [NSNull null]];
 }
 
 - (id)mappingForDestinationKeyPath:(NSString *)destinationKeyPath
 {
-    for (RKPropertyMapping *mapping in self.propertyMappings) {
-        if ([mapping.destinationKeyPath isEqualToString:destinationKeyPath]) {
-            return mapping;
-        }
-    }
-
-    return nil;
+    return _propertiesByDestinationKeyPath[destinationKeyPath];
 }
 
 // Evaluate each component individually so that camelization, etc. considers each component individually
 - (NSString *)transformSourceKeyPath:(NSString *)keyPath
 {
     if (!self.sourceToDestinationKeyTransformationBlock) return keyPath;
-    
+
+    NSRange dotRange = [keyPath rangeOfString:@"." options:NSLiteralSearch];
+    if (dotRange.length == 0) {
+        return self.sourceToDestinationKeyTransformationBlock(self, keyPath);
+    }
+
     NSArray *components = [keyPath componentsSeparatedByString:@"."];
     NSMutableArray *mutableComponents = [NSMutableArray arrayWithCapacity:[components count]];
     [components enumerateObjectsUsingBlock:^(id component, NSUInteger idx, BOOL *stop) {
@@ -294,7 +331,7 @@ static RKSourceToDesinationKeyTransformationBlock defaultSourceToDestinationKeyT
 - (void)addAttributeMappingsFromDictionary:(NSDictionary *)keyPathToAttributeNames
 {
     for (NSString *attributeKeyPath in keyPathToAttributeNames) {
-        [self addPropertyMapping:[RKAttributeMapping attributeMappingFromKeyPath:attributeKeyPath toKeyPath:[keyPathToAttributeNames objectForKey:attributeKeyPath]]];
+        [self addPropertyMapping:[RKAttributeMapping attributeMappingFromKeyPath:attributeKeyPath toKeyPath:keyPathToAttributeNames[attributeKeyPath]]];
     }
 }
 
@@ -328,9 +365,15 @@ static RKSourceToDesinationKeyTransformationBlock defaultSourceToDestinationKeyT
 
 - (void)removePropertyMapping:(RKPropertyMapping *)attributeOrRelationshipMapping
 {
-    if ([self.mutablePropertyMappings containsObject:attributeOrRelationshipMapping]) {
+    if ([self.propertyMappings containsObject:attributeOrRelationshipMapping]) {
         attributeOrRelationshipMapping.objectMapping = nil;
-        [self.mutablePropertyMappings removeObject:attributeOrRelationshipMapping];
+        self.propertyMappings = RKRemoveProperty(self.propertyMappings, attributeOrRelationshipMapping);
+        self.relationshipMappings = RKRemoveProperty(self.relationshipMappings, attributeOrRelationshipMapping);
+        self.attributeMappings = RKRemoveProperty(self.attributeMappings, attributeOrRelationshipMapping);
+        self.keyAttributeMappings = RKRemoveProperty(self.keyAttributeMappings, attributeOrRelationshipMapping);
+        self.keyPathAttributeMappings = RKRemoveProperty(self.keyPathAttributeMappings, attributeOrRelationshipMapping);
+        [self.propertiesBySourceKeyPath removeObjectForKey:attributeOrRelationshipMapping.sourceKeyPath ?: [NSNull null]];
+        [self.propertiesByDestinationKeyPath removeObjectForKey:attributeOrRelationshipMapping.destinationKeyPath ?: [NSNull null]];
     }
 }
 
@@ -389,26 +432,22 @@ static RKSourceToDesinationKeyTransformationBlock defaultSourceToDestinationKeyT
 
 - (Class)classForKeyPath:(NSString *)keyPath
 {
+    if (keyPath == nil) return self.objectClass;
+
+    RKPropertyInspector *inspector = [RKPropertyInspector sharedInspector];
+
+    if ([keyPath rangeOfString:@"." options:NSLiteralSearch].length == 0) {
+        return [inspector classForPropertyNamed:keyPath ofClass:self.objectClass isPrimitive:nil];
+    }
+
     NSArray *components = [keyPath componentsSeparatedByString:@"."];
     Class propertyClass = self.objectClass;
     for (NSString *property in components) {
-        propertyClass = [[RKPropertyInspector sharedInspector] classForPropertyNamed:property ofClass:propertyClass isPrimitive:nil];
+        propertyClass = [inspector classForPropertyNamed:property ofClass:propertyClass isPrimitive:nil];
         if (! propertyClass) break;
     }
 
     return propertyClass;
-}
-
-#pragma mark - Date and Time
-
-- (NSFormatter *)preferredDateFormatter
-{
-    return _preferredDateFormatter ?: [RKObjectMapping preferredDateFormatter];
-}
-
-- (NSArray *)dateFormatters
-{
-    return _dateFormatters ?: [RKObjectMapping defaultDateFormatters];
 }
 
 - (BOOL)isEqualToMapping:(RKObjectMapping *)otherMapping
@@ -427,7 +466,7 @@ static RKSourceToDesinationKeyTransformationBlock defaultSourceToDestinationKeyT
     if ([self.propertyMappings count] != [otherMapping.propertyMappings count]) return NO;
 
     for (RKPropertyMapping *propertyMapping in self.propertyMappings) {
-        RKPropertyMapping *otherPropertyMapping = [otherMapping mappingForSourceKeyPath:propertyMapping.sourceKeyPath];
+        RKPropertyMapping *otherPropertyMapping = [otherMapping mappingForDestinationKeyPath:propertyMapping.destinationKeyPath];
         if (! [propertyMapping isEqualToMapping:otherPropertyMapping]) return NO;
     }
 
@@ -438,45 +477,36 @@ static RKSourceToDesinationKeyTransformationBlock defaultSourceToDestinationKeyT
 
 /////////////////////////////////////////////////////////////////////////////
 
-static NSMutableArray *defaultDateFormatters = nil;
-static NSFormatter *preferredDateFormatter = nil;
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-implementations"
 
-@implementation RKObjectMapping (DateAndTimeFormatting)
+@implementation RKObjectMapping (LegacyDateAndTimeFormatting)
 
 + (NSArray *)defaultDateFormatters
 {
-    if (!defaultDateFormatters) [self resetDefaultDateFormatters];
-
-    return defaultDateFormatters;
-}
-
-+ (void)resetDefaultDateFormatters
-{    
-    defaultDateFormatters = [[NSMutableArray alloc] init];
-    
-    //NSNumberFormatter which creates dates from Unix timestamps
-    NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
-    numberFormatter.numberStyle = NSNumberFormatterDecimalStyle;
-    [self addDefaultDateFormatter:numberFormatter];
-    
-    RKISO8601DateFormatter *isoFormatter = [[RKISO8601DateFormatter alloc] init];
-    isoFormatter.parsesStrictly = YES;
-    [self addDefaultDateFormatter:isoFormatter];
-    
-    [self addDefaultDateFormatterForString:@"MM/dd/yyyy" inTimeZone:nil];
-    [self addDefaultDateFormatterForString:@"yyyy-MM-dd'T'HH:mm:ss'Z'" inTimeZone:nil];
-    [self addDefaultDateFormatterForString:@"yyyy-MM-dd" inTimeZone:nil];
+    NSArray *valueTransformers = [[RKValueTransformer defaultValueTransformer] valueTransformersForTransformingFromClass:[NSString class] toClass:[NSDate class]];
+    NSMutableArray *dateFormatters = [NSMutableArray arrayWithCapacity:[valueTransformers count]];
+    for (id<RKValueTransforming> valueTransformer in valueTransformers) {
+        if ([valueTransformer respondsToSelector:@selector(dateFromString:)]) [dateFormatters addObject:valueTransformer];
+    }
+    return dateFormatters;
 }
 
 + (void)setDefaultDateFormatters:(NSArray *)dateFormatters
 {
-    defaultDateFormatters = dateFormatters ? [[NSMutableArray alloc] initWithArray:dateFormatters] : [NSMutableArray array];
+    NSArray *defaultDateFormatters = [self defaultDateFormatters];
+    for (NSDateFormatter *dateFormatter in defaultDateFormatters) {
+        [[RKValueTransformer defaultValueTransformer] removeValueTransformer:dateFormatter];
+    }
+
+    for (NSDateFormatter *dateFormatter in dateFormatters) {
+        [[RKValueTransformer defaultValueTransformer] addValueTransformer:dateFormatter];
+    }
 }
 
 + (void)addDefaultDateFormatter:(id)dateFormatter
 {
-    [self defaultDateFormatters];
-    [defaultDateFormatters insertObject:dateFormatter atIndex:0];
+    [[RKValueTransformer defaultValueTransformer] insertValueTransformer:dateFormatter atIndex:0];
 }
 
 + (void)addDefaultDateFormatterForString:(NSString *)dateFormatString inTimeZone:(NSTimeZone *)nilOrTimeZone
@@ -484,72 +514,111 @@ static NSFormatter *preferredDateFormatter = nil;
     NSDateFormatter *dateFormatter = [NSDateFormatter new];
     dateFormatter.dateFormat = dateFormatString;
     dateFormatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
-    if (nilOrTimeZone) {
-        dateFormatter.timeZone = nilOrTimeZone;
-    } else {
-        dateFormatter.timeZone = [NSTimeZone timeZoneWithAbbreviation:@"UTC"];
-    }
-
+    dateFormatter.timeZone = nilOrTimeZone ?: [NSTimeZone timeZoneWithAbbreviation:@"UTC"];
     [self addDefaultDateFormatter:dateFormatter];
 }
 
 + (NSFormatter *)preferredDateFormatter
 {
-    if (!preferredDateFormatter) {
-        RKISO8601DateFormatter *iso8601Formatter = [[RKISO8601DateFormatter alloc] init];
-        iso8601Formatter.timeZone = [NSTimeZone timeZoneWithAbbreviation:@"UTC"];
-        iso8601Formatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
-        iso8601Formatter.includeTime = YES;
-        preferredDateFormatter = iso8601Formatter;
-    }
-
-    return preferredDateFormatter;
+    NSArray *defaultDateFormatters = [self defaultDateFormatters];
+    return [defaultDateFormatters count] ? defaultDateFormatters[0] : nil;
 }
 
 + (void)setPreferredDateFormatter:(NSDateFormatter *)dateFormatter
 {
-    preferredDateFormatter = dateFormatter;
+    [[RKValueTransformer defaultValueTransformer] insertValueTransformer:dateFormatter atIndex:0];
+}
+
+#pragma mark - Date and Time
+
+- (NSFormatter *)preferredDateFormatter
+{
+    if ([self.valueTransformer isKindOfClass:[RKCompoundValueTransformer class]]) {
+        NSArray *dateToStringTransformers = [(RKCompoundValueTransformer *)self.valueTransformer valueTransformersForTransformingFromClass:[NSDate class] toClass:[NSString class]];
+        for (id<RKValueTransforming> valueTransformer in dateToStringTransformers) {
+            if ([valueTransformer isKindOfClass:[NSFormatter class]]) return (NSFormatter *)valueTransformer;
+        }
+    }
+    return nil;
+}
+
+- (void)setPreferredDateFormatter:(NSFormatter *)preferredDateFormatter
+{
+    if ([self.valueTransformer isKindOfClass:[RKCompoundValueTransformer class]]) {
+        [(RKCompoundValueTransformer *)self.valueTransformer insertValueTransformer:(NSFormatter<RKValueTransforming> *)preferredDateFormatter atIndex:0];
+    }
+}
+
+- (NSArray *)dateFormatters
+{
+    if ([self.valueTransformer isKindOfClass:[RKCompoundValueTransformer class]]) {
+        return [(RKCompoundValueTransformer *)self.valueTransformer valueTransformersForTransformingFromClass:[NSDate class] toClass:[NSString class]];
+    } else return nil;
+}
+
+- (void)setDateFormatters:(NSArray *)dateFormatters
+{
+    if (! [self.valueTransformer isKindOfClass:[RKCompoundValueTransformer class]]) [NSException raise:NSInternalInconsistencyException format:@"Cannot set date formatters: the receiver's `valueTransformer` is not an instance of `RKCompoundValueTransformer`."];
+    for (id<RKValueTransforming> dateFormatter in [self dateFormatters]) {
+        [(RKCompoundValueTransformer *)self.valueTransformer removeValueTransformer:dateFormatter];
+    }
+    for (id<RKValueTransforming> dateFormatter in dateFormatters) {
+        [(RKCompoundValueTransformer *)self.valueTransformer addValueTransformer:dateFormatter];
+    }
 }
 
 @end
 
-#pragma mark - Functions
+@implementation RKObjectMapping (Deprecations)
 
-NSDate *RKDateFromStringWithFormatters(NSString *dateString, NSArray *formatters)
+- (BOOL)shouldSetDefaultValueForMissingAttributes
 {
-    NSDate *date = nil;
-    for (NSFormatter *dateFormatter in formatters) {
-        BOOL success;
-        @synchronized(dateFormatter) {
-            if ([dateFormatter isKindOfClass:[NSDateFormatter class]]) {
-                RKLogTrace(@"Attempting to parse string '%@' with format string '%@' and time zone '%@'", dateString, [(NSDateFormatter *)dateFormatter dateFormat], [(NSDateFormatter *)dateFormatter timeZone]);
-            }
-            NSString *errorDescription = nil;
-            success = [dateFormatter getObjectValue:&date forString:dateString errorDescription:&errorDescription];
-        }
-
-        if (success && date) {
-            if ([dateFormatter isKindOfClass:[NSDateFormatter class]]) {
-                RKLogTrace(@"Successfully parsed string '%@' with format string '%@' and time zone '%@' and turned into date '%@'",
-                           dateString, [(NSDateFormatter *)dateFormatter dateFormat], [(NSDateFormatter *)dateFormatter timeZone], date);
-            } else if ([dateFormatter isKindOfClass:[NSNumberFormatter class]]) {
-                NSNumber *formattedNumber = (NSNumber *)date;
-                date = [NSDate dateWithTimeIntervalSince1970:[formattedNumber doubleValue]];
-            }
-
-            break;
-        }
-    }
-
-    return date;
+    return self.assignsDefaultValueForMissingAttributes;
 }
+
+- (void)setSetDefaultValueForMissingAttributes:(BOOL)setDefaultValueForMissingAttributes
+{
+    self.assignsDefaultValueForMissingAttributes = setDefaultValueForMissingAttributes;
+}
+
+- (BOOL)setNilForMissingRelationships
+{
+    return self.assignsNilForMissingRelationships;
+}
+
+- (void)setSetNilForMissingRelationships:(BOOL)setNilForMissingRelationships
+{
+    self.assignsNilForMissingRelationships = setNilForMissingRelationships;
+}
+
+- (BOOL)performKeyValueValidation
+{
+    return self.performsKeyValueValidation;
+}
+
+- (void)setPerformKeyValueValidation:(BOOL)performKeyValueValidation
+{
+    self.performsKeyValueValidation = performKeyValueValidation;
+}
+
+@end
+
+#pragma clang diagnostic pop
+
+#pragma mark - Functions
 
 NSDate *RKDateFromString(NSString *dateString)
 {
-    return RKDateFromStringWithFormatters(dateString, [RKObjectMapping defaultDateFormatters]);
+    NSDate *outputDate = nil;
+    NSError *error = nil;
+    BOOL success = [[RKValueTransformer defaultValueTransformer] transformValue:dateString toValue:&outputDate ofClass:[NSDate class] error:&error];
+    return success ? outputDate : nil;
 }
 
 NSString *RKStringFromDate(NSDate *date)
 {
-    return [[RKObjectMapping preferredDateFormatter] stringForObjectValue:date];
+    NSString *outputString = nil;
+    NSError *error = nil;
+    BOOL success = [[RKValueTransformer defaultValueTransformer] transformValue:date toValue:&outputString ofClass:[NSString class] error:&error];
+    return success ? outputString : nil;
 }

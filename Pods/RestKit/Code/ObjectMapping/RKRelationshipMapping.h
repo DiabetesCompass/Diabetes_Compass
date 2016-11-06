@@ -22,11 +22,16 @@
 
 @class RKMapping;
 
-typedef enum {
-    RKSetAssignmentPolicy,       // Set the relationship to the new value and leave the existing objects alone, breaking the relationship to existing objects at the destination. This is the default policy for `RKRelationshipMapping`.
-    RKReplaceAssignmentPolicy,  // Set the relationship to the new value and destroy the previous value, replacing the existing objects at the destination of the relationship.
-    RKUnionAssignmentPolicy,    // Set the relationship to the union of the existing value and the new value being assigned. Only applicable for to-many relationships.
-} RKAssignmentPolicy;
+typedef NS_ENUM(NSInteger, RKAssignmentPolicy) {
+    RKAssignmentPolicySet, // Set the relationship to the new value and leave the existing objects alone, breaking the relationship to existing objects at the destination. This is the default policy for `RKRelationshipMapping`.
+    RKAssignmentPolicyReplace, // Set the relationship to the new value and destroy the previous value, replacing the existing objects at the destination of the relationship.
+    RKAssignmentPolicyUnion, // Set the relationship to the union of the existing value and the new value being assigned. Only applicable for to-many relationships.
+
+    // Deprecated
+    RKSetAssignmentPolicy = RKAssignmentPolicySet, // Will be deprecated, use `RKAssignmentPolicySet` instead
+    RKReplaceAssignmentPolicy = RKAssignmentPolicyReplace, // Will be deprecated, use `RKAssignmentPolicyReplace` instead
+    RKUnionAssignmentPolicy = RKAssignmentPolicyUnion, // Will be deprecated, use `RKAssignmentPolicyUnion` instead
+} ;
 
 /**
  The `RKRelationshipMapping` class is used to describe relationships of a class in an `RKObjectMapping` or an entity in an `RKEntityMapping` object.

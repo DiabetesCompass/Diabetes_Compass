@@ -21,7 +21,7 @@
 #import <Foundation/Foundation.h>
 
 /**
- `RKSearchPredicate` is a suclass of `NSCompoundPredicate` used to represent textual search operations against entities indexed by an instance of `RKSearchIndexer`.
+ `RKSearchPredicate` is a subclass of `NSCompoundPredicate` used to represent textual search operations against entities indexed by an instance of `RKSearchIndexer`.
 
  @see `RKSearchIndexer`
  */
@@ -49,6 +49,6 @@
  @param type The type of the new compound predicate.
  @return The receiver with its type set to the given type and its subpredicates set to an array of subpredicates for searching for the given text.
  */
-- (id)initWithSearchText:(NSString *)searchText type:(NSCompoundPredicateType)type;
+- (instancetype)initWithSearchText:(NSString *)searchText type:(NSCompoundPredicateType)type NS_DESIGNATED_INITIALIZER;
 
 @end

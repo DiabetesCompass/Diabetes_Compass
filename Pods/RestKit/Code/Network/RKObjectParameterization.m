@@ -28,6 +28,7 @@
 #import "RKMappingOperation.h"
 #import "RKMappingErrors.h"
 #import "RKPropertyInspector.h"
+#import "RKValueTransformers.h"
 
 // Set Logging Component
 #undef RKLogComponent
@@ -37,7 +38,7 @@
 @property (nonatomic, strong) id object;
 @property (nonatomic, strong) RKRequestDescriptor *requestDescriptor;
 
-- (id)initWithObject:(id)object requestDescriptor:(RKRequestDescriptor *)requestDescriptor;
+- (instancetype)initWithObject:(id)object requestDescriptor:(RKRequestDescriptor *)requestDescriptor;
 - (NSDictionary *)mapObjectToParameters:(NSError **)error;
 
 // Convenience methods
@@ -53,7 +54,7 @@
     return [parameterization mapObjectToParameters:error];
 }
 
-- (id)initWithObject:(id)object requestDescriptor:(RKRequestDescriptor *)requestDescriptor
+- (instancetype)initWithObject:(id)object requestDescriptor:(RKRequestDescriptor *)requestDescriptor
 {
     NSParameterAssert(object);
     NSParameterAssert(requestDescriptor);
@@ -103,11 +104,13 @@
 - (void)mappingOperation:(RKMappingOperation *)operation didSetValue:(id)value forKeyPath:(NSString *)keyPath usingMapping:(RKAttributeMapping *)mapping
 {
     id transformedValue = nil;
-    if ([value isKindOfClass:[NSDate class]]) {
-        // Date's are not natively serializable, must be encoded as a string
-        @synchronized(mapping.objectMapping.preferredDateFormatter) {
-            transformedValue = [mapping.objectMapping.preferredDateFormatter stringForObjectValue:value];
+    if (value == nil) {
+        if (mapping.objectMapping.assignsDefaultValueForMissingAttributes) {
+            // Serialize nil values as null
+            transformedValue = [NSNull null];
         }
+    } else if ([value isKindOfClass:[NSDate class]]) {
+        [mapping.valueTransformer transformValue:value toValue:&transformedValue ofClass:[NSString class] error:nil];
     } else if ([value isKindOfClass:[NSDecimalNumber class]]) {
         // Precision numbers are serialized as strings to work around Javascript notation limits
         transformedValue = [(NSDecimalNumber *)value stringValue];

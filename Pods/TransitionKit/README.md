@@ -1,11 +1,13 @@
 TransitionKit
 =============
 
-[![Build Status](https://travis-ci.org/blakewatters/TransitionKit.png?branch=master,development)](https://travis-ci.org/blakewatters/TransitionKit)
+[![Build Status](https://travis-ci.org/blakewatters/TransitionKit.png?branch=master,development)](https://travis-ci.org/blakewatters/TransitionKit) 
+![Pod Version](https://cocoapod-badges.herokuapp.com/v/TransitionKit/badge.png) 
+![Pod Platform](https://cocoapod-badges.herokuapp.com/p/TransitionKit/badge.png)
 
 **A simple, elegantly designed block based API for implementing State Machines in Objective-C**
 
-TransitionKit is a small Cocoa library that provides an API for implementing a state machine in Objective C. It is full-featured, completely documented, and very thoroughly unit tested. State machines are a great way to manage complexity in your application and TransitionKit provides you with a great way to take advantage of a state machine in your next iOS or Mac OS X application.
+TransitionKit is a small Cocoa library that provides an API for implementing a state machine in Objective C. It is full-featured, completely documented, and very thoroughly unit tested. State machines are a great way to manage complexity in your application and TransitionKit provides you with an elegant API for implementing state machines in your next iOS or Mac OS X application.
 
 ### Features
 
@@ -13,6 +15,7 @@ TransitionKit is a small Cocoa library that provides an API for implementing a s
 * States and Events support a thorough set of block based callbacks for responding to state transitions.
 * States, Events, and State Machines are NSCopying and NSCoding compliant, enabling easy integration with archiving and copying in your custom classes.
 * Strongly enforced. The state machine includes numerous runtime checks for misconfigurations, making it easy to debug and trust your state machines.
+* Transitions support the inclusion of arbitrary user data via a `userInfo` dictionary, making it easy to broadcast metadata across callbacks.
 * Completely Documented. The entire library is marked up with Appledoc.
 * Thorougly unit tested. You know it works and can make changes with confidence.
 * Lightweight. TransitionKit has no dependencies beyond the Foundation library and works on iOS and Mac OS X.
@@ -36,7 +39,7 @@ $ touch Podfile
 $ edit Podfile
 platform :ios, '5.0' 
 # Or platform :osx, '10.7'
-pod 'TransitionKit', '~> 1.0.0'
+pod 'TransitionKit', '~> 2.0.0'
 ```
 
 Install into your project:
@@ -61,26 +64,26 @@ The following example is a simple state machine that models the state of a Messa
 TKStateMachine *inboxStateMachine = [TKStateMachine new];
 
 TKState *unread = [TKState stateWithName:@"Unread"];
-[unread setDidEnterStateBlock:^(TKState *state, TKStateMachine *stateMachine) {
+[unread setDidEnterStateBlock:^(TKState *state, TKTransition *transition) {
     [self incrementUnreadCount];
 }];
 TKState *read = [TKState stateWithName:@"Read"];
-[read setDidExitStateBlock:^(TKState *state, TKStateMachine *stateMachine) {
+[read setDidExitStateBlock:^(TKState *state, TKTransition *transition) {
     [self decrementUnreadCount];
 }];
 TKState *deleted = [TKState stateWithName:@"Deleted"];
-[deleted setDidEnterStateBlock:^(TKState *state, TKStateMachine *stateMachine) {
+[deleted setDidEnterStateBlock:^(TKState *state, TKTransition *transition) {
     [self moveMessageToTrash];
 }];
 
-[inboxStateMachine addStatesFromArry:@[ unread, read, deleted ]];
+[inboxStateMachine addStates:@[ unread, read, deleted ]];
 inboxStateMachine.initialState = unread;
 
 TKEvent *viewMessage = [TKEvent eventWithName:@"View Message" transitioningFromStates:@[ unread ] toState:read];
 TKEvent *deleteMessage = [TKEvent eventWithName:@"Delete Message" transitioningFromStates:@[ read, unread ] toState:deleted];
 TKEvent *markAsUnread = [TKEvent eventWithName:@"Mark as Unread" transitioningFromStates:@[ read, deleted ] toState:unread];
 
-[inboxStateMachine addEventsFromArray:@[ viewMessage, deleteMessage, markAsUnread ]];
+[inboxStateMachine addEvents:@[ viewMessage, deleteMessage, markAsUnread ]];
 
 // Activate the state machine
 [inboxStateMachine activate];
@@ -88,15 +91,16 @@ TKEvent *markAsUnread = [TKEvent eventWithName:@"Mark as Unread" transitioningFr
 [inboxStateMachine isInState:@"Unread"]; // YES, the initial state
 
 // Fire some events
+NSDictionary *userInfo = nil;
 NSError *error = nil;
-BOOL success = [inboxStateMachine fireEvent:@"View Message" error:&error]; // YES
-success = [inboxStateMachine fireEvent:@"Delete Message" error:&error]; // YES
-success = [inboxStateMachine fireEvent:@"Mark as Unread" error:&error]; // YES
+BOOL success = [inboxStateMachine fireEvent:@"View Message" userInfo:userInfo error:&error]; // YES
+success = [inboxStateMachine fireEvent:@"Delete Message" userInfo:userInfo error:&error]; // YES
+success = [inboxStateMachine fireEvent:@"Mark as Unread" userInfo:userInfo error:&error]; // YES
 
 success = [inboxStateMachine canFireEvent:@"Mark as Unread"]; // NO
 
 // Error. Cannot mark an Unread message as Unread
-success = [inboxStateMachine fireEvent:@"Mark as Unread" error:&error]; // NO
+success = [inboxStateMachine fireEvent:@"Mark as Unread" userInfo:nil error:&error]; // NO
 
 // error is an TKInvalidTransitionError with a descriptive error message and failure reason
 ```

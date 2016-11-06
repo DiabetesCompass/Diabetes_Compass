@@ -18,13 +18,18 @@
 //  limitations under the License.
 //
 
-#import "AFHTTPClient.h"
+#import "AFRKHTTPClient.h"
 #import "RKTestFactory.h"
 #import "RKLog.h"
 #import "RKObjectManager.h"
 #import "RKPathUtilities.h"
 #import "RKMIMETypeSerialization.h"
+#import "RKObjectRequestOperation.h"
+
+#if __has_include("CoreData.h")
+#define RKCoreDataIncluded
 #import "RKManagedObjectStore.h"
+#endif
 
 // Expose MIME Type singleton and initialization routine
 @interface RKMIMETypeSerialization ()
@@ -58,14 +63,14 @@
 + (RKTestFactory *)sharedFactory
 {
     static RKTestFactory *sharedFactory = nil;
-    if (! sharedFactory) {
+    if (!sharedFactory) {
         sharedFactory = [RKTestFactory new];
     }
 
     return sharedFactory;
 }
 
-- (id)init
+- (instancetype)init
 {
     self = [super init];
     if (self) {
@@ -80,12 +85,12 @@
 
 - (void)defineFactory:(NSString *)factoryName withBlock:(id (^)())block
 {
-    [self.factoryBlocks setObject:[block copy] forKey:factoryName];
+    (self.factoryBlocks)[factoryName] = [block copy];
 }
 
 - (id)objectFromFactory:(NSString *)factoryName properties:(NSDictionary *)properties
 {
-    id (^block)() = [self.factoryBlocks objectForKey:factoryName];
+    id (^block)() = (self.factoryBlocks)[factoryName];
     NSAssert(block, @"No factory is defined with the name '%@'", factoryName);
 
     id object = block();
@@ -95,10 +100,10 @@
 
 - (id)sharedObjectFromFactory:(NSString *)factoryName
 {
-    id sharedObject = [self.sharedObjectsByFactoryName objectForKey:factoryName];
-    if (! sharedObject) {
+    id sharedObject = (self.sharedObjectsByFactoryName)[factoryName];
+    if (!sharedObject) {
         sharedObject = [self objectFromFactory:factoryName properties:nil];
-        [self.sharedObjectsByFactoryName setObject:sharedObject forKey:factoryName];
+        (self.sharedObjectsByFactoryName)[factoryName] = sharedObject;
     }
     return sharedObject;
 }
@@ -106,9 +111,9 @@
 - (void)defineDefaultFactories
 {
     [self defineFactory:RKTestFactoryDefaultNamesClient withBlock:^id {
-        __block AFHTTPClient *client;
+        __block AFRKHTTPClient *client;
         RKLogSilenceComponentWhileExecutingBlock(RKlcl_cRestKitSupport, ^{
-            client = [AFHTTPClient clientWithBaseURL:self.baseURL];
+            client = [AFRKHTTPClient clientWithBaseURL:self.baseURL];
         });
 
         return client;
@@ -123,6 +128,7 @@
         return objectManager;
     }];
 
+#ifdef RKCoreDataIncluded
     [self defineFactory:RKTestFactoryDefaultNamesManagedObjectStore withBlock:^id {
         NSString *storePath = [RKApplicationDataDirectory() stringByAppendingPathComponent:RKTestFactoryDefaultStoreFilename];
         RKManagedObjectStore *managedObjectStore = [[RKManagedObjectStore alloc] init];
@@ -137,6 +143,7 @@
 
         return managedObjectStore;
     }];
+#endif
 }
 
 #pragma mark - Public Static Interface
@@ -171,6 +178,7 @@
     return [[RKTestFactory sharedFactory] sharedObjectFromFactory:factoryName];
 }
 
+#ifdef RKCoreDataIncluded
 + (id)insertManagedObjectForEntityForName:(NSString *)entityName
                    inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext
                            withProperties:(NSDictionary *)properties
@@ -178,7 +186,7 @@
     __block id managedObject;
     __block NSError *error;
     __block BOOL success;
-    if (! managedObjectContext) managedObjectContext = [[RKTestFactory managedObjectStore] mainQueueManagedObjectContext];
+    if (!managedObjectContext) managedObjectContext = [[RKTestFactory managedObjectStore] mainQueueManagedObjectContext];
     [managedObjectContext performBlockAndWait:^{
         managedObject = [NSEntityDescription insertNewObjectForEntityForName:entityName inManagedObjectContext:managedObjectContext];
         success = [managedObjectContext obtainPermanentIDsForObjects:@[managedObject] error:&error];
@@ -190,6 +198,7 @@
     }];
     return managedObject;
 }
+#endif
 
 + (NSSet *)factoryNames
 {
@@ -206,10 +215,12 @@
     return [self sharedObjectFromFactory:RKTestFactoryDefaultNamesObjectManager];
 }
 
+#ifdef RKCoreDataIncluded
 + (id)managedObjectStore
 {
     return [self sharedObjectFromFactory:RKTestFactoryDefaultNamesManagedObjectStore];
 }
+#endif
 
 + (void)setSetupBlock:(void (^)())block
 {
@@ -231,8 +242,10 @@
 
     [[RKTestFactory sharedFactory].sharedObjectsByFactoryName removeAllObjects];
     [RKObjectManager setSharedManager:nil];
+#ifdef RKCoreDataIncluded
     [RKManagedObjectStore setDefaultStore:nil];
-    
+#endif
+
     // Restore the default MIME Type Serializations in case a test has manipulated the registry
     [[RKMIMETypeSerialization sharedSerialization] addRegistrationsForKnownSerializations];
 
@@ -241,9 +254,6 @@
     if ([[NSFileManager defaultManager] fileExistsAtPath:path]) {
         [[NSFileManager defaultManager] removeItemAtPath:path error:nil];
     }
-    
-    // Clear the NSURLCache
-    [[NSURLCache sharedURLCache] removeAllCachedResponses];
 
     if ([RKTestFactory sharedFactory].setUpBlock) [RKTestFactory sharedFactory].setUpBlock();
 }
@@ -251,29 +261,37 @@
 + (void)tearDown
 {
     if ([RKTestFactory sharedFactory].tearDownBlock) [RKTestFactory sharedFactory].tearDownBlock();
-    
+
     // Cancel any network operations and clear the cache
     [[RKObjectManager sharedManager].operationQueue cancelAllOperations];
-    [[NSURLCache sharedURLCache] removeAllCachedResponses];
-    
+
     // Cancel any object mapping in the response mapping queue
     [[RKObjectRequestOperation responseMappingQueue] cancelAllOperations];
 
+#ifdef RKCoreDataIncluded
     // Ensure the existing defaultStore is shut down
     [[NSNotificationCenter defaultCenter] removeObserver:[RKManagedObjectStore defaultStore]];
+
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wundeclared-selector"
     if ([[RKManagedObjectStore defaultStore] respondsToSelector:@selector(stopIndexingPersistentStoreManagedObjectContext)]) {
         // Search component is optional
         [[RKManagedObjectStore defaultStore] performSelector:@selector(stopIndexingPersistentStoreManagedObjectContext)];
-        
+
         if ([[RKManagedObjectStore defaultStore] respondsToSelector:@selector(searchIndexer)]) {
             id searchIndexer = [[RKManagedObjectStore defaultStore] valueForKey:@"searchIndexer"];
             [searchIndexer performSelector:@selector(cancelAllIndexingOperations)];
         }
     }
-    
+#pragma clang diagnostic pop
+
+#endif
+
     [[RKTestFactory sharedFactory].sharedObjectsByFactoryName removeAllObjects];
     [RKObjectManager setSharedManager:nil];
-    [RKManagedObjectStore setDefaultStore:nil];    
+#ifdef RKCoreDataIncluded
+    [RKManagedObjectStore setDefaultStore:nil];
+#endif
 }
 
 @end

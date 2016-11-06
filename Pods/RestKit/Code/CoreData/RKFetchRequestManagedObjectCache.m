@@ -36,22 +36,38 @@ static NSString *RKPredicateCacheKeyForAttributeValues(NSDictionary *attributesV
     NSArray *sortedKeys = [[attributesValues allKeys] sortedArrayUsingSelector:@selector(compare:)];
     NSMutableArray *keyFragments = [NSMutableArray array];
     for (NSString *attributeName in sortedKeys) {
-        id value = [attributesValues objectForKey:attributeName];
-        char *suffix = [value respondsToSelector:@selector(count)] ? "+" : ".";
-        [keyFragments addObject:[attributeName stringByAppendingString:[NSString stringWithUTF8String:suffix]]];
+        id value = attributesValues[attributeName];
+        NSString *suffix = [value respondsToSelector:@selector(count)] ? @"+" : @".";
+        [keyFragments addObject:[attributeName stringByAppendingString:suffix]];
     }
     return [keyFragments componentsJoinedByString:@":"];
 }
 
-// NOTE: We build a dynamic format string here because `NSCompoundPredicate` does not support use of substiution variables
-static NSPredicate *RKPredicateWithSubsitutionVariablesForAttributeValues(NSDictionary *attributeValues)
+// NOTE: We make sure to convert the attribute values to compatible names that can be replaced correctly by `predicateWithSubstitutionVariables`
+static NSString *RKAttributePlaceholderForAttributeName(NSString *attributeName)
+{
+    return [[attributeName componentsSeparatedByCharactersInSet:[NSCharacterSet punctuationCharacterSet]] componentsJoinedByString:@"_"];
+}
+
+static NSDictionary *RKSubstitutionVariablesForAttributeValues(NSDictionary *attributeValues)
+{
+    NSMutableDictionary *placeholders = [[NSMutableDictionary alloc] initWithCapacity:attributeValues.count];
+    [attributeValues enumerateKeysAndObjectsUsingBlock:^(NSString *key, id value, BOOL *stop) {
+        placeholders[RKAttributePlaceholderForAttributeName(key)] = value;
+    }];
+
+    return [NSDictionary dictionaryWithDictionary:placeholders];
+}
+
+// NOTE: We build a dynamic format string here because `NSCompoundPredicate` does not support use of substitution variables
+static NSPredicate *RKPredicateWithSubstitutionVariablesForAttributeValues(NSDictionary *attributeValues)
 {
     NSArray *attributeNames = [attributeValues allKeys];
     NSMutableArray *formatFragments = [NSMutableArray arrayWithCapacity:[attributeNames count]];
     [attributeValues enumerateKeysAndObjectsUsingBlock:^(NSString *attributeName, id value, BOOL *stop) {
         NSString *formatFragment = RKObjectIsCollection(value)
-                                 ? [NSString stringWithFormat:@"%@ IN $%@", attributeName, attributeName]
-                                 : [NSString stringWithFormat:@"%@ = $%@", attributeName, attributeName];
+                                 ? [NSString stringWithFormat:@"%@ IN $%@", attributeName, RKAttributePlaceholderForAttributeName(attributeName)]
+                                 : [NSString stringWithFormat:@"%@ = $%@", attributeName, RKAttributePlaceholderForAttributeName(attributeName)];
         [formatFragments addObject:formatFragment];
     }];
 
@@ -69,7 +85,7 @@ static NSPredicate *RKPredicateWithSubsitutionVariablesForAttributeValues(NSDict
 
 @implementation RKFetchRequestManagedObjectCache
 
-- (id)init
+- (instancetype)init
 {
     self = [super init];
     if (self) {
@@ -101,18 +117,20 @@ static NSPredicate *RKPredicateWithSubsitutionVariablesForAttributeValues(NSDict
     
     __block NSPredicate *substitutionPredicate;
     dispatch_sync(self.cacheQueue, ^{
-        substitutionPredicate = [self.predicateCache objectForKey:predicateCacheKey];
+        substitutionPredicate = (self.predicateCache)[predicateCacheKey];
     });
-         
+    
+    NSDictionary *substitutionVariables = RKSubstitutionVariablesForAttributeValues(attributeValues);
+    
     if (! substitutionPredicate) {
-        substitutionPredicate = RKPredicateWithSubsitutionVariablesForAttributeValues(attributeValues);
+        substitutionPredicate = RKPredicateWithSubstitutionVariablesForAttributeValues(attributeValues);
         dispatch_barrier_async(self.cacheQueue, ^{
-            [self.predicateCache setObject:substitutionPredicate forKey:predicateCacheKey];
+            (self.predicateCache)[predicateCacheKey] = substitutionPredicate;
         });
     }
     
     NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:[entity name]];
-    fetchRequest.predicate = [substitutionPredicate predicateWithSubstitutionVariables:attributeValues];
+    fetchRequest.predicate = [substitutionPredicate predicateWithSubstitutionVariables:substitutionVariables];
     __block NSError *error = nil;
     __block NSArray *objects = nil;
     [managedObjectContext performBlockAndWait:^{

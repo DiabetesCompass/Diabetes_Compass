@@ -21,10 +21,21 @@
 #ifndef _RESTKIT_
 #define _RESTKIT_
 
+#if __has_include("ObjectMapping.h")
 #import "ObjectMapping.h"
+#endif
+
+#if __has_include("Network.h")
 #import "Network.h"
+#endif
+
+#if __has_include("Support.h")
 #import "Support.h"
+#endif
+
+#if __has_include("CoreData.h")
 #import "CoreData.h"
+#endif
 
 /**
  Set the App logging component. This header

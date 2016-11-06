@@ -48,6 +48,23 @@
 @optional
 
 /**
+ Asks the data source for the target object for an object mapping operation the mapping object that will be used to perform the mapping.
+ 
+ If not implemented or it returns nil, then the
+  `mappingOperation:targetObjectForRepresentation:withMapping:inRelationship:` method will be called to determine the target.
+ 
+ It is preferable to implement this method if the `representation` is not needed to determine the target object,
+ as obtaining that value is somewhat expensive.
+ 
+ @param mappingOperation The mapping operation requesting the target object.
+ @param representation A dictionary representation of the properties to be mapped onto the retrieved target object.
+ @param mapping The object mapping to be used to perform a mapping from the representation to the target object.
+ @return A key-value coding compliant object to perform the mapping on to.
+ */
+- (id)mappingOperation:(RKMappingOperation *)mappingOperation targetObjectForMapping:(RKObjectMapping *)mapping inRelationship:(RKRelationshipMapping *)relationshipMapping;
+
+
+/**
  Tells the data source to commit any changes to the underlying data store.
 
  @param mappingOperation The mapping operation that has completed its work.
@@ -76,6 +93,47 @@
  */
 - (BOOL)mappingOperationShouldSetUnchangedValues:(RKMappingOperation *)mappingOperation;
 
-- (BOOL)mappingOperationShouldSkipPropertyMapping:(RKMappingOperation *)mappingOperation;
+/**
+ **Deprecated in v0.26.0**
+ Asks the data source if it should skip mapping. This method can significantly improve performance if, for example, the data source has determined that the properties in the representation are not newer than the current target object's properties. See `modificationAttribute` in `RKEntityMapping` for an example of when skipping property mapping would be appropriate.
+ 
+ If this method is not implemented by the data source, then the mapping operation defaults to `NO`.
+ 
+ @param mappingOperation The mapping operation that is querying the data source.
+ @return `YES` if the mapping operation should skip mapping properties, else `NO`.
+ */
+- (BOOL)mappingOperationShouldSkipPropertyMapping:(RKMappingOperation *)mappingOperation DEPRECATED_MSG_ATTRIBUTE("use mappingOperationShouldSkipAttributeMapping: and mappingOperationShouldSkipRelationshipMapping: instead");
+
+/**
+ Asks the data source if it should skip mapping attributes. This method can significantly improve performance if, for example, the data source has determined that the attributes in the representation are not newer than the current target object's attributes. See `modificationAttribute` in `RKEntityMapping` for an example of when skipping attribute mapping would be appropriate.
+ 
+ If this method is not implemented by the data source, then the mapping operation defaults to `NO`.
+ 
+ @param mappingOperation The mapping operation that is querying the data source.
+ @return `YES` if the mapping operation should skip mapping attributes, else `NO`.
+ */
+- (BOOL)mappingOperationShouldSkipAttributeMapping:(RKMappingOperation *)mappingOperation;
+
+/**
+ Asks the data source if it should skip mapping relationships. This method can significantly improve performance if, for example, the data source has determined that the relationships in the representation are not newer than the current target object's relationships. See `modificationAttribute` and `shouldMapRelationshipsIfObjectIsUnmodified` in `RKEntityMapping` for an example of when skipping relationship mapping might be appropriate.
+ 
+ If this method is not implemented by the data source, then the mapping operation defaults to `NO`.
+ 
+ @param mappingOperation The mapping operation that is querying the data source.
+ @return `YES` if the mapping operation should skip mapping relationships, else `NO`.
+ */
+- (BOOL)mappingOperationShouldSkipRelationshipMapping:(RKMappingOperation *)mappingOperation;
+
+/**
+ Asks the data source if the mapping operation should collect `RKMappingInfo` information during the mapping
+ (stored in the `mappingInfo` property).  If not needed, it can be a substantially faster to skip it.  The
+ `mappingInfo` property will be nil if not collected.
+
+ If this method is not implemented by the data source, then the mapping operation defaults to `YES`.
+ 
+ @param mappingOperation The mapping operation that is querying the data source.
+ @return `YES` if the mapping operation should collect mapping information, else `NO`.
+*/
+- (BOOL)mappingOperationShouldCollectMappingInfo:(RKMappingOperation *)mappingOperation;
 
 @end

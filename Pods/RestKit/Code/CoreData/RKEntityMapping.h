@@ -68,7 +68,7 @@
  @param entity An entity with which to initialize the receiver.
  @returns The receiver, initialized with the given entity.
  */
-- (id)initWithEntity:(NSEntityDescription *)entity;
+- (instancetype)initWithEntity:(NSEntityDescription *)entity;
 
 /**
  A convenience initializer that creates and returns an entity mapping for the entity with the given name in
@@ -115,15 +115,31 @@
 @property (nonatomic, copy) NSPredicate *identificationPredicate;
 
 /**
+ An optional block which returns a predicate used to filter identified objects during mapping.
+ 
+ @return The identification predicate block.
+ */
+@property (nonatomic, copy) NSPredicate *(^identificationPredicateBlock)(NSDictionary *representation, NSManagedObjectContext *managedObjectContext);
+
+/**
  An optional attribute of the receiver's entity that can be used to detect modification of a given instance. This is used to improve the performance of mapping operations by skipping the property mappings for a given object if it is found to be not modified.
  
  A common modification attribute is a 'last modified' or 'updated at' timestamp that specifies the timestamp of the last change to an object. When the `modificationAttribute` is non-nil, the mapper will compare the value returned of the attribute on an existing object instance with the value in the representation being mapped. 
  
- The semantics of the comparison are dependent on the data type of the modification attribute. If the attribute is a string, then the values are compared for equality. If the attribute is a date or a numeric value, then the values will be compared numerically and mapping will be skipped if the value in the representation is greater than the value of the modification attribute stored on the object.
+ The semantics of the comparison are dependent on the data type of the modification attribute. If the attribute is a string, then the values are compared for equality. If the attribute is a date or a numeric value, then the values will be compared numerically and mapping will be skipped unless the value in the representation is greater than the value of the modification attribute stored on the object.
  
  @raises NSInvalidArgumentException Raised if the attribute given is not a property of the receiver's entity.
  */
 @property (nonatomic, strong) NSAttributeDescription *modificationAttribute;
+
+/**
+ If this is YES, mapping operations will map relationships of the object even if the `modificationAttribute` shows that the object has not been modified.
+ 
+ This is useful if a response contains a nested object that has been updated inside an object that has not.
+ 
+ Defaults to NO.
+ */
+@property (nonatomic) BOOL shouldMapRelationshipsIfObjectIsUnmodified;
 
 /**
  Sets the `modificationAttribute` to the receiver to the attribute with the specified name.

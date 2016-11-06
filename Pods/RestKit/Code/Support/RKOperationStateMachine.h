@@ -18,7 +18,7 @@
 //  limitations under the License.
 //
 
-#import <RestKit/RestKit.h>
+#import <Foundation/Foundation.h>
 
 /**
  The `RKOperationStateMachine` class provides an implementation of a state machine that is suitable for implementing a concurrent `NSOperation` subclass via composition. The concurrency mechanism is a dispatch queue. The state machine takes care of correctly implementing all aspects of a concurrent `NSOperation` including:
@@ -34,6 +34,8 @@
  */
 @interface RKOperationStateMachine : NSObject
 
+- (instancetype)init __attribute__((unavailable("Invoke initWithOperation: instead.")));
+
 ///-----------------------------------
 /// @name Initializing a State Machine
 ///-----------------------------------
@@ -45,7 +47,7 @@
  @param dispatchQueue The dispatch queue on which the operation executes concurrently.
  @return The receiver, initialized with the given operation and queue.
  */
-- (id)initWithOperation:(NSOperation *)operation dispatchQueue:(dispatch_queue_t)dispatchQueue;
+- (instancetype)initWithOperation:(NSOperation *)operation dispatchQueue:(dispatch_queue_t)dispatchQueue NS_DESIGNATED_INITIALIZER;
 
 ///-----------------------
 /// @name Inspecting State
@@ -56,28 +58,28 @@
 
  @return `YES` if the receiver is ready to be started, else `NO`.
  */
-- (BOOL)isReady;
+@property (nonatomic, getter=isReady, readonly) BOOL ready;
 
 /**
  Returns a Boolean value that indicates if the receiver is executing.
 
  @return `YES` if the receiver is executing, else `NO`.
  */
-- (BOOL)isExecuting;
+@property (nonatomic, getter=isExecuting, readonly) BOOL executing;
 
 /**
  Returns a Boolean value that indicates if the receiver has been cancelled.
 
  @return `YES` if the receiver has been cancelled, else `NO`.
  */
-- (BOOL)isCancelled;
+@property (nonatomic, getter=isCancelled, readonly) BOOL cancelled;
 
 /**
  Returns a Boolean value that indicates if the receiver has finished executing.
 
  @return `YES` if the receiver is finished, else `NO`.
  */
-- (BOOL)isFinished;
+@property (nonatomic, getter=isFinished, readonly) BOOL finished;
 
 ///--------------------
 /// @name Firing Events
@@ -136,6 +138,17 @@
  The dispatch queue within which the state machine executes.
  */
 @property (nonatomic, assign, readonly) dispatch_queue_t dispatchQueue;
+
+///------------------------------------------
+/// @name Performing Blocks that Mutate State
+///------------------------------------------
+
+/**
+ Executes a block after acquiring an exclusive lock on the receiver. This enables the block to safely mutate the state of the operation. The execution context of the block is not changed -- it is always executed within the caller's thread context. If you wish to guarantee execution on the dispatch queue backing the state machine then you must dispatch onto the queue before submitting your block for execution.
+ 
+ @param block The block to execute after acquiring an exclusive lock on the receiver.
+ */
+- (void)performBlockWithLock:(void (^)())block;
 
 @end
 

@@ -37,7 +37,7 @@
  @param context The managed object context containing objects to be cached.
  @returns The receiver, initialized with the given context.
  */
-- (id)initWithManagedObjectContext:(NSManagedObjectContext *)context;
+- (instancetype)initWithManagedObjectContext:(NSManagedObjectContext *)context NS_DESIGNATED_INITIALIZER;
 
 /**
  The managed object context with which the receiver is associated.
@@ -154,6 +154,24 @@
  @return `YES` if the receiver contains the given object in one or more of its caches, else `NO`.
  */
 - (BOOL)containsObject:(NSManagedObject *)managedObject;
+
+/**
+ Call this before beginning a sequence of operations that require the cache not to be flushed.
+ 
+ This is used by RKInMemoryManagedObjectCache to workaround https://github.com/RestKit/RestKit/issues/1613 .
+ 
+ @see endAccessing
+ */
+- (void)beginAccessing;
+
+/**
+ Call this after completing a sequence of operations that require the cache not to be flushed.
+
+ This is used by RKInMemoryManagedObjectCache to workaround https://github.com/RestKit/RestKit/issues/1613 .
+
+ @see beginAccessing
+ */
+- (void)endAccessing;
 
 @end
 

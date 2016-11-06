@@ -32,7 +32,14 @@ extern NSString * const RKErrorDomain;
 
 NSString *RKStringFromIndexSet(NSIndexSet *indexSet); // Defined in RKResponseDescriptor.m
 
-@interface AFURLConnectionOperation () <NSURLConnectionDataDelegate>
+static BOOL RKResponseRequiresContentTypeMatch(NSHTTPURLResponse *response, NSURLRequest *request)
+{
+    if (RKRequestMethodFromString(request.HTTPMethod) == RKRequestMethodHEAD) return NO;
+    if ([RKStatusCodesOfResponsesWithOptionalBodies() containsIndex:response.statusCode]) return NO;
+    return YES;
+}
+
+@interface AFRKURLConnectionOperation () <NSURLConnectionDataDelegate>
 @property (readwrite, nonatomic, strong) NSRecursiveLock *lock;
 @end
 
@@ -68,6 +75,7 @@ NSString *RKStringFromIndexSet(NSIndexSet *indexSet); // Defined in RKResponseDe
 - (BOOL)hasAcceptableContentType
 {
     if (! self.response) return NO;
+    if (!RKResponseRequiresContentTypeMatch(self.response, self.request)) return YES;
     NSString *contentType = [self.response MIMEType] ?: @"application/octet-stream";
     return self.acceptableContentTypes ? RKMIMETypeInSet(contentType, self.acceptableContentTypes) : [super hasAcceptableContentType];
 }
@@ -82,9 +90,9 @@ NSString *RKStringFromIndexSet(NSIndexSet *indexSet); // Defined in RKResponseDe
             NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
             [userInfo setValue:self.responseString forKey:NSLocalizedRecoverySuggestionErrorKey];
             [userInfo setValue:[self.request URL] forKey:NSURLErrorFailingURLErrorKey];
-            [userInfo setValue:self.request forKey:AFNetworkingOperationFailingURLRequestErrorKey];
-            [userInfo setValue:self.response forKey:AFNetworkingOperationFailingURLResponseErrorKey];
-            
+            [userInfo setValue:self.request forKey:AFRKNetworkingOperationFailingURLRequestErrorKey];
+            [userInfo setValue:self.response forKey:AFRKNetworkingOperationFailingURLResponseErrorKey];
+
             if (![self hasAcceptableStatusCode]) {
                 NSUInteger statusCode = ([self.response isKindOfClass:[NSHTTPURLResponse class]]) ? (NSUInteger)[self.response statusCode] : 200;
                 [userInfo setValue:[NSString stringWithFormat:NSLocalizedString(@"Expected status code in (%@), got %d", nil), RKStringFromIndexSet(self.acceptableStatusCodes ?: [NSMutableIndexSet indexSet]), statusCode] forKey:NSLocalizedDescriptionKey];
@@ -96,7 +104,7 @@ NSString *RKStringFromIndexSet(NSIndexSet *indexSet); // Defined in RKResponseDe
             }
         }
     }
-    
+
     NSError *error = self.rkHTTPError ?: [super error];
     [self.lock unlock];
     return error;
@@ -104,16 +112,9 @@ NSString *RKStringFromIndexSet(NSIndexSet *indexSet); // Defined in RKResponseDe
 
 #pragma mark - NSURLConnectionDelegate methods
 
-- (void)connection:(NSURLConnection *)connection didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge
-{
-    [super connection:connection didReceiveAuthenticationChallenge:challenge];
-
-    RKLogDebug(@"Received authentication challenge");
-}
-
 - (NSURLRequest *)connection:(NSURLConnection *)connection willSendRequest:(NSURLRequest *)request redirectResponse:(NSURLResponse *)redirectResponse
 {
-    if ([AFHTTPRequestOperation instancesRespondToSelector:@selector(connection:willSendRequest:redirectResponse:)]) {
+    if ([AFRKHTTPRequestOperation instancesRespondToSelector:@selector(connection:willSendRequest:redirectResponse:)]) {
         NSURLRequest *returnValue = [super connection:connection willSendRequest:request redirectResponse:redirectResponse];
         if (returnValue) {
             if (redirectResponse) RKLogDebug(@"Following redirect request: %@", returnValue);

@@ -18,7 +18,8 @@
 //  limitations under the License.
 //
 
-#ifdef _COREDATADEFINES_H
+#if __has_include("CoreData.h")
+#import <CoreData/CoreData.h>
 
 #import "RKConnectionTestExpectation.h"
 #import "RKObjectUtilities.h"
@@ -36,7 +37,7 @@
     return [[self alloc] initWithRelationshipName:relationshipName attributes:attributes value:value];
 }
 
-- (id)initWithRelationshipName:(NSString *)relationshipName attributes:(NSDictionary *)attributes value:(id)value
+- (instancetype)initWithRelationshipName:(NSString *)relationshipName attributes:(NSDictionary *)attributes value:(id)value
 {
     NSParameterAssert(relationshipName);
     NSAssert(value == nil ||

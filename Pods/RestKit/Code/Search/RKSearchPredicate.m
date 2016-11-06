@@ -7,7 +7,13 @@
 //
 
 #import "RKSearchPredicate.h"
-#import "RKSearchTokenizer.h"
+#import "RKStringTokenizer.h"
+
+@interface RKSearchPredicate()
+
+- (instancetype)initWithType:(NSCompoundPredicateType)type subpredicates:(NSArray *)subpredicates NS_DESIGNATED_INITIALIZER;
+
+@end
 
 @implementation RKSearchPredicate
 
@@ -16,9 +22,22 @@
     return [[self alloc] initWithSearchText:searchText type:type];
 }
 
-- (id)initWithSearchText:(NSString *)searchText type:(NSCompoundPredicateType)type
+- (instancetype)initWithCoder:(NSCoder *)coder
 {
-    RKSearchTokenizer *tokenizer = [RKSearchTokenizer new];
+    @throw [NSException exceptionWithName:NSInternalInconsistencyException
+                                   reason:[NSString stringWithFormat:@"-initWithcoder: is not a valid initializer for the class %@, use designated initilizer -initWithSearchText:type:", NSStringFromClass([self class])]
+                                 userInfo:nil];
+    return [self init];
+}
+
+- (instancetype)initWithType:(NSCompoundPredicateType)type subpredicates:(NSArray *)subpredicates
+{
+    return [super initWithType:type subpredicates:subpredicates];
+}
+
+- (instancetype)initWithSearchText:(NSString *)searchText type:(NSCompoundPredicateType)type
+{
+    RKStringTokenizer *tokenizer = [RKStringTokenizer new];
     NSSet *searchWords = [tokenizer tokenize:searchText];
 
     NSMutableArray *subpredicates = [NSMutableArray arrayWithCapacity:[searchWords count]];

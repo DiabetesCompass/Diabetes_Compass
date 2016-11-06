@@ -54,7 +54,7 @@ static dispatch_queue_t RKInMemoryManagedObjectCacheCallbackQueue(void)
 
 @implementation RKInMemoryManagedObjectCache
 
-- (id)initWithManagedObjectContext:(NSManagedObjectContext *)managedObjectContext
+- (instancetype)initWithManagedObjectContext:(NSManagedObjectContext *)managedObjectContext
 {
     self = [super init];
     if (self) {
@@ -68,7 +68,7 @@ static dispatch_queue_t RKInMemoryManagedObjectCacheCallbackQueue(void)
     return self;
 }
 
-- (id)init
+- (instancetype)init
 {
     @throw [NSException exceptionWithName:NSInternalInconsistencyException
                                    reason:[NSString stringWithFormat:@"%@ Failed to call designated initializer. Invoke initWithManagedObjectContext: instead.",
@@ -90,6 +90,7 @@ static dispatch_queue_t RKInMemoryManagedObjectCacheCallbackQueue(void)
     NSParameterAssert(managedObjectContext);
     
     NSArray *attributes = [attributeValues allKeys];
+    [self.entityCache beginAccessing];
     if (! [self.entityCache isEntity:entity cachedByAttributes:attributes]) {
         RKLogInfo(@"Caching instances of Entity '%@' by attributes '%@'", entity.name, [attributes componentsJoinedByString:@", "]);
         dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
@@ -127,7 +128,9 @@ static dispatch_queue_t RKInMemoryManagedObjectCacheCallbackQueue(void)
         RKLogTrace(@"Cached %ld objects", (long)[attributeCache count]);
     }
     
-    return [self.entityCache objectsForEntity:entity withAttributeValues:attributeValues inContext:managedObjectContext];
+    NSSet *result = [self.entityCache objectsForEntity:entity withAttributeValues:attributeValues inContext:managedObjectContext];
+    [self.entityCache endAccessing];
+    return result;
 }
 
 - (void)didFetchObject:(NSManagedObject *)object
@@ -149,9 +152,9 @@ static dispatch_queue_t RKInMemoryManagedObjectCacheCallbackQueue(void)
 {
     // Observe the parent context for changes and update the caches
     NSDictionary *userInfo = notification.userInfo;
-    NSSet *insertedObjects = [userInfo objectForKey:NSInsertedObjectsKey];
-    NSSet *updatedObjects = [userInfo objectForKey:NSUpdatedObjectsKey];
-    NSSet *deletedObjects = [userInfo objectForKey:NSDeletedObjectsKey];
+    NSSet *insertedObjects = userInfo[NSInsertedObjectsKey];
+    NSSet *updatedObjects = userInfo[NSUpdatedObjectsKey];
+    NSSet *deletedObjects = userInfo[NSDeletedObjectsKey];
     RKLogTrace(@"insertedObjects=%@, updatedObjects=%@, deletedObjects=%@", insertedObjects, updatedObjects, deletedObjects);
     
     NSMutableSet *objectsToAdd = [NSMutableSet setWithSet:insertedObjects];

@@ -18,6 +18,8 @@
 //  limitations under the License.
 //
 
+#import <Foundation/Foundation.h>
+
 @class RKMapping, RKPropertyMapping, RKPropertyMappingTestExpectation;
 
 /**
@@ -116,6 +118,6 @@ typedef BOOL (^RKMappingTestExpectationEvaluationBlock)(RKPropertyMappingTestExp
 
  @return A string describing the expected sourceKeyPath to destinationKeyPath mapping.
  */
-- (NSString *)summary;
+@property (nonatomic, readonly, copy) NSString *summary;
 
 @end

@@ -20,12 +20,15 @@
 
 #import "RKPaginator.h"
 #import "RKMappingOperation.h"
-#import "RKObjectRequestOperation.h"
-#import "RKManagedObjectRequestOperation.h"
 #import "SOCKit.h"
 #import "RKLog.h"
-#import "RKPathUtilities.h"
+#import "RKPathMatcher.h"
 #import "RKHTTPUtilities.h"
+
+#if __has_include("CoreData.h")
+#define RKCoreDataIncluded
+#import "RKManagedObjectRequestOperation.h"
+#endif
 
 static NSUInteger RKPaginatorDefaultPerPage = 25;
 
@@ -33,7 +36,6 @@ static NSUInteger RKPaginatorDefaultPerPage = 25;
 @interface RKPaginator ()
 @property (nonatomic, copy) NSURLRequest *request;
 @property (nonatomic, strong) Class HTTPOperationClass;
-@property (nonatomic, strong) RKObjectRequestOperation *objectRequestOperation;
 @property (nonatomic, copy) NSArray *responseDescriptors;
 @property (nonatomic, assign, readwrite) NSUInteger currentPage;
 @property (nonatomic, assign, readwrite) NSUInteger offset;
@@ -42,6 +44,7 @@ static NSUInteger RKPaginatorDefaultPerPage = 25;
 @property (nonatomic, assign, readwrite) BOOL loaded;
 @property (nonatomic, strong, readwrite) RKMappingResult *mappingResult;
 @property (nonatomic, strong, readwrite) NSError *error;
+@property (nonatomic, strong, readwrite) RKObjectRequestOperation *objectRequestOperation;
 
 // iOS 5.x compatible proxy attributes
 @property (nonatomic, assign, readwrite) NSNumber *perPageNumber;
@@ -55,7 +58,8 @@ static NSUInteger RKPaginatorDefaultPerPage = 25;
 
 @implementation RKPaginator
 
-- (id)initWithRequest:(NSURLRequest *)request
+
+- (instancetype)initWithRequest:(NSURLRequest *)request
     paginationMapping:(RKObjectMapping *)paginationMapping
   responseDescriptors:(NSArray *)responseDescriptors;
 {
@@ -172,6 +176,11 @@ static NSUInteger RKPaginatorDefaultPerPage = 25;
 
 - (void)loadPage:(NSUInteger)pageNumber
 {
+    if (self.objectRequestOperation.HTTPRequestOperation.response) {
+        // The user by calling loadPage is ready to perform the next request so invalidate objectRequestOperation
+        self.objectRequestOperation = nil;
+    }
+
     NSAssert(self.responseDescriptors, @"Cannot perform a load with nil response descriptors.");
     NSAssert(! self.objectRequestOperation, @"Cannot perform a load while one is already in progress.");
     self.currentPage = pageNumber;
@@ -179,6 +188,7 @@ static NSUInteger RKPaginatorDefaultPerPage = 25;
     NSMutableURLRequest *mutableRequest = [self.request mutableCopy];
     mutableRequest.URL = self.URL;
 
+#ifdef RKCoreDataIncluded
     if (self.managedObjectContext) {
         RKHTTPRequestOperation *requestOperation = [[self.HTTPOperationClass alloc] initWithRequest:mutableRequest];
         RKManagedObjectRequestOperation *managedObjectRequestOperation = [[RKManagedObjectRequestOperation alloc] initWithHTTPRequestOperation:requestOperation responseDescriptors:self.responseDescriptors];
@@ -191,9 +201,9 @@ static NSUInteger RKPaginatorDefaultPerPage = 25;
     } else {
         self.objectRequestOperation = [[RKObjectRequestOperation alloc] initWithRequest:mutableRequest responseDescriptors:self.responseDescriptors];
     }
-    
-    // Add KVO to ensure notification of loaded state prior to execution of completion block
-    [self.objectRequestOperation addObserver:self forKeyPath:@"isFinished" options:0 context:nil];
+#else
+    self.objectRequestOperation = [[RKObjectRequestOperation alloc] initWithRequest:mutableRequest responseDescriptors:self.responseDescriptors];
+#endif
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
@@ -216,10 +226,12 @@ static NSUInteger RKPaginatorDefaultPerPage = 25;
         return deserializedResponseBody;
     }];
     [self.objectRequestOperation setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+        [self finish];
         if (self.successBlock) {
             self.successBlock(self, [mappingResult array], self.currentPage);
         }
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
+        [self finish];
         if (self.failureBlock) {
             self.failureBlock(self, error);
         }
@@ -248,27 +260,24 @@ static NSUInteger RKPaginatorDefaultPerPage = 25;
             [self hasObjectCount] ? @(self.objectCount) : @"???"];
 }
 
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+- (void)finish
 {
-    if ([keyPath isEqualToString:@"isFinished"] && [self.objectRequestOperation isFinished]) {
-        self.loaded = (self.objectRequestOperation.mappingResult != nil);
-        self.mappingResult = self.objectRequestOperation.mappingResult;
-        self.error = self.objectRequestOperation.error;
-        self.objectRequestOperation = nil;
-        [object removeObserver:self forKeyPath:@"isFinished"];
-    }
+    self.loaded = (self.objectRequestOperation.mappingResult != nil);
+    self.mappingResult = self.objectRequestOperation.mappingResult;
+    self.error = self.objectRequestOperation.error;
 }
 
 - (void)cancel
 {
     [self.objectRequestOperation cancel];
+    self.objectRequestOperation = nil;
 }
 
 #pragma mark - iOS 5 proxy attributes
 
 - (NSNumber *)perPageNumber
 {
-    return [NSNumber numberWithUnsignedInteger:self.perPage];
+    return @(self.perPage);
 }
 
 - (void)setPerPageNumber:(NSNumber *)perPageNumber
@@ -278,7 +287,7 @@ static NSUInteger RKPaginatorDefaultPerPage = 25;
 
 - (NSNumber *)currentPageNumber
 {
-    return [NSNumber numberWithUnsignedInteger:self.currentPage];
+    return @(self.currentPage);
 }
 
 - (void)setCurrentPageNumber:(NSNumber *)currentPageNumber
@@ -288,7 +297,7 @@ static NSUInteger RKPaginatorDefaultPerPage = 25;
 
 - (NSNumber *)pageCountNumber
 {
-    return [NSNumber numberWithUnsignedInteger:self.pageCount];
+    return @(self.pageCount);
 }
 
 - (void)setPageCountNumber:(NSNumber *)pageCountNumber
@@ -298,7 +307,7 @@ static NSUInteger RKPaginatorDefaultPerPage = 25;
 
 - (NSNumber *)objectCountNumber
 {
-    return [NSNumber numberWithUnsignedInteger:self.objectCount];
+    return @(self.objectCount);
 }
 
 - (void)setObjectCountNumber:(NSNumber *)objectCountNumber
@@ -308,7 +317,7 @@ static NSUInteger RKPaginatorDefaultPerPage = 25;
 
 - (NSNumber *)offsetNumber
 {
-    return [NSNumber numberWithUnsignedInteger:self.offset];
+    return @(self.offset);
 }
 
 - (void)setOffsetNumber:(NSNumber *)offsetNumber

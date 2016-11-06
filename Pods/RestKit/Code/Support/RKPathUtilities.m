@@ -6,6 +6,7 @@
 //  Copyright (c) 2009-2012 RestKit. All rights reserved.
 //
 
+#import <Foundation/Foundation.h>
 #if TARGET_OS_IPHONE
 #import <MobileCoreServices/UTType.h>
 #import <UIKit/UIDevice.h>
@@ -16,7 +17,6 @@
 #import <sys/xattr.h>
 #import "RKPathUtilities.h"
 #import "RKLog.h"
-#import "RKPathMatcher.h"
 
 NSString *RKExecutableName(void);
 
@@ -24,7 +24,7 @@ NSString *RKApplicationDataDirectory(void)
 {
 #if TARGET_OS_IPHONE
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    return ([paths count] > 0) ? [paths objectAtIndex:0] : nil;
+    return ([paths count] > 0) ? paths[0] : nil;
 #else
     NSFileManager *sharedFM = [NSFileManager defaultManager];
 
@@ -34,7 +34,7 @@ NSString *RKApplicationDataDirectory(void)
     NSURL *appDirectory = nil;
 
     if ([possibleURLs count] >= 1) {
-        appSupportDir = [possibleURLs objectAtIndex:0];
+        appSupportDir = possibleURLs[0];
     }
 
     if (appSupportDir) {
@@ -60,12 +60,12 @@ NSString *RKExecutableName(void)
 NSString *RKCachesDirectory(void)
 {
 #if TARGET_OS_IPHONE
-    return [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    return NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES)[0];
 #else
     NSString *path = nil;
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
     if ([paths count]) {
-        path = [[paths objectAtIndex:0] stringByAppendingPathComponent:RKExecutableName()];
+        path = [paths[0] stringByAppendingPathComponent:RKExecutableName()];
     }
 
     return path;
@@ -93,13 +93,6 @@ BOOL RKEnsureDirectoryExistsAtPath(NSString *path, NSError **error)
     return YES;
 }
 
-NSString *RKPathFromPatternWithObject(NSString *pathPattern, id object)
-{
-    NSCAssert(object != NULL, @"Object provided is invalid; cannot create a path from a NULL object");
-    RKPathMatcher *matcher = [RKPathMatcher pathMatcherWithPattern:pathPattern];
-    return [matcher pathFromObject:object addingEscapes:NO interpolatedParameters:nil];
-}
-
 static NSDictionary *RKDictionaryOfFileExtensionsToMIMETypes()
 {
     return @{ @"json": @"application/json" };
@@ -118,7 +111,7 @@ NSString *RKMIMETypeFromPathExtension(NSString *path)
             return type;
         }
     }
-    
+
     // Consult our internal dictionary of mappings if not found
     return [RKDictionaryOfFileExtensionsToMIMETypes() valueForKey:pathExtension];
 }
@@ -132,28 +125,9 @@ void RKSetExcludeFromBackupAttributeForItemAtPath(NSString *path)
     NSError *error = nil;
     NSURL *URL = [NSURL fileURLWithPath:path];
     
-    NSComparisonResult order = [[UIDevice currentDevice].systemVersion compare:@"5.1" options:NSNumericSearch];
-    if (order == NSOrderedSame || order == NSOrderedDescending) {
-        // On iOS >= 5.1, we can use the resource value API's. Note that we probe the iOS version number directly because the `setResourceValue:forKey:` symbol is defined in iOS 4.0 and greater, but performs no operation when invoked until iOS 5.1
-        BOOL success = [URL setResourceValue:@(YES) forKey:NSURLIsExcludedFromBackupKey error:&error];
-        if (!success) {
-            RKLogError(@"Failed to exclude item at path '%@' from Backup: %@", path, error);
-        }
-    } else {
-        order = [[UIDevice currentDevice].systemVersion compare:@"5.0.1" options: NSNumericSearch];
-        if (order == NSOrderedSame || order == NSOrderedDescending) {
-            // On iOS 5.0.1 we must use the extended attribute API's directly
-            const char* filePath = [[URL path] fileSystemRepresentation];
-            const char* attrName = "com.apple.MobileBackup";
-            u_int8_t attrValue = 1;
-            
-            int result = setxattr(filePath, attrName, &attrValue, sizeof(attrValue), 0, 0);
-            if (result != 0) {
-                RKLogError(@"Failed to exclude item at path '%@' from Backup. setxattr returned result code %d", path, result);
-            }
-        } else {
-            RKLogWarning(@"Unable to exclude item from backup: resource value and extended attribute APIs are only available on iOS 5.0.1 and up");
-        }
+    BOOL success = [URL setResourceValue:@(YES) forKey:NSURLIsExcludedFromBackupKey error:&error];
+    if (!success) {
+        RKLogError(@"Failed to exclude item at path '%@' from Backup: %@", path, error);
     }
 #else
     RKLogDebug(@"Not built for iOS -- excluding path from Backup is not possible.");

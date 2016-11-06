@@ -31,12 +31,14 @@
 #import <Availability.h>
 
 #if __IPHONE_OS_VERSION_MIN_REQUIRED
-#import "AFNetworkActivityIndicatorManager.h"
+#import "AFRKNetworkActivityIndicatorManager.h"
 #endif
 
 // Set Logging Component
 #undef RKLogComponent
 #define RKLogComponent RKlcl_cRestKitNetwork
+
+#define RKLogIsTrace() (_RKlcl_component_level[(__RKlcl_log_symbol(RKlcl_cRestKitNetwork))]) >= (__RKlcl_log_symbol(RKlcl_vTrace))
 
 static BOOL RKLogIsStringBlank(NSString *string)
 {
@@ -49,7 +51,7 @@ static NSString *RKLogTruncateString(NSString *string)
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         NSDictionary *envVars = [[NSProcessInfo processInfo] environment];
-        maxMessageLength = RKLogIsStringBlank([envVars objectForKey:@"RKLogMaxLength"]) ? NSIntegerMax : [[envVars objectForKey:@"RKLogMaxLength"] integerValue];
+        maxMessageLength = RKLogIsStringBlank(envVars[@"RKLogMaxLength"]) ? NSIntegerMax : [envVars[@"RKLogMaxLength"] integerValue];
     });
     
     return ([string length] <= maxMessageLength)
@@ -59,49 +61,21 @@ static NSString *RKLogTruncateString(NSString *string)
        (long) maxMessageLength];
 }
 
-static NSString *RKStringFromStreamStatus(NSStreamStatus streamStatus)
-{
-    switch (streamStatus) {
-        case NSStreamStatusNotOpen:     return @"Not Open";
-        case NSStreamStatusOpening:     return @"Opening";
-        case NSStreamStatusOpen:        return @"Open";
-        case NSStreamStatusReading:     return @"Reading";
-        case NSStreamStatusWriting:     return @"Writing";
-        case NSStreamStatusAtEnd:       return @"At End";
-        case NSStreamStatusClosed:      return @"Closed";
-        case NSStreamStatusError:       return @"Error";
-        default:                        break;
-    }
-    return nil;
-}
-
-static NSString *RKStringDescribingStream(NSStream *stream)
-{
-    NSString *errorDescription = ([stream streamStatus] == NSStreamStatusError) ? [NSString stringWithFormat:@", error=%@", [stream streamError]] : @"";
-    if ([stream isKindOfClass:[NSInputStream class]]) {
-        return [NSString stringWithFormat:@"<%@: %p hasBytesAvailable=%@, status='%@'%@>", [stream class], stream, [(NSInputStream *)stream hasBytesAvailable] ? @"YES" : @"NO", RKStringFromStreamStatus([stream streamStatus]), errorDescription];
-    } else if ([stream isKindOfClass:[NSOutputStream class]]) {
-        return [NSString stringWithFormat:@"<%@: %p hasSpaceAvailable=%@, status='%@'%@>", [stream class], stream, [(NSOutputStream *)stream hasSpaceAvailable] ? @"YES" : @"NO", RKStringFromStreamStatus([stream streamStatus]), errorDescription];
-    } else {
-        return [stream description];
-    }
-}
-
 @interface NSCachedURLResponse (RKLeakFix)
 
-- (NSData *)rkData;
+@property (NS_NONATOMIC_IOSONLY, readonly, copy) NSData *rkData;
 
 @end
 
 @interface RKObjectRequestOperationLogger : NSObject
 
-+ (id)sharedLogger;
++ (RKObjectRequestOperationLogger*)sharedLogger;
 
 @end
 
 @implementation RKObjectRequestOperationLogger
 
-+ (id)sharedLogger
++ (RKObjectRequestOperationLogger*)sharedLogger
 {
     static RKObjectRequestOperationLogger *sharedInstance = nil;
     static dispatch_once_t onceToken;
@@ -118,7 +92,7 @@ static NSString *RKStringDescribingStream(NSStream *stream)
     };
 }
 
-- (id)init
+- (instancetype)init
 {
     self = [super init];
     if (self) {
@@ -132,11 +106,11 @@ static NSString *RKStringDescribingStream(NSStream *stream)
                                                    object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(HTTPOperationDidStart:)
-                                                     name:AFNetworkingOperationDidStartNotification
+                                                     name:AFRKNetworkingOperationDidStartNotification
                                                    object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(HTTPOperationDidFinish:)
-                                                     name:AFNetworkingOperationDidFinishNotification
+                                                     name:AFRKNetworkingOperationDidFinishNotification
                                                    object:nil];
     }
     
@@ -148,74 +122,30 @@ static NSString *RKStringDescribingStream(NSStream *stream)
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-static void *RKParentObjectRequestOperation = &RKParentObjectRequestOperation;
 static void *RKOperationStartDate = &RKOperationStartDate;
 static void *RKOperationFinishDate = &RKOperationFinishDate;
 
 - (void)objectRequestOperationDidStart:(NSNotification *)notification
 {
-    // Weakly tag the HTTP operation with its parent object request operation
     RKObjectRequestOperation *objectRequestOperation = [notification object];
     objc_setAssociatedObject(objectRequestOperation, RKOperationStartDate, [NSDate date], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-    objc_setAssociatedObject(objectRequestOperation.HTTPRequestOperation, RKParentObjectRequestOperation, objectRequestOperation, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    
+    NSURLRequest *request = objectRequestOperation.HTTPRequestOperation.request;
+    RKLogInfo(@"%@ '%@'", request.HTTPMethod, request.URL.absoluteString);
+    RKLogDebug(@"request.headers=%@", request.allHTTPHeaderFields);
+    if (request.HTTPBody && RKLogIsTrace()) {
+        RKLogTrace(@"request.body=%@", RKLogTruncateString([[NSString alloc] initWithData:request.HTTPBody encoding:NSUTF8StringEncoding]));
+    }
 }
 
 - (void)HTTPOperationDidStart:(NSNotification *)notification
 {
-    RKHTTPRequestOperation *operation = [notification object];    
-    if (![operation isKindOfClass:[AFHTTPRequestOperation class]]) return;
-    
-    objc_setAssociatedObject(operation, RKOperationStartDate, [NSDate date], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-    
-    if ((_RKlcl_component_level[(__RKlcl_log_symbol(RKlcl_cRestKitNetwork))]) >= (__RKlcl_log_symbol(RKlcl_vTrace))) {
-        NSString *body = nil;
-        if ([operation.request HTTPBody]) {
-            body = RKLogTruncateString([[NSString alloc] initWithData:[operation.request HTTPBody] encoding:NSUTF8StringEncoding]);
-        } /*else if ([operation.request HTTPBodyStream]) {
-            body = RKStringDescribingStream([operation.request HTTPBodyStream]);
-        }*/
-        
-        RKLogTrace(@"%@ '%@':\nrequest.headers=%@\nrequest.body=%@", [operation.request HTTPMethod], [[operation.request URL] absoluteString], [operation.request allHTTPHeaderFields], body);
-    } else {
-        RKLogInfo(@"%@ '%@'", [operation.request HTTPMethod], [[operation.request URL] absoluteString]);
-    }
+    objc_setAssociatedObject(notification.object, RKOperationStartDate, [NSDate date], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 - (void)HTTPOperationDidFinish:(NSNotification *)notification
 {
-    RKHTTPRequestOperation *operation = [notification object];    
-    if (![operation isKindOfClass:[AFHTTPRequestOperation class]]) return;
-    
-    // NOTE: if we have a parent object request operation, we'll wait it to finish to emit the logging info
-    RKObjectRequestOperation *parentOperation = objc_getAssociatedObject(operation, RKParentObjectRequestOperation);
-    objc_setAssociatedObject(operation, RKParentObjectRequestOperation, nil, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-    if (parentOperation) {
-        objc_setAssociatedObject(operation, RKOperationFinishDate, [NSDate date], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-        return;
-    }
-    
-    NSTimeInterval elapsedTime = [[NSDate date] timeIntervalSinceDate:objc_getAssociatedObject(operation, RKOperationStartDate)];
-    
-    NSString *statusCodeString = RKStringFromStatusCode([operation.response statusCode]);
-    NSString *elapsedTimeString = [NSString stringWithFormat:@"[%.04f s]", elapsedTime];
-    NSString *statusCodeAndElapsedTime = statusCodeString ? [NSString stringWithFormat:@"(%ld %@) %@", (long)[operation.response statusCode], statusCodeString, elapsedTimeString] : [NSString stringWithFormat:@"(%ld) %@", (long)[operation.response statusCode], elapsedTimeString];
-    if (operation.error) {
-        if ((_RKlcl_component_level[(__RKlcl_log_symbol(RKlcl_cRestKitNetwork))]) >= (__RKlcl_log_symbol(RKlcl_vTrace))) {
-            RKLogError(@"%@ '%@' %@:\nerror=%@\nresponse.body=%@", [operation.request HTTPMethod], [[operation.request URL] absoluteString], statusCodeAndElapsedTime, operation.error, operation.responseString);
-        } else {
-            if (operation.error.code == NSURLErrorCancelled) {
-                RKLogError(@"%@ '%@' %@: Cancelled", [operation.request HTTPMethod], [[operation.request URL] absoluteString], statusCodeAndElapsedTime);
-            } else {
-                RKLogError(@"%@ '%@' %@: %@", [operation.request HTTPMethod], [[operation.request URL] absoluteString], statusCodeAndElapsedTime, operation.error);
-            }
-        }
-    } else {
-        if ((_RKlcl_component_level[(__RKlcl_log_symbol(RKlcl_cRestKitNetwork))]) >= (__RKlcl_log_symbol(RKlcl_vTrace))) {
-            RKLogTrace(@"%@ '%@' %@:\nresponse.headers=%@\nresponse.body=%@", [operation.request HTTPMethod], [[operation.request URL] absoluteString], statusCodeAndElapsedTime, [operation.response allHeaderFields], RKLogTruncateString(operation.responseString));
-        } else {
-            RKLogInfo(@"%@ '%@' %@", [operation.request HTTPMethod], [[operation.request URL] absoluteString], statusCodeAndElapsedTime);
-        }
-    }
+    objc_setAssociatedObject(notification.object, RKOperationFinishDate, [NSDate date], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 - (void)objectRequestOperationDidFinish:(NSNotification *)notification
@@ -226,29 +156,27 @@ static void *RKOperationFinishDate = &RKOperationFinishDate;
     RKHTTPRequestOperation *HTTPRequestOperation = objectRequestOperation.HTTPRequestOperation;
     NSTimeInterval objectRequestExecutionDuration = [[NSDate date] timeIntervalSinceDate:objc_getAssociatedObject(objectRequestOperation, RKOperationStartDate)];
     NSTimeInterval httpRequestExecutionDuration = [objc_getAssociatedObject(HTTPRequestOperation, RKOperationFinishDate) timeIntervalSinceDate:objc_getAssociatedObject(HTTPRequestOperation, RKOperationStartDate)];
-    NSDate *mappingDidStartTime = [notification.userInfo objectForKey:RKObjectRequestOperationMappingDidFinishUserInfoKey];
-    NSTimeInterval mappingDuration = [mappingDidStartTime isEqual:[NSNull null]] ? 0.0 : [mappingDidStartTime timeIntervalSinceDate:[notification.userInfo objectForKey:RKObjectRequestOperationMappingDidStartUserInfoKey]];
+    NSDate *mappingDidStartTime = (notification.userInfo)[RKObjectRequestOperationMappingDidFinishUserInfoKey];
+    NSTimeInterval mappingDuration = [mappingDidStartTime isEqual:[NSNull null]] ? 0.0 : [mappingDidStartTime timeIntervalSinceDate:(notification.userInfo)[RKObjectRequestOperationMappingDidStartUserInfoKey]];
     
-    NSString *statusCodeString = RKStringFromStatusCode([HTTPRequestOperation.response statusCode]);
+    NSURLRequest *request = HTTPRequestOperation.request;
+    NSHTTPURLResponse *response = HTTPRequestOperation.response;
+    NSString *statusCodeString = RKStringFromStatusCode(response.statusCode);
     NSString *statusCodeDescription = statusCodeString ? [NSString stringWithFormat:@" %@ ", statusCodeString] : @" ";
     NSString *elapsedTimeString = [NSString stringWithFormat:@"[request=%.04fs mapping=%.04fs total=%.04fs]", httpRequestExecutionDuration, mappingDuration, objectRequestExecutionDuration];
-    NSString *statusCodeAndElapsedTime = [NSString stringWithFormat:@"(%ld%@/ %lu objects) %@", (long)[HTTPRequestOperation.response statusCode], statusCodeDescription, (unsigned long) [objectRequestOperation.mappingResult count], elapsedTimeString];
+    NSString *statusCodeAndElapsedTime = [NSString stringWithFormat:@"(%ld%@/ %lu objects) %@", (long)response.statusCode, statusCodeDescription, (unsigned long) [objectRequestOperation.mappingResult count], elapsedTimeString];
     if (objectRequestOperation.error) {
-        if ((_RKlcl_component_level[(__RKlcl_log_symbol(RKlcl_cRestKitNetwork))]) >= (__RKlcl_log_symbol(RKlcl_vTrace))) {
-            RKLogError(@"%@ '%@' %@:\nerror=%@\nresponse.body=%@", [HTTPRequestOperation.request HTTPMethod], [[HTTPRequestOperation.request URL] absoluteString], statusCodeAndElapsedTime, objectRequestOperation.error, HTTPRequestOperation.responseString);
+        if (objectRequestOperation.error.code == NSURLErrorCancelled) {
+            RKLogDebug(@"%@ '%@' %@: Cancelled", request.HTTPMethod, request.URL.absoluteString, statusCodeAndElapsedTime);
         } else {
-            if (objectRequestOperation.error.code == NSURLErrorCancelled) {
-                RKLogError(@"%@ '%@' %@: Cancelled", [HTTPRequestOperation.request HTTPMethod], [[HTTPRequestOperation.request URL] absoluteString], statusCodeAndElapsedTime);
-            } else {
-                RKLogError(@"%@ '%@' %@: %@", [HTTPRequestOperation.request HTTPMethod], [[HTTPRequestOperation.request URL] absoluteString], statusCodeAndElapsedTime, objectRequestOperation.error);
-            }
+            RKLogError(@"%@ '%@' %@: %@", request.HTTPMethod, request.URL.absoluteString, statusCodeAndElapsedTime, objectRequestOperation.error);
         }
     } else {
-        if ((_RKlcl_component_level[(__RKlcl_log_symbol(RKlcl_cRestKitNetwork))]) >= (__RKlcl_log_symbol(RKlcl_vTrace))) {
-            RKLogTrace(@"%@ '%@' %@:\nresponse.headers=%@\nresponse.body=%@", [HTTPRequestOperation.request HTTPMethod], [[HTTPRequestOperation.request URL] absoluteString], statusCodeAndElapsedTime, [HTTPRequestOperation.response allHeaderFields], RKLogTruncateString(HTTPRequestOperation.responseString));
-        } else {
-            RKLogInfo(@"%@ '%@' %@", [HTTPRequestOperation.request HTTPMethod], [[HTTPRequestOperation.request URL] absoluteString], statusCodeAndElapsedTime);
-        }
+        RKLogInfo(@"%@ '%@' %@", request.HTTPMethod, request.URL.absoluteString, statusCodeAndElapsedTime);
+        RKLogDebug(@"response.headers=%@", response.allHeaderFields);
+    }
+    if (RKLogIsTrace()) {
+        RKLogTrace(@"response.body=%@", RKLogTruncateString(HTTPRequestOperation.responseString));
     }
 }
 
@@ -265,20 +193,15 @@ NSString *const RKObjectRequestOperationMappingDidFinishUserInfoKey = @"mappingF
 static void RKIncrementNetworkActivityIndicator()
 {
     #if __IPHONE_OS_VERSION_MIN_REQUIRED
-        [[AFNetworkActivityIndicatorManager sharedManager] incrementActivityCount];
+        [[AFRKNetworkActivityIndicatorManager sharedManager] incrementActivityCount];
     #endif
 }
 
 static void RKDecrementNetworkAcitivityIndicator()
 {
     #if __IPHONE_OS_VERSION_MIN_REQUIRED
-        [[AFNetworkActivityIndicatorManager sharedManager] decrementActivityCount];
+        [[AFRKNetworkActivityIndicatorManager sharedManager] decrementActivityCount];
     #endif
-}
-
-static inline NSString *RKDescriptionForRequest(NSURLRequest *request)
-{
-    return [NSString stringWithFormat:@"%@ '%@'", request.HTTPMethod, [request.URL absoluteString]];
 }
 
 static NSIndexSet *RKAcceptableStatusCodesFromResponseDescriptors(NSArray *responseDescriptors)
@@ -328,6 +251,8 @@ static NSString *RKStringDescribingURLResponseWithData(NSURLResponse *response, 
 @property (nonatomic, copy) id (^willMapDeserializedResponseBlock)(id deserializedResponseBody);
 @property (nonatomic, strong) NSDate *mappingDidStartDate;
 @property (nonatomic, strong) NSDate *mappingDidFinishDate;
+@property (nonatomic, copy) void (^successBlock)(RKObjectRequestOperation *operation, RKMappingResult *mappingResult);
+@property (nonatomic, copy) void (^failureBlock)(RKObjectRequestOperation *operation, NSError *error);
 @end
 
 @implementation RKObjectRequestOperation
@@ -371,13 +296,21 @@ static NSString *RKStringDescribingURLResponseWithData(NSURLResponse *response, 
     _successCallbackQueue = NULL;
 }
 
+// Compiler requires that we override this.
+- (instancetype)init
+{
+    self = [self initWithHTTPRequestOperation:nil responseDescriptors:nil];
+    NSAssert(NO, @"Failed to call designated initializer on %@.", self);
+    return self;
+}
+
 // Designated initializer
-- (id)initWithHTTPRequestOperation:(RKHTTPRequestOperation *)requestOperation responseDescriptors:(NSArray *)responseDescriptors
+- (instancetype)initWithHTTPRequestOperation:(RKHTTPRequestOperation *)requestOperation responseDescriptors:(NSArray *)responseDescriptors
 {
     NSParameterAssert(requestOperation);
     NSParameterAssert(responseDescriptors);
     
-    self = [self init];
+    self = [super init];
     if (self) {
         self.responseDescriptors = responseDescriptors;
         self.HTTPRequestOperation = requestOperation;
@@ -386,7 +319,7 @@ static NSString *RKStringDescribingURLResponseWithData(NSURLResponse *response, 
         self.HTTPRequestOperation.successCallbackQueue = [[self class] dispatchQueue];
         self.HTTPRequestOperation.failureCallbackQueue = [[self class] dispatchQueue];
         
-        __weak __typeof(&*self)weakSelf = self;
+        __weak __typeof(self)weakSelf = self;
         self.stateMachine = [[RKOperationStateMachine alloc] initWithOperation:self dispatchQueue:[[self class] dispatchQueue]];
         [self.stateMachine setExecutionBlock:^{
             [[NSNotificationCenter defaultCenter] postNotificationName:RKObjectRequestOperationDidStartNotification object:weakSelf];
@@ -398,6 +331,7 @@ static NSString *RKStringDescribingURLResponseWithData(NSURLResponse *response, 
             }
         }];
         [self.stateMachine setFinalizationBlock:^{
+            [weakSelf willFinish];
             RKDecrementNetworkAcitivityIndicator();
             [[NSNotificationCenter defaultCenter] postNotificationName:RKObjectRequestOperationDidFinishNotification object:weakSelf userInfo:@{ RKObjectRequestOperationMappingDidStartUserInfoKey: weakSelf.mappingDidStartDate ?: [NSNull null], RKObjectRequestOperationMappingDidFinishUserInfoKey: weakSelf.mappingDidFinishDate ?: [NSNull null] }];
         }];
@@ -410,7 +344,7 @@ static NSString *RKStringDescribingURLResponseWithData(NSURLResponse *response, 
     return self;
 }
 
-- (id)initWithRequest:(NSURLRequest *)request responseDescriptors:(NSArray *)responseDescriptors
+- (instancetype)initWithRequest:(NSURLRequest *)request responseDescriptors:(NSArray *)responseDescriptors
 {
     NSParameterAssert(request);
     NSParameterAssert(responseDescriptors);    
@@ -486,29 +420,34 @@ static NSString *RKStringDescribingURLResponseWithData(NSURLResponse *response, 
 - (void)setCompletionBlockWithSuccess:(void (^)(RKObjectRequestOperation *operation, RKMappingResult *mappingResult))success
                               failure:(void (^)(RKObjectRequestOperation *operation, NSError *error))failure
 {
-// See above setCompletionBlock:
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-retain-cycles"
+    //Keep blocks for copyWithZone
+    self.successBlock = success;
+    self.failureBlock = failure;
+    
+    __weak __typeof(self) const weakSelf = self;
     self.completionBlock = ^ {
-        if ([self isCancelled] && !self.error) {
-            self.error = [NSError errorWithDomain:RKErrorDomain code:RKOperationCancelledError userInfo:nil];
-        }
-
-        if (self.error) {
-            if (failure) {
-                dispatch_async(self.failureCallbackQueue ?: dispatch_get_main_queue(), ^{
-                    failure(self, self.error);
-                });
+		__typeof(self) const strongSelf = weakSelf; // Retain object, so we for sure have something to pass to the success and/or failure blocks.
+		if(strongSelf)
+        {
+            if ([strongSelf isCancelled] && !strongSelf.error) {
+                strongSelf.error = [NSError errorWithDomain:RKErrorDomain code:RKOperationCancelledError userInfo:nil];
             }
-        } else {
-            if (success) {
-                dispatch_async(self.successCallbackQueue ?: dispatch_get_main_queue(), ^{
-                    success(self, self.mappingResult);
-                });
+            
+            if (strongSelf.error) {
+                if (failure) {
+                    dispatch_async(strongSelf.failureCallbackQueue ?: dispatch_get_main_queue(), ^{
+                        failure(strongSelf, strongSelf.error);
+                    });
+                }
+            } else {
+                if (success) {
+                    dispatch_async(strongSelf.successCallbackQueue ?: dispatch_get_main_queue(), ^{
+                        success(strongSelf, strongSelf.mappingResult);
+                    });
+                }
             }
         }
     };
-#pragma clang diagnostic pop
 }
 
 - (void)performMappingOnResponseWithCompletionBlock:(void(^)(RKMappingResult *mappingResult, NSError *error))completionBlock
@@ -530,9 +469,9 @@ static NSString *RKStringDescribingURLResponseWithData(NSURLResponse *response, 
 
 - (void)execute
 {
-    __weak __typeof(&*self)weakSelf = self;    
+    __weak __typeof(self)weakSelf = self;    
     
-    [self.HTTPRequestOperation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [self.HTTPRequestOperation setCompletionBlockWithSuccess:^(AFRKHTTPRequestOperation *operation, id responseObject) {
         if (weakSelf.isCancelled) {
             [weakSelf.stateMachine finish];
             return;
@@ -563,7 +502,7 @@ static NSString *RKStringDescribingURLResponseWithData(NSURLResponse *response, 
                     // corresponding to the cache entry completed successfully, and we can reliably skip mapping if a subsequent request results
                     // in the use of this cachedResponse.
                     NSMutableDictionary *userInfo = cachedResponse.userInfo ? [cachedResponse.userInfo mutableCopy] : [NSMutableDictionary dictionary];
-                    [userInfo setObject:@YES forKey:RKResponseHasBeenMappedCacheUserInfoKey];
+                    userInfo[RKResponseHasBeenMappedCacheUserInfoKey] = @YES;
                     NSCachedURLResponse *newCachedResponse = [[NSCachedURLResponse alloc] initWithResponse:cachedResponse.response data:cachedResponse.rkData userInfo:userInfo storagePolicy:cachedResponse.storagePolicy];
                     [[NSURLCache sharedURLCache] storeCachedResponse:newCachedResponse forRequest:weakSelf.HTTPRequestOperation.request];
                 }
@@ -572,7 +511,7 @@ static NSString *RKStringDescribingURLResponseWithData(NSURLResponse *response, 
             weakSelf.mappingDidFinishDate = [NSDate date];
             [weakSelf.stateMachine finish];
         }];
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+    } failure:^(AFRKHTTPRequestOperation *operation, NSError *error) {
         RKLogError(@"Object request failed: Underlying HTTP request operation failed with error: %@", weakSelf.HTTPRequestOperation.error);
         weakSelf.error = weakSelf.HTTPRequestOperation.error;
         [weakSelf.stateMachine finish];
@@ -588,6 +527,11 @@ static NSString *RKStringDescribingURLResponseWithData(NSURLResponse *response, 
             self.HTTPRequestOperation.request, RKStringDescribingURLResponseWithData(self.HTTPRequestOperation.response, self.HTTPRequestOperation.responseData)];
 }
 
+- (void)willFinish
+{
+    // Default implementation does nothing
+}
+
 #pragma mark - NSCopying
 
 - (id)copyWithZone:(NSZone *)zone {
@@ -597,8 +541,8 @@ static NSString *RKStringDescribingURLResponseWithData(NSURLResponse *response, 
     operation.successCallbackQueue = self.successCallbackQueue;
     operation.failureCallbackQueue = self.failureCallbackQueue;
     operation.willMapDeserializedResponseBlock = self.willMapDeserializedResponseBlock;
-    operation.completionBlock = self.completionBlock;
-    
+    [operation setCompletionBlockWithSuccess:self.successBlock failure:self.failureBlock];
+
     return operation;
 }
 
