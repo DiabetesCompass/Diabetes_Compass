@@ -104,7 +104,7 @@
     if (self.type != nil) {
         if ([self.type caseInsensitiveCompare:@"Food"]) {
             
-            FoodReading *foodReading = [FoodReading MR_createInContext:[NSManagedObjectContext MR_defaultContext]];
+            FoodReading *foodReading = [FoodReading MR_createEntityInContext:[NSManagedObjectContext MR_defaultContext]];
             foodReading.name = self.name;
             foodReading.carbs = self.carbs;
             foodReading.servingUnitAndQuantity = self.units;
@@ -115,7 +115,7 @@
             NSDictionary *d = @{ @"timeStamp":foodReading.timeStamp };
             [[NSNotificationCenter defaultCenter] postNotificationName:NOTE_FOODREADING_ADDED object:nil userInfo:d];
         } else if ([self.type caseInsensitiveCompare:@"Blood Glucose"]) {
-            BGReading *bgReading = [BGReading MR_createInContext:[NSManagedObjectContext MR_defaultContext]];
+            BGReading *bgReading = [BGReading MR_createEntityInContext:[NSManagedObjectContext MR_defaultContext]];
             bgReading.name = self.name;
             bgReading.quantity = self.quantity;
             bgReading.timeStamp = self.timestamp;
@@ -124,7 +124,7 @@
             NSDictionary *d = @{ @"timeStamp":bgReading.timeStamp };
             [[NSNotificationCenter defaultCenter] postNotificationName:NOTE_BGREADING_ADDED object:nil userInfo:d];
         } else if ([self.type caseInsensitiveCompare:@"Insulin"]) {
-            InsulinReading *insulinReading = [InsulinReading MR_createInContext:[NSManagedObjectContext MR_defaultContext]];
+            InsulinReading *insulinReading = [InsulinReading MR_createEntityInContext:[NSManagedObjectContext MR_defaultContext]];
             insulinReading.name = self.name;
             insulinReading.quantity = self.quantity;
             insulinReading.timeStamp = self.timestamp;

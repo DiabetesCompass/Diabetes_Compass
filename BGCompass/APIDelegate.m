@@ -209,7 +209,7 @@
             NutritionixUPCFood* food = [results firstObject];
             
             NSManagedObjectContext *context = [NSManagedObjectContext MR_defaultContext];
-            FoodReading* foodReading = [FoodReading MR_createInContext:context];
+            FoodReading* foodReading = [FoodReading MR_createEntityInContext:context];
             foodReading.isPending = [NSNumber numberWithBool:YES];
             foodReading.name = food.name;
             foodReading.carbs = [NSNumber numberWithInt:([food.carbs floatValue] + 0.5)];

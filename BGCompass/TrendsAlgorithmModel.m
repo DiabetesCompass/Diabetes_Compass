@@ -265,7 +265,7 @@
 //log the result
     NSLog(@"the time weighted average BG is: %f", weightedBGave);
     NSLog(@"The final ha1c is: %f", result);
-    Ha1cReading* reading = [Ha1cReading MR_createInContext:[NSManagedObjectContext MR_defaultContext]];
+    Ha1cReading* reading = [Ha1cReading MR_createEntityInContext:[NSManagedObjectContext MR_defaultContext]];
     reading.quantity = @(result);
     //set the timestamp of this HA1c to the timestamp of the last BG reading?
     reading.timeStamp = lastReading.timeStamp;
@@ -348,7 +348,7 @@
  5 - Save the result to CoreData.
  */
     //NSLog(@"The final ag15 is: %f", result);
-    AG15Reading* reading = [AG15Reading MR_createInContext:[NSManagedObjectContext MR_defaultContext]];
+    AG15Reading* reading = [AG15Reading MR_createEntityInContext:[NSManagedObjectContext MR_defaultContext]];
     reading.quantity = @(result);
     reading.timeStamp = lastReading.timeStamp;
     

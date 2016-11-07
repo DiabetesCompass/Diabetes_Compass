@@ -381,7 +381,7 @@
                 return;
             } else {
                 NSManagedObjectContext *context = [NSManagedObjectContext MR_defaultContext];
-                self.selectedItem = [FoodReading MR_createInContext:context];
+                self.selectedItem = [FoodReading MR_createEntityInContext:context];
                 ((Reading*)self.selectedItem).isPending = [NSNumber numberWithBool:YES];
                 NutritionixSearchFood *food = [self.searchResults objectAtIndex:[indexPath row]];
                 ((FoodReading*)self.selectedItem).name = food.name;
@@ -390,7 +390,7 @@
                 ((FoodReading*)self.selectedItem).timeStamp = [NSDate date];
             }
         } else {
-            self.selectedItem = [FoodReading MR_createInContext:context];
+            self.selectedItem = [FoodReading MR_createEntityInContext:context];
             ((Reading*)self.selectedItem).isPending = [NSNumber numberWithBool:YES];
             ((FoodReading*)self.selectedItem).name = self.searchDisplayController.searchBar.text;
         }
@@ -577,14 +577,14 @@
         
     } else if ([self.title  isEqual: @"Blood Glucose"]) {
         NSManagedObjectContext *context = [NSManagedObjectContext MR_defaultContext];
-        self.selectedItem = [BGReading MR_createInContext:context];
+        self.selectedItem = [BGReading MR_createEntityInContext:context];
         ((BGReading*)self.selectedItem).name = @"Blood Glucose";
         ((BGReading*)self.selectedItem).timeStamp = [NSDate date];
         [self performSegueWithIdentifier:@"EditItemSegue" sender:self];
         
     } else if ([self.title  isEqual: @"Insulin"]) {
         NSManagedObjectContext *context = [NSManagedObjectContext MR_defaultContext];
-        self.selectedItem = [InsulinReading MR_createInContext:context];
+        self.selectedItem = [InsulinReading MR_createEntityInContext:context];
         ((InsulinReading*)self.selectedItem).name = @"Insulin";
         ((InsulinReading*)self.selectedItem).timeStamp = [NSDate date];
         [self performSegueWithIdentifier:@"EditItemSegue" sender:self];
@@ -624,7 +624,7 @@
         [self performSegueWithIdentifier:@"EditItemSegue" sender:self];
     } else if (buttonIndex == 1) {
         if ([[self.selectedItem class] isSubclassOfClass:[FoodReading class]]) {
-            FoodReading* food = [FoodReading MR_createInContext:context];
+            FoodReading* food = [FoodReading MR_createEntityInContext:context];
             food.isPending = [NSNumber numberWithBool:YES];
             food.name = ((FoodReading*)self.selectedItem).name;
             food.timeStamp = ((FoodReading*)self.selectedItem).timeStamp;
@@ -633,14 +633,14 @@
             food.numberOfServings = ((FoodReading*)self.selectedItem).numberOfServings;
             self.selectedItem = food;
         } else if ([[self.selectedItem class] isSubclassOfClass:[BGReading class]]) {
-            BGReading* reading = [BGReading MR_createInContext:context];
+            BGReading* reading = [BGReading MR_createEntityInContext:context];
             reading.isPending = [NSNumber numberWithBool:YES];
             reading.name = ((BGReading*)self.selectedItem).name;
             reading.quantity = ((BGReading*)self.selectedItem).quantity;
             reading.timeStamp = ((BGReading*)self.selectedItem).timeStamp;
             self.selectedItem = reading;
         } else if ([[self.selectedItem class] isSubclassOfClass:[InsulinReading class]]) {
-            InsulinReading* reading = [InsulinReading MR_createInContext:context];
+            InsulinReading* reading = [InsulinReading MR_createEntityInContext:context];
             reading.isPending = [NSNumber numberWithBool:YES];
             reading.name = ((InsulinReading*)self.selectedItem).name;
             reading.quantity = ((InsulinReading*)self.selectedItem).quantity;
