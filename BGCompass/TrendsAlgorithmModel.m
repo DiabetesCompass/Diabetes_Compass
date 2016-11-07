@@ -162,10 +162,10 @@
     NSArray *fetchedHa1c = [Ha1cReading MR_findAllWithPredicate:predicate inContext:[NSManagedObjectContext MR_defaultContext]];
     NSArray *fetched15ag = [AG15Reading MR_findAllWithPredicate:predicate inContext:[NSManagedObjectContext MR_defaultContext]];
     for (Ha1cReading* reading in fetchedHa1c) {
-        [reading MR_deleteInContext:[NSManagedObjectContext MR_defaultContext]];
+        [reading MR_deleteEntityInContext:[NSManagedObjectContext MR_defaultContext]];
     }
     for (AG15Reading* reading in fetched15ag) {
-        [reading MR_deleteInContext:[NSManagedObjectContext MR_defaultContext]];
+        [reading MR_deleteEntityInContext:[NSManagedObjectContext MR_defaultContext]];
     }
 /*
  2 - Add new readings.
