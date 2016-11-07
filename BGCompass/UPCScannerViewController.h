@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+@import AVFoundation;
 
 @class UPCScannerViewController;
 
@@ -14,7 +15,7 @@
 - (void) fromViewController:(UPCScannerViewController *)controller withBarCode:(NSString *) barCode;
 @end
 
-@interface UPCScannerViewController : UIViewController<UIAlertViewDelegate>
+@interface UPCScannerViewController : UIViewController <UIAlertViewDelegate, AVCaptureMetadataOutputObjectsDelegate>
 
 @property (nonatomic, weak) id <UPCScannerInfoDelegate> delegate;
 

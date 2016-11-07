@@ -9,7 +9,6 @@
 #import "UPCScannerViewController.h"
 #import "ItemSelectionTableViewController.h"
 #import "Barcode.h"
-@import AVFoundation;
 
 @interface UPCScannerViewController ()
 
@@ -166,7 +165,7 @@
     [self stopRunning];
 }
 
-#pragma mark - Delegate functions
+#pragma mark - AVCaptureMetadataOutputObjectsDelegate functions
 
 - (void)captureOutput:(AVCaptureOutput *)captureOutput
 didOutputMetadataObjects:(NSArray *)metadataObjects
