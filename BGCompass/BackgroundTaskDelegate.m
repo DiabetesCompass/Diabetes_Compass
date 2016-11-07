@@ -53,7 +53,8 @@
         [[BGAlgorithmModel sharedInstance] calculatePredictArray];
     });
     
-    NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    NSCalendar *gregorian = [[NSCalendar alloc]
+                             initWithCalendarIdentifier: NSCalendarIdentifierGregorian];
     NSDateComponents *nowComponents = [gregorian components:NSSecondCalendarUnit fromDate:[NSDate date]];
     int SecondsToNextMinute = (int) (60 - nowComponents.second);
     
