@@ -222,7 +222,7 @@
             [(ItemSelectionTableViewController*)controller performSegueWithIdentifier:@"EditItemSegue" sender:controller];
             
         } else {
-#warning Notify user the item was not in the database.
+// TODO: fix me Notify user the item was not in the database.
             
         }
         

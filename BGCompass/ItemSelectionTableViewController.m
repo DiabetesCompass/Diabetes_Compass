@@ -24,7 +24,7 @@
 #import "Utilities.h"
 #import <Reachability.h>
 
-#warning Register for notifications about the network. If the network changes status. And it changes to connected. And _connectionWasDown == YES, then re-search whatever phrase is in the search bar. This is meant to handle the case where while searching no internet was available, but then sometime after, and without typing into the search bar, internet did become available.
+// TODO: fix me Register for notifications about the network. If the network changes status. And it changes to connected. And _connectionWasDown == YES, then re-search whatever phrase is in the search bar. This is meant to handle the case where while searching no internet was available, but then sometime after, and without typing into the search bar, internet did become available.
 
 @implementation ItemSelectionTableViewController {
     BOOL _connectionWasDown;
@@ -198,7 +198,7 @@
                 if ([self.historyItemsArray count] == 0) {
                     [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
                     //[pleaseAddStuffText setHidden:NO];
-#warning add hidden empty table image
+// TODO: fix me add hidden empty table image
                 } else {
                     [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleSingleLine];
                     //[pleaseAddStuffText setHidden:YES];
@@ -281,7 +281,7 @@
                 // Leave cell empty.
             } else if (_connectionWasDown) {
                 // If there was no internet when search was attempted display a warning in the tableview section. No Alerts!
-#warning display a "No internet connected" view
+// TODO: fix me display a "No internet connected" view
                 cell = [tableView dequeueReusableCellWithIdentifier:@"DeadCell"];
                 if (!cell) {
                     cell = [[UITableViewCell new] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"DeadCell"];
@@ -289,7 +289,7 @@
                 cell.textLabel.text = @"Network connectivity is required to search food in database";
             } else if ([self.searchResults count] == 0) {
                 // For some reason, search results are empty. Display a message in the view.
-#warning put in a "No Results available view"
+// TODO: fix me put in a "No Results available view"
                 cell = [tableView dequeueReusableCellWithIdentifier:@"DeadCell"];
                 if (!cell) {
                     cell = [[UITableViewCell new] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"DeadCell"];
@@ -474,7 +474,7 @@
     // Tells the table data source to reload when text changes
     // Return YES to cause the search result table view to be reloaded.
     // Instead of reloading table when text changes. Will reload table when results are pushed.
-#warning this idea hinges on whether reloadData method refreshes the table. It will be called on the success callback in APIDelegate
+// TODO: fix me this idea hinges on whether reloadData method refreshes the table. It will be called on the success callback in APIDelegate
     
     if (searchString.length == 0) {
         return YES;
@@ -492,7 +492,7 @@
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
     
     // launch a timer for half a second. If another change happens in the meantime, cancel that timer and launch another one. Once the user has paused for half a second without changing text, send a search to Nutritionix.
-#warning This is not working. Need to get internet to see how NSTimer works.
+// TODO: fix me This is not working. Need to get internet to see how NSTimer works.
     
     if (_searchTimer) {
         [_searchTimer invalidate];
@@ -528,7 +528,7 @@
     if (searchBar.text.length == 0) {
         [self hideSearchBar];
     } else {
-#warning if this is invoked when the "Search" button is pressed. Then here there should be a search invocation unless the currently displayed results are for the same searchText.
+// TODO: fix me if this is invoked when the "Search" button is pressed. Then here there should be a search invocation unless the currently displayed results are for the same searchText.
     }
 }
 
@@ -565,7 +565,7 @@
         
         [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
         }
-#warning here is where you can disable/activate UPC scanner button.
+// TODO: fix me here is where you can disable/activate UPC scanner button.
         [self.searchDisplayController.searchBar setShowsBookmarkButton:YES];
         [self.searchDisplayController.searchBar setShowsScopeBar:NO];
         [self.searchDisplayController.searchBar setShowsCancelButton:YES animated:YES];

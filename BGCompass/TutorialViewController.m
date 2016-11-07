@@ -269,7 +269,7 @@
     self.militaryTimeItem = [TutorialBoolItem itemWithTitle:@"Use 24 Hr clock" value:[settings boolForKey:SETTING_MILITARY_TIME]];
     
     NSArray* InsulinMappingArray = @[INSULINTYPE_STRING_REGULAR, INSULINTYPE_STRING_GLULISINE, INSULINTYPE_STRING_LISPRO, INSULINTYPE_STRING_ASPART];
-#warning this array should be placed somewhere else. Some sort of constants place. Also in EditItemViewController.m
+// TODO: fix me this array should be placed somewhere else. Some sort of constants place. Also in EditItemViewController.m
     self.insulinTypeItem = [TutorialPickerItem itemWithTitle:@"Type" value:@[[InsulinMappingArray objectAtIndex:[settings integerForKey:SETTING_INSULIN_TYPE]]] placeholder:nil options:@[InsulinMappingArray]];
     
     self.insulinSensitivityItem.keyboardType = UIKeyboardTypeDecimalPad;

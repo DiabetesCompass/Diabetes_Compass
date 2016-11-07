@@ -23,7 +23,7 @@
 #import <BlurryModalSegue.h>
 #import "ANBlurredImageView.h"
 
-#warning add template for when database or graph is empty
+// TODO: fix me add template for when database or graph is empty
 @interface HomeViewController ()
 
 @property (assign, nonatomic) BOOL presentingModal;

@@ -502,7 +502,7 @@
     float insulinSensitivity = [[NSUserDefaults standardUserDefaults] floatForKey:SETTING_INSULIN_SENSITIVITY];
     float carbSensitivity = [[NSUserDefaults standardUserDefaults] floatForKey:SETTING_CARB_SENSITIVITY];
     
-#warning This doesn't report correctly for very small deficits (less than whole numbers for carbs).
+// TODO: fix me This doesn't report correctly for very small deficits (less than whole numbers for carbs).
     if (asymptote_value < ideal_min) {
         return @((ideal_midpoint - asymptote_value)/carbSensitivity);
     } else if (asymptote_value > ideal_max) {

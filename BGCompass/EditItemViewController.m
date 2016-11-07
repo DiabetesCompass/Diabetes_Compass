@@ -246,7 +246,7 @@
     */
 
     NSArray* InsulinMappingArray = @[INSULINTYPE_STRING_REGULAR, INSULINTYPE_STRING_GLULISINE, INSULINTYPE_STRING_LISPRO, INSULINTYPE_STRING_ASPART];
-#warning this array should be placed somewhere else. Some sort of constants place. Also located in SettingsController.m
+// TODO: fix me this array should be placed somewhere else. Some sort of constants place. Also located in SettingsController.m
     if (self.editingMode) {
         self.valueField.text = [NSString stringWithFormat:@"%.2f", [((InsulinReading*)self.item).quantity floatValue]];
         self.valueTitleLabel.text = [@"Insulin - " stringByAppendingString:[InsulinMappingArray objectAtIndex:((InsulinReading*)self.item).insulinType.intValue]];

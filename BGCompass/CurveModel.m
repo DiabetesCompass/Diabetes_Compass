@@ -112,7 +112,7 @@
                                [NSValue valueWithCGPoint:CGPointMake(insulinDuration, 0)]
                                ];
     }
-#warning add other insulin types here. Each one with its own curve points.
+// TODO: fix me add other insulin types here. Each one with its own curve points.
     
     // Set the duration setting, if using default.
     if (remember_to_change_setting) {
@@ -129,12 +129,12 @@
     }
 }
 
-#warning Should refactor the two following methods into one method. Should just be "effectFromReading".
+// TODO: fix me Should refactor the two following methods into one method. Should just be "effectFromReading".
 
 - (void) effectFromInsulinReading:(InsulinReading *)insulinReading toArray:(float *)insulinEffect {
     
     if ([insulinReading.insulinType integerValue] != _insulinType) {
-#warning this reveals an issue. Duration of insulin needs to be on a per reading basis if we choose to make it custom.
+// TODO: fix me this reveals an issue. Duration of insulin needs to be on a per reading basis if we choose to make it custom.
         [self setInsulinPointsWithDuration:USE_DEFAULT_DURATION andInsulinType:[insulinReading.insulinType intValue]];
     }
     
@@ -162,7 +162,7 @@
     if (![BGReading isInMoles]) {
         insulinSensitivity = insulinSensitivity / CONVERSIONFACTOR;
     }
-#warning The insulinSensitivity code above seems fishy. Needs a second look.
+// TODO: fix me The insulinSensitivity code above seems fishy. Needs a second look.
     
     // Normalize and multiply each value by insulin sensitivity
     for (int index = 0; index < _insulinDuration; index++) {
