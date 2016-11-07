@@ -389,7 +389,7 @@
     // This section , I think, sets the x axis time labels
     NSCalendar *gregorian = [[NSCalendar alloc]
                              initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
-    NSDateComponents *nowComponents = [gregorian components:NSMinuteCalendarUnit fromDate:[NSDate date]];
+    NSDateComponents *nowComponents = [gregorian components:NSCalendarUnitMinute fromDate:[NSDate date]];
     int firstDateMinute = (int)((nowComponents.minute - (nowComponents.minute % 30)) + 30);
     int first = (int)(firstDateMinute - nowComponents.minute);
     

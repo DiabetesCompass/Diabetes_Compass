@@ -426,7 +426,7 @@
     CPTCalendarFormatter* cptFormatter = [CPTCalendarFormatter new];
     cptFormatter.dateFormatter = dateFormatter;
     cptFormatter.referenceDate = firstReading.timeStamp;
-    cptFormatter.referenceCalendarUnit = NSMinuteCalendarUnit;
+    cptFormatter.referenceCalendarUnit = NSCalendarUnitMinute;
     x.labelFormatter =  cptFormatter;
     
     CPTScatterPlot* trendDataPlot = [[CPTScatterPlot alloc] initWithFrame:graph.defaultPlotSpace.accessibilityFrame];
