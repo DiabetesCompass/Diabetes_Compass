@@ -201,7 +201,7 @@ const CGFloat kAPPaginalTableViewElementAnimationDuration = 0.3f;
 - (CGFloat)alphaForCollapsedView
 {
     CGFloat diffViewsHeight = self.expandedHeight - self.collapsedHeight;
-    CGFloat diffCurrentHeight = self.frame.size.height - self.collapsedHeight;
+    //CGFloat diffCurrentHeight = self.frame.size.height - self.collapsedHeight;
     
     CGFloat heightTransitionMin;
     CGFloat heightTransitionMax;
