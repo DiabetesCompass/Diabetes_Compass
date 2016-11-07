@@ -55,7 +55,7 @@
     
     NSCalendar *gregorian = [[NSCalendar alloc]
                              initWithCalendarIdentifier: NSCalendarIdentifierGregorian];
-    NSDateComponents *nowComponents = [gregorian components:NSSecondCalendarUnit fromDate:[NSDate date]];
+    NSDateComponents *nowComponents = [gregorian components:NSCalendarUnitSecond fromDate:[NSDate date]];
     int SecondsToNextMinute = (int) (60 - nowComponents.second);
     
     dispatch_source_set_timer(self.predictBG,
