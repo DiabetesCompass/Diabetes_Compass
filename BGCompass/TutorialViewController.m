@@ -91,11 +91,7 @@
     page1.titleFont = [UIFont fontWithName:@"HelveticaNeue-Ultralight" size:60];
     page1.bgImage = [UIImage imageNamed:@"cool"];
     page1.titleImage = [UIImage imageNamed:@"appIcon"];
-    
-    
-    
-    
-    
+
     UIView *settingsView = [[UIView alloc] initWithFrame:self.view.bounds];
     if(screenConstant == 1) {
         self.settingsTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 125, 320, 370)];
@@ -175,10 +171,7 @@
     bgTitle.backgroundColor = [UIColor clearColor];
     bgTitle.numberOfLines = 1;
     bgTitle.textAlignment = NSTextAlignmentCenter;
-    
-    
-    
-    
+
     bgUnits.text = @"mg/dL";
     circularSlider.maximumValue = 300.0;
     
@@ -186,10 +179,10 @@
     for(int i=1; i<11; i++) {
         [labelsArray addObject:[NSString stringWithFormat:@"%.0f", i*30.0]];
     }
+
     [circularSlider setInnerMarkingLabels:labelsArray];
     self.circularSlider = circularSlider;
-    
-    
+
     bgUnits.font = [UIFont fontWithName:@"HelveticaNeue-Thin" size:20];
     bgUnits.textColor = [UIColor colorWithRed:1 green:1 blue:1 alpha:0.5];
     bgUnits.backgroundColor = [UIColor clearColor];
@@ -205,16 +198,13 @@
     finishButton.layer.cornerRadius = 5;
     finishButton.layer.borderColor = [[UIColor colorWithRed:1 green:1 blue:1 alpha:0.2] CGColor];
     [finishButton addTarget:self action:@selector(completedTutorial) forControlEvents:UIControlEventTouchUpInside];
-    
-    
+
     [firstBGView addSubview:title2];
     [firstBGView addSubview:finishButton];
     [firstBGView addSubview:bgTitle];
     [firstBGView addSubview:bgUnits];
     [firstBGView addSubview:circularSlider];
     [firstBGView addSubview:bgValue];
-    
-    
 
     EAIntroPage *page3 = [EAIntroPage pageWithCustomView:firstBGView];
     page3.bgImage = [UIImage imageNamed:@"red"];
@@ -231,8 +221,6 @@
     [intro showInView:self.view animateDuration:0.0];
     [intro setDelegate:self];
 }
-
-
 
 -(void) newValue:(EFCircularSlider*)slider {
     if(self.useMoleUnitsItem.value) {
