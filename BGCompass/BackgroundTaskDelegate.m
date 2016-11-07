@@ -33,7 +33,7 @@
 
 - (UIViewController*) getCurrentViewController
 {
-    AppDelegate* delegate = [[UIApplication sharedApplication] delegate];
+    AppDelegate* delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     UINavigationController *navigationController = (UINavigationController *)delegate.window.rootViewController;
     return navigationController.topViewController;
 }
