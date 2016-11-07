@@ -218,12 +218,15 @@
 
     EAIntroPage *page3 = [EAIntroPage pageWithCustomView:firstBGView];
     page3.bgImage = [UIImage imageNamed:@"red"];
-    
-    
+
     EAIntroView *intro = [[EAIntroView alloc] initWithFrame:self.view.bounds andPages:@[page1,page2,page3]];
-    intro.skipButton = NO;
+
+    // Deleted incorrect
+    // intro.skipButton = NO;
+    // TODO: set showSkipButtonOnlyOnLastPage ? e.g.
+    // intro.skipButton.showSkipButtonOnlyOnLastPage = NO;
+
     intro.swipeToExit = NO;
-    
     
     [intro showInView:self.view animateDuration:0.0];
     [intro setDelegate:self];
