@@ -211,10 +211,7 @@
 
     EAIntroView *intro = [[EAIntroView alloc] initWithFrame:self.view.bounds andPages:@[page1,page2,page3]];
 
-    // Deleted incorrect
-    // intro.skipButton = NO;
-    // TODO: set showSkipButtonOnlyOnLastPage ? e.g.
-    // intro.skipButton.showSkipButtonOnlyOnLastPage = NO;
+
 
     intro.swipeToExit = NO;
     
