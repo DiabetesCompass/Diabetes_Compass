@@ -211,8 +211,6 @@
 
     EAIntroView *intro = [[EAIntroView alloc] initWithFrame:self.view.bounds andPages:@[page1,page2,page3]];
 
-
-
     intro.swipeToExit = NO;
     
     [intro showInView:self.view animateDuration:0.0];
