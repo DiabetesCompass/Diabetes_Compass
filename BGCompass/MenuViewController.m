@@ -35,31 +35,48 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+
     self.blurTransitionDelegate = [BlurTransitionDelegate new];
-    
+
     self.settingsButton.titleLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:24];
     [self.settingsButton setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"icon-cog"] forState:UIControlStateNormal];
     
     self.exitButton.titleLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:24];
     [self.exitButton setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"icon-remove"] forState:UIControlStateNormal];
-    
-    PPiFlatSegmentedControl *segmented=[[PPiFlatSegmentedControl alloc] initWithFrame:CGRectMake(-2, 70, 323, 39.5) items:@[@{@"text":@"Food"},@{@"text":@"Glucose"}, @{@"text":@"Insulin"}, @{@"text":@"All"}]iconPosition:IconPositionRight andSelectionBlock:^(NSUInteger segmentIndex) {
-     
-        self.selectedSegmentIndex = (int)segmentIndex;
-        [self performSegueWithIdentifier:@"ItemListViewSegue" sender:self];
-     } iconSeparation:0];
-     
-     segmented.color=[UIColor clearColor];
-     segmented.borderWidth=1;
-     segmented.borderColor=[UIColor colorWithRed:1 green:1 blue:1 alpha:0.4];
-     segmented.selectedColor=[UIColor clearColor];
+
+    // app crashed with items array of NSDictionary with one key/value pair
+    // items: @[@{@"text":@"Food"}, @{@"text":@"Glucose"}, @{@"text":@"Insulin"}, @{@"text":@"All"}]
+    // items is array of PPiFlatSegmentItem
+    PPiFlatSegmentItem *item0 = [[PPiFlatSegmentItem alloc] initWithTitle: @"Food"
+                                                                  andIcon:[UIImage imageNamed: @"red"]];
+    PPiFlatSegmentItem *item1 = [[PPiFlatSegmentItem alloc] initWithTitle: @"Glucose"
+                                                                  andIcon: [UIImage imageNamed: @"blue"]];
+    PPiFlatSegmentItem *item2 = [[PPiFlatSegmentItem alloc] initWithTitle: @"Insulin"
+                                                                  andIcon: [UIImage imageNamed: @"gray"]];
+    PPiFlatSegmentItem *item3 = [[PPiFlatSegmentItem alloc] initWithTitle: @"All"
+                                                                  andIcon:[UIImage imageNamed: @"green"]];
+    NSArray *items = @[item0, item1, item2, item3];
+
+    PPiFlatSegmentedControl *segmented = [[PPiFlatSegmentedControl alloc]
+                                          initWithFrame: CGRectMake(-2, 70, 323, 39.5)
+                                          items: items
+                                          iconPosition: IconPositionRight
+                                          andSelectionBlock: ^(NSUInteger segmentIndex) {
+                                              self.selectedSegmentIndex = (int)segmentIndex;
+                                              [self performSegueWithIdentifier: @"ItemListViewSegue" sender: self];
+                                          }
+                                          iconSeparation: 0];
+
+    segmented.color=[UIColor clearColor];
+    segmented.borderWidth=1;
+    segmented.borderColor=[UIColor colorWithRed:1 green:1 blue:1 alpha:0.4];
+    segmented.selectedColor=[UIColor clearColor];
     // set the color for the food, glucose, insulin, all text & boxes
-     segmented.textAttributes=@{NSFontAttributeName:[UIFont systemFontOfSize:15],
-     NSForegroundColorAttributeName:[UIColor whiteColor]};
-     segmented.selectedTextAttributes=@{NSFontAttributeName:[UIFont systemFontOfSize:15],
-     NSForegroundColorAttributeName:[UIColor whiteColor]};
-     [self.view addSubview:segmented];
-    
+    segmented.textAttributes=@{NSFontAttributeName:[UIFont systemFontOfSize:15],
+                               NSForegroundColorAttributeName:[UIColor whiteColor]};
+    segmented.selectedTextAttributes=@{NSFontAttributeName:[UIFont systemFontOfSize:15],
+                                       NSForegroundColorAttributeName:[UIColor whiteColor]};
+    [self.view addSubview:segmented];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
