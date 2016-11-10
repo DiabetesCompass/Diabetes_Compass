@@ -101,31 +101,12 @@
     [self.rejectButton setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"icon-remove"] forState:UIControlStateNormal];
     self.menuButton.titleLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:24];
     [self.menuButton setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"icon-align-justify"] forState:UIControlStateNormal];
-    
+
     self.transitionController = [ZoomModalTransitionDelegate new];
     self.blurTransitionDelegate = [BlurTransitionDelegate new];
-    
-    /*PPiFlatSegmentedControl *segmented=[[PPiFlatSegmentedControl alloc] initWithFrame:CGRectMake(-2, 64.5, 323, 39.5) items:@[@{@"text":@"Food"},@{@"text":@"Glucose"}, @{@"text":@"Insulin"}]iconPosition:IconPositionRight andSelectionBlock:^(NSUInteger segmentIndex) {
-        
-        self.selectedSegmentIndex = segmentIndex;
-        [self performSegueWithIdentifier:@"ItemListViewSegue" sender:self];
-    }];
-    
-    segmented.color=[UIColor clearColor];
-    segmented.borderWidth=0.5;
-    segmented.borderColor=[UIColor whiteColor];
-    segmented.selectedColor=[UIColor clearColor];
-    segmented.touchedColor = [UIColor whiteColor];
-    segmented.touchedTextColor = [UIColor blackColor];
-    segmented.textAttributes=@{NSFontAttributeName:[UIFont systemFontOfSize:15],
-                               NSForegroundColorAttributeName:[UIColor whiteColor]};
-    segmented.selectedTextAttributes=@{NSFontAttributeName:[UIFont systemFontOfSize:15],
-                                       NSForegroundColorAttributeName:[UIColor whiteColor]};
-    [self.view addSubview:segmented];*/
-
 }
 
--(void)viewWillAppear:(BOOL)animated
+- (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:YES animated:NO];
