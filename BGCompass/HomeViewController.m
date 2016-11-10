@@ -91,16 +91,15 @@
     }];*/
     
     self.navigationController.navigationBar.titleTextAttributes = [NSDictionary dictionaryWithObject:[UIColor whiteColor] forKey:NSForegroundColorAttributeName];
-    
-    self.trendsButton.titleLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:24];
-    [self.trendsButton setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"icon-bar-chart"] forState:UIControlStateNormal];
-    self.acceptButton.titleLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:24];
-    [self.acceptButton setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"icon-ok"] forState:UIControlStateNormal];
-    
-    self.rejectButton.titleLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:24];
-    [self.rejectButton setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"icon-remove"] forState:UIControlStateNormal];
-    self.menuButton.titleLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:24];
-    [self.menuButton setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"icon-align-justify"] forState:UIControlStateNormal];
+
+    [self.trendsButton setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"icon-bar-chart"]
+                       forState:UIControlStateNormal];
+    [self.acceptButton setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"icon-ok"]
+                       forState:UIControlStateNormal];
+    [self.rejectButton setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"icon-remove"]
+                       forState:UIControlStateNormal];
+    [self.menuButton setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"icon-align-justify"]
+                     forState:UIControlStateNormal];
 
     self.transitionController = [ZoomModalTransitionDelegate new];
     self.blurTransitionDelegate = [BlurTransitionDelegate new];
