@@ -44,17 +44,15 @@
     self.exitButton.titleLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:24];
     [self.exitButton setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"icon-remove"] forState:UIControlStateNormal];
 
-    // app crashed with items array of NSDictionary with one key/value pair
-    // items: @[@{@"text":@"Food"}, @{@"text":@"Glucose"}, @{@"text":@"Insulin"}, @{@"text":@"All"}]
-    // items is array of PPiFlatSegmentItem
+    // choose icons from FontAwesome+iOS/NSString+FontAwsome.m
     PPiFlatSegmentItem *item0 = [[PPiFlatSegmentItem alloc] initWithTitle: @"Food"
-                                                                  andIcon:[UIImage imageNamed: @"red"]];
+                                                                  andIcon: @"icon-food"];
     PPiFlatSegmentItem *item1 = [[PPiFlatSegmentItem alloc] initWithTitle: @"Glucose"
-                                                                  andIcon: [UIImage imageNamed: @"blue"]];
+                                                                  andIcon: @"icon-beaker"];
     PPiFlatSegmentItem *item2 = [[PPiFlatSegmentItem alloc] initWithTitle: @"Insulin"
-                                                                  andIcon: [UIImage imageNamed: @"gray"]];
+                                                                  andIcon: @"icon-eye-dropper"];
     PPiFlatSegmentItem *item3 = [[PPiFlatSegmentItem alloc] initWithTitle: @"All"
-                                                                  andIcon:[UIImage imageNamed: @"green"]];
+                                                                  andIcon: @"icon-list-alt"];
     NSArray *items = @[item0, item1, item2, item3];
 
     PPiFlatSegmentedControl *segmented = [[PPiFlatSegmentedControl alloc]
@@ -65,7 +63,7 @@
                                               self.selectedSegmentIndex = (int)segmentIndex;
                                               [self performSegueWithIdentifier: @"ItemListViewSegue" sender: self];
                                           }
-                                          iconSeparation: 0];
+                                          iconSeparation: 10];
 
     segmented.color=[UIColor clearColor];
     segmented.borderWidth=1;
