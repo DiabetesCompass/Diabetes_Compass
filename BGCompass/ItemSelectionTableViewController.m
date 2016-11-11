@@ -310,16 +310,28 @@
             static NSString *CellIdentifier = @"SegmentCell";
             ItemTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
             if ([cell.contentView.subviews count] == 0) {
-                PPiFlatSegmentedControl *segmented = [[PPiFlatSegmentedControl alloc] initWithFrame:CGRectMake(-2, 0, 323, 40) items:@[@{@"text":@"History",@"icon":@"icon-time"},@{@"text":@"Favorites",@"icon":@"icon-star"}] iconPosition:IconPositionRight andSelectionBlock:^(NSUInteger segmentIndex) {
-                    if (segmentIndex == 0) {
-                        self.tableViewMode = 0;
-                    } else {
-                        self.tableViewMode = 1;
-                    }
-                    [self fetchData];
-                    [self.tableView reloadData];
-                } iconSeparation:0];
-                
+
+                PPiFlatSegmentItem *item0 = [[PPiFlatSegmentItem alloc] initWithTitle: @"History"
+                                                                              andIcon: @"icon-time"];
+                PPiFlatSegmentItem *item1 = [[PPiFlatSegmentItem alloc] initWithTitle: @"Favorites"
+                                                                              andIcon: @"icon-star"];
+                NSArray *items = @[item0, item1];
+
+                PPiFlatSegmentedControl *segmented = [[PPiFlatSegmentedControl alloc]
+                                                      initWithFrame: CGRectMake(-2, 0, 323, 40)
+                                                      items: items
+                                                      iconPosition: IconPositionRight
+                                                      andSelectionBlock: ^(NSUInteger segmentIndex) {
+                                                          if (segmentIndex == 0) {
+                                                              self.tableViewMode = 0;
+                                                          } else {
+                                                              self.tableViewMode = 1;
+                                                          }
+                                                          [self fetchData];
+                                                          [self.tableView reloadData];
+                                                      }
+                                                      iconSeparation: 10];
+
                 segmented.color=[UIColor clearColor];
                 segmented.borderWidth=0.5;
                 segmented.borderColor=[UIColor colorWithRed:1 green:1 blue:1 alpha:0.2];
@@ -329,15 +341,13 @@
                 segmented.selectedTextAttributes=@{NSFontAttributeName:[UIFont systemFontOfSize:15],
                                                    NSForegroundColorAttributeName:[UIColor whiteColor]};
                 
-                
-                
                 [cell.contentView addSubview:segmented];
             }
             return cell;
         } else {
             static NSString *CellIdentifier = @"ItemCell";
             ItemTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
-                        
+
             NSLocale *locale = [NSLocale currentLocale];
             NSDateFormatter *theDate = [NSDateFormatter new];
             [theDate setLocale:locale];
