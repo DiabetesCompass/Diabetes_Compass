@@ -92,6 +92,7 @@
     
     self.navigationController.navigationBar.titleTextAttributes = [NSDictionary dictionaryWithObject:[UIColor whiteColor] forKey:NSForegroundColorAttributeName];
 
+    // button font may be set to custom FontAwesome in storyboard
     [self.trendsButton setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"icon-bar-chart"]
                        forState:UIControlStateNormal];
     [self.acceptButton setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"icon-ok"]
