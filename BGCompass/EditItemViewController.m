@@ -36,6 +36,8 @@
     return self;
 }
 
+#pragma mark - view
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -107,6 +109,8 @@
     }
 }
 
+#pragma mark - date
+
 - (void)configureDateButton:(NSDate *)date {
     [self.dateButton setTitle:[EditItemViewController dateStringFromDate:date]
                      forState:UIControlStateNormal];
@@ -117,6 +121,8 @@
     [dateFormatter setDateFormat:@"MMMM d, yyyy     h:mm a"];
     return [dateFormatter stringFromDate:date];
 }
+
+#pragma mark - forms
 
 - (void)generateBGForm {
     
