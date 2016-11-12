@@ -409,21 +409,20 @@
     [self.carbsField resignFirstResponder];
 
     // https://github.com/CooperRS/RMDateSelectionViewController/wiki/Usage
-    RMAction<UIDatePicker *> *selectAction =
-        [RMAction<UIDatePicker *> actionWithTitle:@"Select"
-                                            style:RMActionStyleDone
-                                       andHandler:^(RMActionController<UIDatePicker *> *controller) {
-               NSLog(@"Successfully selected date: %@", controller.contentView.date);
-                                           self.date = controller.contentView.date;
-                                           [self configureDateButton:self.date];
-                                       }];
+    RMAction<UIDatePicker *> *selectAction = [RMAction<UIDatePicker *>
+                                              actionWithTitle:@"Select"
+                                              style:RMActionStyleDone
+                                              andHandler:^(RMActionController<UIDatePicker *> *controller) {
+                                                  self.date = controller.contentView.date;
+                                                  [self configureDateButton:self.date];
+                                              }];
 
-    RMAction<UIDatePicker *> *cancelAction =
-        [RMAction<UIDatePicker *> actionWithTitle:@"Cancel"
-                                            style:RMActionStyleCancel
-                                       andHandler:^(RMActionController<UIDatePicker *> *controller) {
-                                           //NSLog(@"Date selection was canceled");
-                                       }];
+    RMAction<UIDatePicker *> *cancelAction = [RMAction<UIDatePicker *>
+                                              actionWithTitle:@"Cancel"
+                                              style:RMActionStyleCancel
+                                              andHandler:^(RMActionController<UIDatePicker *> *controller) {
+                                                  //NSLog(@"Date selection was canceled");
+                                              }];
 
     RMDateSelectionViewController *dateSelectionController =
     [RMDateSelectionViewController actionControllerWithStyle:RMActionControllerStyleWhite
