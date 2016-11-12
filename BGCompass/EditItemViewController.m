@@ -410,8 +410,8 @@
 
     RMDateSelectionViewController *dateSelectionController =
     [RMDateSelectionViewController actionControllerWithStyle:RMActionControllerStyleWhite
-                                                       title:@"Test"
-                                                     message:@"This is a test message.\nPlease choose a date and press 'Select' or 'Cancel'."
+                                                       title:nil
+                                                     message:nil
                                                 selectAction:selectAction
                                              andCancelAction:cancelAction];
 
