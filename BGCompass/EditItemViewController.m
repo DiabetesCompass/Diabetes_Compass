@@ -389,29 +389,38 @@
 }
 
 - (IBAction)dateClicked:(id)sender {
-    RMDateSelectionViewController *dateSelectionVC = [RMDateSelectionViewController dateSelectionController];
-    dateSelectionVC.delegate = self;
-    [self.valueField resignFirstResponder];
-    [self.carbsField resignFirstResponder];
-    [dateSelectionVC show];
-    dateSelectionVC.datePicker.date = self.date;
+
+//    RMDateSelectionViewController *dateSelectionVC = [RMDateSelectionViewController dateSelectionController];
+//    dateSelectionVC.delegate = self;
+//    [self.valueField resignFirstResponder];
+//    [self.carbsField resignFirstResponder];
+//    [dateSelectionVC show];
+//    dateSelectionVC.datePicker.date = self.date;
+
+    // https://github.com/CooperRS/RMDateSelectionViewController/wiki/Usage
+    RMAction<UIDatePicker *> *selectAction =
+        [RMAction<UIDatePicker *> actionWithTitle:@"Select"
+                                            style:RMActionStyleDone
+                                       andHandler:^(RMActionController<UIDatePicker *> *controller) {
+               NSLog(@"Successfully selected date: %@", controller.contentView.date);
+                                       }];
+
+    RMAction<UIDatePicker *> *cancelAction =
+        [RMAction<UIDatePicker *> actionWithTitle:@"Cancel"
+                                            style:RMActionStyleCancel
+                                       andHandler:^(RMActionController<UIDatePicker *> *controller) {
+                                           NSLog(@"Date selection was canceled");
+                                       }];
+
+    RMDateSelectionViewController *dateSelectionController =
+    [RMDateSelectionViewController actionControllerWithStyle:RMActionControllerStyleWhite
+                                                       title:@"Test"
+                                                     message:@"This is a test message.\nPlease choose a date and press 'Select' or 'Cancel'."
+                                                selectAction:selectAction
+                                             andCancelAction:cancelAction];
+
+    //Now just present the date selection controller using the standard iOS presentation method
+    [self presentViewController:dateSelectionController animated:YES completion:nil];
 }
 
-
-
-
-
-#pragma mark - RMDateSelectionViewController Delegates
-- (void)dateSelectionViewController:(RMDateSelectionViewController *)vc didSelectDate:(NSDate *)aDate {
-    //Do something
-    self.date = aDate;
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:@"MMMM d, yyyy     h:mm a"];
-    [self.dateButton setTitle:[dateFormatter stringFromDate:aDate] forState:UIControlStateNormal];
-    [self.valueField becomeFirstResponder];
-}
-
-- (void)dateSelectionViewControllerDidCancel:(RMDateSelectionViewController *)vc {
-    [self.valueField becomeFirstResponder];
-}
 @end

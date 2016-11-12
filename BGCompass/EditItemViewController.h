@@ -10,7 +10,7 @@
 #import "ANBlurredImageView.h"
 #import <RMDateSelectionViewController.h>
 
-@interface EditItemViewController : UIViewController <RMDateSelectionViewControllerDelegate, UITextFieldDelegate>
+@interface EditItemViewController : UIViewController <UITextFieldDelegate>
 
 @property (nonatomic, strong) id item;
 @property (nonatomic, assign) BOOL editingMode;
