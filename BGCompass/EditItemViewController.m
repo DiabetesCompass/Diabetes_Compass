@@ -390,12 +390,8 @@
 
 - (IBAction)dateClicked:(id)sender {
 
-//    RMDateSelectionViewController *dateSelectionVC = [RMDateSelectionViewController dateSelectionController];
-//    dateSelectionVC.delegate = self;
-//    [self.valueField resignFirstResponder];
-//    [self.carbsField resignFirstResponder];
-//    [dateSelectionVC show];
-//    dateSelectionVC.datePicker.date = self.date;
+    [self.valueField resignFirstResponder];
+    [self.carbsField resignFirstResponder];
 
     // https://github.com/CooperRS/RMDateSelectionViewController/wiki/Usage
     RMAction<UIDatePicker *> *selectAction =
@@ -418,6 +414,8 @@
                                                      message:@"This is a test message.\nPlease choose a date and press 'Select' or 'Cancel'."
                                                 selectAction:selectAction
                                              andCancelAction:cancelAction];
+
+    dateSelectionController.datePicker.date = self.date;
 
     //Now just present the date selection controller using the standard iOS presentation method
     [self presentViewController:dateSelectionController animated:YES completion:nil];
