@@ -18,7 +18,7 @@ pod 'RETableViewManager'
 pod 'EAIntroView', '~> 2.2.0'
 pod 'EFCircularSlider', '~> 0.1.0'
 pod 'BlurryModalSegue'
-pod 'RMDateSelectionViewController', '~> 1.1.0'
+pod 'RMDateSelectionViewController', '~> 2.1.0'
 pod 'Reachability'
 
 target 'BGCompassTests' do
