@@ -190,32 +190,31 @@
                 controller.coreDataEntityString = @"All";
                 break;
         }
+
     } else if ([[segue identifier] isEqualToString:@"SettingsSegue"]) {
         self.presentingModal = YES;
         UIViewController *modalViewController = segue.destinationViewController;
         modalViewController.transitioningDelegate = self.blurTransitionDelegate;
+
     } else if ([[segue identifier] isEqualToString:@"TrendsSegue"]) {
         UIViewController *modalViewController = segue.destinationViewController;
         modalViewController.transitioningDelegate = self.transitionController;
-        modalViewController.modalPresentationStyle = UIModalPresentationCustom;
+
     } else if ([[segue identifier] isEqualToString:@"NeedBGSegue"]) {
         self.presentingModal = YES;
         //BlurryModalSegue* bms = (BlurryModalSegue*)segue;
-        
+
         //bms.backingImageBlurRadius = @(10);
         //bms.backingImageSaturationDeltaFactor = @(1);
         //bms.backingImageTintColor = [[UIColor whiteColor] colorWithAlphaComponent:.1];
         UIViewController *modalViewController = segue.destinationViewController;
         modalViewController.transitioningDelegate = self.blurTransitionDelegate;
         
-    } else if([[segue identifier] isEqualToString:@"MenuSegue"]) {
+    } else if ([[segue identifier] isEqualToString:@"MenuSegue"]) {
         self.presentingModal = YES;
         UIViewController *modalViewController = segue.destinationViewController;
         modalViewController.transitioningDelegate = self.blurTransitionDelegate;
-        
-        
     }
-    
 }
 
 - (IBAction)clickTrends:(id)sender {
