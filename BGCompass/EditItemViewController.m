@@ -52,9 +52,7 @@
         self.date = [NSDate new];
     }
     
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:@"MMMM d, yyyy     h:mm a"];
-    [self.dateButton setTitle:[dateFormatter stringFromDate:self.date] forState:UIControlStateNormal];
+    [self configureDateButton:self.date];
     
     self.titleLabel.text = ((Reading*)self.item).name;
     self.titleLabel.delegate = self;
@@ -107,6 +105,17 @@
     if (self.doneButtonClicked == NO && self.editingMode == NO) {
         [self.item MR_deleteEntity];
     }
+}
+
+- (void)configureDateButton:(NSDate *)date {
+    [self.dateButton setTitle:[EditItemViewController dateStringFromDate:date]
+                     forState:UIControlStateNormal];
+}
+
++ (NSString *)dateStringFromDate:(NSDate *)date {
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"MMMM d, yyyy     h:mm a"];
+    return [dateFormatter stringFromDate:date];
 }
 
 - (void)generateBGForm {
