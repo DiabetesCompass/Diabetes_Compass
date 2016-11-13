@@ -607,7 +607,7 @@
 - (IBAction)favoriteClicked:(id)sender {
     
     UIButton* button = (UIButton*)sender;
-    ItemTableViewCell* cell = (ItemTableViewCell*)button.superview.superview.superview;
+    ItemTableViewCell* cell = (ItemTableViewCell*)button.superview.superview;
     NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
     
     BGReading* reading = [self.historyItemsArray objectAtIndex:indexPath.row];
