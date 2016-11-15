@@ -767,7 +767,7 @@
 				ORGANIZATIONNAME = "Clif Alferness";
 				TargetAttributes = {
 					2C2330E8182B6C82008A6F88 = {
-						DevelopmentTeam = M2DZFNDQBG;
+						DevelopmentTeam = UKCY2P766T;
 						SystemCapabilities = {
 							com.apple.HealthKit = {
 								enabled = 0;
