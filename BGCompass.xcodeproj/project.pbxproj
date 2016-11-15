@@ -136,6 +136,7 @@
 		83FD930E1830529600F4F19E /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = 83FD930D1830529600F4F19E /* Constants.m */; };
 		845D246A1BA52C2F00981091 /* WarningViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 845D24691BA52C2F00981091 /* WarningViewController.m */; };
 		A54FA2F73D40CA0B36D34869 /* libPods-BGCompass.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3133369E67CCE31E3141673B /* libPods-BGCompass.a */; };
+		DE758DF11DDABDE200135F5D /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DE758DF01DDABDE200135F5D /* Launch Screen.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -335,6 +336,7 @@
 		93F419889DB780CD5430F893 /* libPods-BGCompassTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BGCompassTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA8767A213B9617639CF29F3 /* Pods-BGCompassTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BGCompassTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BGCompassTests/Pods-BGCompassTests.debug.xcconfig"; sourceTree = "<group>"; };
 		DE1FE5011DCFEB0C000B6A8A /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		DE758DF01DDABDE200135F5D /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -501,6 +503,7 @@
 				839E34A8182F81520083960E /* UselessSegue.m */,
 				2C253F7F18BC7EAB00DB7D2A /* Tutorial TableView Items */,
 				2C30405A18556EB600BCD3FF /* TableView Cells */,
+				DE758DF01DDABDE200135F5D /* Launch Screen.storyboard */,
 			);
 			name = "User Interface";
 			sourceTree = "<group>";
@@ -815,6 +818,7 @@
 				2C18D36F183210F100B622C8 /* Images.xcassets in Resources */,
 				2C253FA818BCADF400DB7D2A /* appIcon.png in Resources */,
 				2CC964F5184749620092FFD1 /* weird.png in Resources */,
+				DE758DF11DDABDE200135F5D /* Launch Screen.storyboard in Resources */,
 				2C233102182B6C82008A6F88 /* Main_iPhone.storyboard in Resources */,
 				2C521B19184215D400AA1475 /* blue.png in Resources */,
 				2CC964EF184749620092FFD1 /* lightPink.png in Resources */,
