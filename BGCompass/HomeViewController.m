@@ -28,7 +28,6 @@
 
 @property (assign, nonatomic) BOOL presentingModal;
 @property (strong, nonatomic) ANBlurredImageView *blur;
-//@property (strong, nonatomic) UIView* backgroundAnimationView;
 
 @end
 
@@ -53,7 +52,7 @@
     backgroundView.frame = self.view.frame;
     [[self view] addSubview:backgroundView];
     [[self view] sendSubviewToBack:backgroundView];
-        
+
     self.navigationController.navigationBar.titleTextAttributes = [NSDictionary dictionaryWithObject:[UIColor whiteColor] forKey:NSForegroundColorAttributeName];
 
     // button font may be set to custom FontAwesome in storyboard
