@@ -128,7 +128,7 @@
 		83B33B7B18DD217E00DEB8CD /* Reading.m in Sources */ = {isa = PBXBuildFile; fileRef = 83E030E7183BEBC400F47F89 /* Reading.m */; };
 		83B33B7C18DD218B00DEB8CD /* BackgroundTaskDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 8376D6D41831BE840026D0CD /* BackgroundTaskDelegate.m */; };
 		83E030E8183BEBC400F47F89 /* Reading.m in Sources */ = {isa = PBXBuildFile; fileRef = 83E030E7183BEBC400F47F89 /* Reading.m */; };
-		83E3E68218A6B4C300F3C560 /* Ha1cAlgorithmTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 83E3E68118A6B4C300F3C560 /* Ha1cAlgorithmTests.m */; };
+		83E3E68218A6B4C300F3C560 /* TrendsAlgorithmTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 83E3E68118A6B4C300F3C560 /* TrendsAlgorithmTests.m */; };
 		83E907DB195FBE8F00F8E5A4 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C9A5167184AE39E00D9DCC2 /* SystemConfiguration.framework */; };
 		83EAFABB182F521000CE5FA9 /* InsulinReading.m in Sources */ = {isa = PBXBuildFile; fileRef = 83EAFAB6182F521000CE5FA9 /* InsulinReading.m */; };
 		83EAFABC182F521000CE5FA9 /* FoodReading.m in Sources */ = {isa = PBXBuildFile; fileRef = 83EAFAB8182F521000CE5FA9 /* FoodReading.m */; };
@@ -320,7 +320,7 @@
 		839E34A8182F81520083960E /* UselessSegue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UselessSegue.m; sourceTree = "<group>"; };
 		83E030E6183BEBC400F47F89 /* Reading.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reading.h; sourceTree = "<group>"; };
 		83E030E7183BEBC400F47F89 /* Reading.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reading.m; sourceTree = "<group>"; };
-		83E3E68118A6B4C300F3C560 /* Ha1cAlgorithmTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Ha1cAlgorithmTests.m; sourceTree = "<group>"; };
+		83E3E68118A6B4C300F3C560 /* TrendsAlgorithmTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TrendsAlgorithmTests.m; sourceTree = "<group>"; };
 		83EAFAB5182F521000CE5FA9 /* InsulinReading.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InsulinReading.h; sourceTree = "<group>"; };
 		83EAFAB6182F521000CE5FA9 /* InsulinReading.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InsulinReading.m; sourceTree = "<group>"; };
 		83EAFAB7182F521000CE5FA9 /* FoodReading.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FoodReading.h; sourceTree = "<group>"; };
@@ -453,7 +453,7 @@
 			isa = PBXGroup;
 			children = (
 				833A3E471831FB7000C1FF5C /* BGAlgorithmTests.m */,
-				83E3E68118A6B4C300F3C560 /* Ha1cAlgorithmTests.m */,
+				83E3E68118A6B4C300F3C560 /* TrendsAlgorithmTests.m */,
 				2C23311E182B6C82008A6F88 /* Supporting Files */,
 			);
 			path = BGCompassTests;
@@ -1027,7 +1027,7 @@
 				83B33B7618DD213E00DEB8CD /* FoodReading.m in Sources */,
 				83AFF1401919335D00574757 /* NutritionixUPCFood.m in Sources */,
 				83B33B7818DD215500DEB8CD /* Utilities.m in Sources */,
-				83E3E68218A6B4C300F3C560 /* Ha1cAlgorithmTests.m in Sources */,
+				83E3E68218A6B4C300F3C560 /* TrendsAlgorithmTests.m in Sources */,
 				83B33B7418DD212900DEB8CD /* GraphViewController.m in Sources */,
 				83B33B7A18DD216900DEB8CD /* BGAlgorithmModel.m in Sources */,
 				83AFF13E1919333A00574757 /* APIDelegate.m in Sources */,

@@ -1,9 +1,9 @@
 //
-//  Ha1cAlgorithmTests.m
+//  TrendsAlgorithmTests.m
 //  Compass
 //
 //  Created by Christopher Balcells on 2/8/14.
-//  Copywrite (c) 2014 Clif Alferness. All rights reserved.
+//  Copyright (c) 2014 Clif Alferness. All rights reserved.
 //
 
 #import <XCTest/XCTest.h>
@@ -12,11 +12,11 @@
 #import "TrendsAlgorithmModel.h"
 #import "Constants.h"
 
-@interface Ha1cAlgorithmTests : XCTestCase
+@interface TrendsAlgorithmTests : XCTestCase
 
 @end
 
-@implementation Ha1cAlgorithmTests
+@implementation TrendsAlgorithmTests
 
 - (void)setUp
 {
