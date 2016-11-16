@@ -3,7 +3,7 @@
 //  Compass
 //
 //  Created by Jose Carrillo on 12/1/13.
-//  Copywrite (c) 2014 Clif Alferness. All rights reserved.
+//  Copyright (c) 2014 Clif Alferness. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>

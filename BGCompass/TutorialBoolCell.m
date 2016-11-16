@@ -3,7 +3,7 @@
 //  
 //
 //  Created by Jose on 2/25/14.
-// Copywrite (c) 2014 Clif Alferness. All rights reserved.
+// Copyright (c) 2014 Clif Alferness. All rights reserved.
 //
 
 #import "TutorialBoolCell.h"

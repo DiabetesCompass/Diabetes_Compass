@@ -3,7 +3,7 @@
 //  CompassRose
 //
 //  Created by Jose Carrillo on 11/10/13.
-//  Copywrite (c) 2014 Clif Alferness. All rights reserved.
+//  Copyright (c) 2014 Clif Alferness. All rights reserved.
 //
 
 #import "ItemTableViewCell.h"
