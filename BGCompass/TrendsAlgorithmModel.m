@@ -1,5 +1,5 @@
 //
-//  Ha1cAlgorithmModel.m
+//  TrendsAlgorithmModel.m
 //  CompassRose
 //
 //  Created by Christopher Balcells on 11/22/13.
