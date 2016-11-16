@@ -56,7 +56,7 @@
 
 - (void) handleNotifications:(NSNotification*) note
 {
-    NSLog(@"BGAlgorithm received a notification whose name was: %@", [note name]);
+    NSLog(@"BGAlgorithmModel received a notification whose name was: %@", [note name]);
     if ([[note name] isEqualToString:NOTE_REJECTED]) {
         dispatch_async([[BackgroundTaskDelegate sharedInstance] getPredictQueue], ^{
             [self calculatePredictArray];
