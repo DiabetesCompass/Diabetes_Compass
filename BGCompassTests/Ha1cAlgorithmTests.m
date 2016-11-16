@@ -1,5 +1,5 @@
 //
-//  Ha1cAlgorithm.m
+//  Ha1cAlgorithmTests.m
 //  Compass
 //
 //  Created by Christopher Balcells on 2/8/14.
@@ -12,11 +12,11 @@
 #import "TrendsAlgorithmModel.h"
 #import "Constants.h"
 
-@interface Ha1cAlgorithm : XCTestCase
+@interface Ha1cAlgorithmTests : XCTestCase
 
 @end
 
-@implementation Ha1cAlgorithm
+@implementation Ha1cAlgorithmTests
 
 - (void)setUp
 {
