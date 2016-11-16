@@ -100,7 +100,7 @@
 		8337DF2D18EA332A00055E59 /* UPCScannerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8337DF2C18EA332A00055E59 /* UPCScannerViewController.m */; };
 		8337DF3318EA3ED400055E59 /* NutritionixUPCFood.m in Sources */ = {isa = PBXBuildFile; fileRef = 8337DF3218EA3ED400055E59 /* NutritionixUPCFood.m */; };
 		8337DF3618EA701B00055E59 /* Barcode.m in Sources */ = {isa = PBXBuildFile; fileRef = 8337DF3518EA701B00055E59 /* Barcode.m */; };
-		833A3E481831FB7000C1FF5C /* BGAlgorithm.m in Sources */ = {isa = PBXBuildFile; fileRef = 833A3E471831FB7000C1FF5C /* BGAlgorithm.m */; };
+		833A3E481831FB7000C1FF5C /* BGAlgorithmTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 833A3E471831FB7000C1FF5C /* BGAlgorithmTests.m */; };
 		833A3E4C1837009C00C1FF5C /* CurveModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 833A3E4B1837009C00C1FF5C /* CurveModel.m */; };
 		833A3E4F183B3EFB00C1FF5C /* BGAlgorithmModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 833A3E4E183B3EFB00C1FF5C /* BGAlgorithmModel.m */; };
 		835A91441845BBA5006A2BDC /* AG15Reading.m in Sources */ = {isa = PBXBuildFile; fileRef = 835A91431845BBA5006A2BDC /* AG15Reading.m */; };
@@ -293,7 +293,7 @@
 		8337DF3218EA3ED400055E59 /* NutritionixUPCFood.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NutritionixUPCFood.m; sourceTree = "<group>"; };
 		8337DF3418EA701B00055E59 /* Barcode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Barcode.h; sourceTree = "<group>"; };
 		8337DF3518EA701B00055E59 /* Barcode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Barcode.m; sourceTree = "<group>"; };
-		833A3E471831FB7000C1FF5C /* BGAlgorithm.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BGAlgorithm.m; sourceTree = "<group>"; };
+		833A3E471831FB7000C1FF5C /* BGAlgorithmTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BGAlgorithmTests.m; sourceTree = "<group>"; };
 		833A3E4A1837009C00C1FF5C /* CurveModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CurveModel.h; sourceTree = "<group>"; };
 		833A3E4B1837009C00C1FF5C /* CurveModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CurveModel.m; sourceTree = "<group>"; };
 		833A3E4D183B3EFB00C1FF5C /* BGAlgorithmModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BGAlgorithmModel.h; sourceTree = "<group>"; };
@@ -452,7 +452,7 @@
 		2C23311D182B6C82008A6F88 /* BGCompassTests */ = {
 			isa = PBXGroup;
 			children = (
-				833A3E471831FB7000C1FF5C /* BGAlgorithm.m */,
+				833A3E471831FB7000C1FF5C /* BGAlgorithmTests.m */,
 				83E3E68118A6B4C300F3C560 /* Ha1cAlgorithm.m */,
 				2C23311E182B6C82008A6F88 /* Supporting Files */,
 			);
@@ -1020,7 +1020,7 @@
 				83AFF13F1919335A00574757 /* NutritionixSearchFood.m in Sources */,
 				83B33B7C18DD218B00DEB8CD /* BackgroundTaskDelegate.m in Sources */,
 				83AFF13D191932DF00574757 /* AppDelegate.m in Sources */,
-				833A3E481831FB7000C1FF5C /* BGAlgorithm.m in Sources */,
+				833A3E481831FB7000C1FF5C /* BGAlgorithmTests.m in Sources */,
 				8337DF2718E459FE00055E59 /* CompassRose.xcdatamodeld in Sources */,
 				83B33B7518DD213900DEB8CD /* CurveModel.m in Sources */,
 				83B33B7B18DD217E00DEB8CD /* Reading.m in Sources */,
