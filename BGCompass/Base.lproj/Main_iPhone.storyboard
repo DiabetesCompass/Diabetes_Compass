@@ -338,7 +338,7 @@
                             <containerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1wC-kA-FMF">
                                 <rect key="frame" x="0.0" y="253" width="375" height="414"/>
                                 <connections>
-                                    <segue destination="kjW-3c-CgD" kind="embed" id="JRt-Hn-2oB"/>
+                                    <segue destination="kjW-3c-CgD" kind="embed" identifier="HomeToGraphSegue" id="JRt-Hn-2oB"/>
                                 </connections>
                             </containerView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TNg-Xn-eGe">
