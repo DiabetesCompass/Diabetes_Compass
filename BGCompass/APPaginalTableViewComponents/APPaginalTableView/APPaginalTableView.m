@@ -646,7 +646,7 @@ NSUInteger kAPPaginalTableViewSection = 0;
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
-- (NSUInteger)supportedInterfaceOrientations{
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations{
     return UIInterfaceOrientationMaskPortrait;
 }
 
