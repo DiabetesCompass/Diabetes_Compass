@@ -30,6 +30,8 @@
     CPTPlot* _currentAnnotatingPlot;
 }
 
+#pragma mark - lifecycle
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
@@ -38,6 +40,32 @@
     }
     return self;
 }
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+	// Do any additional setup after loading the view.
+    self.annotations = [NSMutableArray new];
+    _fingerDown = NO;
+    _fingerUpCount = 0;
+    
+    [self setupGraph];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self updateData];
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+- (void)dealloc {
+    [self removeObservers];
+}
+
+#pragma mark - observer
 
 - (void)addObservers {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleNotifications:) name:NOTE_GRAPH_RECALCULATED object:nil];
@@ -70,31 +98,7 @@
     }
 }
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
-	// Do any additional setup after loading the view.
-    self.annotations = [NSMutableArray new];
-    _fingerDown = NO;
-    _fingerUpCount = 0;
-    
-    [self setupGraph];
-}
-
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-    [self updateData];
-}
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-- (void)dealloc {
-    [self removeObservers];
-}
-
-#pragma mark CPTScatterPlotDelegate methods
+#pragma mark - CPTScatterPlotDelegate methods
 
 - (void)scatterPlot:(CPTScatterPlot *)plot
 plotSymbolWasSelectedAtRecordIndex:(NSUInteger)index {
@@ -137,7 +141,7 @@ plotSymbolWasSelectedAtRecordIndex:(NSUInteger)index {
     [self.graph.plotAreaFrame.plotArea addAnnotation:annotation];
 }
 
-#pragma mark CPTPlotSpaceDelegate methods
+#pragma mark - CPTPlotSpaceDelegate methods
 
 - (BOOL)plotSpace:(CPTPlotSpace *)space
 shouldHandlePointingDeviceDraggedEvent:(UIEvent *)event
@@ -230,7 +234,7 @@ shouldHandlePointingDeviceUpEvent:(UIEvent *)event
     return newRange;
 }
 
-#pragma mark CPTDataSource methods
+#pragma mark - CPTDataSource methods
 
 - (NSUInteger)numberOfRecordsForPlot:(CPTPlot *)plot {
     if ([plot.identifier isEqual:@"estimatedBGPlot"]) {
