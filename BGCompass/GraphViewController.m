@@ -30,8 +30,7 @@
     CPTPlot* _currentAnnotatingPlot;
 }
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         //custom initialization
@@ -40,9 +39,7 @@
     return self;
 }
 
-- (void)addObservers
-{
-    
+- (void)addObservers {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleNotifications:) name:NOTE_GRAPH_RECALCULATED object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleNotifications:) name:NOTE_PREDICT_RECALCULATED object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleNotifications:) name:NOTE_GRAPH_SHIFTED object:nil];
@@ -50,8 +47,15 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleNotifications:) name:NOTE_SETTINGS_CHANGED object:nil];
 }
 
-- (void)handleNotifications:(NSNotification*) note
-{
+- (void)removeObservers {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:NOTE_GRAPH_RECALCULATED object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:NOTE_PREDICT_RECALCULATED object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:NOTE_GRAPH_SHIFTED object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:NOTE_PREDICT_SHIFTED object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:NOTE_SETTINGS_CHANGED object:nil];
+}
+
+- (void)handleNotifications:(NSNotification*) note {
     NSLog(@"Received a notification whose name was: %@", [note name]);
     if ([[note name] isEqualToString:NOTE_GRAPH_RECALCULATED]) {
         [self performSelectorOnMainThread:@selector(updateGraphData) withObject:self waitUntilDone:NO];
@@ -66,8 +70,7 @@
     }
 }
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     self.annotations = [NSMutableArray new];
@@ -77,21 +80,24 @@
     [self setupGraph];
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
+- (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self updateData];
 }
 
-- (void)didReceiveMemoryWarning
-{
+- (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
+- (void)dealloc {
+    [self removeObservers];
+}
+
 #pragma mark CPTScatterPlotDelegate methods
 
--(void)scatterPlot:(CPTScatterPlot *)plot plotSymbolWasSelectedAtRecordIndex:(NSUInteger)index {
+- (void)scatterPlot:(CPTScatterPlot *)plot
+plotSymbolWasSelectedAtRecordIndex:(NSUInteger)index {
     _currentAnnotatingPlot = plot;
     _fingerDown = YES;
     // Setup a style for the annotation
@@ -133,8 +139,10 @@
 
 #pragma mark CPTPlotSpaceDelegate methods
 
--(BOOL) plotSpace:(CPTPlotSpace *)space shouldHandlePointingDeviceDraggedEvent:(UIEvent *)event atPoint:(CGPoint)point
-{
+- (BOOL)plotSpace:(CPTPlotSpace *)space
+shouldHandlePointingDeviceDraggedEvent:(UIEvent *)event
+          atPoint:(CGPoint)point {
+
     if (_fingerDown && [self.annotations count] != 0) {
         CPTScatterPlot* plot = (CPTScatterPlot*)[self.graph plotWithIdentifier:_currentAnnotatingPlot.identifier];
         NSUInteger index = [plot indexOfVisiblePointClosestToPlotAreaPoint:point];
@@ -177,8 +185,9 @@
     return YES;
 }
 
--(BOOL) plotSpace:(CPTPlotSpace *)space shouldHandlePointingDeviceUpEvent:(UIEvent *)event atPoint:(CGPoint)point
-{
+- (BOOL)plotSpace:(CPTPlotSpace *)space
+shouldHandlePointingDeviceUpEvent:(UIEvent *)event
+          atPoint:(CGPoint)point {
     _fingerDown = NO;
     _currentAnnotatingPlot = nil;
     if (_fingerUpCount < [self.annotations count] && [self.annotations count] != 0) {
@@ -200,14 +209,15 @@
     return YES;
 }
 
--(CGPoint)plotSpace:(CPTPlotSpace *)space willDisplaceBy:(CGPoint)displacement
-{
+- (CGPoint)plotSpace:(CPTPlotSpace *)space willDisplaceBy:(CGPoint)displacement {
     return CGPointMake(displacement.x*1.5,0);
 }
 
 
--(CPTPlotRange *)plotSpace:(CPTPlotSpace *)space willChangePlotRangeTo:(CPTPlotRange *)newRange forCoordinate:(CPTCoordinate)coordinate
-{
+-(CPTPlotRange *)plotSpace:(CPTPlotSpace *)space
+     willChangePlotRangeTo:(CPTPlotRange *)newRange
+             forCoordinate:(CPTCoordinate)coordinate {
+
     if (coordinate == CPTCoordinateY) {
         newRange = self.range;//((CPTXYPlotSpace*)space).yRange;
     } else {
@@ -222,14 +232,14 @@
 
 #pragma mark CPTDataSource methods
 
--(NSUInteger)numberOfRecordsForPlot:(CPTPlot *)plot {
+- (NSUInteger)numberOfRecordsForPlot:(CPTPlot *)plot {
     if ([plot.identifier isEqual:@"estimatedBGPlot"]) {
         return _graphCount;
     }
     return _predictCount;
 }
 
--(NSNumber *)numberForPlot:(CPTPlot *)plot field:(NSUInteger)fieldEnum recordIndex:(NSUInteger)index {
+- (NSNumber *)numberForPlot:(CPTPlot *)plot field:(NSUInteger)fieldEnum recordIndex:(NSUInteger)index {
     if (fieldEnum == CPTScatterPlotFieldX) {
         return [NSNumber numberWithInteger:index];
     } else {
@@ -250,30 +260,26 @@
     }
 }
 
-- (void) updateGraphDataWithoutAnimation
-{
+- (void)updateGraphDataWithoutAnimation {
     //NSLog(@"UpdateDataWithoutAnimation was called");
     [[self.graph plotWithIdentifier:@"estimatedBGPlot"] reloadData];
     [self updateLabels];
     //NSLog(@"UpdateDataWithoutAnimation completed");
 }
 
-- (void) updatePredictDataWithoutAnimation
-{
+- (void)updatePredictDataWithoutAnimation {
     [[self.graph plotWithIdentifier:@"predictPlot"] reloadData];
     [self updateLabels];
 }
 
-- (void) updateData
-{
+- (void)updateData {
     //NSLog(@"Started reloading graph");
     [self updateGraphData];
     [self updatePredictData];
     //NSLog(@"Completed reloading graph");
 }
 
-- (void) updateGraphData
-{
+- (void)updateGraphData {
     NSLog(@"UpdateGraphData was called");
     // If there is any data stored in the cache remove all of it.
 
@@ -287,8 +293,7 @@
     [self updateLabels];
 }
 
-- (void) updatePredictData
-{
+- (void)updatePredictData {
     //NSLog(@"UpdatePredictData was called");
     if ([[self.graph plotWithIdentifier:@"predictPlot"] cachedDataCount] != 0) {
         [[self.graph plotWithIdentifier:@"predictPlot"] deleteDataInIndexRange:NSMakeRange(0, _predictCount-1)];
@@ -300,8 +305,7 @@
     [self updateLabels];
 }
 
-- (void)animateGraph:(NSTimer *)timer
-{
+- (void)animateGraph:(NSTimer *)timer {
     if (_graphCount < [[BGAlgorithmModel sharedInstance] graphArrayCount].intValue) {
         [[self.graph plotWithIdentifier:@"estimatedBGPlot"] reloadDataInIndexRange:NSMakeRange(_graphCount-1, 1)];
         _graphCount += 1;
@@ -310,8 +314,7 @@
     }
 }
 
-- (void)animatePredict:(NSTimer *)timer
-{
+- (void)animatePredict:(NSTimer *)timer {
     if (_predictCount < [[BGAlgorithmModel sharedInstance] predictArrayCount].intValue) {
         [[self.graph plotWithIdentifier:@"predictPlot"] reloadDataInIndexRange:NSMakeRange(_predictCount-1, 1)];
         _predictCount += 1;
@@ -320,9 +323,7 @@
     }
 }
 
-- (void)updateLabels
-//update labels called
-{
+- (void)updateLabels {
     int max_range = 300;
     if ([BGReading isInMoles]) {
         max_range = 300/CONVERSIONFACTOR;
@@ -462,8 +463,7 @@
     y.axisLabels = [NSSet setWithArray:customLabels];
 }
          
-- (void)setupGraph
-{
+- (void)setupGraph {
     NSLog(@"setupGraph of GraphViewController is called.");
     int max_range = 300;
     if ([BGReading isInMoles]) {
