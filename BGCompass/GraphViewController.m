@@ -32,15 +32,6 @@
 
 #pragma mark - lifecycle
 
-// NOTE: this isn't called when using storyboard
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        //custom initialization
-    }
-    return self;
-}
-
 - (void)viewDidLoad {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
