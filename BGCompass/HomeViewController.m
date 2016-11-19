@@ -73,7 +73,6 @@
 {
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:YES animated:NO];
-    [self updateData];
 }
 
 - (void)didReceiveMemoryWarning
@@ -107,28 +106,6 @@
         [self showCurrentBG];
     }
     
-}
-
-- (void)updateData
-{
-    NSLog(@"updateData of homeViewController is called");
-    NSArray* viewControllers = self.childViewControllers;
-    
-    for (UIViewController* vc in viewControllers) {
-        if ([vc isKindOfClass:[GraphViewController class]]) {
-            NSLog(@"updateData of graph about to be called");
-            GraphViewController* graphvc = (GraphViewController*) vc;
-            [graphvc updateData];
-        } else if ([vc isKindOfClass:[SwapperViewController class] ]) {
-            for (UIViewController* vc2 in vc.childViewControllers) {
-                if ([vc2 isKindOfClass:[CurrentBGViewController class]]) {
-                    NSLog(@"updateData of current BG about to be called");
-                    CurrentBGViewController* BGvc = (CurrentBGViewController*) vc2;
-                    [BGvc updateData];
-                }
-            }
-        }
-    }
 }
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
