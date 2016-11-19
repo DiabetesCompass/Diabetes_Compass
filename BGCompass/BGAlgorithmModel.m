@@ -3,7 +3,7 @@
 //  CompassRose
 //
 //  Created by Christopher Balcells on 11/18/13.
-//  Copywrite (c) 2014 Clif Alferness. All rights reserved.
+//  Copyright (c) 2014 Clif Alferness. All rights reserved.
 //
 
 #import "BGAlgorithmModel.h"
@@ -56,7 +56,7 @@
 
 - (void) handleNotifications:(NSNotification*) note
 {
-    NSLog(@"BGAlgorithm received a notification whose name was: %@", [note name]);
+    NSLog(@"BGAlgorithmModel received a notification whose name was: %@", [note name]);
     if ([[note name] isEqualToString:NOTE_REJECTED]) {
         dispatch_async([[BackgroundTaskDelegate sharedInstance] getPredictQueue], ^{
             [self calculatePredictArray];

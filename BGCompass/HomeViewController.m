@@ -28,7 +28,6 @@
 
 @property (assign, nonatomic) BOOL presentingModal;
 @property (strong, nonatomic) ANBlurredImageView *blur;
-//@property (strong, nonatomic) UIView* backgroundAnimationView;
 
 @end
 
@@ -53,43 +52,7 @@
     backgroundView.frame = self.view.frame;
     [[self view] addSubview:backgroundView];
     [[self view] sendSubviewToBack:backgroundView];
-    
-    
-    
-    
-    /*[UIView animateKeyframesWithDuration:10 delay:0 options:UIViewKeyframeAnimationOptionAutoreverse | UIViewKeyframeAnimationOptionRepeat animations:^{
-        [UIView addKeyframeWithRelativeStartTime:0.0 relativeDuration:0.15 animations:^{
-            //90 degrees (clockwise)
-            backgroundView.transform = CGAffineTransformMakeRotation(M_PI * -1.5);
-            //backgroundView.transform = CGAffineTransformMakeTranslation(-200, 0);
-        }];
-        [UIView addKeyframeWithRelativeStartTime:0.15 relativeDuration:0.10 animations:^{
-            //180 degrees
-            backgroundView.transform = CGAffineTransformMakeRotation(M_PI * 1.0);
-            //backgroundView.transform = CGAffineTransformMakeTranslation(0, -200);
-        }];
-        [UIView addKeyframeWithRelativeStartTime:0.25 relativeDuration:0.20 animations:^{
-            //Swing past, ~225 degrees
-            backgroundView.transform = CGAffineTransformMakeRotation(M_PI * 1.3);
-            //backgroundView.transform = CGAffineTransformMakeTranslation(-200, 0);
-        }];
-        [UIView addKeyframeWithRelativeStartTime:0.45 relativeDuration:0.20 animations:^{
-            //Swing back, ~140 degrees
-            //backgroundView.transform = CGAffineTransformMakeRotation(M_PI * 0.8);
-            backgroundView.transform = CGAffineTransformMakeTranslation(0, -200);
-        }];
-        [UIView addKeyframeWithRelativeStartTime:0.65 relativeDuration:0.35 animations:^{
-            //Spin and fall off the corner
-            //Fade out the cover view since it is the last step
-            CGAffineTransform shift = CGAffineTransformMakeTranslation(180.0, 0.0);
-            CGAffineTransform rotate = CGAffineTransformMakeRotation(M_PI * 0.3);
-            backgroundView.transform = CGAffineTransformConcat(shift, rotate);
-            //_coverView.alpha = 0.0;
-        }];
-    } completion:^(BOOL finished) {
-        //Completion Block
-    }];*/
-    
+
     self.navigationController.navigationBar.titleTextAttributes = [NSDictionary dictionaryWithObject:[UIColor whiteColor] forKey:NSForegroundColorAttributeName];
 
     // button font may be set to custom FontAwesome in storyboard

@@ -1,9 +1,9 @@
 //
-//  Ha1cAlgorithmModel.h
+//  TrendsAlgorithmModel.h
 //  CompassRose
 //
 //  Created by Christopher Balcells on 11/22/13.
-//  Copywrite (c) 2014 Clif Alferness. All rights reserved.
+//  Copyright (c) 2014 Clif Alferness. All rights reserved.
 //
 
 #import <CoreData/CoreData.h>

@@ -1,9 +1,9 @@
 //
-//  BGAlgorithm.m
+//  BGAlgorithmTests.m
 //  CompassRose
 //
 //  Created by Christopher Balcells on 11/11/13.
-//  Copywrite (c) 2014 Clif Alferness. All rights reserved.
+//  Copyright (c) 2014 Clif Alferness. All rights reserved.
 //
 
 #import <XCTest/XCTest.h>
@@ -13,11 +13,11 @@
 #import "Constants.h"
 
 
-@interface BGAlgorithm : XCTestCase
+@interface BGAlgorithmTests : XCTestCase
 @property (strong, nonatomic) GraphViewController* vc;
 @end
 
-@implementation BGAlgorithm
+@implementation BGAlgorithmTests
 
 - (void)setUp
 {
