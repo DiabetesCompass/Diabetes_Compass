@@ -73,6 +73,7 @@
 {
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:YES animated:NO];
+    [self updateData];
 }
 
 - (void)didReceiveMemoryWarning
@@ -108,7 +109,7 @@
     
 }
 
-/*- (void)updateData
+- (void)updateData
 {
     NSLog(@"updateData of homeViewController is called");
     NSArray* viewControllers = self.childViewControllers;
@@ -128,7 +129,7 @@
             }
         }
     }
-}*/
+}
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
