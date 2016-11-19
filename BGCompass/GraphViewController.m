@@ -32,11 +32,11 @@
 
 #pragma mark - lifecycle
 
+// NOTE: this isn't called when using storyboard
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         //custom initialization
-        [self addObservers];
     }
     return self;
 }
@@ -47,7 +47,8 @@
     self.annotations = [NSMutableArray new];
     _fingerDown = NO;
     _fingerUpCount = 0;
-    
+
+    [self addObservers];
     [self setupGraph];
 }
 
@@ -84,17 +85,28 @@
 }
 
 - (void)handleNotifications:(NSNotification*) note {
-    NSLog(@"Received a notification whose name was: %@", [note name]);
+    NSLog(@"Received notification name: %@", [note name]);
+
     if ([[note name] isEqualToString:NOTE_GRAPH_RECALCULATED]) {
-        [self performSelectorOnMainThread:@selector(updateGraphData) withObject:self waitUntilDone:NO];
+        dispatch_async(dispatch_get_main_queue(), ^{
+                [self updateGraphData];
+                });
     } else if ([[note name] isEqualToString:NOTE_PREDICT_RECALCULATED]) {
-        [self performSelectorOnMainThread:@selector(updatePredictData) withObject:self waitUntilDone:NO];
+        dispatch_async(dispatch_get_main_queue(), ^{
+                [self updatePredictData];
+                });
     } else if ([[note name] isEqualToString:NOTE_GRAPH_SHIFTED]) {
-        [self performSelectorOnMainThread:@selector(updateGraphDataWithoutAnimation) withObject:self waitUntilDone:NO];
+        dispatch_async(dispatch_get_main_queue(), ^{
+                [self updateGraphDataWithoutAnimation];
+                });
     } else if ([[note name] isEqualToString:NOTE_PREDICT_SHIFTED]) {
-        [self performSelectorOnMainThread:@selector(updatePredictDataWithoutAnimation) withObject:self waitUntilDone:NO];
+        dispatch_async(dispatch_get_main_queue(), ^{
+                [self updatePredictDataWithoutAnimation];
+                });
     } else if ([[note name] isEqualToString:NOTE_SETTINGS_CHANGED]) {
-        [self performSelectorOnMainThread:@selector(setupGraph) withObject:self waitUntilDone:NO];
+        dispatch_async(dispatch_get_main_queue(), ^{
+                [self setupGraph];
+                });
     }
 }
 
@@ -263,6 +275,8 @@ shouldHandlePointingDeviceUpEvent:(UIEvent *)event
         return @([value floatValue]*CONVERSIONFACTOR);
     }
 }
+
+#pragma mark - data and graph
 
 - (void)updateGraphDataWithoutAnimation {
     //NSLog(@"UpdateDataWithoutAnimation was called");
