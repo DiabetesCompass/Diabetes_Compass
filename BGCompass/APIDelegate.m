@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Clif Alferness. All rights reserved.
 //
 
-#define NUTRITIONIXBASEURL @"http://api.nutritionix.com/v1_1"
+#define NUTRITIONIXBASEURL @"https://api.nutritionix.com/v1_1"
 #define NUTRITIONIXAPPID @"cdcfa8b6"
 #define NUTRITIONIXAPPKEY @"d9867c57ba73adb36ad3c24128b8f8f6"
 #define NUTRITIONIXSEARCHURL @"search"
