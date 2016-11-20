@@ -39,20 +39,11 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void)dealloc {
-    [self removeObservers];
-}
-
 #pragma mark - observer
 
 - (void)addObservers {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleNotifications:) name:NOTE_GRAPH_RECALCULATED object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleNotifications:) name:NOTE_GRAPH_SHIFTED object:nil];
-}
-
-- (void)removeObservers {
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:NOTE_GRAPH_RECALCULATED object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:NOTE_GRAPH_SHIFTED object:nil];
 }
 
 - (void)handleNotifications:(NSNotification *) note

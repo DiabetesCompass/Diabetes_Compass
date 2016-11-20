@@ -44,10 +44,6 @@
     return self;
 }
 
-- (void)dealloc {
-    [self removeObservers];
-}
-
 #pragma mark - observer
 
 - (void)addObservers {
@@ -61,19 +57,6 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleNotifications:) name:NOTE_INSULINREADING_ADDED object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleNotifications:) name:NOTE_INSULINREADING_EDITED object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleNotifications:) name:NOTE_PENDINGREADING_DELETED object:nil];
-}
-
-- (void)removeObservers {
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:NOTE_ACCEPTED object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:NOTE_REJECTED object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:NOTE_SETTINGS_CHANGED object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:NOTE_FOODREADING_ADDED object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:NOTE_FOODREADING_EDITED object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:NOTE_BGREADING_ADDED object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:NOTE_BGREADING_EDITED object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:NOTE_INSULINREADING_ADDED object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:NOTE_INSULINREADING_EDITED object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:NOTE_PENDINGREADING_DELETED object:nil];
 }
 
 - (void) handleNotifications:(NSNotification*) note
