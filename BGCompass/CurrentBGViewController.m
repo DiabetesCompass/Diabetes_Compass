@@ -48,7 +48,7 @@
 
 - (void)handleNotifications:(NSNotification *) note
 {
-    NSLog(@"CurrentBGViewController received a notification whose name was: %@", [note name]);
+    NSLog(@"CurrentBGViewController received notification name: %@", [note name]);
     if ([[note name] isEqualToString:NOTE_GRAPH_RECALCULATED]) {
         [self performSelectorOnMainThread:@selector(updateData) withObject:self waitUntilDone:NO];
     } else if ([[note name] isEqualToString:NOTE_GRAPH_SHIFTED]) {

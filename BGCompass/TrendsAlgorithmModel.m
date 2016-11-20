@@ -46,7 +46,7 @@
 }
 
 - (void) handleNotifications:(NSNotification*) note {
-    NSLog(@"Received a notification whose name was: %@", [note name]);
+    NSLog(@"Received notification name: %@", [note name]);
     if ([[note name] isEqualToString:NOTE_BGREADING_ADDED]) {
         NSDate* new_timeStamp = [note.userInfo valueForKey:@"timeStamp"];
         /*NSLog(@"The new timeStamp value is:%@", new_timeStamp);

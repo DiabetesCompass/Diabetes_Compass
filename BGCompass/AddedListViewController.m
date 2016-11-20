@@ -42,7 +42,7 @@
 
 - (void)handleNotifications:(NSNotification*) note
 {
-    NSLog(@"AddedListViewer received a notification whose name was: %@", [note name]);
+    NSLog(@"AddedListViewer received notification name: %@", [note name]);
     [self performSelectorOnMainThread:@selector(updateData) withObject:self waitUntilDone:NO];
 }
 
