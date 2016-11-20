@@ -36,6 +36,12 @@
     return self;
 }
 
+- (void)dealloc {
+    [self removeObservers];
+}
+
+#pragma mark - observer
+
 - (void)addObservers {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleNotifications:) name:NOTE_REJECTED object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleNotifications:) name:NOTE_SETTINGS_CHANGED object:nil];
@@ -43,8 +49,14 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleNotifications:) name:NOTE_BGREADING_EDITED object:nil];
 }
 
-- (void) handleNotifications:(NSNotification*) note
-{
+- (void)removeObservers {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:NOTE_REJECTED object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:NOTE_SETTINGS_CHANGED object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:NOTE_BGREADING_ADDED object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:NOTE_BGREADING_EDITED object:nil];
+}
+
+- (void) handleNotifications:(NSNotification*) note {
     NSLog(@"Received a notification whose name was: %@", [note name]);
     if ([[note name] isEqualToString:NOTE_BGREADING_ADDED]) {
         NSDate* new_timeStamp = [note.userInfo valueForKey:@"timeStamp"];
