@@ -20,6 +20,8 @@
 
 @implementation CurrentBGViewController
 
+#pragma mark - lifecycle
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -30,6 +32,11 @@
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self updateData];
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
 }
 
 - (void)dealloc {
@@ -56,12 +63,6 @@
     } else if ([[note name] isEqualToString:NOTE_GRAPH_SHIFTED]) {
         [self performSelectorOnMainThread:@selector(updateData) withObject:self waitUntilDone:NO];
     }
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 -(void) updateData
