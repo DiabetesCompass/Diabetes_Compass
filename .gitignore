@@ -1,7 +1,11 @@
 Pods/Pods.xcodeproj/xcuserdata/
 BGCompass.xcworkspace/xcuserdata/
 BGCompass.xcworkspace/xcshareddata/
+
+# macOS
 .DS_Store
+# editor temporary files?
+._*
 
 # https://github.com/github/gitignore/blob/master/Objective-C.gitignore
 # Xcode
