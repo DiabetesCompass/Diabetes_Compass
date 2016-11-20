@@ -80,24 +80,24 @@
 
     if ([[note name] isEqualToString:NOTE_GRAPH_RECALCULATED]) {
         dispatch_async(dispatch_get_main_queue(), ^{
-                [self updateGraphData];
-                });
+            [self updateGraphData];
+        });
     } else if ([[note name] isEqualToString:NOTE_PREDICT_RECALCULATED]) {
         dispatch_async(dispatch_get_main_queue(), ^{
-                [self updatePredictData];
-                });
+            [self updatePredictData];
+        });
     } else if ([[note name] isEqualToString:NOTE_GRAPH_SHIFTED]) {
         dispatch_async(dispatch_get_main_queue(), ^{
-                [self updateGraphDataWithoutAnimation];
-                });
+            [self updateGraphDataWithoutAnimation];
+        });
     } else if ([[note name] isEqualToString:NOTE_PREDICT_SHIFTED]) {
         dispatch_async(dispatch_get_main_queue(), ^{
-                [self updatePredictDataWithoutAnimation];
-                });
+            [self updatePredictDataWithoutAnimation];
+        });
     } else if ([[note name] isEqualToString:NOTE_SETTINGS_CHANGED]) {
         dispatch_async(dispatch_get_main_queue(), ^{
-                [self setupGraph];
-                });
+            [self setupGraph];
+        });
     }
 }
 
