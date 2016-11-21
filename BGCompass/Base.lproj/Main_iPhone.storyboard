@@ -4,7 +4,6 @@
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11524"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -189,9 +188,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Oops! It looks like you have not reported your BG in a while..." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="f3F-rQ-bLf">
-                                <rect key="frame" x="20" y="37" width="280" height="98"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Oops! It looks like you have not reported your BG in a while..." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="f3F-rQ-bLf">
+                                <rect key="frame" x="16" y="38" width="343" height="78"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="22"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
@@ -215,7 +213,10 @@
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="Inl-jW-7DC" firstAttribute="top" secondItem="Cvn-f9-Wwd" secondAttribute="bottom" constant="75" id="1jk-FF-pYe"/>
+                            <constraint firstItem="f3F-rQ-bLf" firstAttribute="trailing" secondItem="SAe-Mb-JSR" secondAttribute="trailingMargin" id="8jk-1h-nrG"/>
                             <constraint firstAttribute="trailing" secondItem="Cvn-f9-Wwd" secondAttribute="trailing" constant="35" id="OZe-qg-Dfe"/>
+                            <constraint firstItem="f3F-rQ-bLf" firstAttribute="top" secondItem="nt9-ig-5Oy" secondAttribute="bottom" constant="18" id="sFA-uR-G6z"/>
+                            <constraint firstItem="f3F-rQ-bLf" firstAttribute="leading" secondItem="SAe-Mb-JSR" secondAttribute="leadingMargin" id="wgh-4H-Hpf"/>
                         </constraints>
                     </view>
                     <connections>
@@ -225,7 +226,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="T8d-Cf-auH" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="133" y="-559"/>
+            <point key="canvasLocation" x="132.5" y="-559.5"/>
         </scene>
         <!--Items Navigation View Controller-->
         <scene sceneID="cUi-kZ-frf">
