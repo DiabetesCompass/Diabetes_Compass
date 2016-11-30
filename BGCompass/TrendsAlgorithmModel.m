@@ -177,29 +177,74 @@
  */
     for (BGReading* reading in fetchedReadings) {
         NSLog(@"Correcting reading...timestamp=%@", reading.timeStamp);
-  //      [self calculateHa1c:reading];
+        [self calculateHa1c:reading];
   //      [self calculateAg15:reading];
     }
 }
 
 - (void) calculateHa1c:(BGReading*) bgReading
 {
-/*
- 1 -- Retreive all blood glucose readings from the past 90 days. Backwards from the BGReading of interest.
- */
+    
+    //1 -- Retreive all blood glucose readings from the past 30 days (backwards).
+    int index = 0;
+    float sum = 0;
+    float bgAve = 0.0;
+    float estHA1c = 0.0;
+    
+//    int fetchedReadingsCount = 0;
+    
     NSPredicate *predicate;
     BGReading* lastReading = bgReading;
     if (!lastReading) {
         lastReading = [BGReading MR_findFirstOrderedByAttribute:@"timeStamp" ascending:NO inContext:[NSManagedObjectContext MR_defaultContext]];
     }
-   // NSLog(@"Is the last reading null? %d", lastReading == nil);
+    
+    NSDate* thirty_days_ago = [lastReading.timeStamp dateByAddingTimeInterval:-30*HOURS_IN_ONE_DAY*SECONDS_IN_ONE_HOUR];
+    predicate = [NSPredicate predicateWithFormat:@"timeStamp >= %@", thirty_days_ago];
+    NSArray *fetchedReadings = [BGReading MR_findAllSortedBy:@"timeStamp" ascending:YES withPredicate:predicate inContext:[NSManagedObjectContext MR_defaultContext]];
+
+    for (BGReading* reading in fetchedReadings){
+ //       NSLog(@"new BG reading is %f", reading.quantity.floatValue*CONVERSIONFACTOR);
+        sum += reading.quantity.floatValue*CONVERSIONFACTOR;
+ //       NSLog(@"Sum is %f", sum);
+        index++;
+        bgAve = sum/index;
+        estHA1c = (46.7 + bgAve)/28.7;
+        NSLog(@"30d ave BG is %f", bgAve);
+        NSLog(@"Current HA1c is %f", estHA1c);
+
+    }
+    NSLog(@"The final ha1c is: %f", estHA1c);
+    Ha1cReading* reading = [Ha1cReading MR_createEntityInContext:[NSManagedObjectContext MR_defaultContext]];
+    reading.quantity = @(estHA1c);
+    //set the timestamp of this HA1c to the timestamp of the last BG reading?
+    reading.timeStamp = lastReading.timeStamp;
+    
+    [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
+    
+    [self loadArrays];
+
+}
+
+/*
+- (void) calculateHa1c:(BGReading*) bgReading
+{
+
+ //1 -- Retreive all blood glucose readings from the past 90 days. Backwards from the BGReading of interest.
+
+    NSPredicate *predicate;
+    BGReading* lastReading = bgReading;
+    if (!lastReading) {
+        lastReading = [BGReading MR_findFirstOrderedByAttribute:@"timeStamp" ascending:NO inContext:[NSManagedObjectContext MR_defaultContext]];
+    }
+
     NSDate* ninety_days_ago = [lastReading.timeStamp dateByAddingTimeInterval:-90*HOURS_IN_ONE_DAY*SECONDS_IN_ONE_HOUR];
     predicate = [NSPredicate predicateWithFormat:@"timeStamp >= %@", ninety_days_ago];
     NSArray *fetchedReadings = [BGReading MR_findAllSortedBy:@"timeStamp" ascending:YES withPredicate:predicate inContext:[NSManagedObjectContext MR_defaultContext]];
     
-/*
- 2 -- Interpolate all of these readings. Unless they are larger than a day apart. Then ignore.
- */
+
+ //2 -- Interpolate all of these readings. Unless they are larger than a day apart. Then ignore.
+ 
     int interval = 1; // interpolated array will be 1 minute intervals.
     
     int arraysize = (int) 90*HOURS_IN_ONE_DAY*MINUTES_IN_ONE_HOUR/interval + 1; // The array will contain 90 days of readings.
@@ -237,15 +282,15 @@
         previousReading = reading;
     }
 
-    /*
+ 
     for ( int i=0; i<arraysize; ++i ) {
         NSLog(@"The interpolated array looks like: %f", interpolated[i]);
         NSLog(@"The zeroed out array looks like:%d", zeroed[i]);
-    }*/
+    }
     
-/*
- 3 -- Calculate the decay array.
- */
+
+// 3 -- Calculate the decay array.
+ 
     double decay;
     double sum_product = 0.0;
     double sum_decay = 0.0;
@@ -259,9 +304,9 @@
         }
     }
 
-/*
- 4 -- Add final result to CoreData.
- */
+
+// 4 -- Add final result to CoreData.
+ 
     
     double weightedBGave = ((sum_product/sum_decay));
     //print(@"Ha1c value is:");
@@ -279,7 +324,7 @@
     
     [self loadArrays];
 }
-
+ */
 - (void) calculateAg15:(BGReading*) bgReading
 {
 /*
