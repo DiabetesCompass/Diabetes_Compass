@@ -79,9 +79,10 @@
         if (insulinDuration == USE_DEFAULT_DURATION) {
             insulinDuration = 515;
         }
-        // General Curve Points: (0,0), (90, 3.0), (290, 4.3), (390, 2.35), (515, 0)
+        // General Curve Points: (0,0), (20, 0), (90, 3.0), (290, 4.3), (390, 2.35), (515, 0)
         self.insulinPoints = @[
                                [NSValue valueWithCGPoint:CGPointMake(0, 0)],
+                               [NSValue valueWithCGPoint:CGPointMake(20/515*insulinDuration, 0)],
                                [NSValue valueWithCGPoint:CGPointMake(90/515*insulinDuration, 300)],
                                [NSValue valueWithCGPoint:CGPointMake(95/515*insulinDuration, 430)],
                                [NSValue valueWithCGPoint:CGPointMake(185/515*insulinDuration, 235)],
@@ -92,21 +93,23 @@
             insulinDuration = 485;
         }
         
-        // Apidra Curve Points: (0,0), (65, 5.5), (215, 5.2), (485, 0)
+        // Apidra Curve Points: (0,0), (20, 0), (65, 5.5), (215, 5.2), (485, 0)
         self.insulinPoints = @[
                                [NSValue valueWithCGPoint:CGPointMake(0, 0)],
+                               [NSValue valueWithCGPoint:CGPointMake(20/485*insulinDuration, 0)],
                                [NSValue valueWithCGPoint:CGPointMake(65/485*insulinDuration, 55)],
                                [NSValue valueWithCGPoint:CGPointMake(215/485*insulinDuration, 52)],
                                [NSValue valueWithCGPoint:CGPointMake(insulinDuration, 0)]
                                ];
     } else if (insulinType == INSULINTYPE_LISPRO || insulinType == INSULINTYPE_ASPART) {
         if (insulinDuration == USE_DEFAULT_DURATION) {
-            insulinDuration = 480;
+            insulinDuration = 360;
         }
         
-        // Lispro Curve Points: (0, 0), (75, 4.5), (185, 5.4), (480, 0)
+        // Lispro Curve Points: (0, 0), (20, 0), (75, 4.5), (185, 5.4), (480, 0)
         self.insulinPoints = @[
                                [NSValue valueWithCGPoint:CGPointMake(0, 0)],
+                               [NSValue valueWithCGPoint:CGPointMake(20/480*insulinDuration, 0)],
                                [NSValue valueWithCGPoint:CGPointMake(75/480*insulinDuration, 45)],
                                [NSValue valueWithCGPoint:CGPointMake(185/480*insulinDuration, 54)],
                                [NSValue valueWithCGPoint:CGPointMake(insulinDuration, 0)]
