@@ -1183,6 +1183,7 @@
 				GCC_PREFIX_HEADER = "BGCompass/BGCompass-Prefix.pch";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				INFOPLIST_FILE = "$(SRCROOT)/BGCompass/BGCompass-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.calferness.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = BGCompass;
 				PROVISIONING_PROFILE = "";
@@ -1203,6 +1204,7 @@
 				GCC_PREFIX_HEADER = "BGCompass/BGCompass-Prefix.pch";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				INFOPLIST_FILE = "$(SRCROOT)/BGCompass/BGCompass-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.calferness.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = BGCompass;
 				PROVISIONING_PROFILE = "";

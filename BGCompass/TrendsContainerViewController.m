@@ -101,9 +101,11 @@
             Ha1cReading *lastHa1cReading = [[[TrendsAlgorithmModel sharedInstance] ha1cArray] lastObject];
             Ha1cReading *firstHa1cReading = [[[TrendsAlgorithmModel sharedInstance] ha1cArray] firstObject];
             
-            int total_days = [lastHa1cReading.timeStamp timeIntervalSinceDate:firstHa1cReading.timeStamp]/(SECONDS_IN_ONE_MINUTE*MINUTES_IN_ONE_HOUR*HOURS_IN_ONE_DAY);
+//            int total_days = [lastHa1cReading.timeStamp timeIntervalSinceDate:firstHa1cReading.timeStamp]/(SECONDS_IN_ONE_MINUTE*MINUTES_IN_ONE_HOUR*HOURS_IN_ONE_DAY);
             
-            if (!firstHa1cReading) {
+                collapsedView.valueLabel.text = [lastHa1cReading.quantity stringValue];
+            
+/*            if (!firstHa1cReading) {
                 // Do not display any text if no reading has been made.
                 collapsedView.valueLabel.font = [UIFont systemFontOfSize:20];
                 collapsedView.valueLabel.text = @"No Data";
@@ -118,7 +120,7 @@
                 collapsedView.valueLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:40];
                 collapsedView.valueLabel.text = [NSString fontAwesomeIconStringForIconIdentifier:@"icon-warning-sign"];
             }
-
+*/
             collapsedView.backgroundColor = [UIColor colorWithRed:131.0/255.0 green:198.0/255.0 blue:242.0/255.0 alpha:1];
             break;
         }
@@ -179,16 +181,17 @@
         int total_days = [lastHa1cReading.timeStamp timeIntervalSinceDate:firstHa1cReading.timeStamp]/(SECONDS_IN_ONE_MINUTE*MINUTES_IN_ONE_HOUR*HOURS_IN_ONE_DAY);
         
         if (![[[TrendsAlgorithmModel sharedInstance] ha1cArray] firstObject]) {
-            expandedView.noDataLabel.text = @"Estimated Ha1c calculation requires at least 30 days of consistent blood glucose data.";
+            expandedView.noDataLabel.text = @"Estimated Ha1c requires 30 days of data";
             draw_graph = false;
-        } else if (total_days >= 90) {
+        } /*else if (total_days >= 90) {
             // If there is 90 days worth of data, then the data can be displayed without any warning.
-        } else if (total_days >= 30) {
+        }*/
+        else if (total_days >= 30) {
             // Include a warning text above the graph.
-            expandedView.warningLabel.text = [NSString stringWithFormat:@"Ideally, 90 days of blood glucose data is needed for the best estimate. Currently %d days of data have been collected", total_days];
+            expandedView.warningLabel.text = [NSString stringWithFormat:@" Currently %d days of data", total_days];
         } else {
             // Do not display any data, only include a warning symbol; because there isn't enough past history.
-            expandedView.noDataLabel.text = @"Estimated Ha1c calculation requires at least 30 days of consistent blood glucose data.";
+            expandedView.noDataLabel.text = @"Estimated Ha1c requires 30 days of data";
             draw_graph = false;
         }
         
@@ -443,7 +446,7 @@
     
     CPTPlotSymbol *circlePlotSymbol = [CPTPlotSymbol ellipsePlotSymbol];
     circlePlotSymbol.fill = [CPTFill fillWithColor:[CPTColor whiteColor]];
-    circlePlotSymbol.size = CGSizeMake(6, 6);
+    circlePlotSymbol.size = CGSizeMake(8, 8);
     circlePlotSymbol.shadow = nil;
     circlePlotSymbol.lineStyle = clearStyle;
     
