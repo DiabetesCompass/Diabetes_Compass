@@ -4,6 +4,7 @@
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11524"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -103,7 +104,7 @@
             <objects>
                 <navigationController definesPresentationContext="YES" id="dYT-Va-KXp" customClass="ItemsNavigationViewController" sceneMemberID="viewController">
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" barStyle="black" id="6nb-hi-8Cd">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="6nb-hi-8Cd">
                         <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -234,7 +235,7 @@
                 <navigationController id="rS3-R9-Ivy" customClass="ItemsNavigationViewController" sceneMemberID="viewController">
                     <navigationItem key="navigationItem" id="tsT-Sw-EYb"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
-                    <navigationBar key="navigationBar" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" barStyle="black" id="yXu-0R-QUA">
+                    <navigationBar key="navigationBar" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" barStyle="black" id="yXu-0R-QUA">
                         <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -293,7 +294,7 @@
                 <navigationController definesPresentationContext="YES" id="Ajb-Am-Nma" customClass="ItemsNavigationViewController" sceneMemberID="viewController">
                     <navigationItem key="navigationItem" id="PHt-q2-4vF"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" barStyle="black" id="9tR-xP-7if">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="9tR-xP-7if">
                         <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -343,7 +344,7 @@
                                 </connections>
                             </containerView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TNg-Xn-eGe">
-                                <rect key="frame" x="228" y="25" width="30" height="37"/>
+                                <rect key="frame" x="228" y="25" width="30" height="40"/>
                                 <fontDescription key="fontDescription" name="FontAwesome" family="FontAwesome" pointSize="24"/>
                                 <state key="normal" title="Tr">
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -355,7 +356,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SIB-7f-Z61">
-                                <rect key="frame" x="16" y="23" width="137" height="41"/>
+                                <rect key="frame" x="16" y="24.5" width="137" height="41"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="24"/>
                                 <state key="normal" title="BG Compass">
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -363,7 +364,7 @@
                                 </state>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PXz-yT-3Ec">
-                                <rect key="frame" x="168" y="25" width="30" height="37"/>
+                                <rect key="frame" x="168" y="25" width="30" height="40"/>
                                 <fontDescription key="fontDescription" name="FontAwesome" family="FontAwesome" pointSize="24"/>
                                 <state key="normal" title="X">
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -374,7 +375,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lmB-6U-Spe">
-                                <rect key="frame" x="228" y="25" width="30" height="37"/>
+                                <rect key="frame" x="228" y="25" width="30" height="40"/>
                                 <fontDescription key="fontDescription" name="FontAwesome" family="FontAwesome" pointSize="24"/>
                                 <state key="normal" title="C">
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -385,7 +386,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PTp-dD-KMA">
-                                <rect key="frame" x="313" y="25" width="30" height="37"/>
+                                <rect key="frame" x="313" y="25" width="30" height="40"/>
                                 <fontDescription key="fontDescription" name="FontAwesome" family="FontAwesome" pointSize="24"/>
                                 <state key="normal" title="M">
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -773,20 +774,18 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5UW-Pp-3hg">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <subviews>
-                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cWG-PT-nxR">
-                                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                    </view>
-                                </subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cWG-PT-nxR">
+                                <rect key="frame" x="0.0" y="94" width="375" height="573"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </view>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="cWG-PT-nxR" firstAttribute="top" secondItem="aHd-Lb-hbx" secondAttribute="bottom" id="7fG-zZ-c3T"/>
+                            <constraint firstItem="cWG-PT-nxR" firstAttribute="leading" secondItem="TQr-vC-h05" secondAttribute="leading" id="EAW-4j-ow4"/>
+                            <constraint firstItem="Fdj-rd-dUx" firstAttribute="top" secondItem="cWG-PT-nxR" secondAttribute="bottom" id="hOD-bj-5f9"/>
+                            <constraint firstAttribute="trailing" secondItem="cWG-PT-nxR" secondAttribute="trailing" id="zJd-Ig-bIy"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" prompt="Pass barcode in front of camera" id="1IH-vz-AN9">
                         <barButtonItem key="rightBarButtonItem" title="Cancel" id="Tuf-bw-LAV">
@@ -801,7 +800,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JlS-X4-1VE" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2721" y="1459"/>
+            <point key="canvasLocation" x="2720.5" y="1458.5"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="95R-Sf-TXy">
