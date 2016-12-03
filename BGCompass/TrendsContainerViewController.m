@@ -277,9 +277,8 @@
             NSDate *dateFirst = [[[[TrendsAlgorithmModel sharedInstance] ha1cArray] firstObject] timeStamp];
             NSTimeInterval ha1cTimeIntervalSeconds = [reading.timeStamp
                                                       timeIntervalSinceDate: dateFirst];
-
-            // TODO: fix me. plot may need re-scaling. As a workaround, divide seconds by 100
-            return [NSNumber numberWithDouble:(ha1cTimeIntervalSeconds / 100)];
+            double ha1cTimeIntervalMinutes = ha1cTimeIntervalSeconds / 60;
+            return [NSNumber numberWithDouble:ha1cTimeIntervalMinutes];
 
         } else { //([plot.identifier isEqual:PLOT_TREND_BG]) {
             BGReading* reading = [[TrendsAlgorithmModel sharedInstance] getFromBGArray:index];
