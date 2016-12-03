@@ -212,7 +212,6 @@
         estHA1c = (46.7 + bgAve)/28.7;
         NSLog(@"30d ave BG is %f", bgAve);
         NSLog(@"Current HA1c is %f", estHA1c);
-
     }
     NSLog(@"The final ha1c is: %f", estHA1c);
     Ha1cReading* reading = [Ha1cReading MR_createEntityInContext:[NSManagedObjectContext MR_defaultContext]];

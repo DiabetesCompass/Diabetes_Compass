@@ -99,9 +99,13 @@
             frame.size.height = 255 * screenMultiple;
             collapsedView.trendTitleLabel.text = @"HA1c";
             Ha1cReading *lastHa1cReading = [[[TrendsAlgorithmModel sharedInstance] ha1cArray] lastObject];
+//            NSLog(@"last HA1c reading %@", lastHa1cReading);
             Ha1cReading *firstHa1cReading = [[[TrendsAlgorithmModel sharedInstance] ha1cArray] firstObject];
+//            NSLog(@"first HA1c reading %@", firstHa1cReading);
             
-//            int total_days = [lastHa1cReading.timeStamp timeIntervalSinceDate:firstHa1cReading.timeStamp]/(SECONDS_IN_ONE_MINUTE*MINUTES_IN_ONE_HOUR*HOURS_IN_ONE_DAY);
+/*            int total_days = [lastHa1cReading.timeStamp timeIntervalSinceDate:firstHa1cReading.timeStamp]/(SECONDS_IN_ONE_MINUTE*MINUTES_IN_ONE_HOUR*HOURS_IN_ONE_DAY);
+            NSLog(@"total days = %d", total_days);
+*/
             
                 collapsedView.valueLabel.text = [lastHa1cReading.quantity stringValue];
             
@@ -179,6 +183,7 @@
         Ha1cReading *firstHa1cReading = [[[TrendsAlgorithmModel sharedInstance] ha1cArray] firstObject];
         
         int total_days = [lastHa1cReading.timeStamp timeIntervalSinceDate:firstHa1cReading.timeStamp]/(SECONDS_IN_ONE_MINUTE*MINUTES_IN_ONE_HOUR*HOURS_IN_ONE_DAY);
+//        NSLog(@"total days = %d", total_days);
         
         if (![[[TrendsAlgorithmModel sharedInstance] ha1cArray] firstObject]) {
             expandedView.noDataLabel.text = @"Estimated Ha1c requires 30 days of data";
@@ -340,9 +345,11 @@
     switch (index) {
         case 0:
             firstReading = [[[TrendsAlgorithmModel sharedInstance] ha1cArray] firstObject];
+//            NSLog(@"first Reading %@", firstReading);
             lastReading = [[[TrendsAlgorithmModel sharedInstance] ha1cArray] lastObject];
+//            NSLog(@"last Reading %@", lastReading);
             plotSpace.yRange = [CPTPlotRange plotRangeWithLocation: [NSNumber numberWithFloat: 0]
-                                                            length: [NSNumber numberWithFloat: 15]];
+                                                            length: [NSNumber numberWithFloat: 10]];
             break;
         case 1:
             firstReading = [[[TrendsAlgorithmModel sharedInstance] bgArray] firstObject];
@@ -435,7 +442,7 @@
     CPTScatterPlot* trendDataPlot = [[CPTScatterPlot alloc] initWithFrame:graph.defaultPlotSpace.accessibilityFrame];
     switch (index) {
         case 0:
-            view.backgroundColor = [UIColor colorWithRed:131.0/255.0 green:198.0/255.0 blue:242.0/255.0 alpha:1];
+            view.backgroundColor = [UIColor colorWithRed:85.0/255.0 green:150.0/255.0 blue:194.0/255.0 alpha:1];
             trendDataPlot.identifier = PLOT_TREND_HA1C;
             break;
         case 1:
@@ -455,7 +462,7 @@
     
     CPTPlotSymbol *circlePlotSymbol = [CPTPlotSymbol ellipsePlotSymbol];
     circlePlotSymbol.fill = [CPTFill fillWithColor:[CPTColor whiteColor]];
-    circlePlotSymbol.size = CGSizeMake(8, 8);
+    circlePlotSymbol.size = CGSizeMake(5, 5);
     circlePlotSymbol.shadow = nil;
     circlePlotSymbol.lineStyle = clearStyle;
     

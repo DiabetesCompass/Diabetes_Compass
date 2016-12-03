@@ -44,9 +44,9 @@ int const INSULINTYPE_LISPRO = 2;
 int const INSULINTYPE_ASPART = 3;
 
 NSString *const INSULINTYPE_STRING_REGULAR = @"Regular";
-NSString *const INSULINTYPE_STRING_GLULISINE = @"Glulisine";
-NSString *const INSULINTYPE_STRING_LISPRO = @"Lispro";
-NSString *const INSULINTYPE_STRING_ASPART = @"Aspart";
+NSString *const INSULINTYPE_STRING_GLULISINE = @"Apidra®";
+NSString *const INSULINTYPE_STRING_LISPRO = @"Humalog®";
+NSString *const INSULINTYPE_STRING_ASPART = @"Novolog®";
 
 NSString *const PLOT_BGESTIMATED = @"estimatedBGPlot";
 NSString *const PLOT_PREDICT = @"predictPlot";
