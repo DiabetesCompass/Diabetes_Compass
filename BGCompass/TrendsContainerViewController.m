@@ -266,15 +266,16 @@
 -(NSNumber *)numberForPlot:(CPTPlot *)plot field:(NSUInteger)fieldEnum recordIndex:(NSUInteger)index {
     if (fieldEnum == CPTScatterPlotFieldX) {
 
-        ///////////////////////
-        // TODO: fix me
-        //return [NSNumber numberWithLong:10000 * index];
-        ///////////////////////
-
-
         if ([plot.identifier isEqual:PLOT_TREND_HA1C]) {
             Ha1cReading* reading = [[TrendsAlgorithmModel sharedInstance] getFromHa1cArray:index];
-            return @([reading.timeStamp timeIntervalSinceDate:[[[[TrendsAlgorithmModel sharedInstance] ha1cArray] firstObject] timeStamp]]);
+
+            NSDate *dateFirst = [[[[TrendsAlgorithmModel sharedInstance] ha1cArray] firstObject] timeStamp];
+            NSTimeInterval ha1cTimeIntervalSeconds = [reading.timeStamp
+                                                      timeIntervalSinceDate: dateFirst];
+
+            // TODO: fix me. plot may need re-scaling. As a workaround, divide seconds by 100
+            return [NSNumber numberWithDouble:(ha1cTimeIntervalSeconds / 100)];
+
         } else { //([plot.identifier isEqual:PLOT_TREND_BG]) {
             BGReading* reading = [[TrendsAlgorithmModel sharedInstance] getFromBGArray:index];
             NSNumber* result = @((int)[reading.timeStamp timeIntervalSinceDate:[[[[TrendsAlgorithmModel sharedInstance] bgArray] firstObject] timeStamp]]/60+0.5);
@@ -286,11 +287,6 @@
             return @([reading.timeStamp timeIntervalSinceDate:[[[[TrendsAlgorithmModel sharedInstance] ag15Array] firstObject] timeStamp]]);
         }  */
     } else {
-
-        ///////////////////////
-        // TODO: fix me
-        //return [NSNumber numberWithLong: 2 + (2 * index)];
-        ///////////////////////
 
         if ([plot.identifier isEqual:PLOT_TREND_HA1C]) {
             Ha1cReading* reading = [[TrendsAlgorithmModel sharedInstance] getFromHa1cArray:index];
