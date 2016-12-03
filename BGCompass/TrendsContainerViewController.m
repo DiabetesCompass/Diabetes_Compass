@@ -270,6 +270,13 @@
 
 -(NSNumber *)numberForPlot:(CPTPlot *)plot field:(NSUInteger)fieldEnum recordIndex:(NSUInteger)index {
     if (fieldEnum == CPTScatterPlotFieldX) {
+
+        ///////////////////////
+        // TODO: fix me
+        //return [NSNumber numberWithLong:10000 * index];
+        ///////////////////////
+
+
         if ([plot.identifier isEqual:PLOT_TREND_HA1C]) {
             Ha1cReading* reading = [[TrendsAlgorithmModel sharedInstance] getFromHa1cArray:index];
             return @([reading.timeStamp timeIntervalSinceDate:[[[[TrendsAlgorithmModel sharedInstance] ha1cArray] firstObject] timeStamp]]);
@@ -284,6 +291,12 @@
             return @([reading.timeStamp timeIntervalSinceDate:[[[[TrendsAlgorithmModel sharedInstance] ag15Array] firstObject] timeStamp]]);
         }  */
     } else {
+
+        ///////////////////////
+        // TODO: fix me
+        //return [NSNumber numberWithLong: 2 + (2 * index)];
+        ///////////////////////
+
         if ([plot.identifier isEqual:PLOT_TREND_HA1C]) {
             Ha1cReading* reading = [[TrendsAlgorithmModel sharedInstance] getFromHa1cArray:index];
             return reading.quantity;
