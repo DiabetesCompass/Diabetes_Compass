@@ -197,7 +197,7 @@
         } else {
             // Do not display any data, only include a warning symbol; because there isn't enough past history.
             expandedView.noDataLabel.text = @"Estimated Ha1c requires 30 days of data";
-            draw_graph = false;
+            //draw_graph = false;
         }
         
     } else if (index == SCREEN_INDEX_BGTREND) {
@@ -460,14 +460,14 @@
     }
     
     CPTPlotSymbol *circlePlotSymbol = [CPTPlotSymbol ellipsePlotSymbol];
-    circlePlotSymbol.fill = [CPTFill fillWithColor:[CPTColor whiteColor]];
-    circlePlotSymbol.size = CGSizeMake(5, 5);
+    circlePlotSymbol.fill = [CPTFill fillWithColor:[CPTColor yellowColor]];
+    circlePlotSymbol.size = CGSizeMake(3, 3);
     circlePlotSymbol.shadow = nil;
-    circlePlotSymbol.lineStyle = clearStyle;
+    circlePlotSymbol.lineStyle = thinWhiteStyle;
     
     trendDataPlot.plotSymbol = circlePlotSymbol;
     
-    trendDataPlot.dataLineStyle = nil;
+    trendDataPlot.dataLineStyle = thinWhiteStyle;
     trendDataPlot.dataSource = self;
     [graph addPlot:trendDataPlot];
     
