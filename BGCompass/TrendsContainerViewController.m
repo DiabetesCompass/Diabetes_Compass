@@ -97,10 +97,11 @@
     switch (index) {
         case SCREEN_INDEX_HA1CTREND: {
             frame.size.height = 255 * screenMultiple;
+            
             collapsedView.trendTitleLabel.text = @"HA1c";
             Ha1cReading *lastHa1cReading = [[[TrendsAlgorithmModel sharedInstance] ha1cArray] lastObject];
 //            NSLog(@"last HA1c reading %@", lastHa1cReading);
-            Ha1cReading *firstHa1cReading = [[[TrendsAlgorithmModel sharedInstance] ha1cArray] firstObject];
+//            Ha1cReading *firstHa1cReading = [[[TrendsAlgorithmModel sharedInstance] ha1cArray] firstObject];
 //            NSLog(@"first HA1c reading %@", firstHa1cReading);
             
 /*            int total_days = [lastHa1cReading.timeStamp timeIntervalSinceDate:firstHa1cReading.timeStamp]/(SECONDS_IN_ONE_MINUTE*MINUTES_IN_ONE_HOUR*HOURS_IN_ONE_DAY);
@@ -113,6 +114,7 @@
                 // Do not display any text if no reading has been made.
                 collapsedView.valueLabel.font = [UIFont systemFontOfSize:20];
                 collapsedView.valueLabel.text = @"No Data";
+ {
             } else if (total_days >= 90) {
                 // If there is 90 days worth of data, then the data can be displayed without any warning.
                 collapsedView.valueLabel.text = [lastHa1cReading.quantity stringValue];
