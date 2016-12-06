@@ -25,6 +25,8 @@
 @end
 
 @implementation TrendsContainerViewController {
+    // TODO: Consider change collapsed views from xib to storyboard,
+    // eliminate APPaginalTableView and use vertical stacked view controller to expand/collapse
     APPaginalTableView *_paginalTableView;
 }
 
@@ -36,7 +38,7 @@
     _paginalTableView = [[APPaginalTableView alloc] initWithFrame:CGRectMake(0, 0, screenRect.size.width, screenRect.size.height)];
     _paginalTableView.dataSource = self;
     _paginalTableView.delegate = self;
-    
+
     [self.view addSubview:_paginalTableView];
 }
 
@@ -94,9 +96,11 @@
     CGRect frame = collapsedView.frame;
     collapsedView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
     float screenMultiple = [[[NSUserDefaults standardUserDefaults] valueForKey:SETTING_SCREEN_CONSTANT] floatValue];
+
+    float menuHeight = screenMultiple * 58;
+    frame.size.height = ([UIScreen mainScreen].bounds.size.height / 2) - (menuHeight / 2);
     switch (index) {
         case SCREEN_INDEX_HA1CTREND: {
-            frame.size.height = 255 * screenMultiple;
             collapsedView.trendTitleLabel.text = @"HA1c";
             Ha1cReading *lastHa1cReading = [[[TrendsAlgorithmModel sharedInstance] ha1cArray] lastObject];
 //            NSLog(@"last HA1c reading %@", lastHa1cReading);
@@ -129,7 +133,6 @@
             break;
         }
         case SCREEN_INDEX_BGTREND: {
-            frame.size.height = 255 * screenMultiple;
             collapsedView.trendTitleLabel.text = @"BG";
             BGReading *lastBGReading = [[[TrendsAlgorithmModel sharedInstance] bgArray] lastObject];
             
@@ -155,7 +158,7 @@
         }
              */
         default:
-            frame.size.height = 58 * screenMultiple;
+            frame.size.height = menuHeight;
             
             collapsedView.backgroundColor = [UIColor blackColor];
             break;
