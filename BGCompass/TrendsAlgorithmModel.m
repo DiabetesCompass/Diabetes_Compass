@@ -362,12 +362,12 @@
         if (fetchedReadings.count ==1){
             interpolated[bigIndex] =reading.quantity.floatValue;
             sum = interpolated[bigIndex];
-            NSLog(@"sum: %f", sum);
+//            NSLog(@"sum: %f", sum);
             sumRamp = sumRamp + ramp;
-            NSLog(@"ramp: %f", ramp);
+//            NSLog(@"ramp: %f", ramp);
             ramp = ramp - delta;
-            NSLog(@"BG at index %i:", bigIndex);
-            NSLog(@"is %f", CONVERSIONFACTOR*interpolated[bigIndex]);
+//            NSLog(@"BG at index %i:", bigIndex);
+//            NSLog(@"is %f", CONVERSIONFACTOR*interpolated[bigIndex]);
             bigIndex++;
         }
         else {
@@ -380,14 +380,14 @@
                 for (int index = 0; index < minutesBetweenReadings/interval; index++ ) {
                     // Final equation: y = y1 + index*(y2-y1)/(x2-x1)
                     interpolated[bigIndex] = previousReading.quantity.floatValue + index*(reading.quantity.floatValue - previousReading.quantity.floatValue)/(minutesBetweenReadings/interval);
-                     NSLog(@"the value of the interpolation is: %f", CONVERSIONFACTOR*interpolated[bigIndex]);
+//                     NSLog(@"the value of the interpolation is: %f", CONVERSIONFACTOR*interpolated[bigIndex]);
                     sum = sum + interpolated[bigIndex ]*ramp;
-                    NSLog(@"sum: %f", sum);
+//                    NSLog(@"sum: %f", sum);
                     sumRamp = sumRamp + ramp;
-                    NSLog(@"ramp: %f", ramp);
+//                    NSLog(@"ramp: %f", ramp);
                     ramp = ramp - delta;
-                    NSLog(@"BG at index %i:", bigIndex);
-                    NSLog(@"is %f", CONVERSIONFACTOR*interpolated[bigIndex]);
+//                    NSLog(@"BG at index %i:", bigIndex);
+//                    NSLog(@"is %f", CONVERSIONFACTOR*interpolated[bigIndex]);
                     bigIndex++;
                 }
         }
