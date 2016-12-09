@@ -81,7 +81,7 @@
 {
     self.ha1cArray = [Ha1cReading MR_findAllSortedBy:@"timeStamp" ascending:YES inContext:[NSManagedObjectContext MR_defaultContext]];
     self.bgArray = [BGReading MR_findAllSortedBy:@"timeStamp" ascending:YES inContext:[NSManagedObjectContext MR_defaultContext]];
-    self.ag15Array = [AG15Reading MR_findAllSortedBy:@"timeStamp" ascending:YES inContext:[NSManagedObjectContext MR_defaultContext]];
+//    self.ag15Array = [AG15Reading MR_findAllSortedBy:@"timeStamp" ascending:YES inContext:[NSManagedObjectContext MR_defaultContext]];
 }
 //count HA1c readings?
 - (NSNumber*) ha1cArrayCount
@@ -165,13 +165,13 @@
  1 - Delete old readings.
  */
     NSArray *fetchedHa1c = [Ha1cReading MR_findAllWithPredicate:predicate inContext:[NSManagedObjectContext MR_defaultContext]];
-    NSArray *fetched15ag = [AG15Reading MR_findAllWithPredicate:predicate inContext:[NSManagedObjectContext MR_defaultContext]];
+//    NSArray *fetched15ag = [AG15Reading MR_findAllWithPredicate:predicate inContext:[NSManagedObjectContext MR_defaultContext]];
     for (Ha1cReading* reading in fetchedHa1c) {
         [reading MR_deleteEntityInContext:[NSManagedObjectContext MR_defaultContext]];
     }
-    for (AG15Reading* reading in fetched15ag) {
+/*    for (AG15Reading* reading in fetched15ag) {
         [reading MR_deleteEntityInContext:[NSManagedObjectContext MR_defaultContext]];
-    }
+    }*/
 /*
  2 - Add new readings.
  */
@@ -191,7 +191,8 @@
     float bgAve = 0.0;
     float estHA1c = 0.0;
     
-//    int fetchedReadingsCount = 0;
+    
+
     
     NSPredicate *predicate;
     BGReading* lastReading = bgReading;
@@ -204,7 +205,7 @@
     NSArray *fetchedReadings = [BGReading MR_findAllSortedBy:@"timeStamp" ascending:YES withPredicate:predicate inContext:[NSManagedObjectContext MR_defaultContext]];
 
     for (BGReading* reading in fetchedReadings){
- //       NSLog(@"new BG reading is %f", reading.quantity.floatValue*CONVERSIONFACTOR);
+        NSLog(@"new BG reading is %f", reading.quantity.floatValue*CONVERSIONFACTOR);
         sum += reading.quantity.floatValue*CONVERSIONFACTOR;
  //       NSLog(@"Sum is %f", sum);
         index++;
@@ -412,20 +413,20 @@
 
 }
 
-- (void) calculateAg15:(BGReading*) bgReading
+/*- (void) calculateAg15:(BGReading*) bgReading
 {
-/*
- 1 -- Retreive all blood glucose readings from the past 90 days. Backwards from lastReading.
- */
+
+// 1 -- Retreive all blood glucose readings from the past 90 days. Backwards from lastReading.
+
     BGReading* lastReading = [BGReading MR_findFirstOrderedByAttribute:@"timeStamp" ascending:NO inContext:[NSManagedObjectContext MR_defaultContext]];
     
     NSDate* one_hundred_days_ago = [lastReading.timeStamp dateByAddingTimeInterval:-100*HOURS_IN_ONE_DAY*SECONDS_IN_ONE_HOUR];
     NSPredicate* predicate = [NSPredicate predicateWithFormat:@"timeStamp >= %@", one_hundred_days_ago];
     NSArray *fetchedReadings = [BGReading MR_findAllSortedBy:@"timeStamp" ascending:YES withPredicate:predicate inContext:[NSManagedObjectContext MR_defaultContext]];
 
-/*
- 2 -- Interpolate all of these readings. Unless they are larger than a day apart. Then ignore.
- */
+
+// 2 -- Interpolate all of these readings. Unless they are larger than a day apart. Then ignore.
+ 
     int arraysize = (int) 90*HOURS_IN_ONE_DAY*MINUTES_IN_ONE_HOUR/1 + 1;
     float interpolated[arraysize];
     BOOL zeroed[arraysize];
@@ -449,9 +450,9 @@
         }
         lastReading = reading;
     }
-/*
- 3 - Calculate 1,5AG based on whether InterpolatedBGReadings crosses over the renal threshold.
- */
+
+// 3 - Calculate 1,5AG based on whether InterpolatedBGReadings crosses over the renal threshold.
+ 
     float result = 21.0f; //Initial value for 1,5AG
     float renal_threshold;
     if ([BGReading isInMoles]) {
@@ -471,9 +472,9 @@
         }
     }
     
-/*
- 4 - Clip the calculated result to the range of: [0, 21]
- */
+
+// 4 - Clip the calculated result to the range of: [0, 21]
+ 
     if (result > 21) {
         result = 21;
     }
@@ -481,9 +482,9 @@
         result = 0;
     }
 
-/*
- 5 - Save the result to CoreData.
- */
+
+// 5 - Save the result to CoreData.
+ 
     //NSLog(@"The final ag15 is: %f", result);
     AG15Reading* reading = [AG15Reading MR_createEntityInContext:[NSManagedObjectContext MR_defaultContext]];
     reading.quantity = @(result);
@@ -491,5 +492,5 @@
     
     [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 }
-
+*/
 @end
