@@ -16,6 +16,11 @@ class TrendsViewController: UIViewController {
         static let milligramsPerDeciliter = "mg/dL"
     }
 
+    struct SegueIdentifiers {
+        static let trendsToBloodGlucoseTrend = "trendsToBloodGlucoseTrend"
+        static let trendsToHa1cTrend = "trendsToHa1cTrend"
+    }
+
     @IBOutlet var bloodGlucoseValueLabel: UILabel!
     @IBOutlet var bloodGlucoseView: UIView!
 
@@ -74,23 +79,34 @@ class TrendsViewController: UIViewController {
     }
 
     func bloodGlucoseViewTapped(_ sender: UITapGestureRecognizer) {
-        performSegue(withIdentifier: "TrendsToTrendSegue",
+        performSegue(withIdentifier: SegueIdentifiers.trendsToBloodGlucoseTrend,
                      sender: self)
     }
 
     func ha1cViewTapped(_ sender: UITapGestureRecognizer) {
-        performSegue(withIdentifier: "TrendsToTrendSegue",
+        performSegue(withIdentifier: SegueIdentifiers.trendsToHa1cTrend,
                      sender: self)
     }
 
-    /*
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+
+        guard let identifier = segue.identifier else { return }
+
+        switch identifier {
+
+        case SegueIdentifiers.trendsToBloodGlucoseTrend:
+            segue.destination.title = "Blood Glucose Trend"
+
+        case SegueIdentifiers.trendsToHa1cTrend:
+            segue.destination.title = "HA1c Trend"
+
+        default:
+            break
+            
+        }
     }
-    */
 
 }
