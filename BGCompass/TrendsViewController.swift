@@ -10,10 +10,16 @@ import UIKit
 
 class TrendsViewController: UIViewController {
 
+    @IBOutlet var bloodGlucoseValueLabel: UILabel!
+    @IBOutlet var ha1cValueLabel: UILabel!
+
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        bloodGlucoseValueLabel.text = "2.718"
+        ha1cValueLabel.text = "3.14"
     }
 
     override func didReceiveMemoryWarning() {
