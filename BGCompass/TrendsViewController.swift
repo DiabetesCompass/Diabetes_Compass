@@ -23,20 +23,28 @@ class TrendsViewController: UIViewController {
         let trendsAlgorithmModel = TrendsAlgorithmModel.sharedInstance() as! TrendsAlgorithmModel
 
         let lastBGReading = trendsAlgorithmModel.bgArray.last as? BGReading
-        bloodGlucoseValueLabel.text = bloodGlucoseLabelText(reading: lastBGReading)
+        bloodGlucoseValueLabel.text = bloodGlucoseText(reading: lastBGReading)
 
-        let lastHa1cReading: Ha1cReading = trendsAlgorithmModel.ha1cArray.last as! Ha1cReading
-        let numberFormatter = NumberFormatter()
-        numberFormatter.numberStyle = .decimal
-        ha1cValueLabel.text = numberFormatter.string(from: lastHa1cReading.quantity)
+        let lastHa1cReading = trendsAlgorithmModel.ha1cArray.last as? Ha1cReading
+        ha1cValueLabel.text = ha1cText(reading: lastHa1cReading)
     }
 
-    func bloodGlucoseLabelText(reading: BGReading?) -> String {
+    func bloodGlucoseText(reading: BGReading?) -> String {
         if reading == nil {
             return "No data"
         } else {
             return BGReading.displayString(reading!.quantity,
                                            withConversion: true)
+        }
+    }
+
+    func ha1cText(reading: Ha1cReading?) -> String {
+        if reading == nil {
+            return "No data"
+        } else {
+            let numberFormatter = NumberFormatter()
+            numberFormatter.numberStyle = .decimal
+            return numberFormatter.string(from: reading!.quantity)!
         }
     }
 
