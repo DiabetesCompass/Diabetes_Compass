@@ -10,9 +10,12 @@ import UIKit
 
 class TrendsViewController: UIViewController {
 
-    // concentration units
-    let milligramsPerDeciliter = "mg/dL"
-
+    // http://stackoverflow.com/questions/25918628/how-to-define-static-constant-in-a-class-in-swift#27339577
+    struct Constants {
+        // concentration units
+        static let milligramsPerDeciliter = "mg/dL"
+    }
+ 
     @IBOutlet var bloodGlucoseValueLabel: UILabel!
     @IBOutlet var ha1cValueLabel: UILabel!
 
@@ -27,24 +30,24 @@ class TrendsViewController: UIViewController {
         let trendsAlgorithmModel = TrendsAlgorithmModel.sharedInstance() as! TrendsAlgorithmModel
 
         let lastBGReading = trendsAlgorithmModel.bgArray.last as? BGReading
-        bloodGlucoseValueLabel.text = bloodGlucoseText(reading: lastBGReading)
+        bloodGlucoseValueLabel.text = TrendsViewController.bloodGlucoseText(reading: lastBGReading)
 
         let lastHa1cReading = trendsAlgorithmModel.ha1cArray.last as? Ha1cReading
-        ha1cValueLabel.text = ha1cText(reading: lastHa1cReading)
+        ha1cValueLabel.text = TrendsViewController.ha1cText(reading: lastHa1cReading)
     }
 
-    func bloodGlucoseText(reading: BGReading?) -> String {
+    class func bloodGlucoseText(reading: BGReading?) -> String {
         if reading == nil {
             return "No data"
         } else {
             return BGReading.displayString(reading!.quantity,
                                            withConversion: true)
                 + " "
-                + milligramsPerDeciliter
+                + Constants.milligramsPerDeciliter
         }
     }
 
-    func ha1cText(reading: Ha1cReading?) -> String {
+    class func ha1cText(reading: Ha1cReading?) -> String {
         if reading == nil {
             return "No data"
         } else {
@@ -52,7 +55,7 @@ class TrendsViewController: UIViewController {
             numberFormatter.numberStyle = .decimal
             return numberFormatter.string(from: reading!.quantity)!
                 + " "
-                + milligramsPerDeciliter
+                + Constants.milligramsPerDeciliter
         }
     }
 
