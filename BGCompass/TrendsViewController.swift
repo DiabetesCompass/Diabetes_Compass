@@ -31,9 +31,14 @@ class TrendsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
         title = "Trends"
 
+        configureReadings()
+        configureBloodGlucoseViewGesture()
+        configureHa1cViewGesture()
+    }
+
+    func configureReadings() {
         // reference TrendsContainerViewController
         let trendsAlgorithmModel = TrendsAlgorithmModel.sharedInstance() as! TrendsAlgorithmModel
 
@@ -42,18 +47,21 @@ class TrendsViewController: UIViewController {
 
         let lastHa1cReading = trendsAlgorithmModel.ha1cArray.last as? Ha1cReading
         ha1cValueLabel.text = TrendsViewController.ha1cText(reading: lastHa1cReading)
+    }
 
+    func configureBloodGlucoseViewGesture() {
+        let bloodGlucoseTapGesture = UITapGestureRecognizer(target: self,
+                                                            action: #selector(bloodGlucoseViewTapped(_:)))
+        bloodGlucoseView.addGestureRecognizer(bloodGlucoseTapGesture)
+    }
+
+    func configureHa1cViewGesture() {
         let ha1cTapGesture = UITapGestureRecognizer(target: self,
                                                     action: #selector(ha1cViewTapped(_:)))
         ha1cView.addGestureRecognizer(ha1cTapGesture)
 
-        let bloodGlucoseTapGesture = UITapGestureRecognizer(target: self,
-                                                    action: #selector(bloodGlucoseViewTapped(_:)))
-        bloodGlucoseView.addGestureRecognizer(bloodGlucoseTapGesture)
 
-    }
-
-
+        }
 
     class func bloodGlucoseText(reading: BGReading?) -> String {
         if reading == nil {
@@ -90,7 +98,6 @@ class TrendsViewController: UIViewController {
 
     // MARK: - Navigation
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 
         guard let identifier = segue.identifier else { return }
