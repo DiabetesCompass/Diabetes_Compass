@@ -33,13 +33,13 @@
                                                 <rect key="frame" x="0.0" y="0.0" width="375" height="321.5"/>
                                             </imageView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="HA1c" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EEv-38-t9P">
-                                                <rect key="frame" x="8" y="137.5" width="92" height="48"/>
+                                                <rect key="frame" x="8" y="137" width="92" height="48"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="40"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yqa-Qi-t3Y">
-                                                <rect key="frame" x="349" y="137.5" width="18" height="48"/>
+                                                <rect key="frame" x="349" y="137" width="18" height="48"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="40"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
@@ -65,13 +65,13 @@
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             </imageView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Blood Glucose" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mkO-GI-JFL">
-                                                <rect key="frame" x="8" y="113" width="188" height="95.5"/>
+                                                <rect key="frame" x="8" y="112.5" width="188" height="95.5"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="40"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="umb-ai-ySU">
-                                                <rect key="frame" x="349" y="137" width="18" height="48"/>
+                                                <rect key="frame" x="349" y="137.5" width="18" height="48"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="40"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
@@ -100,12 +100,23 @@
                     <navigationItem key="navigationItem" id="kDW-5J-BOx"/>
                     <connections>
                         <outlet property="bloodGlucoseValueLabel" destination="umb-ai-ySU" id="5Pz-mx-COD"/>
+                        <outlet property="bloodGlucoseView" destination="nGe-mo-vPm" id="tP6-ji-hoN"/>
                         <outlet property="ha1cValueLabel" destination="yqa-Qi-t3Y" id="64X-dN-PSd"/>
+                        <outlet property="ha1cView" destination="DLL-Et-CYV" id="6b2-2f-oak"/>
+                        <segue destination="jmV-UG-Sf5" kind="show" identifier="TrendsToTrendSegue" id="BWe-QW-yLL"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Z2K-I9-M82" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="597.60000000000002" y="-0.44977511244377816"/>
+        </scene>
+        <!--TrendViewController-->
+        <scene sceneID="0r4-1g-Uop">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Trend" referencedIdentifier="TrendViewController" id="jmV-UG-Sf5" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ZQP-ql-IpA" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1326" y="-247"/>
         </scene>
     </scenes>
     <resources>

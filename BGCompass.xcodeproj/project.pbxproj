@@ -136,6 +136,8 @@
 		83FD930E1830529600F4F19E /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = 83FD930D1830529600F4F19E /* Constants.m */; };
 		845D246A1BA52C2F00981091 /* WarningViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 845D24691BA52C2F00981091 /* WarningViewController.m */; };
 		A54FA2F73D40CA0B36D34869 /* libPods-BGCompass.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3133369E67CCE31E3141673B /* libPods-BGCompass.a */; };
+		DE106E1B1DFC7E03002B0B63 /* TrendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE106E1A1DFC7E03002B0B63 /* TrendViewController.swift */; };
+		DE106E1D1DFC7E32002B0B63 /* Trend.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DE106E1C1DFC7E32002B0B63 /* Trend.storyboard */; };
 		DE1AD7F91DFBB2E500720F5F /* Trends.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DE1AD7F81DFBB2E500720F5F /* Trends.storyboard */; };
 		DE1AD7FD1DFBB3C400720F5F /* TrendsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE1AD7FC1DFBB3C400720F5F /* TrendsViewController.swift */; };
 		DE758DF11DDABDE200135F5D /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DE758DF01DDABDE200135F5D /* Launch Screen.storyboard */; };
@@ -337,6 +339,8 @@
 		8BDCB62A0108EFA37CBB1497 /* Pods-BGCompass.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BGCompass.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BGCompass/Pods-BGCompass.debug.xcconfig"; sourceTree = "<group>"; };
 		93F419889DB780CD5430F893 /* libPods-BGCompassTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BGCompassTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA8767A213B9617639CF29F3 /* Pods-BGCompassTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BGCompassTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BGCompassTests/Pods-BGCompassTests.debug.xcconfig"; sourceTree = "<group>"; };
+		DE106E1A1DFC7E03002B0B63 /* TrendViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrendViewController.swift; sourceTree = "<group>"; };
+		DE106E1C1DFC7E32002B0B63 /* Trend.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Trend.storyboard; sourceTree = "<group>"; };
 		DE1AD7F81DFBB2E500720F5F /* Trends.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Trends.storyboard; sourceTree = "<group>"; };
 		DE1AD7FB1DFBB3C400720F5F /* BGCompass-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BGCompass-Bridging-Header.h"; sourceTree = "<group>"; };
 		DE1AD7FC1DFBB3C400720F5F /* TrendsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrendsViewController.swift; sourceTree = "<group>"; };
@@ -721,6 +725,8 @@
 				2CBCC2AC1854B9A400430B19 /* ExpandedTrendView.h */,
 				2CBCC2AD1854B9A400430B19 /* ExpandedTrendView.m */,
 				2CBCC2AA1854B99000430B19 /* ExpandedTrend.xib */,
+				DE106E1A1DFC7E03002B0B63 /* TrendViewController.swift */,
+				DE106E1C1DFC7E32002B0B63 /* Trend.storyboard */,
 				2C45A49B1841493000BBFA15 /* TrendsContainerViewController.h */,
 				2C45A49C1841493000BBFA15 /* TrendsContainerViewController.m */,
 				DE1AD7F81DFBB2E500720F5F /* Trends.storyboard */,
@@ -824,6 +830,7 @@
 				2CC964F6184749620092FFD1 /* weird2.png in Resources */,
 				2CF6D2751848121200872B8F /* solid.png in Resources */,
 				2CC964F2184749620092FFD1 /* persian.png in Resources */,
+				DE106E1D1DFC7E32002B0B63 /* Trend.storyboard in Resources */,
 				2C0739911840342000B413BE /* InfoPlist.strings in Resources */,
 				2C233105182B6C82008A6F88 /* Main_iPad.storyboard in Resources */,
 				2C9A5172184AF5EA00D9DCC2 /* cool.png in Resources */,
@@ -994,6 +1001,7 @@
 				2C253FB718C0397B00DB7D2A /* ItemsNavigationTransitionControllerDelegate.m in Sources */,
 				839E34A9182F81520083960E /* UselessSegue.m in Sources */,
 				2C253F7B18BC7E0A00DB7D2A /* TutorialTextCell.m in Sources */,
+				DE106E1B1DFC7E03002B0B63 /* TrendViewController.swift in Sources */,
 				2C253FAB18BDE7E900DB7D2A /* AddBGOverlayViewController.m in Sources */,
 				2CC964DF184714930092FFD1 /* UIImage+ImageEffects.m in Sources */,
 				2CA18FE51854B5890057826B /* CollapsedTrendView.m in Sources */,

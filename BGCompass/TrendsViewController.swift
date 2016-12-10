@@ -15,9 +15,12 @@ class TrendsViewController: UIViewController {
         // concentration units
         static let milligramsPerDeciliter = "mg/dL"
     }
- 
+
     @IBOutlet var bloodGlucoseValueLabel: UILabel!
+    @IBOutlet var bloodGlucoseView: UIView!
+
     @IBOutlet var ha1cValueLabel: UILabel!
+    @IBOutlet var ha1cView: UIView!
 
 
     override func viewDidLoad() {
@@ -34,7 +37,13 @@ class TrendsViewController: UIViewController {
 
         let lastHa1cReading = trendsAlgorithmModel.ha1cArray.last as? Ha1cReading
         ha1cValueLabel.text = TrendsViewController.ha1cText(reading: lastHa1cReading)
+
+        let ha1cTapGesture = UITapGestureRecognizer(target: self,
+                                                    action: #selector(ha1cViewTapped(_:)))
+        ha1cView.addGestureRecognizer(ha1cTapGesture)
     }
+
+
 
     class func bloodGlucoseText(reading: BGReading?) -> String {
         if reading == nil {
@@ -57,6 +66,11 @@ class TrendsViewController: UIViewController {
                 + " "
                 + Constants.milligramsPerDeciliter
         }
+    }
+
+    @IBAction func ha1cViewTapped(_ sender: UITapGestureRecognizer) {
+        performSegue(withIdentifier: "TrendsToTrendSegue",
+                     sender: self)
     }
 
     /*
