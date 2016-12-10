@@ -23,17 +23,21 @@ class TrendsViewController: UIViewController {
         let trendsAlgorithmModel = TrendsAlgorithmModel.sharedInstance() as! TrendsAlgorithmModel
 
         let lastBGReading = trendsAlgorithmModel.bgArray.last as? BGReading
-        if lastBGReading == nil {
-            bloodGlucoseValueLabel.text = "No data"
-        } else {
-            bloodGlucoseValueLabel.text = BGReading.displayString(lastBGReading!.quantity,
-                                                                  withConversion: true)
-        }
+        bloodGlucoseValueLabel.text = bloodGlucoseLabelText(reading: lastBGReading)
 
         let lastHa1cReading: Ha1cReading = trendsAlgorithmModel.ha1cArray.last as! Ha1cReading
         let numberFormatter = NumberFormatter()
         numberFormatter.numberStyle = .decimal
         ha1cValueLabel.text = numberFormatter.string(from: lastHa1cReading.quantity)
+    }
+
+    func bloodGlucoseLabelText(reading: BGReading?) -> String {
+        if reading == nil {
+            return "No data"
+        } else {
+            return BGReading.displayString(reading!.quantity,
+                                           withConversion: true)
+        }
     }
 
     override func didReceiveMemoryWarning() {
