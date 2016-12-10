@@ -10,6 +10,9 @@ import UIKit
 
 class TrendsViewController: UIViewController {
 
+    // concentration units
+    let milligramsPerDeciliter = "mg/dL"
+
     @IBOutlet var bloodGlucoseValueLabel: UILabel!
     @IBOutlet var ha1cValueLabel: UILabel!
 
@@ -36,6 +39,8 @@ class TrendsViewController: UIViewController {
         } else {
             return BGReading.displayString(reading!.quantity,
                                            withConversion: true)
+                + " "
+                + milligramsPerDeciliter
         }
     }
 
@@ -46,6 +51,8 @@ class TrendsViewController: UIViewController {
             let numberFormatter = NumberFormatter()
             numberFormatter.numberStyle = .decimal
             return numberFormatter.string(from: reading!.quantity)!
+                + " "
+                + milligramsPerDeciliter
         }
     }
 
