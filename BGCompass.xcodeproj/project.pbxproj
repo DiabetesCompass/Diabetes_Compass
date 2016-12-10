@@ -497,15 +497,6 @@
 			children = (
 				2C233100182B6C82008A6F88 /* Main_iPhone.storyboard */,
 				2C233103182B6C82008A6F88 /* Main_iPad.storyboard */,
-				2C1334521854DA0800CECB76 /* CollapsedTrendMenu.xib */,
-				2CA18FE11854B5560057826B /* CollapsedTrend.xib */,
-				2CBCC2AA1854B99000430B19 /* ExpandedTrend.xib */,
-				2C1334541854DA2000CECB76 /* CollapsedTrendMenu.h */,
-				2C1334551854DA2000CECB76 /* CollapsedTrendMenu.m */,
-				2CA18FE31854B5890057826B /* CollapsedTrendView.h */,
-				2CA18FE41854B5890057826B /* CollapsedTrendView.m */,
-				2CBCC2AC1854B9A400430B19 /* ExpandedTrendView.h */,
-				2CBCC2AD1854B9A400430B19 /* ExpandedTrendView.m */,
 				839E34A7182F81520083960E /* UselessSegue.h */,
 				839E34A8182F81520083960E /* UselessSegue.m */,
 				2C253F7F18BC7EAB00DB7D2A /* Tutorial TableView Items */,
@@ -565,8 +556,6 @@
 				2CD96E8018C2FCF100361C64 /* EditItemViewController.m */,
 				2C5AE7881848A6D2009D487F /* EditTableViewController.h */,
 				2C5AE7891848A6D2009D487F /* EditTableViewController.m */,
-				2C45A49B1841493000BBFA15 /* TrendsContainerViewController.h */,
-				2C45A49C1841493000BBFA15 /* TrendsContainerViewController.m */,
 				8337DF2B18EA332A00055E59 /* UPCScannerViewController.h */,
 				8337DF2C18EA332A00055E59 /* UPCScannerViewController.m */,
 				2C5AE78B1848C8A1009D487F /* SettingsController.h */,
@@ -723,6 +712,17 @@
 		DE1AD7FA1DFBB34500720F5F /* Trends */ = {
 			isa = PBXGroup;
 			children = (
+				2CA18FE11854B5560057826B /* CollapsedTrend.xib */,
+				2C1334541854DA2000CECB76 /* CollapsedTrendMenu.h */,
+				2C1334551854DA2000CECB76 /* CollapsedTrendMenu.m */,
+				2C1334521854DA0800CECB76 /* CollapsedTrendMenu.xib */,
+				2CA18FE31854B5890057826B /* CollapsedTrendView.h */,
+				2CA18FE41854B5890057826B /* CollapsedTrendView.m */,
+				2CBCC2AC1854B9A400430B19 /* ExpandedTrendView.h */,
+				2CBCC2AD1854B9A400430B19 /* ExpandedTrendView.m */,
+				2CBCC2AA1854B99000430B19 /* ExpandedTrend.xib */,
+				2C45A49B1841493000BBFA15 /* TrendsContainerViewController.h */,
+				2C45A49C1841493000BBFA15 /* TrendsContainerViewController.m */,
 				DE1AD7F81DFBB2E500720F5F /* Trends.storyboard */,
 				DE1AD7FC1DFBB3C400720F5F /* TrendsViewController.swift */,
 			);
@@ -783,7 +783,7 @@
 				ORGANIZATIONNAME = "Clif Alferness";
 				TargetAttributes = {
 					2C2330E8182B6C82008A6F88 = {
-						DevelopmentTeam = UKCY2P766T;
+						DevelopmentTeam = J2LXK9FK3W;
 						LastSwiftMigration = 0810;
 						SystemCapabilities = {
 							com.apple.HealthKit = {
@@ -1199,6 +1199,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = J2LXK9FK3W;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "BGCompass/BGCompass-Prefix.pch";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
@@ -1225,6 +1226,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = J2LXK9FK3W;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "BGCompass/BGCompass-Prefix.pch";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
