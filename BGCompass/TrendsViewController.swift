@@ -19,9 +19,16 @@ class TrendsViewController: UIViewController {
 
         // Do any additional setup after loading the view.
 
+        // reference TrendsContainerViewController
         let trendsAlgorithmModel = TrendsAlgorithmModel.sharedInstance() as! TrendsAlgorithmModel
 
-        bloodGlucoseValueLabel.text = "2.71"
+        let lastBGReading = trendsAlgorithmModel.bgArray.last as? BGReading
+        if lastBGReading == nil {
+            bloodGlucoseValueLabel.text = "No data"
+        } else {
+            bloodGlucoseValueLabel.text = BGReading.displayString(lastBGReading!.quantity,
+                                                                  withConversion: true)
+        }
 
         let lastHa1cReading: Ha1cReading = trendsAlgorithmModel.ha1cArray.last as! Ha1cReading
         let numberFormatter = NumberFormatter()
