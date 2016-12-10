@@ -38,6 +38,8 @@ class TrendsViewController: UIViewController {
         configureHa1cViewGesture()
     }
 
+    // MARK: - configure readings
+
     func configureReadings() {
         // reference TrendsContainerViewController
         let trendsAlgorithmModel = TrendsAlgorithmModel.sharedInstance() as! TrendsAlgorithmModel
@@ -49,19 +51,6 @@ class TrendsViewController: UIViewController {
         ha1cValueLabel.text = TrendsViewController.ha1cText(reading: lastHa1cReading)
     }
 
-    func configureBloodGlucoseViewGesture() {
-        let bloodGlucoseTapGesture = UITapGestureRecognizer(target: self,
-                                                            action: #selector(bloodGlucoseViewTapped(_:)))
-        bloodGlucoseView.addGestureRecognizer(bloodGlucoseTapGesture)
-    }
-
-    func configureHa1cViewGesture() {
-        let ha1cTapGesture = UITapGestureRecognizer(target: self,
-                                                    action: #selector(ha1cViewTapped(_:)))
-        ha1cView.addGestureRecognizer(ha1cTapGesture)
-
-
-        }
 
     class func bloodGlucoseText(reading: BGReading?) -> String {
         if reading == nil {
@@ -86,6 +75,22 @@ class TrendsViewController: UIViewController {
         }
     }
 
+    // MARK: - configure gestures
+
+    func configureBloodGlucoseViewGesture() {
+        let bloodGlucoseTapGesture = UITapGestureRecognizer(target: self,
+                                                            action: #selector(bloodGlucoseViewTapped(_:)))
+        bloodGlucoseView.addGestureRecognizer(bloodGlucoseTapGesture)
+    }
+
+    func configureHa1cViewGesture() {
+        let ha1cTapGesture = UITapGestureRecognizer(target: self,
+                                                    action: #selector(ha1cViewTapped(_:)))
+        ha1cView.addGestureRecognizer(ha1cTapGesture)
+    }
+
+    // MARK: - Navigation
+
     func bloodGlucoseViewTapped(_ sender: UITapGestureRecognizer) {
         performSegue(withIdentifier: SegueIdentifiers.trendsToBloodGlucoseTrend,
                      sender: self)
@@ -95,8 +100,6 @@ class TrendsViewController: UIViewController {
         performSegue(withIdentifier: SegueIdentifiers.trendsToHa1cTrend,
                      sender: self)
     }
-
-    // MARK: - Navigation
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 
