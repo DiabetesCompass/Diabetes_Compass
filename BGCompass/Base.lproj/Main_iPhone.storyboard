@@ -417,11 +417,10 @@
                                 </connections>
                             </containerView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CdN-sQ-Gvx">
-                                <rect key="frame" x="202" y="25" width="30" height="37"/>
+                                <rect key="frame" x="198" y="25" width="30" height="37"/>
                                 <fontDescription key="fontDescription" name="FontAwesome" family="FontAwesome" pointSize="24"/>
                                 <state key="normal" title="t">
-                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                    <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
                                     <action selector="clickTrends:" destination="AUd-aH-ASn" eventType="touchUpInside" id="UWw-e5-EcE"/>
@@ -433,7 +432,7 @@
                         <constraints>
                             <constraint firstItem="PTp-dD-KMA" firstAttribute="top" secondItem="siz-Qs-ork" secondAttribute="bottom" constant="5" id="363-j5-18i"/>
                             <constraint firstAttribute="trailingMargin" secondItem="PTp-dD-KMA" secondAttribute="trailing" constant="16" id="3WV-eY-ZyX"/>
-                            <constraint firstItem="CdN-sQ-Gvx" firstAttribute="leading" secondItem="PXz-yT-3Ec" secondAttribute="trailing" constant="4" id="B4C-1J-blE"/>
+                            <constraint firstItem="CdN-sQ-Gvx" firstAttribute="leading" secondItem="PXz-yT-3Ec" secondAttribute="trailing" id="B4C-1J-blE"/>
                             <constraint firstItem="TNg-Xn-eGe" firstAttribute="leading" secondItem="PXz-yT-3Ec" secondAttribute="trailing" constant="30" id="JFK-LE-J5E"/>
                             <constraint firstItem="qFq-yJ-PxK" firstAttribute="top" secondItem="1wC-kA-FMF" secondAttribute="bottom" id="K8T-1J-frq"/>
                             <constraint firstItem="PTp-dD-KMA" firstAttribute="centerY" secondItem="SIB-7f-Z61" secondAttribute="centerY" id="LEf-za-ttT"/>

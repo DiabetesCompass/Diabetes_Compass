@@ -57,7 +57,7 @@
     self.transitionController = [ZoomModalTransitionDelegate new];
     self.blurTransitionDelegate = [BlurTransitionDelegate new];
 
-    [self.trendsButton setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"icon-bar-chart"]
+    [self.trendsButton2 setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"icon-bar-chart"]
                        forState:UIControlStateNormal];
 }
 
