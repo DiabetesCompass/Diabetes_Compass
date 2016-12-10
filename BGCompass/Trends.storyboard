@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11542" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11524"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Trends View Controller-->
+        <scene sceneID="5nC-k7-EwH">
+            <objects>
+                <viewController storyboardIdentifier="TrendsViewController" id="6Vf-wc-WSx" customClass="TrendsViewController" customModule="BGCompass" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="qXT-vi-V3M"/>
+                        <viewControllerLayoutGuide type="bottom" id="eqm-cJ-2nt"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="BqG-cy-Tod">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="OfC-OD-CBC">
+                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DLL-Et-CYV">
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="322"/>
+                                        <subviews>
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="cool2.png" translatesAutoresizingMaskIntoConstraints="NO" id="fui-aK-mOb">
+                                                <rect key="frame" x="0.0" y="0.0" width="375" height="322"/>
+                                            </imageView>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="HA1c" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EEv-38-t9P">
+                                                <rect key="frame" x="8" y="137" width="92" height="48"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="40"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yqa-Qi-t3Y">
+                                                <rect key="frame" x="349" y="137" width="18" height="48"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="40"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstItem="EEv-38-t9P" firstAttribute="centerY" secondItem="DLL-Et-CYV" secondAttribute="centerY" id="9Zg-LH-0wO"/>
+                                            <constraint firstItem="fui-aK-mOb" firstAttribute="top" secondItem="DLL-Et-CYV" secondAttribute="top" id="AEg-J6-0yX"/>
+                                            <constraint firstItem="EEv-38-t9P" firstAttribute="leading" secondItem="DLL-Et-CYV" secondAttribute="leading" constant="8" id="E5b-QX-EeV"/>
+                                            <constraint firstItem="yqa-Qi-t3Y" firstAttribute="centerY" secondItem="DLL-Et-CYV" secondAttribute="centerY" id="EJM-1W-WAW"/>
+                                            <constraint firstAttribute="bottom" secondItem="fui-aK-mOb" secondAttribute="bottom" id="GwO-Xd-dtv"/>
+                                            <constraint firstAttribute="trailingMargin" secondItem="yqa-Qi-t3Y" secondAttribute="trailing" id="INM-If-4iP"/>
+                                            <constraint firstItem="fui-aK-mOb" firstAttribute="leading" secondItem="DLL-Et-CYV" secondAttribute="leading" id="orM-yc-hjD"/>
+                                            <constraint firstAttribute="trailing" secondItem="fui-aK-mOb" secondAttribute="trailing" id="xu9-YL-cu5"/>
+                                        </constraints>
+                                    </view>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nGe-mo-vPm">
+                                        <rect key="frame" x="0.0" y="326" width="375" height="321"/>
+                                        <subviews>
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="cool2.png" translatesAutoresizingMaskIntoConstraints="NO" id="4TU-6B-452">
+                                                <rect key="frame" x="0.0" y="0.0" width="375" height="300"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            </imageView>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Blood Glucose" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mkO-GI-JFL">
+                                                <rect key="frame" x="8" y="112" width="188" height="96"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="40"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="umb-ai-ySU">
+                                                <rect key="frame" x="349" y="137" width="18" height="48"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="40"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstItem="mkO-GI-JFL" firstAttribute="centerY" secondItem="nGe-mo-vPm" secondAttribute="centerY" id="DQw-hw-dXX"/>
+                                            <constraint firstItem="mkO-GI-JFL" firstAttribute="leading" secondItem="nGe-mo-vPm" secondAttribute="leading" constant="8" id="Ku7-Ct-jjE"/>
+                                            <constraint firstAttribute="trailing" secondItem="umb-ai-ySU" secondAttribute="trailing" constant="8" id="KuL-ja-QrK"/>
+                                            <constraint firstItem="umb-ai-ySU" firstAttribute="centerY" secondItem="nGe-mo-vPm" secondAttribute="centerY" id="VA8-LV-VEF"/>
+                                            <constraint firstItem="mkO-GI-JFL" firstAttribute="width" secondItem="nGe-mo-vPm" secondAttribute="width" multiplier="0.5" id="mmX-lU-bTC"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
+                            </stackView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="OfC-OD-CBC" firstAttribute="top" secondItem="qXT-vi-V3M" secondAttribute="bottom" id="82f-P0-8AS"/>
+                            <constraint firstAttribute="trailing" secondItem="OfC-OD-CBC" secondAttribute="trailing" id="SCK-UO-bpG"/>
+                            <constraint firstItem="OfC-OD-CBC" firstAttribute="leading" secondItem="BqG-cy-Tod" secondAttribute="leading" id="ZPN-X5-qfL"/>
+                            <constraint firstItem="eqm-cJ-2nt" firstAttribute="top" secondItem="OfC-OD-CBC" secondAttribute="bottom" id="aXy-pe-WME"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="kDW-5J-BOx"/>
+                    <connections>
+                        <outlet property="bloodGlucoseValueLabel" destination="umb-ai-ySU" id="5Pz-mx-COD"/>
+                        <outlet property="bloodGlucoseView" destination="nGe-mo-vPm" id="tP6-ji-hoN"/>
+                        <outlet property="ha1cValueLabel" destination="yqa-Qi-t3Y" id="64X-dN-PSd"/>
+                        <outlet property="ha1cView" destination="DLL-Et-CYV" id="6b2-2f-oak"/>
+                        <segue destination="jmV-UG-Sf5" kind="show" identifier="trendsToHa1cTrend" id="BWe-QW-yLL"/>
+                        <segue destination="Vfz-5m-a3S" kind="show" identifier="trendsToBloodGlucoseTrend" id="DP1-JP-t0Z"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Z2K-I9-M82" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="597.60000000000002" y="-0.44977511244377816"/>
+        </scene>
+        <!--TrendViewController-->
+        <scene sceneID="0r4-1g-Uop">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Trend" referencedIdentifier="TrendViewController" id="jmV-UG-Sf5" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ZQP-ql-IpA" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1278" y="101"/>
+        </scene>
+        <!--TrendViewController-->
+        <scene sceneID="Lbk-dg-0Mm">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Trend" referencedIdentifier="TrendViewController" id="Vfz-5m-a3S" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="inU-fC-212" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1278" y="-124"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="cool2.png" width="667" height="1000"/>
+    </resources>
+</document>

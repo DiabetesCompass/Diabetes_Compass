@@ -133,9 +133,10 @@
 //    NSPredicate *predicate;
     BGReading* lastReading = bgReading;
     if (!lastReading) {
-        lastReading = [BGReading MR_findFirstOrderedByAttribute:@"timeStamp" ascending:NO inContext:[NSManagedObjectContext MR_defaultContext]];
+        lastReading = [BGReading MR_findFirstOrderedByAttribute:@"timeStamp" ascending:YES inContext:[NSManagedObjectContext MR_defaultContext]];
     }
     
+//<<<<<<< HEAD
     NSDate* one_hundred_days_ago = [lastReading.timeStamp dateByAddingTimeInterval: -HEMOGLOBIN_LIFESPAN];
         NSLog(@"timeStamp1: %@", one_hundred_days_ago);
         NSLog(@"timeStamp2: %@", lastReading.timeStamp);
@@ -144,6 +145,16 @@
     //2 -- Interpolate readings.
     int interval = 10; // interpolated array will be at 10 minute intervals.
     int arraysize = (int) HEMOGLOBIN_LIFESPAN/interval + 1;
+//=======
+//    NSDate* one_hundred_days_ago = [lastReading.timeStamp dateByAddingTimeInterval:-100*HOURS_IN_ONE_DAY*SECONDS_IN_ONE_HOUR];
+//    predicate = [NSPredicate predicateWithFormat:@"timeStamp >= %@", one_hundred_days_ago];
+//    NSArray *fetchedReadings = [BGReading MR_findAllSortedBy:@"timeStamp" ascending:YES withPredicate:predicate inContext:[NSManagedObjectContext MR_defaultContext]];
+//    
+//    //2 -- Interpolate all of these readings.
+//    
+//    int interval = 10; // interpolated array will be 10 minute intervals.
+//    int arraysize = (int) 100*HOURS_IN_ONE_DAY*MINUTES_IN_ONE_HOUR/interval + 1;
+//>>>>>>> storyboard
     // The array will contain up to 100 days of readings.
     float interpolated[arraysize];
     BGReading* previousReading = nil;

@@ -44,7 +44,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 		</dict>
 		<dict>
 			<key>FooterText</key>
-			<string>Copyright (c) 2015, Drew McCormack, Brad Larson, Eric Skroch, Barry Wark, Dirkjan Krijnders, Rick Maddy, Vijay Kalusani, Caleb Cannon, Jeff Buck, Thomas Elstner, Jeroen Leenarts, Craig Hockenberry, Hartwig Wiesmann, Koen van der Drift, Nino Ag, Mike Lischke, Trevor Harmon, Travis Fischer, Graham Mueller, Rafa&#322; W&#243;jcik, Mike Rossetti, Michael Merickel, Lane Roathe, Ingmar Stein, Sean Holbert, Victor Martin Garcia, J&#233;r&#244;me Morissard, Demitri Muna, and Tim Monzures.
+			<string>Copyright (c) 2015, Drew McCormack, Brad Larson, Eric Skroch, Barry Wark, Dirkjan Krijnders, Rick Maddy, Vijay Kalusani, Caleb Cannon, Jeff Buck, Thomas Elstner, Jeroen Leenarts, Craig Hockenberry, Hartwig Wiesmann, Koen van der Drift, Nino Ag, Mike Lischke, Trevor Harmon, Travis Fischer, Graham Mueller, Rafał Wójcik, Mike Rossetti, Michael Merickel, Lane Roathe, Ingmar Stein, Sean Holbert, Victor Martin Garcia, Jérôme Morissard, Demitri Muna, and Tim Monzures.
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
@@ -365,7 +365,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 			<key>FooterText</key>
 			<string>The MIT License (MIT)
 
-Copyright (c) 2013 Micha&#322; Zaborowski
+Copyright (c) 2013 Michał Zaborowski
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
 this software and associated documentation files (the "Software"), to deal in
@@ -1490,7 +1490,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 			<key>FooterText</key>
 			<string>The MIT License (MIT)
 
-Copyright (c) 2013 Adri&#225;n Gonz&#225;lez &lt;bernardogzzf@gmail.com&gt;
+Copyright (c) 2013 Adrián González &lt;bernardogzzf@gmail.com&gt;
 
 Permission is hereby granted, free of charge, to any person obtaining a
 copy
