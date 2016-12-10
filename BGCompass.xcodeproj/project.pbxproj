@@ -136,6 +136,8 @@
 		83FD930E1830529600F4F19E /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = 83FD930D1830529600F4F19E /* Constants.m */; };
 		845D246A1BA52C2F00981091 /* WarningViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 845D24691BA52C2F00981091 /* WarningViewController.m */; };
 		A54FA2F73D40CA0B36D34869 /* libPods-BGCompass.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3133369E67CCE31E3141673B /* libPods-BGCompass.a */; };
+		DE1AD7F91DFBB2E500720F5F /* Trends.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DE1AD7F81DFBB2E500720F5F /* Trends.storyboard */; };
+		DE1AD7FD1DFBB3C400720F5F /* TrendsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE1AD7FC1DFBB3C400720F5F /* TrendsViewController.swift */; };
 		DE758DF11DDABDE200135F5D /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DE758DF01DDABDE200135F5D /* Launch Screen.storyboard */; };
 /* End PBXBuildFile section */
 
@@ -335,6 +337,9 @@
 		8BDCB62A0108EFA37CBB1497 /* Pods-BGCompass.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BGCompass.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BGCompass/Pods-BGCompass.debug.xcconfig"; sourceTree = "<group>"; };
 		93F419889DB780CD5430F893 /* libPods-BGCompassTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BGCompassTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA8767A213B9617639CF29F3 /* Pods-BGCompassTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BGCompassTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BGCompassTests/Pods-BGCompassTests.debug.xcconfig"; sourceTree = "<group>"; };
+		DE1AD7F81DFBB2E500720F5F /* Trends.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Trends.storyboard; sourceTree = "<group>"; };
+		DE1AD7FB1DFBB3C400720F5F /* BGCompass-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BGCompass-Bridging-Header.h"; sourceTree = "<group>"; };
+		DE1AD7FC1DFBB3C400720F5F /* TrendsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrendsViewController.swift; sourceTree = "<group>"; };
 		DE1FE5011DCFEB0C000B6A8A /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		DE758DF01DDABDE200135F5D /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -408,11 +413,13 @@
 		2C2330F4182B6C82008A6F88 /* BGCompass */ = {
 			isa = PBXGroup;
 			children = (
+				DE1AD7FB1DFBB3C400720F5F /* BGCompass-Bridging-Header.h */,
 				848D6EAF19CC023F003C611F /* BGCompass.entitlements */,
 				2C2330FD182B6C82008A6F88 /* AppDelegate.h */,
 				2C2330FE182B6C82008A6F88 /* AppDelegate.m */,
 				2C18D36E183210F100B622C8 /* Images.xcassets */,
 				2C30405718556DE200BCD3FF /* User Interface */,
+				DE1AD7FA1DFBB34500720F5F /* Trends */,
 				2C30405918556E8E00BCD3FF /* View Controllers */,
 				2C30405B18556F6600BCD3FF /* Delegates */,
 				2C30405818556E6700BCD3FF /* Animations Controllers */,
@@ -713,6 +720,15 @@
 			name = "Data Models";
 			sourceTree = "<group>";
 		};
+		DE1AD7FA1DFBB34500720F5F /* Trends */ = {
+			isa = PBXGroup;
+			children = (
+				DE1AD7F81DFBB2E500720F5F /* Trends.storyboard */,
+				DE1AD7FC1DFBB3C400720F5F /* TrendsViewController.swift */,
+			);
+			name = Trends;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -768,6 +784,7 @@
 				TargetAttributes = {
 					2C2330E8182B6C82008A6F88 = {
 						DevelopmentTeam = UKCY2P766T;
+						LastSwiftMigration = 0810;
 						SystemCapabilities = {
 							com.apple.HealthKit = {
 								enabled = 0;
@@ -817,6 +834,7 @@
 				2C846CA51844B68C0071559D /* cloud.png in Resources */,
 				2C18D36F183210F100B622C8 /* Images.xcassets in Resources */,
 				2C253FA818BCADF400DB7D2A /* appIcon.png in Resources */,
+				DE1AD7F91DFBB2E500720F5F /* Trends.storyboard in Resources */,
 				2CC964F5184749620092FFD1 /* weird.png in Resources */,
 				DE758DF11DDABDE200135F5D /* Launch Screen.storyboard in Resources */,
 				2C233102182B6C82008A6F88 /* Main_iPhone.storyboard in Resources */,
@@ -956,6 +974,7 @@
 				2C5AE78D1848C8A1009D487F /* SettingsController.m in Sources */,
 				2C253FAE18BE0AAB00DB7D2A /* MenuViewController.m in Sources */,
 				2C253F7618BC6CC400DB7D2A /* TutorialViewController.m in Sources */,
+				DE1AD7FD1DFBB3C400720F5F /* TrendsViewController.swift in Sources */,
 				8376D6D51831BE840026D0CD /* BackgroundTaskDelegate.m in Sources */,
 				839E349D182F697A0083960E /* GraphViewController.m in Sources */,
 				2C253FC918C0637800DB7D2A /* UIImage+BoxBlur.m in Sources */,
@@ -1177,6 +1196,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -1184,9 +1204,13 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				INFOPLIST_FILE = "$(SRCROOT)/BGCompass/BGCompass-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.1;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.calferness.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = BGCompass;
 				PROVISIONING_PROFILE = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "BGCompass/BGCompass-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
@@ -1198,6 +1222,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -1205,9 +1230,12 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				INFOPLIST_FILE = "$(SRCROOT)/BGCompass/BGCompass-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.1;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.calferness.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = BGCompass;
 				PROVISIONING_PROFILE = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "BGCompass/BGCompass-Bridging-Header.h";
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
@@ -1217,6 +1245,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = DA8767A213B9617639CF29F3 /* Pods-BGCompassTests.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -1244,6 +1273,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 7FC63F7E66C515C78A6B48C4 /* Pods-BGCompassTests.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
