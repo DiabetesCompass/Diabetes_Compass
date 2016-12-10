@@ -18,8 +18,15 @@ class TrendsViewController: UIViewController {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+
+        let trendsAlgorithmModel = TrendsAlgorithmModel.sharedInstance() as! TrendsAlgorithmModel
+
         bloodGlucoseValueLabel.text = "2.71"
-        ha1cValueLabel.text = "3.14"
+
+        let lastHa1cReading: Ha1cReading = trendsAlgorithmModel.ha1cArray.last as! Ha1cReading
+        let numberFormatter = NumberFormatter()
+        numberFormatter.numberStyle = .decimal
+        ha1cValueLabel.text = numberFormatter.string(from: lastHa1cReading.quantity)
     }
 
     override func didReceiveMemoryWarning() {
