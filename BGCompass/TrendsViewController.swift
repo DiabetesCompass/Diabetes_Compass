@@ -18,7 +18,7 @@ class TrendsViewController: UIViewController {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        bloodGlucoseValueLabel.text = "2.718"
+        bloodGlucoseValueLabel.text = "2.71"
         ha1cValueLabel.text = "3.14"
     }
 
