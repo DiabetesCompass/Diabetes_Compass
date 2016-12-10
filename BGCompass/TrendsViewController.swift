@@ -18,6 +18,7 @@ class TrendsViewController: UIViewController {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        title = "Trends"
 
         // reference TrendsContainerViewController
         let trendsAlgorithmModel = TrendsAlgorithmModel.sharedInstance() as! TrendsAlgorithmModel
