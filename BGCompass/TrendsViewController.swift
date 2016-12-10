@@ -41,6 +41,11 @@ class TrendsViewController: UIViewController {
         let ha1cTapGesture = UITapGestureRecognizer(target: self,
                                                     action: #selector(ha1cViewTapped(_:)))
         ha1cView.addGestureRecognizer(ha1cTapGesture)
+
+        let bloodGlucoseTapGesture = UITapGestureRecognizer(target: self,
+                                                    action: #selector(bloodGlucoseViewTapped(_:)))
+        bloodGlucoseView.addGestureRecognizer(bloodGlucoseTapGesture)
+
     }
 
 
@@ -68,7 +73,12 @@ class TrendsViewController: UIViewController {
         }
     }
 
-    @IBAction func ha1cViewTapped(_ sender: UITapGestureRecognizer) {
+    func bloodGlucoseViewTapped(_ sender: UITapGestureRecognizer) {
+        performSegue(withIdentifier: "TrendsToTrendSegue",
+                     sender: self)
+    }
+
+    func ha1cViewTapped(_ sender: UITapGestureRecognizer) {
         performSegue(withIdentifier: "TrendsToTrendSegue",
                      sender: self)
     }
