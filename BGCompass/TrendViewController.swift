@@ -167,7 +167,7 @@ extension TrendViewController: CPTBarPlotDataSource, CPTBarPlotDelegate {
         let reading = model.getFromHa1cArray(record) as Ha1cReading
 
         if plotField == .X {
-            guard let firstReading = model.ha1cArray.first as! Ha1cReading? else { return nil }
+            guard let firstReading = model.ha1cArrayReadingFirst() else { return nil }
 
             guard let dateFirst = firstReading.timeStamp else { return nil }
             let timeIntervalSeconds: TimeInterval = reading.timeStamp.timeIntervalSince(dateFirst)

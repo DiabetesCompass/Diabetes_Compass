@@ -141,6 +141,7 @@
 		DE1AD7FD1DFBB3C400720F5F /* TrendsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE1AD7FC1DFBB3C400720F5F /* TrendsViewController.swift */; };
 		DE758DF11DDABDE200135F5D /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DE758DF01DDABDE200135F5D /* Launch Screen.storyboard */; };
 		DEABA8A21DFCEEDC00B42AEA /* TrendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEABA8A11DFCEEDC00B42AEA /* TrendViewController.swift */; };
+		DEEEF1C81DFE0A140027D955 /* TrendsAlgorithmModelExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEEEF1C71DFE0A140027D955 /* TrendsAlgorithmModelExtension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -346,6 +347,7 @@
 		DE1FE5011DCFEB0C000B6A8A /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		DE758DF01DDABDE200135F5D /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		DEABA8A11DFCEEDC00B42AEA /* TrendViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrendViewController.swift; sourceTree = "<group>"; };
+		DEEEF1C71DFE0A140027D955 /* TrendsAlgorithmModelExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrendsAlgorithmModelExtension.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -683,6 +685,7 @@
 				833A3E4E183B3EFB00C1FF5C /* BGAlgorithmModel.m */,
 				83980E0B184808BB00E321CF /* TrendsAlgorithmModel.h */,
 				83980E0C184808BB00E321CF /* TrendsAlgorithmModel.m */,
+				DEEEF1C71DFE0A140027D955 /* TrendsAlgorithmModelExtension.swift */,
 			);
 			name = Algorithms;
 			sourceTree = "<group>";
@@ -1031,6 +1034,7 @@
 				2C6D7770184C83DC00267E38 /* APPaginalContainerViewPage.m in Sources */,
 				2C253F9418BC994E00DB7D2A /* TutorialInlinePickerCell.m in Sources */,
 				2C5AE78A1848A6D2009D487F /* EditTableViewController.m in Sources */,
+				DEEEF1C81DFE0A140027D955 /* TrendsAlgorithmModelExtension.swift in Sources */,
 				2C634F451837395B003B0DA4 /* PendingItemCell.m in Sources */,
 				83980E0D184808BB00E321CF /* TrendsAlgorithmModel.m in Sources */,
 				2C9D92AA183EC64900061B65 /* ItemsNavigationViewController.m in Sources */,
