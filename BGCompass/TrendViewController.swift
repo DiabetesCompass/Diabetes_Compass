@@ -54,12 +54,13 @@ class TrendViewController : UIViewController {
         graph.paddingBottom = 10.0
     }
 
-    /// set axes range start and end
+    /// set axes range start and length
     func configurePlotSpace(graph: CPTXYGraph) {
         let plotSpace = graph.defaultPlotSpace as! CPTXYPlotSpace
         plotSpace.allowsUserInteraction = true
-        plotSpace.xRange = CPTPlotRange(location:0.0, length:100000.0)
-        plotSpace.yRange = CPTPlotRange(location:0.0, length:10.0)
+        // location is axis start, length is axis (end - start)
+        plotSpace.xRange = CPTPlotRange(location:-10000.0, length:110000.0)
+        plotSpace.yRange = CPTPlotRange(location:-1.0, length:11.0)
     }
 
     func configureAxes(graph: CPTXYGraph) {
@@ -67,14 +68,14 @@ class TrendViewController : UIViewController {
         let axisSet = graph.axisSet as! CPTXYAxisSet
 
         if let x = axisSet.xAxis {
-            x.majorIntervalLength   = 10000
+            x.majorIntervalLength   = 50000
             // x axis located at y coordinate == x.orthogonalPosition
             x.orthogonalPosition    = 0.0
             x.minorTicksPerInterval = 0
             x.labelExclusionRanges  = [
-                CPTPlotRange(location: 0.99, length: 0.02),
-                CPTPlotRange(location: 1.99, length: 0.02),
-                CPTPlotRange(location: 2.99, length: 0.02)
+                //CPTPlotRange(location: 0.99, length: 0.02),
+                //CPTPlotRange(location: 1.99, length: 0.02),
+                //CPTPlotRange(location: 2.99, length: 0.02)
             ]
         }
 
@@ -84,9 +85,9 @@ class TrendViewController : UIViewController {
             // y axis located at x coordinate == y.orthogonalPosition
             y.orthogonalPosition    = 0.0
             y.labelExclusionRanges  = [
-                CPTPlotRange(location: 0.99, length: 0.02),
-                CPTPlotRange(location: 1.99, length: 0.02),
-                CPTPlotRange(location: 3.99, length: 0.02)
+                //CPTPlotRange(location: 0.99, length: 0.02),
+                //CPTPlotRange(location: 1.99, length: 0.02),
+                //CPTPlotRange(location: 3.99, length: 0.02)
             ]
             y.delegate = self
         }
