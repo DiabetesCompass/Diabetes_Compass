@@ -35,7 +35,7 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="graphView" destination="Ii1-Qo-sCA" id="0aD-gi-Fdg"/>
+                        <outlet property="hostingView" destination="Ii1-Qo-sCA" id="IA4-OZ-e54"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0OP-ZH-5At" userLabel="First Responder" sceneMemberID="firstResponder"/>
