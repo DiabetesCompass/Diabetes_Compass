@@ -28,11 +28,7 @@ class TrendViewController : UIViewController {
         //let hostingView = self.view as! CPTGraphHostingView
         hostingView.hostedGraph = newGraph
 
-        // Paddings
-        newGraph.paddingLeft   = 10.0
-        newGraph.paddingRight  = 10.0
-        newGraph.paddingTop    = 10.0
-        newGraph.paddingBottom = 10.0
+        configurePaddings(graph: newGraph)
 
         // Plot space
         let plotSpace = newGraph.defaultPlotSpace as! CPTXYPlotSpace
@@ -77,6 +73,13 @@ class TrendViewController : UIViewController {
         self.dataForPlot = contentArray
 
         self.scatterGraph = newGraph
+    }
+
+    func configurePaddings(graph: CPTXYGraph) {
+        graph.paddingLeft   = 10.0
+        graph.paddingRight  = 10.0
+        graph.paddingTop    = 10.0
+        graph.paddingBottom = 10.0
     }
 
     func configureAxes(graph: CPTXYGraph) {
