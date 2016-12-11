@@ -77,9 +77,9 @@ class TrendViewController : UIViewController, CPTScatterPlotDataSource, CPTAxisD
         boundLinePlot.dataSource    = self
         newGraph.add(boundLinePlot)
 
-        //let fillImage = CPTImage(named:"BlueTexture")
-        //fillImage.isTiled = true
-        //boundLinePlot.areaFill      = CPTFill(image: fillImage)
+        let fillImage = CPTImage(named:"cool2")
+        fillImage.isTiled = true
+        boundLinePlot.areaFill      = CPTFill(image: fillImage)
         boundLinePlot.areaBaseValue = 0.0
 
         // Add plot symbols
