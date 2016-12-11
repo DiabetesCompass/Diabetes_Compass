@@ -23,10 +23,10 @@
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ii1-Qo-sCA" customClass="CPTGraphHostingView">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="Ii1-Qo-sCA" firstAttribute="top" secondItem="3qV-Vq-pJA" secondAttribute="top" id="9kQ-Lu-e14"/>
                             <constraint firstAttribute="trailing" secondItem="Ii1-Qo-sCA" secondAttribute="trailing" id="bWv-uy-Yrq"/>
