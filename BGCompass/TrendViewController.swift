@@ -8,11 +8,11 @@
 
 import UIKit
 
-class TrendViewController : UIViewController, CPTScatterPlotDataSource, CPTAxisDelegate {
+class TrendViewController : UIViewController {
     private var scatterGraph : CPTXYGraph? = nil
 
     typealias plotDataType = [CPTScatterPlotField : Double]
-    private var dataForPlot = [plotDataType]()
+    fileprivate var dataForPlot = [plotDataType]()
 
     @IBOutlet var hostingView: CPTGraphHostingView!
 
@@ -110,7 +110,14 @@ class TrendViewController : UIViewController, CPTScatterPlotDataSource, CPTAxisD
         self.scatterGraph = newGraph
     }
 
-    // MARK: - Plot Data Source Methods
+}
+
+extension TrendViewController: CPTBarPlotDataSource, CPTBarPlotDelegate {
+
+    /** @brief @required The number of data points for the plot.
+     *  @param plot The plot.
+     *  @return The number of data points for the plot.
+     **/
     func numberOfRecords(for plot: CPTPlot) -> UInt
     {
         return UInt(self.dataForPlot.count)
@@ -134,7 +141,7 @@ class TrendViewController : UIViewController, CPTScatterPlotDataSource, CPTAxisD
         }
     }
 
-    // MARK: - Axis Delegate Methods
+    // MARK: Axis Delegate Methods
     private func axis(_ axis: CPTAxis, shouldUpdateAxisLabelsAtLocations locations: NSSet!) -> Bool
     {
         if let formatter = axis.labelFormatter {
@@ -162,7 +169,7 @@ class TrendViewController : UIViewController, CPTScatterPlotDataSource, CPTAxisD
                         newLabels.insert(newLabel)
                     }
                 }
-                
+
                 axis.axisLabels = newLabels
             }
         }
