@@ -99,12 +99,12 @@ class TrendViewController : UIViewController {
 
     func styledPlot() -> CPTScatterPlot {
         let plot = CPTScatterPlot(frame: .zero)
-        let blueLineStyle = CPTMutableLineStyle()
-        blueLineStyle.miterLimit    = 1.0
-        blueLineStyle.lineWidth     = 3.0
-        blueLineStyle.lineColor     = .blue()
-        plot.dataLineStyle = blueLineStyle
-        plot.identifier    = NSString.init(string: "Blue Plot")
+        let lineStyle = CPTMutableLineStyle()
+        lineStyle.miterLimit    = 1.0
+        lineStyle.lineWidth     = 3.0
+        lineStyle.lineColor     = .white()
+        plot.dataLineStyle = lineStyle
+        plot.identifier    = NSString.init(string: "ha1c")
         return plot
     }
 
