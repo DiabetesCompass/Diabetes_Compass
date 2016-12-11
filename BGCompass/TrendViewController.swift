@@ -91,34 +91,11 @@ class TrendViewController : UIViewController, CPTScatterPlotDataSource, CPTAxisD
         plotSymbol.size          = CGSize(width: 10.0, height: 10.0)
         boundLinePlot.plotSymbol = plotSymbol
 
-        // Create a green plot area
-        let dataSourceLinePlot = CPTScatterPlot(frame: .zero)
-        let greenLineStyle               = CPTMutableLineStyle()
-        greenLineStyle.lineWidth         = 3.0
-        greenLineStyle.lineColor         = .green()
-        greenLineStyle.dashPattern       = [5.0, 5.0]
-        dataSourceLinePlot.dataLineStyle = greenLineStyle
-        dataSourceLinePlot.identifier    = NSString.init(string: "Green Plot")
-        dataSourceLinePlot.dataSource    = self
-
-        // Put an area gradient under the plot above
-        let areaColor    = CPTColor(componentRed: 0.3, green: 1.0, blue: 0.3, alpha: 0.8)
-        let areaGradient = CPTGradient(beginning: areaColor, ending: .clear())
-        areaGradient.angle = -90.0
-        let areaGradientFill = CPTFill(gradient: areaGradient)
-        dataSourceLinePlot.areaFill      = areaGradientFill
-        dataSourceLinePlot.areaBaseValue = 1.75
-
-        // Animate in the new plot, as an example
-        dataSourceLinePlot.opacity = 0.0
-        newGraph.add(dataSourceLinePlot)
-
         let fadeInAnimation = CABasicAnimation(keyPath: "opacity")
         fadeInAnimation.duration            = 1.0
         fadeInAnimation.isRemovedOnCompletion = false
         fadeInAnimation.fillMode            = kCAFillModeForwards
         fadeInAnimation.toValue             = 1.0
-        dataSourceLinePlot.add(fadeInAnimation, forKey: "animateOpacity")
 
         // Add some initial data
         var contentArray = [plotDataType]()
