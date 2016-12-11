@@ -72,7 +72,7 @@ class TrendViewController : UIViewController {
         let axisSet = graph.axisSet as! CPTXYAxisSet
 
         if let x = axisSet.xAxis {
-            x.axisLineStyle = TrendViewController.thinWhiteStyle()
+            x.axisLineStyle = TrendViewController.lineStyleThinWhite()
             x.majorIntervalLength   = 50000
             // x axis located at y coordinate == x.orthogonalPosition
             x.orthogonalPosition    = 0.0
@@ -85,7 +85,7 @@ class TrendViewController : UIViewController {
         }
 
         if let y = axisSet.yAxis {
-            y.axisLineStyle = TrendViewController.thinWhiteStyle()
+            y.axisLineStyle = TrendViewController.lineStyleThinWhite()
             y.majorIntervalLength   = 1
             y.minorTicksPerInterval = 1
             // y axis located at x coordinate == y.orthogonalPosition
@@ -101,11 +101,7 @@ class TrendViewController : UIViewController {
 
     func styledPlot() -> CPTScatterPlot {
         let plot = CPTScatterPlot(frame: .zero)
-        let lineStyle = CPTMutableLineStyle()
-        lineStyle.miterLimit    = 1.0
-        lineStyle.lineWidth     = 3.0
-        lineStyle.lineColor     = .white()
-        plot.dataLineStyle = lineStyle
+        plot.dataLineStyle = TrendViewController.lineStyleWhite()
         plot.identifier    = NSString.init(string: "ha1c")
         return plot
     }
@@ -120,11 +116,19 @@ class TrendViewController : UIViewController {
         return symbol
     }
 
-    class func thinWhiteStyle() -> CPTMutableLineStyle {
-        let style = CPTMutableLineStyle()
-        style.lineColor = .white()
-        style.lineWidth = 1.0
-        return style
+    class func lineStyleThinWhite() -> CPTMutableLineStyle {
+        let lineStyle = CPTMutableLineStyle()
+        lineStyle.lineColor = .white()
+        lineStyle.lineWidth = 1.0
+        return lineStyle
+    }
+
+    class func lineStyleWhite() -> CPTMutableLineStyle {
+        let lineStyle = CPTMutableLineStyle()
+        lineStyle.lineColor     = .white()
+        lineStyle.lineWidth     = 3.0
+        lineStyle.miterLimit    = 1.0
+        return lineStyle
     }
 
 }
