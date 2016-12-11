@@ -16,9 +16,6 @@ class TrendViewController : UIViewController {
 
     private var scatterGraph : CPTXYGraph? = nil
 
-    typealias plotDataType = [CPTScatterPlotField : Double]
-    fileprivate var dataForPlot = [plotDataType]()
-
     @IBOutlet var hostingView: CPTGraphHostingView!
 
     // MARK: - View lifecycle
@@ -44,8 +41,6 @@ class TrendViewController : UIViewController {
         configureFill(plot: boundLinePlot)
 
         boundLinePlot.plotSymbol = TrendViewController.plotSymbol()
-
-        //self.dataForPlot = TrendViewController.contentArray()
 
         self.scatterGraph = newGraph
     }
@@ -124,18 +119,6 @@ class TrendViewController : UIViewController {
         return symbol
     }
 
-    /// return sample data
-    class func contentArray() -> [plotDataType] {
-        var content = [plotDataType]()
-        for i in 0 ..< 60 {
-            let x = 1.0 + Double(i) * 0.05
-            let y = 1.2 * Double(arc4random()) / Double(UInt32.max) + 1.2
-            let dataPoint: plotDataType = [.X: x, .Y: y]
-            content.append(dataPoint)
-        }
-        return content
-    }
-
 }
 
 extension TrendViewController: CPTBarPlotDataSource, CPTBarPlotDelegate {
@@ -172,10 +155,6 @@ extension TrendViewController: CPTBarPlotDataSource, CPTBarPlotDelegate {
         } else {
             return nil
         }
-        // guard let num = self.dataForPlot[Int(record)][plotField!] else {
-        //     return nil
-        // }
-        // return num as NSNumber
     }
 
     // MARK: Axis Delegate Methods
