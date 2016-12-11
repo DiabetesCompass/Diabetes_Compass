@@ -141,20 +141,14 @@ extension TrendViewController: CPTBarPlotDataSource, CPTBarPlotDelegate {
     }
 
     func number(for plot: CPTPlot, field: UInt, record: UInt) -> Any? {
+        // plotField = CPTScatterPlotField(0) == .X
+        // plotField = CPTScatterPlotField(1) == .Y
         let plotField = CPTScatterPlotField(rawValue: Int(field))
 
-        if let num = self.dataForPlot[Int(record)][plotField!] {
-            let plotID = plot.identifier as! String
-            if (plotField! == .Y) && (plotID == "Green Plot") {
-                return (num + 1.0) as NSNumber
-            }
-            else {
-                return num as NSNumber
-            }
-        }
-        else {
+        guard let num = self.dataForPlot[Int(record)][plotField!] else {
             return nil
         }
+        return num as NSNumber
     }
 
     // MARK: Axis Delegate Methods
