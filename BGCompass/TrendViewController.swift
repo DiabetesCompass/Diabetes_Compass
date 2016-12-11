@@ -47,12 +47,6 @@ class TrendViewController : UIViewController {
 
         boundLinePlot.plotSymbol = TrendViewController.plotSymbol()
 
-        let fadeInAnimation = CABasicAnimation(keyPath: "opacity")
-        fadeInAnimation.duration            = 1.0
-        fadeInAnimation.isRemovedOnCompletion = false
-        fadeInAnimation.fillMode            = kCAFillModeForwards
-        fadeInAnimation.toValue             = 1.0
-
         // Add some initial data
         var contentArray = [plotDataType]()
         for i in 0 ..< 60 {
