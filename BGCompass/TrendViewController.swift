@@ -25,22 +25,14 @@ class TrendViewController : UIViewController {
         let newGraph = CPTXYGraph(frame: .zero)
         newGraph.apply(CPTTheme(named: .darkGradientTheme))
 
-        //let hostingView = self.view as! CPTGraphHostingView
         hostingView.hostedGraph = newGraph
 
         configurePaddings(graph: newGraph)
         configurePlotSpace(graph: newGraph)
         configureAxes(graph: newGraph)
 
-        // Create a blue plot area
-        let boundLinePlot = CPTScatterPlot(frame: .zero)
-        let blueLineStyle = CPTMutableLineStyle()
-        blueLineStyle.miterLimit    = 1.0
-        blueLineStyle.lineWidth     = 3.0
-        blueLineStyle.lineColor     = .blue()
-        boundLinePlot.dataLineStyle = blueLineStyle
-        boundLinePlot.identifier    = NSString.init(string: "Blue Plot")
-        boundLinePlot.dataSource    = self
+        let boundLinePlot = styledPlot()
+        boundLinePlot.dataSource = self
         newGraph.add(boundLinePlot)
 
         configureFill(plot: boundLinePlot)
@@ -100,6 +92,17 @@ class TrendViewController : UIViewController {
             ]
             y.delegate = self
         }
+    }
+
+    func styledPlot() -> CPTScatterPlot {
+        let plot = CPTScatterPlot(frame: .zero)
+        let blueLineStyle = CPTMutableLineStyle()
+        blueLineStyle.miterLimit    = 1.0
+        blueLineStyle.lineWidth     = 3.0
+        blueLineStyle.lineColor     = .blue()
+        plot.dataLineStyle = blueLineStyle
+        plot.identifier    = NSString.init(string: "Blue Plot")
+        return plot
     }
 
     /// fill the area under the graph
