@@ -58,14 +58,7 @@ class TrendViewController : UIViewController {
         boundLinePlot.areaFill      = CPTFill(image: fillImage)
         boundLinePlot.areaBaseValue = 0.0
 
-        // Add plot symbols
-        let symbolLineStyle = CPTMutableLineStyle()
-        symbolLineStyle.lineColor = .black()
-        let plotSymbol = CPTPlotSymbol.ellipse()
-        plotSymbol.fill          = CPTFill(color: .blue())
-        plotSymbol.lineStyle     = symbolLineStyle
-        plotSymbol.size          = CGSize(width: 10.0, height: 10.0)
-        boundLinePlot.plotSymbol = plotSymbol
+        boundLinePlot.plotSymbol = TrendViewController.plotSymbol()
 
         let fadeInAnimation = CABasicAnimation(keyPath: "opacity")
         fadeInAnimation.duration            = 1.0
@@ -112,6 +105,16 @@ class TrendViewController : UIViewController {
             ]
             y.delegate = self
         }
+    }
+
+    class func plotSymbol() -> CPTPlotSymbol {
+        let symbolLineStyle = CPTMutableLineStyle()
+        symbolLineStyle.lineColor = .black()
+        let symbol = CPTPlotSymbol.ellipse()
+        symbol.fill          = CPTFill(color: .blue())
+        symbol.lineStyle     = symbolLineStyle
+        symbol.size          = CGSize(width: 10.0, height: 10.0)
+        return symbol
     }
 }
 
