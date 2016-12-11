@@ -4,4 +4,5 @@
 // https://developer.apple.com/library/content/documentation/Swift/Conceptual/BuildingCocoaApps/MixandMatch.html
 
 #import "TrendsAlgorithmModel.h"
+#import "CorePlot-CocoaTouch.h"
 #import "GraphViewController.h"

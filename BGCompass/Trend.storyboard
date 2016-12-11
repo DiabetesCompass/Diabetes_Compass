@@ -20,12 +20,27 @@
                     <view key="view" contentMode="scaleToFill" id="3qV-Vq-pJA">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ii1-Qo-sCA" customClass="CPTGraphHostingView">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="Ii1-Qo-sCA" firstAttribute="top" secondItem="3qV-Vq-pJA" secondAttribute="top" id="9kQ-Lu-e14"/>
+                            <constraint firstAttribute="trailing" secondItem="Ii1-Qo-sCA" secondAttribute="trailing" id="bWv-uy-Yrq"/>
+                            <constraint firstItem="ega-eW-Fwx" firstAttribute="top" secondItem="Ii1-Qo-sCA" secondAttribute="bottom" id="n3f-18-0xI"/>
+                            <constraint firstItem="Ii1-Qo-sCA" firstAttribute="leading" secondItem="3qV-Vq-pJA" secondAttribute="leading" id="uwO-qj-Cr6"/>
+                        </constraints>
                     </view>
+                    <connections>
+                        <outlet property="graphView" destination="Ii1-Qo-sCA" id="0aD-gi-Fdg"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0OP-ZH-5At" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="118" y="144"/>
+            <point key="canvasLocation" x="117.59999999999999" y="143.47826086956522"/>
         </scene>
     </scenes>
 </document>

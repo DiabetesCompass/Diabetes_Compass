@@ -10,26 +10,56 @@ import UIKit
 
 class TrendViewController: UIViewController {
 
+    @IBOutlet var graphView: CPTGraphHostingView!
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
+        // https://www.raywenderlich.com/131985/core-plot-tutorial-getting-started
+        // create graph
+        let graph = CPTXYGraph(frame: CGRect.zero)
+        //graph.title = "Hello Graph"
+        graph.paddingLeft = 0
+        graph.paddingTop = 0
+        graph.paddingRight = 0
+        graph.paddingBottom = 0
+        // hide the axes
+        let axes = graph.axisSet as! CPTXYAxisSet
+        let lineStyle = CPTMutableLineStyle()
+        lineStyle.lineWidth = 0
+        axes.xAxis?.axisLineStyle = lineStyle
+        axes.yAxis?.axisLineStyle = lineStyle
+
+        // add a pie plot
+        let pie = CPTPieChart()
+        pie.dataSource = self
+        pie.pieRadius = (self.view.frame.size.width * 0.9)/2
+        graph.add(pie)
+
+        graphView.hostedGraph = graph
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
 
-    /*
-    // MARK: - Navigation
+}
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+extension TrendViewController: CPTBarPlotDataSource, CPTBarPlotDelegate {
+
+    /** @brief @required The number of data points for the plot.
+     *  @param plot The plot.
+     *  @return The number of data points for the plot.
+     **/
+    public func numberOfRecords(for plot: CPTPlot) -> UInt {
+        return 4
     }
-    */
 
+    func number(for plot: CPTPlot, field fieldEnum: UInt, record idx: UInt) -> Any? {
+        return idx + 1
+    }
+
+    // MARK: - CPTPlotSpaceDelegate
+    
 }
