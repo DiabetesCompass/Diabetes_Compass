@@ -110,9 +110,9 @@ class TrendViewController : UIViewController {
 
     class func plotSymbol() -> CPTPlotSymbol {
         let symbolLineStyle = CPTMutableLineStyle()
-        symbolLineStyle.lineColor = .black()
+        symbolLineStyle.lineColor = .white()
         let symbol = CPTPlotSymbol.ellipse()
-        symbol.fill          = CPTFill(color: .blue())
+        symbol.fill          = CPTFill(color: .white())
         symbol.lineStyle     = symbolLineStyle
         symbol.size          = CGSize(width: 10.0, height: 10.0)
         return symbol
