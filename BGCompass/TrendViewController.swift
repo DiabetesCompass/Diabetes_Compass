@@ -39,15 +39,7 @@ class TrendViewController : UIViewController {
 
         boundLinePlot.plotSymbol = TrendViewController.plotSymbol()
 
-        // Add some initial data
-        var contentArray = [plotDataType]()
-        for i in 0 ..< 60 {
-            let x = 1.0 + Double(i) * 0.05
-            let y = 1.2 * Double(arc4random()) / Double(UInt32.max) + 1.2
-            let dataPoint: plotDataType = [.X: x, .Y: y]
-            contentArray.append(dataPoint)
-        }
-        self.dataForPlot = contentArray
+        self.dataForPlot = TrendViewController.contentArray()
 
         self.scatterGraph = newGraph
     }
@@ -122,6 +114,19 @@ class TrendViewController : UIViewController {
         symbol.size          = CGSize(width: 10.0, height: 10.0)
         return symbol
     }
+
+    /// return sample data
+    class func contentArray() -> [plotDataType] {
+        var content = [plotDataType]()
+        for i in 0 ..< 60 {
+            let x = 1.0 + Double(i) * 0.05
+            let y = 1.2 * Double(arc4random()) / Double(UInt32.max) + 1.2
+            let dataPoint: plotDataType = [.X: x, .Y: y]
+            content.append(dataPoint)
+        }
+        return content
+    }
+
 }
 
 extension TrendViewController: CPTBarPlotDataSource, CPTBarPlotDelegate {
