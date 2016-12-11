@@ -71,7 +71,12 @@ class TrendViewController : UIViewController {
 
         let axisSet = graph.axisSet as! CPTXYAxisSet
 
+        let thinWhiteStyle = CPTMutableLineStyle()
+        thinWhiteStyle.lineColor = .white()
+        thinWhiteStyle.lineWidth = 1.0
+
         if let x = axisSet.xAxis {
+            x.axisLineStyle = thinWhiteStyle
             x.majorIntervalLength   = 50000
             // x axis located at y coordinate == x.orthogonalPosition
             x.orthogonalPosition    = 0.0
@@ -84,6 +89,7 @@ class TrendViewController : UIViewController {
         }
 
         if let y = axisSet.yAxis {
+            y.axisLineStyle = thinWhiteStyle
             y.majorIntervalLength   = 1
             y.minorTicksPerInterval = 1
             // y axis located at x coordinate == y.orthogonalPosition
