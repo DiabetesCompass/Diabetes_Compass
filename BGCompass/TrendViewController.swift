@@ -40,31 +40,7 @@ class TrendViewController : UIViewController {
         plotSpace.yRange = CPTPlotRange(location:1.0, length:2.0)
         plotSpace.xRange = CPTPlotRange(location:1.0, length:3.0)
 
-        // Axes
-        let axisSet = newGraph.axisSet as! CPTXYAxisSet
-
-        if let x = axisSet.xAxis {
-            x.majorIntervalLength   = 0.5
-            x.orthogonalPosition    = 2.0
-            x.minorTicksPerInterval = 2
-            x.labelExclusionRanges  = [
-                CPTPlotRange(location: 0.99, length: 0.02),
-                CPTPlotRange(location: 1.99, length: 0.02),
-                CPTPlotRange(location: 2.99, length: 0.02)
-            ]
-        }
-
-        if let y = axisSet.yAxis {
-            y.majorIntervalLength   = 0.5
-            y.minorTicksPerInterval = 5
-            y.orthogonalPosition    = 2.0
-            y.labelExclusionRanges  = [
-                CPTPlotRange(location: 0.99, length: 0.02),
-                CPTPlotRange(location: 1.99, length: 0.02),
-                CPTPlotRange(location: 3.99, length: 0.02)
-            ]
-            y.delegate = self
-        }
+        configureAxes(graph: newGraph)
 
         // Create a blue plot area
         let boundLinePlot = CPTScatterPlot(frame: .zero)
@@ -110,6 +86,33 @@ class TrendViewController : UIViewController {
         self.scatterGraph = newGraph
     }
 
+    func configureAxes(graph: CPTXYGraph) {
+
+        let axisSet = graph.axisSet as! CPTXYAxisSet
+
+        if let x = axisSet.xAxis {
+            x.majorIntervalLength   = 0.5
+            x.orthogonalPosition    = 2.0
+            x.minorTicksPerInterval = 2
+            x.labelExclusionRanges  = [
+                CPTPlotRange(location: 0.99, length: 0.02),
+                CPTPlotRange(location: 1.99, length: 0.02),
+                CPTPlotRange(location: 2.99, length: 0.02)
+            ]
+        }
+
+        if let y = axisSet.yAxis {
+            y.majorIntervalLength   = 0.5
+            y.minorTicksPerInterval = 5
+            y.orthogonalPosition    = 2.0
+            y.labelExclusionRanges  = [
+                CPTPlotRange(location: 0.99, length: 0.02),
+                CPTPlotRange(location: 1.99, length: 0.02),
+                CPTPlotRange(location: 3.99, length: 0.02)
+            ]
+            y.delegate = self
+        }
+    }
 }
 
 extension TrendViewController: CPTBarPlotDataSource, CPTBarPlotDelegate {
