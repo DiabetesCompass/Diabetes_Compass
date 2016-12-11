@@ -72,6 +72,7 @@ class TrendViewController : UIViewController {
         let axisSet = graph.axisSet as! CPTXYAxisSet
 
         if let x = axisSet.xAxis {
+            x.labelTextStyle = TrendViewController.textStyleWhite()
             x.axisLineStyle = TrendViewController.lineStyleThinWhite()
             x.majorTickLineStyle = TrendViewController.lineStyleThinWhite()
             x.minorTickLineStyle = TrendViewController.lineStyleThinWhite()
@@ -87,6 +88,7 @@ class TrendViewController : UIViewController {
         }
 
         if let y = axisSet.yAxis {
+            y.labelTextStyle = TrendViewController.textStyleWhite()
             y.axisLineStyle = TrendViewController.lineStyleThinWhite()
             y.majorTickLineStyle = TrendViewController.lineStyleThinWhite()
             y.minorTickLineStyle = TrendViewController.lineStyleThinWhite()
@@ -129,10 +131,16 @@ class TrendViewController : UIViewController {
 
     class func lineStyleWhite() -> CPTMutableLineStyle {
         let lineStyle = CPTMutableLineStyle()
-        lineStyle.lineColor     = .white()
-        lineStyle.lineWidth     = 3.0
-        lineStyle.miterLimit    = 1.0
+        lineStyle.lineColor = .white()
+        lineStyle.lineWidth = 3.0
+        lineStyle.miterLimit = 1.0
         return lineStyle
+    }
+
+    class func textStyleWhite() -> CPTMutableTextStyle {
+        let textStyle = CPTMutableTextStyle()
+        textStyle.color = .white()
+        return textStyle
     }
 
 }
