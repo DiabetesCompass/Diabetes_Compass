@@ -68,7 +68,8 @@ class TrendViewController : UIViewController {
 
         if let x = axisSet.xAxis {
             x.majorIntervalLength   = 10000
-            x.orthogonalPosition    = 2.0
+            // x axis located at y coordinate == x.orthogonalPosition
+            x.orthogonalPosition    = 0.0
             x.minorTicksPerInterval = 0
             x.labelExclusionRanges  = [
                 CPTPlotRange(location: 0.99, length: 0.02),
@@ -80,7 +81,8 @@ class TrendViewController : UIViewController {
         if let y = axisSet.yAxis {
             y.majorIntervalLength   = 1
             y.minorTicksPerInterval = 1
-            y.orthogonalPosition    = 1.0
+            // y axis located at x coordinate == y.orthogonalPosition
+            y.orthogonalPosition    = 0.0
             y.labelExclusionRanges  = [
                 CPTPlotRange(location: 0.99, length: 0.02),
                 CPTPlotRange(location: 1.99, length: 0.02),
