@@ -58,6 +58,12 @@ class TrendViewController : UIViewController {
     func configurePlotSpace(graph: CPTXYGraph) {
         let plotSpace = graph.defaultPlotSpace as! CPTXYPlotSpace
         plotSpace.allowsUserInteraction = true
+
+        // limit scrolling?
+        // http://stackoverflow.com/questions/18784140/coreplot-allow-horizontal-scrolling-in-positive-quadrant-only?rq=1
+        plotSpace.globalXRange = CPTPlotRange(location: -10000.0, length: 110000.0)
+        plotSpace.globalYRange = CPTPlotRange(location: -1.0, length: 11.0)
+
         // location is axis start, length is axis (end - start)
         plotSpace.xRange = CPTPlotRange(location:-10000.0, length:110000.0)
         plotSpace.yRange = CPTPlotRange(location:-1.0, length:11.0)
@@ -192,8 +198,38 @@ extension TrendViewController: CPTBarPlotDataSource, CPTBarPlotDelegate {
 
                 axis.axisLabels = newLabels
             }
+        }        
+        return false
+    }
+
+    // doesnt get called. need to set a CPPlotSpaceDelegate property?
+    // http://stackoverflow.com/questions/1892544/allow-horizontal-scrolling-only-in-the-core-plot-barchart/24525631#24525631
+    // http://stackoverflow.com/questions/37898061/coreplot-vertical-scrolling-for-horizontal-bars
+    func plotSpace(space: CPTPlotSpace,
+                   willChangePlotRangeTo newRange: CPTPlotRange,
+                   forCoordinate coordinate: CPTCoordinate) -> CPTPlotRange? {
+
+        let range: CPTMutablePlotRange = CPTPlotRange(location: newRange.location,
+                                                      length:newRange.length) as! CPTMutablePlotRange
+
+        // Display only Quadrant I: never let the location go negative.
+        //
+        if range.locationDouble < 0.0 {
+            range.location = 0.0
+        }
+
+        // Adjust axis to keep them in view at the left and bottom;
+        // adjust scale-labels to match the scroll.
+        //
+        let axisSet: CPTXYAxisSet = space.graph!.axisSet as! CPTXYAxisSet
+        if coordinate == CPTCoordinate.X {
+            axisSet.yAxis?.orthogonalPosition = range.location
+            axisSet.xAxis?.titleLocation = CPTDecimalFromDouble(range.locationDouble + (range.lengthDouble / 2.0)) as NSNumber?
+        } else {
+            axisSet.xAxis?.orthogonalPosition = range.location
+            axisSet.yAxis?.titleLocation = CPTDecimalFromDouble(range.locationDouble + (range.lengthDouble / 2.0)) as NSNumber?
         }
         
-        return false
+        return range
     }
 }
