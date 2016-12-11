@@ -8,7 +8,12 @@
 
 import UIKit
 
+// https://github.com/core-plot/core-plot/blob/master/examples/CPTTestApp-iPhone/Classes/ScatterPlotController.swift
+
 class TrendViewController : UIViewController {
+
+    var trendsAlgorithmModel: TrendsAlgorithmModel?
+
     private var scatterGraph : CPTXYGraph? = nil
 
     typealias plotDataType = [CPTScatterPlotField : Double]
@@ -20,6 +25,8 @@ class TrendViewController : UIViewController {
 
     override func viewDidAppear(_ animated : Bool) {
         super.viewDidAppear(animated)
+
+        trendsAlgorithmModel = TrendsAlgorithmModel.sharedInstance() as! TrendsAlgorithmModel?
 
         let newGraph = CPTXYGraph(frame: .zero)
         newGraph.apply(CPTTheme(named: .darkGradientTheme))
@@ -38,7 +45,7 @@ class TrendViewController : UIViewController {
 
         boundLinePlot.plotSymbol = TrendViewController.plotSymbol()
 
-        self.dataForPlot = TrendViewController.contentArray()
+        //self.dataForPlot = TrendViewController.contentArray()
 
         self.scatterGraph = newGraph
     }
@@ -52,11 +59,12 @@ class TrendViewController : UIViewController {
         graph.paddingBottom = 10.0
     }
 
+    /// set axes range start and end
     func configurePlotSpace(graph: CPTXYGraph) {
         let plotSpace = graph.defaultPlotSpace as! CPTXYPlotSpace
         plotSpace.allowsUserInteraction = true
-        plotSpace.yRange = CPTPlotRange(location:1.0, length:2.0)
-        plotSpace.xRange = CPTPlotRange(location:1.0, length:3.0)
+        plotSpace.xRange = CPTPlotRange(location:0.0, length:100000.0)
+        plotSpace.yRange = CPTPlotRange(location:0.0, length:10.0)
     }
 
     func configureAxes(graph: CPTXYGraph) {
@@ -64,9 +72,9 @@ class TrendViewController : UIViewController {
         let axisSet = graph.axisSet as! CPTXYAxisSet
 
         if let x = axisSet.xAxis {
-            x.majorIntervalLength   = 0.5
+            x.majorIntervalLength   = 10000
             x.orthogonalPosition    = 2.0
-            x.minorTicksPerInterval = 2
+            x.minorTicksPerInterval = 0
             x.labelExclusionRanges  = [
                 CPTPlotRange(location: 0.99, length: 0.02),
                 CPTPlotRange(location: 1.99, length: 0.02),
@@ -75,9 +83,9 @@ class TrendViewController : UIViewController {
         }
 
         if let y = axisSet.yAxis {
-            y.majorIntervalLength   = 0.5
-            y.minorTicksPerInterval = 5
-            y.orthogonalPosition    = 2.0
+            y.majorIntervalLength   = 1
+            y.minorTicksPerInterval = 1
+            y.orthogonalPosition    = 1.0
             y.labelExclusionRanges  = [
                 CPTPlotRange(location: 0.99, length: 0.02),
                 CPTPlotRange(location: 1.99, length: 0.02),
@@ -137,7 +145,10 @@ extension TrendViewController: CPTBarPlotDataSource, CPTBarPlotDelegate {
      *  @return The number of data points for the plot.
      **/
     func numberOfRecords(for plot: CPTPlot) -> UInt {
-        return UInt(self.dataForPlot.count)
+        //return UInt(self.dataForPlot.count)
+        guard let model: TrendsAlgorithmModel = trendsAlgorithmModel else { return 0 }
+        //return UInt(model.bgArrayCount())
+        return UInt(model.ha1cArray.count)
     }
 
     func number(for plot: CPTPlot, field: UInt, record: UInt) -> Any? {
@@ -145,10 +156,26 @@ extension TrendViewController: CPTBarPlotDataSource, CPTBarPlotDelegate {
         // plotField = CPTScatterPlotField(1) == .Y
         let plotField = CPTScatterPlotField(rawValue: Int(field))
 
-        guard let num = self.dataForPlot[Int(record)][plotField!] else {
+        guard let model: TrendsAlgorithmModel = trendsAlgorithmModel else { return nil }
+        let reading = model.getFromHa1cArray(record) as Ha1cReading
+
+        if plotField == .X {
+            guard let firstReading = model.ha1cArray.first as! Ha1cReading? else { return nil }
+
+            guard let dateFirst = firstReading.timeStamp else { return nil }
+            let timeIntervalSeconds: TimeInterval = reading.timeStamp.timeIntervalSince(dateFirst)
+            let timeIntervalMinutes: Double = timeIntervalSeconds / 60
+            return NSNumber(value: timeIntervalMinutes)
+
+        } else if plotField == .Y {
+            return reading.quantity
+        } else {
             return nil
         }
-        return num as NSNumber
+        // guard let num = self.dataForPlot[Int(record)][plotField!] else {
+        //     return nil
+        // }
+        // return num as NSNumber
     }
 
     // MARK: Axis Delegate Methods
