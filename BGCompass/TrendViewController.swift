@@ -29,13 +29,7 @@ class TrendViewController : UIViewController {
         hostingView.hostedGraph = newGraph
 
         configurePaddings(graph: newGraph)
-
-        // Plot space
-        let plotSpace = newGraph.defaultPlotSpace as! CPTXYPlotSpace
-        plotSpace.allowsUserInteraction = true
-        plotSpace.yRange = CPTPlotRange(location:1.0, length:2.0)
-        plotSpace.xRange = CPTPlotRange(location:1.0, length:3.0)
-
+        configurePlotSpace(graph: newGraph)
         configureAxes(graph: newGraph)
 
         // Create a blue plot area
@@ -80,6 +74,13 @@ class TrendViewController : UIViewController {
         graph.paddingRight  = 10.0
         graph.paddingTop    = 10.0
         graph.paddingBottom = 10.0
+    }
+
+    func configurePlotSpace(graph: CPTXYGraph) {
+        let plotSpace = graph.defaultPlotSpace as! CPTXYPlotSpace
+        plotSpace.allowsUserInteraction = true
+        plotSpace.yRange = CPTPlotRange(location:1.0, length:2.0)
+        plotSpace.xRange = CPTPlotRange(location:1.0, length:3.0)
     }
 
     func configureAxes(graph: CPTXYGraph) {
