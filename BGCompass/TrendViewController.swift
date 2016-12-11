@@ -43,10 +43,7 @@ class TrendViewController : UIViewController {
         boundLinePlot.dataSource    = self
         newGraph.add(boundLinePlot)
 
-        let fillImage = CPTImage(named:"cool2")
-        fillImage.isTiled = true
-        boundLinePlot.areaFill      = CPTFill(image: fillImage)
-        boundLinePlot.areaBaseValue = 0.0
+        configureFill(plot: boundLinePlot)
 
         boundLinePlot.plotSymbol = TrendViewController.plotSymbol()
 
@@ -109,6 +106,14 @@ class TrendViewController : UIViewController {
             ]
             y.delegate = self
         }
+    }
+
+    /// fill the area under the graph
+    func configureFill(plot: CPTScatterPlot) {
+        let fillImage = CPTImage(named:"cool2")
+        fillImage.isTiled = true
+        plot.areaFill      = CPTFill(image: fillImage)
+        plot.areaBaseValue = 0.0
     }
 
     class func plotSymbol() -> CPTPlotSymbol {
