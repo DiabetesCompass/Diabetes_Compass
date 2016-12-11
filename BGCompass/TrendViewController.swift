@@ -54,7 +54,7 @@ class TrendViewController : UIViewController, CPTScatterPlotDataSource, CPTAxisD
             ]
         }
 
-        if let y = axisSet.xAxis {
+        if let y = axisSet.yAxis {
             y.majorIntervalLength   = 0.5
             y.minorTicksPerInterval = 5
             y.orthogonalPosition    = 2.0
