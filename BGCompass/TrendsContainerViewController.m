@@ -349,8 +349,8 @@
 //            NSLog(@"first Reading %@", firstReading);
             lastReading = [[[TrendsAlgorithmModel sharedInstance] ha1cArray] lastObject];
 //            NSLog(@"last Reading %@", lastReading);
-            plotSpace.yRange = [CPTPlotRange plotRangeWithLocation: [NSNumber numberWithFloat: 0]
-                                                            length: [NSNumber numberWithFloat: 10]];
+            plotSpace.yRange = [CPTPlotRange plotRangeWithLocation: [NSNumber numberWithFloat: 5]
+                                                            length: [NSNumber numberWithFloat: 5]];
             break;
         case 1:
             firstReading = [[[TrendsAlgorithmModel sharedInstance] bgArray] firstObject];
