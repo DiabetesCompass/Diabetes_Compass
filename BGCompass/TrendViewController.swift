@@ -26,7 +26,7 @@ class TrendViewController : UIViewController {
         trendsAlgorithmModel = TrendsAlgorithmModel.sharedInstance() as! TrendsAlgorithmModel?
 
         let newGraph = CPTXYGraph(frame: .zero)
-        newGraph.apply(CPTTheme(named: .darkGradientTheme))
+        hostingView.backgroundColor = UIColor(red:85.0/255.0, green:150.0/255.0, blue:194.0/255.0, alpha:1)
 
         hostingView.hostedGraph = newGraph
 
