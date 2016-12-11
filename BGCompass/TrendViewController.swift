@@ -38,8 +38,6 @@ class TrendViewController : UIViewController {
         boundLinePlot.dataSource = self
         newGraph.add(boundLinePlot)
 
-        configureFill(plot: boundLinePlot)
-
         boundLinePlot.plotSymbol = TrendViewController.plotSymbol()
 
         self.scatterGraph = newGraph
@@ -108,14 +106,6 @@ class TrendViewController : UIViewController {
         plot.dataLineStyle = blueLineStyle
         plot.identifier    = NSString.init(string: "Blue Plot")
         return plot
-    }
-
-    /// fill the area under the graph
-    func configureFill(plot: CPTScatterPlot) {
-        let fillImage = CPTImage(named:"cool2")
-        fillImage.isTiled = true
-        plot.areaFill      = CPTFill(image: fillImage)
-        plot.areaBaseValue = 0.0
     }
 
     class func plotSymbol() -> CPTPlotSymbol {
