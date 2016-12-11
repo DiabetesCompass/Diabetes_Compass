@@ -16,12 +16,11 @@ class TrendViewController : UIViewController {
 
     @IBOutlet var hostingView: CPTGraphHostingView!
 
-    // MARK: Initialization
-    override func viewDidAppear(_ animated : Bool)
-    {
+    // MARK: - View lifecycle
+
+    override func viewDidAppear(_ animated : Bool) {
         super.viewDidAppear(animated)
 
-        // Create graph from theme
         let newGraph = CPTXYGraph(frame: .zero)
         newGraph.apply(CPTTheme(named: .darkGradientTheme))
 
@@ -43,6 +42,8 @@ class TrendViewController : UIViewController {
 
         self.scatterGraph = newGraph
     }
+
+    // MARK: - configuration
 
     func configurePaddings(graph: CPTXYGraph) {
         graph.paddingLeft   = 10.0
@@ -135,13 +136,11 @@ extension TrendViewController: CPTBarPlotDataSource, CPTBarPlotDelegate {
      *  @param plot The plot.
      *  @return The number of data points for the plot.
      **/
-    func numberOfRecords(for plot: CPTPlot) -> UInt
-    {
+    func numberOfRecords(for plot: CPTPlot) -> UInt {
         return UInt(self.dataForPlot.count)
     }
 
-    func number(for plot: CPTPlot, field: UInt, record: UInt) -> Any?
-    {
+    func number(for plot: CPTPlot, field: UInt, record: UInt) -> Any? {
         let plotField = CPTScatterPlotField(rawValue: Int(field))
 
         if let num = self.dataForPlot[Int(record)][plotField!] {
@@ -159,8 +158,9 @@ extension TrendViewController: CPTBarPlotDataSource, CPTBarPlotDelegate {
     }
 
     // MARK: Axis Delegate Methods
-    private func axis(_ axis: CPTAxis, shouldUpdateAxisLabelsAtLocations locations: NSSet!) -> Bool
-    {
+
+    private func axis(_ axis: CPTAxis,
+                      shouldUpdateAxisLabelsAtLocations locations: NSSet!) -> Bool {
         if let formatter = axis.labelFormatter {
             let labelOffset = axis.labelOffset
 
