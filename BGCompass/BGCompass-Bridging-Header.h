@@ -6,4 +6,3 @@
 #import "TrendsAlgorithmModel.h"
 #import "CorePlot-CocoaTouch.h"
 #import "GraphViewController.h"
-#import "CPTScatterPlot.h"
