@@ -182,7 +182,12 @@ class TrendViewController : UIViewController {
         }
 
         let dateFormatter = DateFormatter()
-        let formatString = DateFormatter.dateFormat(fromTemplate: "EE", options:0, locale:NSLocale.current)
+        // e.g. "12/5/16"
+        //dateFormatter.dateStyle = .short
+        // e.g. "Dec 5, 2016"
+        //dateFormatter.dateStyle = .medium
+        // e.g. "12/05"
+        let formatString = DateFormatter.dateFormat(fromTemplate: "MM/dd", options:0, locale:NSLocale.current)
         dateFormatter.dateFormat = formatString
 
         let cptFormatter = CPTCalendarFormatter()
