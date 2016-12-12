@@ -12,6 +12,8 @@ import UIKit
 
 class TrendViewController : UIViewController {
 
+    static let minutesPerWeek = Double(MINUTES_IN_ONE_HOUR * HOURS_IN_ONE_DAY * DAYS_IN_ONE_WEEK)
+
     var trendsAlgorithmModel: TrendsAlgorithmModel?
 
     private var scatterGraph : CPTXYGraph? = nil
@@ -90,7 +92,6 @@ class TrendViewController : UIViewController {
         guard let dateLast = trendsAlgorithmModel?.ha1cArrayReadingLast()?.timeStamp else {
             return rangeEmpty
         }
-        let minutesPerWeek = Double(MINUTES_IN_ONE_HOUR * HOURS_IN_ONE_DAY * DAYS_IN_ONE_WEEK)
         let minutesLastMinusFirst = dateLast.timeIntervalSince(dateFirst) / Double(SECONDS_IN_ONE_MINUTE)
         let location = minutesLastMinusFirst - minutesPerWeek
         let range = CPTPlotRange(location: NSNumber(value:location), length: NSNumber(value: minutesPerWeek))
@@ -106,10 +107,11 @@ class TrendViewController : UIViewController {
             x.axisLineStyle = TrendViewController.lineStyleThinWhite()
             x.majorTickLineStyle = TrendViewController.lineStyleThinWhite()
             x.minorTickLineStyle = TrendViewController.lineStyleThinWhite()
-            x.majorIntervalLength   = 50000
+            x.majorIntervalLength   = TrendViewController.minutesPerWeek as NSNumber?
             // x axis located at y coordinate == x.orthogonalPosition
             x.orthogonalPosition    = 0.0
-            x.minorTicksPerInterval = 0
+            // one day per minor tick
+            x.minorTicksPerInterval = UInt(DAYS_IN_ONE_WEEK) - 1
             x.labelExclusionRanges  = [
                 //CPTPlotRange(location: 0.99, length: 0.02),
                 //CPTPlotRange(location: 1.99, length: 0.02),
