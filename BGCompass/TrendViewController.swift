@@ -59,12 +59,42 @@ class TrendViewController : UIViewController {
 
         // limit scrolling?
         // http://stackoverflow.com/questions/18784140/coreplot-allow-horizontal-scrolling-in-positive-quadrant-only?rq=1
-        plotSpace.globalXRange = CPTPlotRange(location: -10000.0, length: 110000.0)
+        plotSpace.globalXRange = TrendViewController.globalXRange(trendsAlgorithmModel: trendsAlgorithmModel)
         plotSpace.globalYRange = CPTPlotRange(location: -1.0, length: 11.0)
 
         // location is axis start, length is axis (end - start)
-        plotSpace.xRange = CPTPlotRange(location:-10000.0, length:110000.0)
+        plotSpace.xRange = TrendViewController.xRange(trendsAlgorithmModel: trendsAlgorithmModel)
         plotSpace.yRange = CPTPlotRange(location:-1.0, length:11.0)
+    }
+
+    class func globalXRange(trendsAlgorithmModel: TrendsAlgorithmModel?) -> CPTPlotRange {
+        let rangeEmpty = CPTPlotRange(location: 0.0, length: 0.0)
+
+        guard let dateFirst = trendsAlgorithmModel?.ha1cArrayReadingFirst()?.timeStamp else {
+            return rangeEmpty
+        }
+        guard let dateLast = trendsAlgorithmModel?.ha1cArrayReadingLast()?.timeStamp else {
+            return rangeEmpty
+        }
+        let minutesLastMinusFirst = dateLast.timeIntervalSince(dateFirst) / Double(SECONDS_IN_ONE_MINUTE)
+        let range = CPTPlotRange(location: 0, length: NSNumber(value: minutesLastMinusFirst))
+        return range
+    }
+
+    class func xRange(trendsAlgorithmModel: TrendsAlgorithmModel?) -> CPTPlotRange {
+        let rangeEmpty = CPTPlotRange(location: 0.0, length: 0.0)
+
+        guard let dateFirst = trendsAlgorithmModel?.ha1cArrayReadingFirst()?.timeStamp else {
+            return rangeEmpty
+        }
+        guard let dateLast = trendsAlgorithmModel?.ha1cArrayReadingLast()?.timeStamp else {
+            return rangeEmpty
+        }
+        let minutesPerWeek = Double(MINUTES_IN_ONE_HOUR * HOURS_IN_ONE_DAY * DAYS_IN_ONE_WEEK)
+        let minutesLastMinusFirst = dateLast.timeIntervalSince(dateFirst) / Double(SECONDS_IN_ONE_MINUTE)
+        let location = minutesLastMinusFirst - minutesPerWeek
+        let range = CPTPlotRange(location: NSNumber(value:location), length: NSNumber(value: minutesPerWeek))
+        return range
     }
 
     func configureAxes(graph: CPTXYGraph) {
