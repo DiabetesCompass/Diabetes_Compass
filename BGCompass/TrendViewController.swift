@@ -103,6 +103,7 @@ class TrendViewController : UIViewController {
         let axisSet = graph.axisSet as! CPTXYAxisSet
 
         if let x = axisSet.xAxis {
+            x.labelFormatter = xLabelFormatter()
             x.labelTextStyle = TrendViewController.textStyleWhite()
             x.axisLineStyle = TrendViewController.lineStyleThinWhite()
             x.majorTickLineStyle = TrendViewController.lineStyleThinWhite()
@@ -173,6 +174,22 @@ class TrendViewController : UIViewController {
         let textStyle = CPTMutableTextStyle()
         textStyle.color = .white()
         return textStyle
+    }
+
+    func xLabelFormatter() -> CPTCalendarFormatter {
+        guard let firstReading = trendsAlgorithmModel?.ha1cArrayReadingFirst() else {
+            return CPTCalendarFormatter()
+        }
+
+        let dateFormatter = DateFormatter()
+        let formatString = DateFormatter.dateFormat(fromTemplate: "EE", options:0, locale:NSLocale.current)
+        dateFormatter.dateFormat = formatString
+
+        let cptFormatter = CPTCalendarFormatter()
+        cptFormatter.dateFormatter = dateFormatter
+        cptFormatter.referenceDate = firstReading.timeStamp
+        cptFormatter.referenceCalendarUnit = NSCalendar.Unit.minute
+        return cptFormatter
     }
 
 }
