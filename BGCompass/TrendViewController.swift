@@ -79,7 +79,10 @@ class TrendViewController : UIViewController {
             return rangeEmpty
         }
         let minutesLastMinusFirst = dateLast.timeIntervalSince(dateFirst) / Double(SECONDS_IN_ONE_MINUTE)
-        let range = CPTPlotRange(location: 0, length: NSNumber(value: minutesLastMinusFirst))
+        // leave room for y axis labels. Could use margin instead??
+        // TODO: Fix me vertical axis not visible when graph first appears
+        let xMinimum = NSNumber(value: -1000)
+        let range = CPTPlotRange(location: xMinimum, length: NSNumber(value: minutesLastMinusFirst))
         return range
     }
 
