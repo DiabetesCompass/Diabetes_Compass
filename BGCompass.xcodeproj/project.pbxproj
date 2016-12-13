@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		02AB4CACA5E3282F6A97DF9D /* Pods_BGCompassTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FCFF6E736B01CCF6B71210A0 /* Pods_BGCompassTests.framework */; };
 		2C0739911840342000B413BE /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2C233120182B6C82008A6F88 /* InfoPlist.strings */; };
 		2C1334531854DA0800CECB76 /* CollapsedTrendMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2C1334521854DA0800CECB76 /* CollapsedTrendMenu.xib */; };
 		2C1334561854DA2000CECB76 /* CollapsedTrendMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C1334551854DA2000CECB76 /* CollapsedTrendMenu.m */; };
@@ -93,6 +92,8 @@
 		2CD96E8118C2FCF100361C64 /* EditItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CD96E8018C2FCF100361C64 /* EditItemViewController.m */; };
 		2CF6D27318480F3E00872B8F /* compass.png in Resources */ = {isa = PBXBuildFile; fileRef = 2CF6D27218480F3E00872B8F /* compass.png */; };
 		2CF6D2751848121200872B8F /* solid.png in Resources */ = {isa = PBXBuildFile; fileRef = 2CF6D2741848121200872B8F /* solid.png */; };
+		4D244182BC4C4EE98148A98C /* libPods-BGCompassTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A05C80A4E191E60317C670C3 /* libPods-BGCompassTests.a */; };
+		6BBEC54BA21DE3575E318A72 /* libPods-BGCompass.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 48E0793FF1159FFD91D6AD74 /* libPods-BGCompass.a */; };
 		8337DF2418E4481700055E59 /* TrendsAlgorithmModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 83980E0C184808BB00E321CF /* TrendsAlgorithmModel.m */; };
 		8337DF2518E4482800055E59 /* Ha1cReading.m in Sources */ = {isa = PBXBuildFile; fileRef = 835A91461845BBA6006A2BDC /* Ha1cReading.m */; };
 		8337DF2618E4532800055E59 /* AG15Reading.m in Sources */ = {isa = PBXBuildFile; fileRef = 835A91431845BBA5006A2BDC /* AG15Reading.m */; };
@@ -141,7 +142,6 @@
 		DE758DF11DDABDE200135F5D /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DE758DF01DDABDE200135F5D /* Launch Screen.storyboard */; };
 		DEABA8A21DFCEEDC00B42AEA /* TrendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEABA8A11DFCEEDC00B42AEA /* TrendViewController.swift */; };
 		DEEEF1C81DFE0A140027D955 /* TrendsAlgorithmModelExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEEEF1C71DFE0A140027D955 /* TrendsAlgorithmModelExtension.swift */; };
-		F3C701634B7EC35B307F6ACE /* Pods_BGCompass.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 798160ABA0B932C4004E5710 /* Pods_BGCompass.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -290,7 +290,7 @@
 		2CD96E8018C2FCF100361C64 /* EditItemViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditItemViewController.m; sourceTree = "<group>"; };
 		2CF6D27218480F3E00872B8F /* compass.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = compass.png; sourceTree = "<group>"; };
 		2CF6D2741848121200872B8F /* solid.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = solid.png; sourceTree = "<group>"; };
-		798160ABA0B932C4004E5710 /* Pods_BGCompass.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BGCompass.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		48E0793FF1159FFD91D6AD74 /* libPods-BGCompass.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BGCompass.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7FC63F7E66C515C78A6B48C4 /* Pods-BGCompassTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BGCompassTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-BGCompassTests/Pods-BGCompassTests.release.xcconfig"; sourceTree = "<group>"; };
 		8337DF2B18EA332A00055E59 /* UPCScannerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UPCScannerViewController.h; sourceTree = "<group>"; };
 		8337DF2C18EA332A00055E59 /* UPCScannerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UPCScannerViewController.m; sourceTree = "<group>"; };
@@ -338,6 +338,7 @@
 		845D24691BA52C2F00981091 /* WarningViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WarningViewController.m; sourceTree = "<group>"; };
 		848D6EAF19CC023F003C611F /* BGCompass.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = BGCompass.entitlements; sourceTree = "<group>"; };
 		8BDCB62A0108EFA37CBB1497 /* Pods-BGCompass.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BGCompass.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BGCompass/Pods-BGCompass.debug.xcconfig"; sourceTree = "<group>"; };
+		A05C80A4E191E60317C670C3 /* libPods-BGCompassTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BGCompassTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA8767A213B9617639CF29F3 /* Pods-BGCompassTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BGCompassTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BGCompassTests/Pods-BGCompassTests.debug.xcconfig"; sourceTree = "<group>"; };
 		DE106E1C1DFC7E32002B0B63 /* Trend.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Trend.storyboard; sourceTree = "<group>"; };
 		DE1AD7F81DFBB2E500720F5F /* Trends.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Trends.storyboard; sourceTree = "<group>"; };
@@ -347,7 +348,6 @@
 		DE758DF01DDABDE200135F5D /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		DEABA8A11DFCEEDC00B42AEA /* TrendViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrendViewController.swift; sourceTree = "<group>"; };
 		DEEEF1C71DFE0A140027D955 /* TrendsAlgorithmModelExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrendsAlgorithmModelExtension.swift; sourceTree = "<group>"; };
-		FCFF6E736B01CCF6B71210A0 /* Pods_BGCompassTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BGCompassTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -360,7 +360,7 @@
 				2C2330F3182B6C82008A6F88 /* CoreData.framework in Frameworks */,
 				2C2330F1182B6C82008A6F88 /* UIKit.framework in Frameworks */,
 				2C2330ED182B6C82008A6F88 /* Foundation.framework in Frameworks */,
-				F3C701634B7EC35B307F6ACE /* Pods_BGCompass.framework in Frameworks */,
+				6BBEC54BA21DE3575E318A72 /* libPods-BGCompass.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -372,7 +372,7 @@
 				2C23311A182B6C82008A6F88 /* CoreData.framework in Frameworks */,
 				2C233119182B6C82008A6F88 /* UIKit.framework in Frameworks */,
 				2C233118182B6C82008A6F88 /* Foundation.framework in Frameworks */,
-				02AB4CACA5E3282F6A97DF9D /* Pods_BGCompassTests.framework in Frameworks */,
+				4D244182BC4C4EE98148A98C /* libPods-BGCompassTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -410,8 +410,8 @@
 				2C2330F0182B6C82008A6F88 /* UIKit.framework */,
 				2C2330F2182B6C82008A6F88 /* CoreData.framework */,
 				2C233116182B6C82008A6F88 /* XCTest.framework */,
-				798160ABA0B932C4004E5710 /* Pods_BGCompass.framework */,
-				FCFF6E736B01CCF6B71210A0 /* Pods_BGCompassTests.framework */,
+				48E0793FF1159FFD91D6AD74 /* libPods-BGCompass.a */,
+				A05C80A4E191E60317C670C3 /* libPods-BGCompassTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -1200,6 +1200,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 			};
