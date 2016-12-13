@@ -808,6 +808,7 @@
 					2C233114182B6C82008A6F88 = {
 						LastSwiftMigration = 0810;
 						ProvisioningStyle = Automatic;
+						TestTargetID = 2C2330E8182B6C82008A6F88;
 					};
 				};
 			};
@@ -1270,6 +1271,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = DA8767A213B9617639CF29F3 /* Pods-BGCompassTests.debug.xcconfig */;
 			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ENABLE_MODULES = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
@@ -1291,6 +1293,7 @@
 				SWIFT_OBJC_BRIDGING_HEADER = "BGCompassTests/BGCompassTests-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/BGCompass.app/BGCompass";
 				WRAPPER_EXTENSION = xctest;
 			};
 			name = Debug;
@@ -1299,6 +1302,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 7FC63F7E66C515C78A6B48C4 /* Pods-BGCompassTests.release.xcconfig */;
 			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ENABLE_MODULES = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
@@ -1315,6 +1319,7 @@
 				PRODUCT_NAME = BGCompassTests;
 				SWIFT_OBJC_BRIDGING_HEADER = "BGCompassTests/BGCompassTests-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/BGCompass.app/BGCompass";
 				WRAPPER_EXTENSION = xctest;
 			};
 			name = Release;

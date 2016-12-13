@@ -16,14 +16,7 @@ class TrendsViewControllerTests: XCTestCase {
 }
 
     func testBloodGlucoseTextReadingNil() {
-
-        XCTAssertEqual(5, 2 + 3)
-        // TODO: fix me
-        // Undefined symbols for architecture x86_64:
-        // "type metadata accessor for BGCompass.TrendsViewController", referenced from:
-        // BGCompassTests.TrendsViewControllerTests.(testBloodGlucoseTextReadingNil () -> ()).(implicit closure #1) in TrendsViewControllerTests.o
-        // ld: symbol(s) not found for architecture x86_64
-        // XCTAssertEqual(TrendsViewController.bloodGlucoseText(reading: nil), "No data")
+        XCTAssertEqual(TrendsViewController.bloodGlucoseText(reading: nil), "No data")
     }
         
 }
