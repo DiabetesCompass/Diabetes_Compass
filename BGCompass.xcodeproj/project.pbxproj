@@ -141,6 +141,7 @@
 		DE1AD7FD1DFBB3C400720F5F /* TrendsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE1AD7FC1DFBB3C400720F5F /* TrendsViewController.swift */; };
 		DE758DF11DDABDE200135F5D /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DE758DF01DDABDE200135F5D /* Launch Screen.storyboard */; };
 		DEABA8A21DFCEEDC00B42AEA /* TrendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEABA8A11DFCEEDC00B42AEA /* TrendViewController.swift */; };
+		DEB332DE1DFFC9EA00989771 /* TrendsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEB332DD1DFFC9EA00989771 /* TrendsViewControllerTests.swift */; };
 		DEEEF1C81DFE0A140027D955 /* TrendsAlgorithmModelExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEEEF1C71DFE0A140027D955 /* TrendsAlgorithmModelExtension.swift */; };
 /* End PBXBuildFile section */
 
@@ -347,6 +348,8 @@
 		DE1FE5011DCFEB0C000B6A8A /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		DE758DF01DDABDE200135F5D /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		DEABA8A11DFCEEDC00B42AEA /* TrendViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrendViewController.swift; sourceTree = "<group>"; };
+		DEB332DC1DFFC9E900989771 /* BGCompassTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BGCompassTests-Bridging-Header.h"; sourceTree = "<group>"; };
+		DEB332DD1DFFC9EA00989771 /* TrendsViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrendsViewControllerTests.swift; sourceTree = "<group>"; };
 		DEEEF1C71DFE0A140027D955 /* TrendsAlgorithmModelExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrendsAlgorithmModelExtension.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -467,7 +470,9 @@
 			children = (
 				833A3E471831FB7000C1FF5C /* BGAlgorithmTests.m */,
 				83E3E68118A6B4C300F3C560 /* TrendsAlgorithmTests.m */,
+				DEB332DD1DFFC9EA00989771 /* TrendsViewControllerTests.swift */,
 				2C23311E182B6C82008A6F88 /* Supporting Files */,
+				DEB332DC1DFFC9E900989771 /* BGCompassTests-Bridging-Header.h */,
 			);
 			path = BGCompassTests;
 			sourceTree = "<group>";
@@ -801,6 +806,7 @@
 						};
 					};
 					2C233114182B6C82008A6F88 = {
+						LastSwiftMigration = 0810;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -1067,6 +1073,7 @@
 				83AFF13E1919333A00574757 /* APIDelegate.m in Sources */,
 				83B33B7318DD210800DEB8CD /* Constants.m in Sources */,
 				8337DF2418E4481700055E59 /* TrendsAlgorithmModel.m in Sources */,
+				DEB332DE1DFFC9EA00989771 /* TrendsViewControllerTests.swift in Sources */,
 				83B33B7718DD214E00DEB8CD /* InsulinReading.m in Sources */,
 				8337DF2518E4482800055E59 /* Ha1cReading.m in Sources */,
 				83B33B7918DD216400DEB8CD /* BGReading.m in Sources */,
@@ -1220,7 +1227,7 @@
 				GCC_PREFIX_HEADER = "BGCompass/BGCompass-Prefix.pch";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				INFOPLIST_FILE = "$(SRCROOT)/BGCompass/BGCompass-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.calferness.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = BGCompass;
@@ -1247,7 +1254,7 @@
 				GCC_PREFIX_HEADER = "BGCompass/BGCompass-Prefix.pch";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				INFOPLIST_FILE = "$(SRCROOT)/BGCompass/BGCompass-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.calferness.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = BGCompass;
@@ -1263,6 +1270,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = DA8767A213B9617639CF29F3 /* Pods-BGCompassTests.debug.xcconfig */;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -1277,8 +1285,12 @@
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 				);
 				INFOPLIST_FILE = "BGCompassTests/BGCompassTests-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.ClifAlferness.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = BGCompassTests;
+				SWIFT_OBJC_BRIDGING_HEADER = "BGCompassTests/BGCompassTests-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 				WRAPPER_EXTENSION = xctest;
 			};
 			name = Debug;
@@ -1287,6 +1299,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 7FC63F7E66C515C78A6B48C4 /* Pods-BGCompassTests.release.xcconfig */;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -1297,8 +1310,11 @@
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 				);
 				INFOPLIST_FILE = "BGCompassTests/BGCompassTests-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.ClifAlferness.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = BGCompassTests;
+				SWIFT_OBJC_BRIDGING_HEADER = "BGCompassTests/BGCompassTests-Bridging-Header.h";
+				SWIFT_VERSION = 3.0;
 				WRAPPER_EXTENSION = xctest;
 			};
 			name = Release;
