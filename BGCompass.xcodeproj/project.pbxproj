@@ -1271,8 +1271,8 @@
 					"$(inherited)",
 				);
 				HEADER_SEARCH_PATHS = (
-					"${PODS_HEADERS_SEARCH_PATHS}",
 					"$(inherited)",
+					"${PODS_HEADERS_SEARCH_PATHS}",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 				);
 				INFOPLIST_FILE = "BGCompassTests/BGCompassTests-Info.plist";
@@ -1291,8 +1291,8 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "BGCompass/BGCompass-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
-					"${PODS_HEADERS_SEARCH_PATHS}",
 					"$(inherited)",
+					"${PODS_HEADERS_SEARCH_PATHS}",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 				);
 				INFOPLIST_FILE = "BGCompassTests/BGCompassTests-Info.plist";
