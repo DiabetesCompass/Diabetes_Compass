@@ -10,10 +10,20 @@ import XCTest
 @testable import BGCompass
 
 class TrendsViewControllerTests: XCTestCase {
-    
-    func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
+
+    func testArithmeticExample() {
+        XCTAssertEqual(5, 2 + 3)
+}
+
+    func testBloodGlucoseTextReadingNil() {
+
+        XCTAssertEqual(5, 2 + 3)
+        // TODO: fix me
+        // Undefined symbols for architecture x86_64:
+        // "type metadata accessor for BGCompass.TrendsViewController", referenced from:
+        // BGCompassTests.TrendsViewControllerTests.(testBloodGlucoseTextReadingNil () -> ()).(implicit closure #1) in TrendsViewControllerTests.o
+        // ld: symbol(s) not found for architecture x86_64
+        // XCTAssertEqual(TrendsViewController.bloodGlucoseText(reading: nil), "No data")
     }
         
 }
