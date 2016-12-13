@@ -1262,7 +1262,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = DA8767A213B9617639CF29F3 /* Pods-BGCompassTests.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -1287,7 +1286,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 7FC63F7E66C515C78A6B48C4 /* Pods-BGCompassTests.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
