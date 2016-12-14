@@ -18,5 +18,9 @@ class TrendsViewControllerTests: XCTestCase {
     func testBloodGlucoseTextReadingNil() {
         XCTAssertEqual(TrendsViewController.bloodGlucoseText(reading: nil), "No data")
     }
-        
+
+    func testHa1cTextReadingNil() {
+        XCTAssertEqual(TrendsViewController.ha1cText(reading: nil), "No data")
+    }
+
 }
