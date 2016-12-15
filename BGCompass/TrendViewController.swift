@@ -28,8 +28,6 @@ class TrendViewController : UIViewController {
 
     // MARK: - View lifecycle
 
-//    override func viewDidAppear(_ animated : Bool) {
-//        super.viewDidAppear(animated)
     override func viewDidLoad() {
         super.viewDidLoad()
 
