@@ -103,10 +103,9 @@ class TrendViewController : UIViewController {
         let minutesLastMinusFirst = last.timeIntervalSince(first) / Double(SECONDS_IN_ONE_MINUTE)
         // leave room for y axis labels. Could use margin instead??
         // TODO: Fix me vertical axis not visible when graph first appears
-        let xMinimum = Double(-1200)
-        // (sic) subtracting negative xMinimum increases length
-        let length = NSNumber(value: minutesLastMinusFirst - xMinimum)
-        let range = CPTPlotRange(location: NSNumber(value: xMinimum), length: length)
+        let yAxisLabelWidth = 1200.0
+        let length = NSNumber(value: minutesLastMinusFirst + yAxisLabelWidth)
+        let range = CPTPlotRange(location: NSNumber(value: -yAxisLabelWidth), length: length)
         return range
     }
 
@@ -137,20 +136,20 @@ class TrendViewController : UIViewController {
     class func globalYRange(trendsAlgorithmModel: TrendsAlgorithmModel?, trend: Trend) -> CPTPlotRange {
         //let rangeEmpty = CPTPlotRange(location: 0.0, length: 0.0)
 
-        var labelHeight: Double
+        var xAxisLabelHeight: Double
         var rangeMaximum: Double
 
         switch trend {
         case .bg:
-            labelHeight = 5
+            xAxisLabelHeight = 5
             rangeMaximum = 120
         case .ha1c:
-            labelHeight = 0.5
+            xAxisLabelHeight = 0.5
             rangeMaximum = 11
         }
 
-        let range = CPTPlotRange(location: NSNumber(value: -labelHeight),
-                                 length: NSNumber(value:rangeMaximum + labelHeight))
+        let range = CPTPlotRange(location: NSNumber(value: -xAxisLabelHeight),
+                                 length: NSNumber(value:rangeMaximum + xAxisLabelHeight))
         return range
     }
 
