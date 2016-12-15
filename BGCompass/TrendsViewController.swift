@@ -109,9 +109,13 @@ class TrendsViewController: UIViewController {
 
         case SegueIdentifiers.trendsToBloodGlucoseTrend:
             segue.destination.title = "Blood Glucose Trend"
+            let trendViewController = segue.destination as! TrendViewController
+            trendViewController.trend = .bg
 
         case SegueIdentifiers.trendsToHa1cTrend:
             segue.destination.title = "HA1c Trend"
+            let trendViewController = segue.destination as! TrendViewController
+            trendViewController.trend = .ha1c
 
         default:
             break

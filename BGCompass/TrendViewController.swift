@@ -12,18 +12,26 @@ import UIKit
 
 class TrendViewController : UIViewController {
 
+    enum Trend {
+        case bg, ha1c
+    }
+
     static let minutesPerWeek = Double(MINUTES_IN_ONE_HOUR * HOURS_IN_ONE_DAY * DAYS_IN_ONE_WEEK)
 
     var trendsAlgorithmModel: TrendsAlgorithmModel?
 
-    private var scatterGraph : CPTXYGraph? = nil
+    private var scatterGraph: CPTXYGraph? = nil
 
     @IBOutlet var hostingView: CPTGraphHostingView!
 
+    var trend: Trend?
+
     // MARK: - View lifecycle
 
-    override func viewDidAppear(_ animated : Bool) {
-        super.viewDidAppear(animated)
+//    override func viewDidAppear(_ animated : Bool) {
+//        super.viewDidAppear(animated)
+    override func viewDidLoad() {
+        super.viewDidLoad()
 
         trendsAlgorithmModel = TrendsAlgorithmModel.sharedInstance() as! TrendsAlgorithmModel?
 
@@ -33,7 +41,9 @@ class TrendViewController : UIViewController {
         hostingView.hostedGraph = newGraph
 
         configurePaddings(graph: newGraph)
-        configurePlotSpace(graph: newGraph)
+        if trend != nil {
+            configurePlotSpace(graph: newGraph, trend: trend!)
+        }
         configureAxes(graph: newGraph)
 
         let boundLinePlot = styledPlot()
@@ -55,30 +65,45 @@ class TrendViewController : UIViewController {
     }
 
     /// set axes range start and length
-    func configurePlotSpace(graph: CPTXYGraph) {
+    func configurePlotSpace(graph: CPTXYGraph, trend: Trend) {
         let plotSpace = graph.defaultPlotSpace as! CPTXYPlotSpace
         plotSpace.allowsUserInteraction = true
 
         // limit scrolling?
         // http://stackoverflow.com/questions/18784140/coreplot-allow-horizontal-scrolling-in-positive-quadrant-only?rq=1
-        plotSpace.globalXRange = TrendViewController.globalXRange(trendsAlgorithmModel: trendsAlgorithmModel)
-        plotSpace.globalYRange = CPTPlotRange(location: -1.0, length: 11.0)
-
+        plotSpace.globalXRange = TrendViewController.globalXRange(trendsAlgorithmModel: trendsAlgorithmModel,
+                                                                  trend: trend)
         // location is axis start, length is axis (end - start)
-        plotSpace.xRange = TrendViewController.xRange(trendsAlgorithmModel: trendsAlgorithmModel)
-        plotSpace.yRange = CPTPlotRange(location:-1.0, length:11.0)
+        plotSpace.xRange = TrendViewController.xRange(trendsAlgorithmModel: trendsAlgorithmModel,
+                                                      trend: trend)
+
+        plotSpace.globalYRange = TrendViewController.globalYRange(trendsAlgorithmModel: trendsAlgorithmModel,
+                                                                  trend: trend)
+        plotSpace.yRange = plotSpace.globalYRange!
     }
 
-    class func globalXRange(trendsAlgorithmModel: TrendsAlgorithmModel?) -> CPTPlotRange {
+    /**
+     Typically bgArray and ha1cArray have same number of elements, with same timeStamps
+     So globalXRange returns same range for either trend
+     */
+    class func globalXRange(trendsAlgorithmModel: TrendsAlgorithmModel?, trend: Trend) -> CPTPlotRange {
         let rangeEmpty = CPTPlotRange(location: 0.0, length: 0.0)
 
-        guard let dateFirst = trendsAlgorithmModel?.ha1cArrayReadingFirst()?.timeStamp else {
-            return rangeEmpty
+        var dateFirst: Date?
+        var dateLast: Date?
+
+        switch trend {
+        case .bg:
+            dateFirst = trendsAlgorithmModel?.bgArrayReadingFirst()?.timeStamp
+            dateLast = trendsAlgorithmModel?.bgArrayReadingLast()?.timeStamp
+        case .ha1c:
+            dateFirst = trendsAlgorithmModel?.ha1cArrayReadingFirst()?.timeStamp
+            dateLast = trendsAlgorithmModel?.ha1cArrayReadingLast()?.timeStamp
         }
-        guard let dateLast = trendsAlgorithmModel?.ha1cArrayReadingLast()?.timeStamp else {
-            return rangeEmpty
-        }
-        let minutesLastMinusFirst = dateLast.timeIntervalSince(dateFirst) / Double(SECONDS_IN_ONE_MINUTE)
+
+        guard let first = dateFirst, let last = dateLast else { return rangeEmpty }
+
+        let minutesLastMinusFirst = last.timeIntervalSince(first) / Double(SECONDS_IN_ONE_MINUTE)
         // leave room for y axis labels. Could use margin instead??
         // TODO: Fix me vertical axis not visible when graph first appears
         let xMinimum = NSNumber(value: -1000)
@@ -86,18 +111,42 @@ class TrendViewController : UIViewController {
         return range
     }
 
-    class func xRange(trendsAlgorithmModel: TrendsAlgorithmModel?) -> CPTPlotRange {
+    class func xRange(trendsAlgorithmModel: TrendsAlgorithmModel?, trend: Trend) -> CPTPlotRange {
         let rangeEmpty = CPTPlotRange(location: 0.0, length: 0.0)
 
-        guard let dateFirst = trendsAlgorithmModel?.ha1cArrayReadingFirst()?.timeStamp else {
-            return rangeEmpty
+        var dateFirst: Date?
+        var dateLast: Date?
+
+        switch trend {
+        case .bg:
+            dateFirst = trendsAlgorithmModel?.bgArrayReadingFirst()?.timeStamp
+            dateLast = trendsAlgorithmModel?.bgArrayReadingLast()?.timeStamp
+
+        case .ha1c:
+            dateFirst = trendsAlgorithmModel?.ha1cArrayReadingFirst()?.timeStamp
+            dateLast = trendsAlgorithmModel?.ha1cArrayReadingLast()?.timeStamp
         }
-        guard let dateLast = trendsAlgorithmModel?.ha1cArrayReadingLast()?.timeStamp else {
-            return rangeEmpty
-        }
-        let minutesLastMinusFirst = dateLast.timeIntervalSince(dateFirst) / Double(SECONDS_IN_ONE_MINUTE)
+
+        guard let first = dateFirst, let last = dateLast else { return rangeEmpty }
+
+        let minutesLastMinusFirst = last.timeIntervalSince(first) / Double(SECONDS_IN_ONE_MINUTE)
         let location = minutesLastMinusFirst - minutesPerWeek
         let range = CPTPlotRange(location: NSNumber(value:location), length: NSNumber(value: minutesPerWeek))
+        return range
+    }
+
+    class func globalYRange(trendsAlgorithmModel: TrendsAlgorithmModel?, trend: Trend) -> CPTPlotRange {
+        //let rangeEmpty = CPTPlotRange(location: 0.0, length: 0.0)
+
+        var rangeMaximum: NSNumber
+        switch trend {
+        case .bg:
+            rangeMaximum = 120
+        case .ha1c:
+            rangeMaximum = 11
+        }
+
+        let range = CPTPlotRange(location: 0, length: rangeMaximum)
         return range
     }
 
@@ -124,12 +173,13 @@ class TrendViewController : UIViewController {
         }
 
         if let y = axisSet.yAxis {
+            y.delegate = self
+
             y.labelTextStyle = TrendViewController.textStyleWhite()
             y.axisLineStyle = TrendViewController.lineStyleThinWhite()
             y.majorTickLineStyle = TrendViewController.lineStyleThinWhite()
             y.minorTickLineStyle = TrendViewController.lineStyleThinWhite()
-            y.majorIntervalLength   = 1
-            y.minorTicksPerInterval = 1
+
             // y axis located at x coordinate == y.orthogonalPosition
             y.orthogonalPosition    = 0.0
             y.labelExclusionRanges  = [
@@ -137,7 +187,16 @@ class TrendViewController : UIViewController {
                 //CPTPlotRange(location: 1.99, length: 0.02),
                 //CPTPlotRange(location: 3.99, length: 0.02)
             ]
-            y.delegate = self
+
+            guard let trendUnwrapped = trend else { return }
+            switch trendUnwrapped {
+            case .bg:
+                y.majorIntervalLength   = 10
+                y.minorTicksPerInterval = 1
+            case .ha1c:
+                y.majorIntervalLength   = 1
+                y.minorTicksPerInterval = 1
+            }
         }
     }
 
@@ -209,33 +268,62 @@ extension TrendViewController: CPTBarPlotDataSource, CPTBarPlotDelegate {
      *  @return The number of data points for the plot.
      **/
     func numberOfRecords(for plot: CPTPlot) -> UInt {
-        //return UInt(self.dataForPlot.count)
-        guard let model: TrendsAlgorithmModel = trendsAlgorithmModel else { return 0 }
-        //return UInt(model.bgArrayCount())
-        return UInt(model.ha1cArray.count)
+        guard let model: TrendsAlgorithmModel = trendsAlgorithmModel,
+        let trendUnwrapped = trend else { return 0 }
+        switch trendUnwrapped {
+        case .bg:
+            return UInt(model.bgArrayCount())
+        case .ha1c:
+            return UInt(model.ha1cArray.count)
+        }
     }
 
     func number(for plot: CPTPlot, field: UInt, record: UInt) -> Any? {
+
+        guard let model: TrendsAlgorithmModel = trendsAlgorithmModel,
+            let trendUnwrapped = trend else {
+                return nil
+        }
+
         // plotField = CPTScatterPlotField(0) == .X
         // plotField = CPTScatterPlotField(1) == .Y
         let plotField = CPTScatterPlotField(rawValue: Int(field))
 
-        guard let model: TrendsAlgorithmModel = trendsAlgorithmModel else { return nil }
-        let reading = model.getFromHa1cArray(record) as Ha1cReading
+        switch trendUnwrapped {
 
-        if plotField == .X {
-            guard let firstReading = model.ha1cArrayReadingFirst() else { return nil }
+        case .bg:
 
-            guard let dateFirst = firstReading.timeStamp else { return nil }
-            let timeIntervalSeconds: TimeInterval = reading.timeStamp.timeIntervalSince(dateFirst)
-            let timeIntervalMinutes: Double = timeIntervalSeconds / 60
-            return NSNumber(value: timeIntervalMinutes)
+            let reading = model.getFromBGArray(record) as BGReading
+            let firstReading = model.bgArrayReadingFirst()
 
-        } else if plotField == .Y {
-            return reading.quantity
-        } else {
-            return nil
+            if plotField == .X {
+                guard let dateFirst = firstReading?.timeStamp else { return nil }
+                let timeIntervalSeconds: TimeInterval = reading.timeStamp.timeIntervalSince(dateFirst)
+                let timeIntervalMinutes: Double = timeIntervalSeconds / 60
+                return NSNumber(value: timeIntervalMinutes)
+
+            } else if plotField == .Y {
+                //TODO: fix me if BGeading.isInMoles??
+                return reading.quantity
+            }
+
+        case .ha1c:
+
+            let reading = model.getFromHa1cArray(record) as Ha1cReading
+            let firstReading = model.ha1cArrayReadingFirst()
+
+            if plotField == .X {
+                guard let dateFirst = firstReading?.timeStamp else { return nil }
+                let timeIntervalSeconds: TimeInterval = reading.timeStamp.timeIntervalSince(dateFirst)
+                let timeIntervalMinutes: Double = timeIntervalSeconds / 60
+                return NSNumber(value: timeIntervalMinutes)
+
+            } else if plotField == .Y {
+                return reading.quantity
+            }
+            
         }
+        return nil
     }
 
     // MARK: Axis Delegate Methods
@@ -270,11 +358,11 @@ extension TrendViewController: CPTBarPlotDataSource, CPTBarPlotDelegate {
 
                 axis.axisLabels = newLabels
             }
-        }        
+        }
         return false
     }
 
-    // doesnt get called. need to set a CPPlotSpaceDelegate property?
+    // doesn't get called. need to set a CPPlotSpaceDelegate property?
     // http://stackoverflow.com/questions/1892544/allow-horizontal-scrolling-only-in-the-core-plot-barchart/24525631#24525631
     // http://stackoverflow.com/questions/37898061/coreplot-vertical-scrolling-for-horizontal-bars
     func plotSpace(space: CPTPlotSpace,
@@ -289,7 +377,7 @@ extension TrendViewController: CPTBarPlotDataSource, CPTBarPlotDelegate {
         if range.locationDouble < 0.0 {
             range.location = 0.0
         }
-
+        
         // Adjust axis to keep them in view at the left and bottom;
         // adjust scale-labels to match the scroll.
         //
@@ -301,7 +389,6 @@ extension TrendViewController: CPTBarPlotDataSource, CPTBarPlotDelegate {
             axisSet.xAxis?.orthogonalPosition = range.location
             axisSet.yAxis?.titleLocation = CPTDecimalFromDouble(range.locationDouble + (range.lengthDouble / 2.0)) as NSNumber?
         }
-        
         return range
     }
 }
