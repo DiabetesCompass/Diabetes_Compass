@@ -137,15 +137,20 @@ class TrendViewController : UIViewController {
     class func globalYRange(trendsAlgorithmModel: TrendsAlgorithmModel?, trend: Trend) -> CPTPlotRange {
         //let rangeEmpty = CPTPlotRange(location: 0.0, length: 0.0)
 
-        var rangeMaximum: NSNumber
+        var labelHeight: Double
+        var rangeMaximum: Double
+
         switch trend {
         case .bg:
+            labelHeight = 5
             rangeMaximum = 120
         case .ha1c:
+            labelHeight = 0.5
             rangeMaximum = 11
         }
 
-        let range = CPTPlotRange(location: 0, length: rangeMaximum)
+        let range = CPTPlotRange(location: NSNumber(value: -labelHeight),
+                                 length: NSNumber(value:rangeMaximum + labelHeight))
         return range
     }
 
