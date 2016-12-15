@@ -308,8 +308,11 @@ extension TrendViewController: CPTBarPlotDataSource, CPTBarPlotDelegate {
                 return NSNumber(value: timeIntervalMinutes)
 
             } else if plotField == .Y {
-                //TODO: fix me if BGeading.isInMoles??
-                return reading.quantity
+                if BGReading.isInMoles() {
+                    return reading.quantity
+                } else {
+                    return reading.quantity.floatValue * Float(CONVERSIONFACTOR)
+                }
             }
 
         case .ha1c:
