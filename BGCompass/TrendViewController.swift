@@ -41,14 +41,13 @@ class TrendViewController : UIViewController {
         configurePaddings(graph: newGraph)
         if trend != nil {
             configurePlotSpace(graph: newGraph, trend: trend!)
+            configureAxes(graph: newGraph)
+
+            let boundLinePlot = styledPlot(trend: trend!)
+            boundLinePlot.dataSource = self
+            newGraph.add(boundLinePlot)
+            boundLinePlot.plotSymbol = TrendViewController.plotSymbol()
         }
-        configureAxes(graph: newGraph)
-
-        let boundLinePlot = styledPlot()
-        boundLinePlot.dataSource = self
-        newGraph.add(boundLinePlot)
-
-        boundLinePlot.plotSymbol = TrendViewController.plotSymbol()
 
         self.scatterGraph = newGraph
     }
@@ -104,8 +103,10 @@ class TrendViewController : UIViewController {
         let minutesLastMinusFirst = last.timeIntervalSince(first) / Double(SECONDS_IN_ONE_MINUTE)
         // leave room for y axis labels. Could use margin instead??
         // TODO: Fix me vertical axis not visible when graph first appears
-        let xMinimum = NSNumber(value: -1000)
-        let range = CPTPlotRange(location: xMinimum, length: NSNumber(value: minutesLastMinusFirst))
+        let xMinimum = Double(-1200)
+        // (sic) subtracting negative xMinimum increases length
+        let length = NSNumber(value: minutesLastMinusFirst - xMinimum)
+        let range = CPTPlotRange(location: NSNumber(value: xMinimum), length: length)
         return range
     }
 
@@ -198,10 +199,16 @@ class TrendViewController : UIViewController {
         }
     }
 
-    func styledPlot() -> CPTScatterPlot {
+    func styledPlot(trend: Trend) -> CPTScatterPlot {
         let plot = CPTScatterPlot(frame: .zero)
         plot.dataLineStyle = TrendViewController.lineStyleWhite()
-        plot.identifier    = NSString.init(string: "ha1c")
+
+        switch trend {
+        case .bg:
+            plot.identifier    = NSString.init(string: "bg")
+        case .ha1c:
+            plot.identifier    = NSString.init(string: "ha1c")
+        }
         return plot
     }
 
