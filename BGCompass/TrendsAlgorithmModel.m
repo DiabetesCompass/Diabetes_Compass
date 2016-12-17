@@ -8,6 +8,7 @@
 
 #import "TrendsAlgorithmModel.h"
 #import "Constants.h"
+#import "BGCompass-Swift.h"
 
 @interface TrendsAlgorithmModel()
 
