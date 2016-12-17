@@ -152,11 +152,14 @@ class TrendViewController : UIViewController {
         }
     }
 
+    // TODO: ha1c rangeMinimum 5
+
     class func rangeMaximum(trend: Trend) -> Double {
         switch trend {
         case .bg:
-            return 120.0
+            return 300.0
         case .ha1c:
+            // TODO: set to all readings maximum
             return 11.0
         }
     }
