@@ -17,6 +17,7 @@ class TrendViewController : UIViewController {
     }
 
     static let minutesPerWeek = Double(MINUTES_IN_ONE_HOUR * HOURS_IN_ONE_DAY * DAYS_IN_ONE_WEEK)
+    static let yAxisLabelWidth = 1200.0
 
     var trendsAlgorithmModel: TrendsAlgorithmModel?
 
@@ -25,6 +26,7 @@ class TrendViewController : UIViewController {
     @IBOutlet var hostingView: CPTGraphHostingView!
 
     var trend: Trend?
+
 
     // MARK: - View lifecycle
 
@@ -104,9 +106,7 @@ class TrendViewController : UIViewController {
         guard let first = dateFirst, let last = dateLast else { return rangeEmpty }
 
         let minutesLastMinusFirst = last.timeIntervalSince(first) / Double(SECONDS_IN_ONE_MINUTE)
-        // leave room for y axis labels. Could use margin instead??
         // TODO: Fix me vertical axis not visible when graph first appears
-        let yAxisLabelWidth = 1200.0
         let length = NSNumber(value: minutesLastMinusFirst + yAxisLabelWidth)
         let range = CPTPlotRange(location: NSNumber(value: -yAxisLabelWidth), length: length)
         return range
@@ -404,7 +404,7 @@ extension TrendViewController: CPTPlotSpaceDelegate {
         //
         let axisSet: CPTXYAxisSet = space.graph!.axisSet as! CPTXYAxisSet
         if coordinate == CPTCoordinate.X {
-            axisSet.yAxis?.orthogonalPosition = range.location
+            axisSet.yAxis?.orthogonalPosition = NSNumber(value:(range.location.doubleValue + TrendViewController.yAxisLabelWidth))
             //axisSet.xAxis?.titleLocation = CPTDecimalFromDouble(range.locationDouble + (range.lengthDouble / 2.0)) as NSNumber?
         } else {
             axisSet.xAxis?.orthogonalPosition = range.location
