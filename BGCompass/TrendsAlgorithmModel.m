@@ -20,6 +20,8 @@
 
 @implementation TrendsAlgorithmModel
 
+NSTimeInterval hemoglobinLifespanSeconds = 0.0;
+
 + (id)sharedInstance {
     static TrendsAlgorithmModel *sharedInstance = nil;
     static dispatch_once_t onceToken;
@@ -35,6 +37,8 @@
         self.trend_queue = dispatch_queue_create("trend_queue", DISPATCH_QUEUE_SERIAL);
         [self addObservers];
         [self loadArrays];
+
+        hemoglobinLifespanSeconds = 100.0 * HOURS_IN_ONE_DAY * SECONDS_IN_ONE_HOUR;
     }
     return self;
 }
@@ -65,14 +69,6 @@
 - (void) loadArrays {
     self.ha1cArray = [Ha1cReading MR_findAllSortedBy:@"timeStamp" ascending:YES inContext:[NSManagedObjectContext MR_defaultContext]];
     self.bgArray = [BGReading MR_findAllSortedBy:@"timeStamp" ascending:YES inContext:[NSManagedObjectContext MR_defaultContext]];
-
-
-    ///////////////////////////////////////////////
-    // FIXME: delete or move this. I put it here to check it works
-    NSArray *readings = [self recentReadings];
-    NSLog(@"readings: %@", readings);
-    //////////////////////////////////////////////
-
 }
 
 //count HA1c readings?
@@ -138,54 +134,41 @@
 
 - (void) calculateHa1c:(BGReading*) bgReading {
 
-    int HEMOGLOBIN_LIFESPAN = 100*HOURS_IN_ONE_DAY*SECONDS_IN_ONE_HOUR;
-    
-    //1 -- Retreive all blood glucose readings backwards
-    
-//    NSPredicate *predicate;
-    BGReading* lastReading = bgReading;
-    if (!lastReading) {
-        lastReading = [BGReading MR_findFirstOrderedByAttribute:@"timeStamp" ascending:YES inContext:[NSManagedObjectContext MR_defaultContext]];
+    [self loadArrays];
+
+    // bloodGlucoseRecentReadingsWithCurrentReading defined in TrendsAlgorithmModelExtension.swift
+    NSArray *recentBGReadings = [self bloodGlucoseRecentReadingsWithCurrentReading: bgReading
+                                                                  readings: self.bgArray
+                                                 hemoglobinLifespanSeconds: hemoglobinLifespanSeconds];
+
+    if ((recentBGReadings == nil) || (recentBGReadings.count == 0)) {
+        return;
     }
-    
-//<<<<<<< HEAD
-    NSDate* one_hundred_days_ago = [lastReading.timeStamp dateByAddingTimeInterval: -HEMOGLOBIN_LIFESPAN];
-        NSLog(@"timeStamp1: %@", one_hundred_days_ago);
-        NSLog(@"timeStamp2: %@", lastReading.timeStamp);
-    NSPredicate *betweenPredicate = [NSPredicate predicateWithFormat: @"timeStamp BETWEEN %@", @[one_hundred_days_ago, lastReading.timeStamp ]];
-    NSArray *newlyFetchedReadings = [BGReading MR_findAllSortedBy:@"timeStamp" ascending:YES withPredicate:betweenPredicate inContext:[NSManagedObjectContext MR_defaultContext]];
+
     //2 -- Interpolate readings.
     int interval = 10; // interpolated array will be at 10 minute intervals.
-    int arraysize = (int) HEMOGLOBIN_LIFESPAN/interval + 1;
-//=======
-//    NSDate* one_hundred_days_ago = [lastReading.timeStamp dateByAddingTimeInterval:-100*HOURS_IN_ONE_DAY*SECONDS_IN_ONE_HOUR];
-//    predicate = [NSPredicate predicateWithFormat:@"timeStamp >= %@", one_hundred_days_ago];
-//    NSArray *fetchedReadings = [BGReading MR_findAllSortedBy:@"timeStamp" ascending:YES withPredicate:predicate inContext:[NSManagedObjectContext MR_defaultContext]];
-//    
-//    //2 -- Interpolate all of these readings.
-//    
-//    int interval = 10; // interpolated array will be 10 minute intervals.
-//    int arraysize = (int) 100*HOURS_IN_ONE_DAY*MINUTES_IN_ONE_HOUR/interval + 1;
-//>>>>>>> storyboard
+    int arraysize = (int) (hemoglobinLifespanSeconds / interval) + 1;
+
     // The array will contain up to 100 days of readings.
     float interpolated[arraysize];
     BGReading* previousReading = nil;
     int bigIndex = 0;
     float ramp = 1.0;
-    float delta = 1/HEMOGLOBIN_LIFESPAN;
+    float delta = 1 / hemoglobinLifespanSeconds;
     float sum =0.0;
     float sumRamp = 0.0;
     float twBGAve = 0.0;
     float twHA1c = 0.0;
-    for (BGReading* reading in newlyFetchedReadings) {
-        if (newlyFetchedReadings.count ==1){
+    for (BGReading* reading in recentBGReadings) {
+
+        if (recentBGReadings.count == 1) {
             interpolated[bigIndex] =reading.quantity.floatValue;
             sum = interpolated[bigIndex];
             sumRamp = sumRamp + ramp;
             ramp = ramp - delta;
             bigIndex++;
-        }
-        else {
+
+        } else {
             if (previousReading) {
                 int minutesBetweenReadings = (int)[reading.timeStamp timeIntervalSinceDate:previousReading.timeStamp]/(SECONDS_IN_ONE_MINUTE);
                 minutesBetweenReadings = abs(minutesBetweenReadings);
@@ -211,19 +194,13 @@
     NSLog(@"weighted average HA1c: %f", twHA1c);
     Ha1cReading* reading = [Ha1cReading MR_createEntityInContext:[NSManagedObjectContext MR_defaultContext]];
     reading.quantity = @(twHA1c);
-    //set the timestamp of this HA1c to the timestamp of the last BG reading?
-    reading.timeStamp = lastReading.timeStamp;
+
+    //set the timestamp of this HA1c to the timestamp of the last BG reading??
+    // NOTE: if they are exactly equal this might cause problem with predicate/filtering
+    // reading.timeStamp = [self lastBGReading.timeStamp;
+    
     [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
     [self loadArrays];
-}
-
-/// recentReadings calls methods defined in TrendsAlgorithmModelExtension.swift
-- (NSArray*) recentReadings {
-
-
-    BGReading *bgReadingLast = [self bgArrayReadingLast];
-    NSArray *readings = [self bloodGlucoseReadingsWithinHemoglobinLifespanWithCurrentReading:bgReadingLast readings:self.bgArray];
-    return readings;
 }
 
 @end

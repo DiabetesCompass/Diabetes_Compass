@@ -56,12 +56,10 @@ extension TrendsAlgorithmModel {
     /**
      - returns: readings within hemoglobin lifespan before current reading, excluding current reading
      */
-    func bloodGlucoseReadingsWithinHemoglobinLifespan(currentReading: BGReading,
-                                                readings: [BGReading]) -> [BGReading] {
-
-        let secondsPerOneHundredDays: TimeInterval = 100.0 * Double(HOURS_IN_ONE_DAY * SECONDS_IN_ONE_HOUR)
-        let hemoglobinLifespanSeconds = secondsPerOneHundredDays
-
+    func bloodGlucoseRecentReadings(currentReading: BGReading,
+                                    readings: [BGReading],
+                                    hemoglobinLifespanSeconds: TimeInterval) -> [BGReading] {
+        
         // readingsWithinHemoglobinLifespan includes all readings that meet the filter criterium
         let readingsWithinHemoglobinLifespan = readings
             .filter( {
