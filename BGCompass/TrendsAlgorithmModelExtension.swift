@@ -51,4 +51,46 @@ extension TrendsAlgorithmModel {
         }
     }
 
+    /**
+     - returns: readings within hemoglobin lifespan before current reading, excluding current reading
+     */
+    open func bloodGlucoseReadingsWithinHemoglobinLifespan(currentReading: BGReading,
+                                                readings: [BGReading]) -> [BGReading] {
+
+        let secondsPerOneHundredDays: TimeInterval = 100.0 * Double(HOURS_IN_ONE_DAY * SECONDS_IN_ONE_HOUR)
+        let hemoglobinLifespanSeconds = secondsPerOneHundredDays
+
+        // readingsWithinHemoglobinLifespan includes all readings that meet the filter criterium
+        let readingsWithinHemoglobinLifespan = readings
+            .filter( {
+                isFirstDateBeforeSecondDateByLessThanTimeInterval( firstDate: $0.timeStamp,
+                                                                   secondDate: currentReading.timeStamp,
+                                                                   timeInterval: hemoglobinLifespanSeconds)
+            } )
+        return readingsWithinHemoglobinLifespan
+    }
+
+    /**
+     - returns: true if firstDate is before secondDate by timeInterval or less.
+     returns false if firstDate is at or after secondDate
+     Note might possibly give incorrect result for very tiny differences due to Double inaccuracy
+     */
+    func isFirstDateBeforeSecondDateByLessThanTimeInterval(firstDate: Date,
+                                                           secondDate: Date,
+                                                           timeInterval: TimeInterval) -> Bool {
+
+        let intervalFromFirstToSecond = secondDate.timeIntervalSince(firstDate)
+        if intervalFromFirstToSecond <= 0.0 {
+            // secondDate is before or at firstDate.
+            return false
+        } else {
+            return intervalFromFirstToSecond < timeInterval
+        }
+    }
+
+    func ha1cValueForBgValues(_ bgValues: [NSNumber]) -> NSNumber? {
+        return 0
+    }
+
+
 }
