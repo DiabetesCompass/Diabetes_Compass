@@ -275,6 +275,7 @@ class TrendViewController : UIViewController {
 
 }
 
+// MARK: - CPTPlotDataSource
 extension TrendViewController: CPTPlotDataSource {
 
     /** @brief @required The number of data points for the plot.
@@ -344,7 +345,7 @@ extension TrendViewController: CPTPlotDataSource {
     }
 }
 
-// MARK: Axis Delegate Methods
+// MARK: - CPTAxisDelegate
 extension TrendViewController: CPTAxisDelegate {
 
     private func axis(_ axis: CPTAxis,
@@ -382,6 +383,7 @@ extension TrendViewController: CPTAxisDelegate {
     }
 }
 
+// MARK: - CPTPlotSpaceDelegate
 extension TrendViewController: CPTPlotSpaceDelegate {
 
     func plotSpace(_ space: CPTPlotSpace,
