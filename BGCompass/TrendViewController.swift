@@ -329,7 +329,7 @@ extension TrendViewController: CPTPlotDataSource {
                 if BGReading.isInMoles() {
                     return reading.quantity
                 } else {
-                    return reading.quantity.floatValue * Float(CONVERSIONFACTOR)
+                    return reading.quantity.floatValue * Float(MG_PER_DL_PER_MMOL_PER_L)
                 }
             }
 

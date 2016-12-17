@@ -174,37 +174,37 @@
     self.useMoleUnitsItem.switchValueChangeHandler = ^(REBoolItem *item) {
         if (item.value) {
             if (!weakSelf.insulinSensitivityDidChange) {
-                weakSelf.insulinSensitivityItem.value = [NSString stringWithFormat:@"%.2f",[weakSelf.insulinSensitivityItem.value floatValue] / CONVERSIONFACTOR];
+                weakSelf.insulinSensitivityItem.value = [NSString stringWithFormat:@"%.2f",[weakSelf.insulinSensitivityItem.value floatValue] / MG_PER_DL_PER_MMOL_PER_L];
             }
             
             if (!weakSelf.carbSensitivityDidChange) {
-                weakSelf.carbohydrateSensitivityItem.value = [NSString stringWithFormat:@"%.2f",[weakSelf.carbohydrateSensitivityItem.value floatValue] / CONVERSIONFACTOR];
+                weakSelf.carbohydrateSensitivityItem.value = [NSString stringWithFormat:@"%.2f",[weakSelf.carbohydrateSensitivityItem.value floatValue] / MG_PER_DL_PER_MMOL_PER_L];
             }
             
             if (!weakSelf.idealBGMaxDidChange) {
-                weakSelf.idealBGMaxItem.value = [NSString stringWithFormat:@"%.2f",[weakSelf.idealBGMaxItem.value floatValue] / CONVERSIONFACTOR];
+                weakSelf.idealBGMaxItem.value = [NSString stringWithFormat:@"%.2f",[weakSelf.idealBGMaxItem.value floatValue] / MG_PER_DL_PER_MMOL_PER_L];
             }
             
             if (!weakSelf.idealBGMinDidChange) {
-                weakSelf.idealBGMinItem.value = [NSString stringWithFormat:@"%.2f",[weakSelf.idealBGMinItem.value floatValue] / CONVERSIONFACTOR];
+                weakSelf.idealBGMinItem.value = [NSString stringWithFormat:@"%.2f",[weakSelf.idealBGMinItem.value floatValue] / MG_PER_DL_PER_MMOL_PER_L];
             }
             
         } else {
             
             if (!weakSelf.insulinSensitivityDidChange) {
-                weakSelf.insulinSensitivityItem.value = [NSString stringWithFormat:@"%.0f",[weakSelf.insulinSensitivityItem.value floatValue] * CONVERSIONFACTOR];
+                weakSelf.insulinSensitivityItem.value = [NSString stringWithFormat:@"%.0f",[weakSelf.insulinSensitivityItem.value floatValue] * MG_PER_DL_PER_MMOL_PER_L];
             }
             
             if (!weakSelf.carbSensitivityDidChange) {
-                weakSelf.carbohydrateSensitivityItem.value = [NSString stringWithFormat:@"%.0f",[weakSelf.carbohydrateSensitivityItem.value floatValue] * CONVERSIONFACTOR];
+                weakSelf.carbohydrateSensitivityItem.value = [NSString stringWithFormat:@"%.0f",[weakSelf.carbohydrateSensitivityItem.value floatValue] * MG_PER_DL_PER_MMOL_PER_L];
             }
             
             if (!weakSelf.idealBGMaxDidChange) {
-                weakSelf.idealBGMaxItem.value = [NSString stringWithFormat:@"%.0f",[weakSelf.idealBGMaxItem.value floatValue] * CONVERSIONFACTOR];
+                weakSelf.idealBGMaxItem.value = [NSString stringWithFormat:@"%.0f",[weakSelf.idealBGMaxItem.value floatValue] * MG_PER_DL_PER_MMOL_PER_L];
             }
             
             if (!weakSelf.idealBGMinDidChange) {
-                weakSelf.idealBGMinItem.value = [NSString stringWithFormat:@"%.0f",[weakSelf.idealBGMinItem.value floatValue] * CONVERSIONFACTOR];
+                weakSelf.idealBGMinItem.value = [NSString stringWithFormat:@"%.0f",[weakSelf.idealBGMinItem.value floatValue] * MG_PER_DL_PER_MMOL_PER_L];
                 
             }
             

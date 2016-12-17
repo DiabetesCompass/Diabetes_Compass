@@ -163,7 +163,7 @@
     
     float insulinSensitivity = [[NSUserDefaults standardUserDefaults] floatForKey:SETTING_INSULIN_SENSITIVITY];
     if (![BGReading isInMoles]) {
-        insulinSensitivity = insulinSensitivity / CONVERSIONFACTOR;
+        insulinSensitivity = insulinSensitivity / MG_PER_DL_PER_MMOL_PER_L;
     }
 // TODO: fix me The insulinSensitivity code above seems fishy. Needs a second look.
     
@@ -203,7 +203,7 @@
     
     float carbSensitivity = [[NSUserDefaults standardUserDefaults] floatForKey:SETTING_CARB_SENSITIVITY];
     if (![BGReading isInMoles]) {
-        carbSensitivity = carbSensitivity / CONVERSIONFACTOR;
+        carbSensitivity = carbSensitivity / MG_PER_DL_PER_MMOL_PER_L;
     }
     
     // Normalize and Multiply by carb sensitivity

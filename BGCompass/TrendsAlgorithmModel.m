@@ -118,7 +118,7 @@
     }
 
     for (BGReading* reading in fetchedReadings) {
-        NSLog(@"Correcting reading for %f", CONVERSIONFACTOR*reading.quantity.floatValue);
+        NSLog(@"Correcting reading for %f", MG_PER_DL_PER_MMOL_PER_L*reading.quantity.floatValue);
         [self calculateHa1c:reading];
     }
 }
@@ -188,13 +188,13 @@
                     bigIndex++;
                 }
         }
-            NSLog(@"BG indexed: %f", CONVERSIONFACTOR*reading.quantity.floatValue);
+            NSLog(@"BG indexed: %f", MG_PER_DL_PER_MMOL_PER_L*reading.quantity.floatValue);
         previousReading = reading;
    }
         twBGAve = (sum)/sumRamp;
     }
-    NSLog(@"weighted average BG: %f", CONVERSIONFACTOR*twBGAve);
-    twHA1c = (46.7 + CONVERSIONFACTOR*twBGAve)/28.7;
+    NSLog(@"weighted average BG: %f", MG_PER_DL_PER_MMOL_PER_L*twBGAve);
+    twHA1c = (46.7 + MG_PER_DL_PER_MMOL_PER_L*twBGAve)/28.7;
     //log &Add final result to CoreData
     NSLog(@"weighted average HA1c: %f", twHA1c);
     Ha1cReading* reading = [Ha1cReading MR_createEntityInContext:[NSManagedObjectContext MR_defaultContext]];
