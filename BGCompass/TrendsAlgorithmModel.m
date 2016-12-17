@@ -15,8 +15,7 @@
 
 @implementation TrendsAlgorithmModel
 
-+ (id)sharedInstance
-{
++ (id)sharedInstance {
     static TrendsAlgorithmModel *sharedInstance = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
@@ -24,8 +23,8 @@
     });
     return sharedInstance;
 }
-- (id)init
-{
+
+- (id)init {
     self = [super init];
     if (self) {
         self.trend_queue = dispatch_queue_create("trend_queue", DISPATCH_QUEUE_SERIAL);
@@ -34,6 +33,7 @@
     }
     return self;
 }
+
 // - observer
 - (void)addObservers {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleNotifications:) name:NOTE_REJECTED object:nil];
@@ -41,6 +41,7 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleNotifications:) name:NOTE_BGREADING_ADDED object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleNotifications:) name:NOTE_BGREADING_EDITED object:nil];
 }
+
 - (void) handleNotifications:(NSNotification*) note {
     NSLog(@"Received notification name: %@", [note name]);
     if ([[note name] isEqualToString:NOTE_BGREADING_ADDED]) {
@@ -55,14 +56,14 @@
         });
     }
 }
-- (void) loadArrays
-{
+
+- (void) loadArrays {
     self.ha1cArray = [Ha1cReading MR_findAllSortedBy:@"timeStamp" ascending:YES inContext:[NSManagedObjectContext MR_defaultContext]];
     self.bgArray = [BGReading MR_findAllSortedBy:@"timeStamp" ascending:YES inContext:[NSManagedObjectContext MR_defaultContext]];
 }
+
 //count HA1c readings?
-- (NSNumber*) ha1cArrayCount
-{
+- (NSNumber*) ha1cArrayCount {
     NSNumber* result;
     if (self.ha1cArray) {
         result = @([self.ha1cArray count]);
@@ -70,12 +71,11 @@
     } else {
         result = @(0);
     }
-    
     return result;
 }
+
 //count BG readings?
-- (NSNumber*) bgArrayCount
-{
+- (NSNumber*) bgArrayCount {
     NSNumber* result;
     if (self.bgArray) {
         result = @([self.bgArray count]);
@@ -84,9 +84,9 @@
     }
     return result;
 }
+
  //fetch previous HA1c readings?
-- (Ha1cReading*) getFromHa1cArray:(NSUInteger)index
-{
+- (Ha1cReading*) getFromHa1cArray:(NSUInteger)index {
     Ha1cReading* result;
     if (self.ha1cArray) {
         result = [self.ha1cArray objectAtIndex:index];
@@ -95,9 +95,9 @@
     }
     return result;
 }
+
 //fetch previous BG readings?
-- (BGReading*) getFromBGArray:(NSUInteger)index
-{
+- (BGReading*) getFromBGArray:(NSUInteger)index {
     BGReading* result;
     if (self.bgArray && self.bgArray.count != 0) {
         result = [self.bgArray objectAtIndex:index];
@@ -106,8 +106,8 @@
     }
     return result;
 }
-- (void) correctTrendReadingsAfterDate:(NSDate*) lowerBound
-{
+
+- (void) correctTrendReadingsAfterDate:(NSDate*) lowerBound {
 //    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"timeStamp >= %@", lowerBound];
     
     NSArray *fetchedReadings = [BGReading MR_findAllSortedBy:@"timeStamp" ascending:YES inContext:[NSManagedObjectContext MR_defaultContext]];
@@ -123,9 +123,7 @@
     }
 }
 
-
-- (void) calculateHa1c:(BGReading*) bgReading
-{
+- (void) calculateHa1c:(BGReading*) bgReading {
     int HEMOGLOBIN_LIFESPAN = 100*HOURS_IN_ONE_DAY*SECONDS_IN_ONE_HOUR;
     
     //1 -- Retreive all blood glucose readings backwards
@@ -174,12 +172,12 @@
             bigIndex++;
         }
         else {
-        if (previousReading) {
-            int minutesBetweenReadings = (int)[reading.timeStamp timeIntervalSinceDate:previousReading.timeStamp]/(SECONDS_IN_ONE_MINUTE);
-            minutesBetweenReadings = abs(minutesBetweenReadings);
-            if (minutesBetweenReadings < interval) {
-                continue; // If two readings are within an interval of each other ignore this one. Move to the next.
-            }
+            if (previousReading) {
+                int minutesBetweenReadings = (int)[reading.timeStamp timeIntervalSinceDate:previousReading.timeStamp]/(SECONDS_IN_ONE_MINUTE);
+                minutesBetweenReadings = abs(minutesBetweenReadings);
+                if (minutesBetweenReadings < interval) {
+                    continue; // If two readings are within an interval of each other ignore this one. Move to the next.
+                }
                 for (int index = 0; index < minutesBetweenReadings/interval; index++ ) {
                     interpolated[bigIndex] = previousReading.quantity.floatValue + index*(reading.quantity.floatValue - previousReading.quantity.floatValue)/(minutesBetweenReadings/interval);
                     sum = sum + interpolated[bigIndex ]*ramp;
@@ -187,10 +185,10 @@
                     ramp = ramp - delta;
                     bigIndex++;
                 }
-        }
+            }
             NSLog(@"BG indexed: %f", MG_PER_DL_PER_MMOL_PER_L*reading.quantity.floatValue);
-        previousReading = reading;
-   }
+            previousReading = reading;
+        }
         twBGAve = (sum)/sumRamp;
     }
     NSLog(@"weighted average BG: %f", MG_PER_DL_PER_MMOL_PER_L*twBGAve);
