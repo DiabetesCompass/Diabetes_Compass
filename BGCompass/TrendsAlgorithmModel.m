@@ -137,15 +137,23 @@ NSTimeInterval hemoglobinLifespanSeconds = 0.0;
     [self loadArrays];
 
     // bloodGlucoseRecentReadingsWithCurrentReading defined in TrendsAlgorithmModelExtension.swift
-    NSArray *recentBGReadings = [self bloodGlucoseRecentReadingsWithCurrentReading: bgReading
-                                                                  readings: self.bgArray
-                                                 hemoglobinLifespanSeconds: hemoglobinLifespanSeconds];
+    NSArray *recentBGReadings =
+    [self bloodGlucoseRecentReadingsWithCurrentReading: bgReading
+                                              readings: self.bgArray
+                             hemoglobinLifespanSeconds: hemoglobinLifespanSeconds];
 
     if ((recentBGReadings == nil) || (recentBGReadings.count == 0)) {
         return;
     }
 
-    //2 -- Interpolate readings.
+    // Interpolate readings
+    /////////////////////////////////////////////////////////////////////
+
+    // TODO: Extract some Objective C code below to
+    // TrendsAlgorithmModelExtension.swift methods like ha1cValueForBgReadings
+    // Call Swift methods here to get an interpolated value,
+    // then within Obj C change values observed by MagicalRecord
+
     int interval = 10; // interpolated array will be at 10 minute intervals.
     int arraysize = (int) (hemoglobinLifespanSeconds / interval) + 1;
 
@@ -188,10 +196,15 @@ NSTimeInterval hemoglobinLifespanSeconds = 0.0;
         }
         twBGAve = (sum)/sumRamp;
     }
+
     NSLog(@"weighted average BG: %f", MG_PER_DL_PER_MMOL_PER_L*twBGAve);
     twHA1c = (46.7 + MG_PER_DL_PER_MMOL_PER_L*twBGAve)/28.7;
     //log &Add final result to CoreData
     NSLog(@"weighted average HA1c: %f", twHA1c);
+    
+    /////////////////////////////////////////////////////////////////////
+
+
     Ha1cReading* reading = [Ha1cReading MR_createEntityInContext:[NSManagedObjectContext MR_defaultContext]];
     reading.quantity = @(twHA1c);
 

@@ -88,7 +88,9 @@ extension TrendsAlgorithmModel {
         }
     }
 
-    func ha1cValueForBgValues(_ bgValues: [NSNumber]) -> NSNumber? {
+
+    // TODO: implement this, call from Objective C?
+    func ha1cValueForBgReadings(_ bgReadings: [BGReading]) -> NSNumber? {
         return 0
     }
 
