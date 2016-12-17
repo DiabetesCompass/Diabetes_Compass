@@ -27,7 +27,7 @@ class TrendsViewControllerTests: XCTestCase {
         // bg.setQuantity(72,  withConversion: false)
         // bg.timeStamp = Date()
         // print("testBloodGlucoseTextReading", bg)
-        // XCTAssertEqual(TrendsViewController.bloodGlucoseText(reading: bg), "72 mg/d")
+        // XCTAssertEqual(TrendsViewController.bloodGlucoseText(reading: bg), "72 mg/dL")
     }
 
     func testHa1cTextReadingNil() {
