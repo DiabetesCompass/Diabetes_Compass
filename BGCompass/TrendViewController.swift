@@ -79,8 +79,7 @@ class TrendViewController : UIViewController {
         plotSpace.xRange = TrendViewController.xRange(trendsAlgorithmModel: trendsAlgorithmModel,
                                                       trend: trend)
 
-        plotSpace.globalYRange = TrendViewController.globalYRange(trendsAlgorithmModel: trendsAlgorithmModel,
-                                                                  trend: trend)
+        plotSpace.globalYRange = TrendViewController.globalYRange(trend: trend)
         plotSpace.yRange = plotSpace.globalYRange!
     }
 
@@ -136,24 +135,30 @@ class TrendViewController : UIViewController {
         return range
     }
 
-    class func globalYRange(trendsAlgorithmModel: TrendsAlgorithmModel?, trend: Trend) -> CPTPlotRange {
-        //let rangeEmpty = CPTPlotRange(location: 0.0, length: 0.0)
-
-        var xAxisLabelHeight: Double
-        var rangeMaximum: Double
-
+    class func globalYRange(trend: Trend) -> CPTPlotRange {
+        let length = NSNumber(value:TrendViewController.rangeMaximum(trend: trend)
+            + TrendViewController.xAxisLabelHeight(trend: trend))
+        let range = CPTPlotRange(location: NSNumber(value: -xAxisLabelHeight(trend: trend)),
+                                 length: length)
+        return range
+    }
+    
+    class func xAxisLabelHeight(trend: Trend) -> Double {
         switch trend {
         case .bg:
-            xAxisLabelHeight = 5
-            rangeMaximum = 120
+            return 5.0
         case .ha1c:
-            xAxisLabelHeight = 0.5
-            rangeMaximum = 11
+            return 0.5
         }
+    }
 
-        let range = CPTPlotRange(location: NSNumber(value: -xAxisLabelHeight),
-                                 length: NSNumber(value:rangeMaximum + xAxisLabelHeight))
-        return range
+    class func rangeMaximum(trend: Trend) -> Double {
+        switch trend {
+        case .bg:
+            return 120.0
+        case .ha1c:
+            return 11.0
+        }
     }
 
     func configureAxes(graph: CPTXYGraph) {
@@ -406,8 +411,10 @@ extension TrendViewController: CPTPlotSpaceDelegate {
         if coordinate == CPTCoordinate.X {
             axisSet.yAxis?.orthogonalPosition = NSNumber(value:(range.location.doubleValue + TrendViewController.yAxisLabelWidth))
             //axisSet.xAxis?.titleLocation = CPTDecimalFromDouble(range.locationDouble + (range.lengthDouble / 2.0)) as NSNumber?
-        } else {
-            axisSet.xAxis?.orthogonalPosition = range.location
+        } else if (coordinate == CPTCoordinate.Y)
+            && (trend != nil) {
+            axisSet.xAxis?.orthogonalPosition = NSNumber(value:(range.location.doubleValue
+                + TrendViewController.xAxisLabelHeight(trend: trend!)))
             //axisSet.yAxis?.titleLocation = CPTDecimalFromDouble(range.locationDouble + (range.lengthDouble / 2.0)) as NSNumber?
         }
         return range
