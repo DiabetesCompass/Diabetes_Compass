@@ -8,6 +8,10 @@
 
 #import "TrendsAlgorithmModel.h"
 #import "Constants.h"
+
+// import <project name>-Swift.h so Objective C can see Swift code
+// note don't import <class name>-Swift.h, that won't work
+// http://stackoverflow.com/questions/24078043/call-swift-function-from-objective-c-class#24087280
 #import "BGCompass-Swift.h"
 
 @interface TrendsAlgorithmModel()
@@ -61,6 +65,14 @@
 - (void) loadArrays {
     self.ha1cArray = [Ha1cReading MR_findAllSortedBy:@"timeStamp" ascending:YES inContext:[NSManagedObjectContext MR_defaultContext]];
     self.bgArray = [BGReading MR_findAllSortedBy:@"timeStamp" ascending:YES inContext:[NSManagedObjectContext MR_defaultContext]];
+
+
+    ///////////////////////////////////////////////
+    // FIXME: delete or move this. I put it here to check it works
+    NSArray *readings = [self recentReadings];
+    NSLog(@"readings: %@", readings);
+    //////////////////////////////////////////////
+
 }
 
 //count HA1c readings?
@@ -125,6 +137,7 @@
 }
 
 - (void) calculateHa1c:(BGReading*) bgReading {
+
     int HEMOGLOBIN_LIFESPAN = 100*HOURS_IN_ONE_DAY*SECONDS_IN_ONE_HOUR;
     
     //1 -- Retreive all blood glucose readings backwards
@@ -202,6 +215,15 @@
     reading.timeStamp = lastReading.timeStamp;
     [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
     [self loadArrays];
+}
+
+/// recentReadings calls methods defined in TrendsAlgorithmModelExtension.swift
+- (NSArray*) recentReadings {
+
+
+    BGReading *bgReadingLast = [self bgArrayReadingLast];
+    NSArray *readings = [self bloodGlucoseReadingsWithinHemoglobinLifespanWithCurrentReading:bgReadingLast readings:self.bgArray];
+    return readings;
 }
 
 @end

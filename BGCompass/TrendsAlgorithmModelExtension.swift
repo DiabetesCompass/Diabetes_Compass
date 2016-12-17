@@ -10,6 +10,8 @@ import Foundation
 
 /** Swift extension can extend a Swift class or an Objective C class
  http://ctarda.com/2016/05/swift-extensions-can-be-applied-to-objective-c-types/
+ If this was a class would add @objc, but apparently
+ for an extension this annotation is not needed or allowed
  */
 extension TrendsAlgorithmModel {
 
@@ -54,7 +56,7 @@ extension TrendsAlgorithmModel {
     /**
      - returns: readings within hemoglobin lifespan before current reading, excluding current reading
      */
-    open func bloodGlucoseReadingsWithinHemoglobinLifespan(currentReading: BGReading,
+    func bloodGlucoseReadingsWithinHemoglobinLifespan(currentReading: BGReading,
                                                 readings: [BGReading]) -> [BGReading] {
 
         let secondsPerOneHundredDays: TimeInterval = 100.0 * Double(HOURS_IN_ONE_DAY * SECONDS_IN_ONE_HOUR)

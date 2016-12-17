@@ -319,17 +319,6 @@ extension TrendViewController: CPTPlotDataSource {
             let reading = model.getFromBGArray(record) as BGReading
             let firstReading = model.bgArrayReadingFirst()
 
-
-            //////////////////////////////////////////////////////////////////////////////
-            // FIXME: delete code to test methods
-            // Put it here because:
-            // I haven't figured out how to call Magical Record from Swift unit tests
-            // I haven't figured out how to call Swift extension from Obj c same class
-            let readings = model.bloodGlucoseReadingsWithinHemoglobinLifespan(currentReading: (model.bgArrayReadingLast())!, readings: model.bgArray as! [BGReading])
-            print(readings)
-            //////////////////////////////////////////////////////////////////////////////
-
-
             if plotField == .X {
                 guard let dateFirst = firstReading?.timeStamp else { return nil }
                 let timeIntervalSeconds: TimeInterval = reading.timeStamp.timeIntervalSince(dateFirst)
