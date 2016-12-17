@@ -11,10 +11,6 @@ import XCTest
 
 class TrendsViewControllerTests: XCTestCase {
 
-    func testArithmeticExample() {
-        XCTAssertEqual(5, 2 + 3)
-}
-
     func testBloodGlucoseTextReadingNil() {
         XCTAssertEqual(TrendsViewController.bloodGlucoseText(reading: nil), "No data")
     }
