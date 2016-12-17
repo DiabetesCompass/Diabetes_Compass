@@ -123,7 +123,6 @@
 		DE1AD7F91DFBB2E500720F5F /* Trends.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DE1AD7F81DFBB2E500720F5F /* Trends.storyboard */; };
 		DE1AD7FD1DFBB3C400720F5F /* TrendsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE1AD7FC1DFBB3C400720F5F /* TrendsViewController.swift */; };
 		DE758DF11DDABDE200135F5D /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DE758DF01DDABDE200135F5D /* Launch Screen.storyboard */; };
-		DE9CB8C51E05CF540076687C /* TrendsAlgorithmModelHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9CB8C41E05CF540076687C /* TrendsAlgorithmModelHelper.swift */; };
 		DEABA8A21DFCEEDC00B42AEA /* TrendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEABA8A11DFCEEDC00B42AEA /* TrendViewController.swift */; };
 		DEB332DE1DFFC9EA00989771 /* TrendsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEB332DD1DFFC9EA00989771 /* TrendsViewControllerTests.swift */; };
 		DEEEF1C81DFE0A140027D955 /* TrendsAlgorithmModelExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEEEF1C71DFE0A140027D955 /* TrendsAlgorithmModelExtension.swift */; };
@@ -331,7 +330,6 @@
 		DE1AD7FC1DFBB3C400720F5F /* TrendsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrendsViewController.swift; sourceTree = "<group>"; };
 		DE1FE5011DCFEB0C000B6A8A /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		DE758DF01DDABDE200135F5D /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
-		DE9CB8C41E05CF540076687C /* TrendsAlgorithmModelHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrendsAlgorithmModelHelper.swift; sourceTree = "<group>"; };
 		DEABA8A11DFCEEDC00B42AEA /* TrendViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrendViewController.swift; sourceTree = "<group>"; };
 		DEB332DC1DFFC9E900989771 /* BGCompassTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BGCompassTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		DEB332DD1DFFC9EA00989771 /* TrendsViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrendsViewControllerTests.swift; sourceTree = "<group>"; };
@@ -676,7 +674,6 @@
 				83980E0B184808BB00E321CF /* TrendsAlgorithmModel.h */,
 				83980E0C184808BB00E321CF /* TrendsAlgorithmModel.m */,
 				DEEEF1C71DFE0A140027D955 /* TrendsAlgorithmModelExtension.swift */,
-				DE9CB8C41E05CF540076687C /* TrendsAlgorithmModelHelper.swift */,
 			);
 			name = Algorithms;
 			sourceTree = "<group>";
@@ -1003,7 +1000,6 @@
 				839E34A0182F699F0083960E /* AddedListViewController.m in Sources */,
 				2C253F8518BC89DA00DB7D2A /* TutorialTitleItem.m in Sources */,
 				83EAFABC182F521000CE5FA9 /* FoodReading.m in Sources */,
-				DE9CB8C51E05CF540076687C /* TrendsAlgorithmModelHelper.swift in Sources */,
 				83FD930E1830529600F4F19E /* Constants.m in Sources */,
 				833A3E4C1837009C00C1FF5C /* CurveModel.m in Sources */,
 				2C2330FB182B6C82008A6F88 /* main.m in Sources */,
