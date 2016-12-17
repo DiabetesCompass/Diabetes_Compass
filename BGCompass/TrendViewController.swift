@@ -64,6 +64,9 @@ class TrendViewController : UIViewController {
     /// set axes range start and length
     func configurePlotSpace(graph: CPTXYGraph, trend: Trend) {
         let plotSpace = graph.defaultPlotSpace as! CPTXYPlotSpace
+
+        plotSpace.delegate = self
+
         plotSpace.allowsUserInteraction = true
 
         // limit scrolling?
@@ -158,6 +161,8 @@ class TrendViewController : UIViewController {
         let axisSet = graph.axisSet as! CPTXYAxisSet
 
         if let x = axisSet.xAxis {
+            x.delegate = self
+
             x.labelFormatter = xLabelFormatter()
             x.labelTextStyle = TrendViewController.textStyleWhite()
             x.axisLineStyle = TrendViewController.lineStyleThinWhite()
@@ -270,7 +275,7 @@ class TrendViewController : UIViewController {
 
 }
 
-extension TrendViewController: CPTBarPlotDataSource, CPTBarPlotDelegate {
+extension TrendViewController: CPTPlotDataSource {
 
     /** @brief @required The number of data points for the plot.
      *  @param plot The plot.
@@ -278,7 +283,7 @@ extension TrendViewController: CPTBarPlotDataSource, CPTBarPlotDelegate {
      **/
     func numberOfRecords(for plot: CPTPlot) -> UInt {
         guard let model: TrendsAlgorithmModel = trendsAlgorithmModel,
-        let trendUnwrapped = trend else { return 0 }
+            let trendUnwrapped = trend else { return 0 }
         switch trendUnwrapped {
         case .bg:
             return UInt(model.bgArrayCount())
@@ -333,12 +338,14 @@ extension TrendViewController: CPTBarPlotDataSource, CPTBarPlotDelegate {
             } else if plotField == .Y {
                 return reading.quantity
             }
-            
+
         }
         return nil
     }
+}
 
-    // MARK: Axis Delegate Methods
+// MARK: Axis Delegate Methods
+extension TrendViewController: CPTAxisDelegate {
 
     private func axis(_ axis: CPTAxis,
                       shouldUpdateAxisLabelsAtLocations locations: NSSet!) -> Bool {
@@ -373,33 +380,33 @@ extension TrendViewController: CPTBarPlotDataSource, CPTBarPlotDelegate {
         }
         return false
     }
+}
 
-    // doesn't get called. need to set a CPPlotSpaceDelegate property?
-    // http://stackoverflow.com/questions/1892544/allow-horizontal-scrolling-only-in-the-core-plot-barchart/24525631#24525631
-    // http://stackoverflow.com/questions/37898061/coreplot-vertical-scrolling-for-horizontal-bars
-    func plotSpace(space: CPTPlotSpace,
+extension TrendViewController: CPTPlotSpaceDelegate {
+
+    func plotSpace(_ space: CPTPlotSpace,
                    willChangePlotRangeTo newRange: CPTPlotRange,
-                   forCoordinate coordinate: CPTCoordinate) -> CPTPlotRange? {
+                   for coordinate: CPTCoordinate) -> CPTPlotRange? {
 
-        let range: CPTMutablePlotRange = CPTPlotRange(location: newRange.location,
-                                                      length:newRange.length) as! CPTMutablePlotRange
+        let range: CPTMutablePlotRange = CPTMutablePlotRange(location: newRange.location,
+                                                             length:newRange.length)
 
         // Display only Quadrant I: never let the location go negative.
         //
-        if range.locationDouble < 0.0 {
-            range.location = 0.0
-        }
-        
+        //        if range.locationDouble < 0.0 {
+        //            range.location = 0.0
+        //        }
+
         // Adjust axis to keep them in view at the left and bottom;
         // adjust scale-labels to match the scroll.
         //
         let axisSet: CPTXYAxisSet = space.graph!.axisSet as! CPTXYAxisSet
         if coordinate == CPTCoordinate.X {
             axisSet.yAxis?.orthogonalPosition = range.location
-            axisSet.xAxis?.titleLocation = CPTDecimalFromDouble(range.locationDouble + (range.lengthDouble / 2.0)) as NSNumber?
+            //axisSet.xAxis?.titleLocation = CPTDecimalFromDouble(range.locationDouble + (range.lengthDouble / 2.0)) as NSNumber?
         } else {
             axisSet.xAxis?.orthogonalPosition = range.location
-            axisSet.yAxis?.titleLocation = CPTDecimalFromDouble(range.locationDouble + (range.lengthDouble / 2.0)) as NSNumber?
+            //axisSet.yAxis?.titleLocation = CPTDecimalFromDouble(range.locationDouble + (range.lengthDouble / 2.0)) as NSNumber?
         }
         return range
     }
