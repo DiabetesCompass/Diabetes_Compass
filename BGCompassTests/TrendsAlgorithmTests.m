@@ -85,7 +85,7 @@
     [[NSManagedObjectContext MR_defaultContext] MR_saveOnlySelfAndWait];
     
     NSNumber* count = [Ha1cReading MR_numberOfEntities];
-    XCTAssert([count intValue] == 1, @"The number of Ha1c readings was NOT one.");
+    XCTAssertEqual([count intValue], 1, @"The number of Ha1c readings was NOT one.");
     
     NSArray* readings = [Ha1cReading MR_findAll];
     Ha1cReading* ha1c = [readings firstObject];
@@ -123,7 +123,7 @@
     [[NSManagedObjectContext MR_defaultContext] MR_saveOnlySelfAndWait];
     
     NSNumber* count = [Ha1cReading MR_numberOfEntities];
-    XCTAssert([count intValue] == 1, @"The number of Ha1c readings was NOT one.");
+    XCTAssertEqual([count intValue], 1, @"The number of Ha1c readings was NOT one.");
     
     Ha1cReading* ha1c = [Ha1cReading MR_findFirst];
     
