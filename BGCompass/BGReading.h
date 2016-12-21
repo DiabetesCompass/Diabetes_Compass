@@ -16,10 +16,7 @@
 extern NSString *const stringForUnitsInMoles;
 extern NSString *const stringForUnitsInMilligrams;
 
-//@property (nonatomic, retain) NSString * name;
 @property (nonatomic, retain) NSNumber * quantity;
-//@property (nonatomic, retain) NSDate * timeStamp;
-//@property (nonatomic, retain) NSNumber * isFavorite;
 
 +(NSString *) displayString:(NSNumber*) value withConversion:(BOOL)convert;
 -(NSString *) displayString;
