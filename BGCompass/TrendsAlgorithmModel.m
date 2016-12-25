@@ -60,6 +60,7 @@
     self.ha1cArray = [Ha1cReading MR_findAllSortedBy:@"timeStamp" ascending:YES inContext:[NSManagedObjectContext MR_defaultContext]];
     self.bgArray = [BGReading MR_findAllSortedBy:@"timeStamp" ascending:YES inContext:[NSManagedObjectContext MR_defaultContext]];
 }
+
 //count HA1c readings?
 - (NSNumber*) ha1cArrayCount
 {
@@ -84,9 +85,9 @@
     }
     return result;
 }
- //fetch previous HA1c readings?
-- (Ha1cReading*) getFromHa1cArray:(NSUInteger)index
-{
+
+/// - returns: HA1cArray object at index
+- (Ha1cReading *)getFromHa1cArray:(NSUInteger)index {
     Ha1cReading* result;
     if (self.ha1cArray) {
         result = [self.ha1cArray objectAtIndex:index];
@@ -95,9 +96,9 @@
     }
     return result;
 }
-//fetch previous BG readings?
-- (BGReading*) getFromBGArray:(NSUInteger)index
-{
+
+/// - returns: BGArray object at index
+- (BGReading *)getFromBGArray:(NSUInteger)index {
     BGReading* result;
     if (self.bgArray && self.bgArray.count != 0) {
         result = [self.bgArray objectAtIndex:index];
@@ -106,6 +107,7 @@
     }
     return result;
 }
+
 /*<<<<<<< HEAD
 =======
 - (void) correctTrendReadingsAfterDate:(NSDate*) lowerBound
