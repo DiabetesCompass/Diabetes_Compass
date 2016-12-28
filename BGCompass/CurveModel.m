@@ -82,7 +82,7 @@
         // General Curve Points: (0,0), (20, 0), (90, 3.0), (290, 4.3), (390, 2.35), (515, 0)
         self.insulinPoints = @[
                                [NSValue valueWithCGPoint:CGPointMake(0, 0)],
-                               [NSValue valueWithCGPoint:CGPointMake(20/515*insulinDuration, 0)],
+                               [NSValue valueWithCGPoint:CGPointMake(20, 0)],
                                [NSValue valueWithCGPoint:CGPointMake(90/515*insulinDuration, 300)],
                                [NSValue valueWithCGPoint:CGPointMake(95/515*insulinDuration, 430)],
                                [NSValue valueWithCGPoint:CGPointMake(185/515*insulinDuration, 235)],
@@ -163,7 +163,7 @@
     
     float insulinSensitivity = [[NSUserDefaults standardUserDefaults] floatForKey:SETTING_INSULIN_SENSITIVITY];
     if (![BGReading isInMoles]) {
-        insulinSensitivity = insulinSensitivity / CONVERSIONFACTOR;
+        insulinSensitivity = insulinSensitivity / MG_PER_DL_PER_MMOL_PER_L;
     }
 // TODO: fix me The insulinSensitivity code above seems fishy. Needs a second look.
     

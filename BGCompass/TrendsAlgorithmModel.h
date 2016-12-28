@@ -20,7 +20,7 @@
 
 + (id) sharedInstance;
 
-- (void) calculateNewHA1c:(BGReading*) reading;
+- (void) computeHA1c:(NSDate*) timeStamp;
 //- (void) calculateAg15:(BGReading*) reading;
 
 - (NSNumber*) ha1cArrayCount;
