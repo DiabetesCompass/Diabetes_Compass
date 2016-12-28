@@ -60,7 +60,9 @@ int const MINUTES_IN_ONE_HOUR = 60;
 int const HOURS_IN_ONE_DAY = 24;
 int const DAYS_IN_ONE_WEEK = 7;
 
-int const CONVERSIONFACTOR = 18.0182;
+/// (milligrams/deciliter) / (millimoles/liter)
+int const MG_PER_DL_PER_MMOL_PER_L = 18.0;
+
 int const BG_EXPIRATION_MINUTES = 720;
 int const FOOD_CURVE_LENGTH_MINUTES = 120;
 int const PREDICT_MINUTES = 180;

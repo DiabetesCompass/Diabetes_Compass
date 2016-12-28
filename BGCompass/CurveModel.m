@@ -96,22 +96,22 @@
         // Apidra Curve Points: (0,0), (20, 0), (65, 5.5), (215, 5.2), (485, 0)
         self.insulinPoints = @[
                                [NSValue valueWithCGPoint:CGPointMake(0, 0)],
-                               [NSValue valueWithCGPoint:CGPointMake(20/485*insulinDuration, 0)],
+                               [NSValue valueWithCGPoint:CGPointMake(20, 0)],
                                [NSValue valueWithCGPoint:CGPointMake(65/485*insulinDuration, 55)],
                                [NSValue valueWithCGPoint:CGPointMake(215/485*insulinDuration, 52)],
                                [NSValue valueWithCGPoint:CGPointMake(insulinDuration, 0)]
                                ];
     } else if (insulinType == INSULINTYPE_LISPRO || insulinType == INSULINTYPE_ASPART) {
         if (insulinDuration == USE_DEFAULT_DURATION) {
-            insulinDuration = 360;
+            insulinDuration = 240;
         }
         
-        // Lispro Curve Points: (0, 0), (20, 0), (75, 4.5), (185, 5.4), (480, 0)
+        // Lispro/Aspart Curve Points: (0, 0), (20, 0), (75, 4.5), (185, 5.4), (240, 0)
         self.insulinPoints = @[
                                [NSValue valueWithCGPoint:CGPointMake(0, 0)],
-                               [NSValue valueWithCGPoint:CGPointMake(20/480*insulinDuration, 0)],
-                               [NSValue valueWithCGPoint:CGPointMake(75/480*insulinDuration, 45)],
-                               [NSValue valueWithCGPoint:CGPointMake(185/480*insulinDuration, 54)],
+                               [NSValue valueWithCGPoint:CGPointMake(20, 0)],
+                               [NSValue valueWithCGPoint:CGPointMake(75/240*insulinDuration, 45)],
+                               [NSValue valueWithCGPoint:CGPointMake(185/240*insulinDuration, 54)],
                                [NSValue valueWithCGPoint:CGPointMake(insulinDuration, 0)]
                                ];
     }
@@ -203,7 +203,7 @@
     
     float carbSensitivity = [[NSUserDefaults standardUserDefaults] floatForKey:SETTING_CARB_SENSITIVITY];
     if (![BGReading isInMoles]) {
-        carbSensitivity = carbSensitivity / CONVERSIONFACTOR;
+        carbSensitivity = carbSensitivity / MG_PER_DL_PER_MMOL_PER_L;
     }
     
     // Normalize and Multiply by carb sensitivity
