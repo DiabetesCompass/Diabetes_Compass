@@ -251,7 +251,7 @@ shouldHandlePointingDeviceUpEvent:(UIEvent *)event
         if ([BGReading isInMoles]) {
             return value;
         }
-        return @([value floatValue]*CONVERSIONFACTOR);
+        return @([value floatValue] * MG_PER_DL_PER_MMOL_PER_L);
     }
 }
 
@@ -323,7 +323,7 @@ shouldHandlePointingDeviceUpEvent:(UIEvent *)event
 - (void)updateLabels {
     int max_range = 300;
     if ([BGReading isInMoles]) {
-        max_range = 300/CONVERSIONFACTOR;
+        max_range = 300 / MG_PER_DL_PER_MMOL_PER_L;
     }
 
     CPTXYAxisSet *axisSet = (CPTXYAxisSet *)self.graph.axisSet;
@@ -464,7 +464,7 @@ shouldHandlePointingDeviceUpEvent:(UIEvent *)event
     NSLog(@"setupGraph of GraphViewController is called.");
     int max_range = 300;
     if ([BGReading isInMoles]) {
-        max_range = 300/CONVERSIONFACTOR;
+        max_range = 300 / MG_PER_DL_PER_MMOL_PER_L;
     }
     NSLog(@"The value of max_range is: %d", max_range);
     if (self.graph) {

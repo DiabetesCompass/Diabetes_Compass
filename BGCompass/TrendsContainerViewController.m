@@ -302,7 +302,7 @@
             if ([BGReading isInMoles]) {
                 return reading.quantity;
             }
-            return @([reading.quantity floatValue]*CONVERSIONFACTOR);
+            return @([reading.quantity floatValue] * MG_PER_DL_PER_MMOL_PER_L);
         }
         
         /*else {

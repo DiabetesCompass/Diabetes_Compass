@@ -152,11 +152,14 @@ class TrendViewController : UIViewController {
         }
     }
 
+    // TODO: ha1c rangeMinimum 5
+
     class func rangeMaximum(trend: Trend) -> Double {
         switch trend {
         case .bg:
-            return 120.0
+            return 300.0
         case .ha1c:
+            // TODO: set to all readings maximum
             return 11.0
         }
     }
@@ -326,7 +329,7 @@ extension TrendViewController: CPTPlotDataSource {
                 if BGReading.isInMoles() {
                     return reading.quantity
                 } else {
-                    return reading.quantity.floatValue * Float(CONVERSIONFACTOR)
+                    return reading.quantity.floatValue * Float(MG_PER_DL_PER_MMOL_PER_L)
                 }
             }
 

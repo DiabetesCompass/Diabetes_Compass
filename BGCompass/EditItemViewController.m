@@ -152,7 +152,7 @@
     if([[NSUserDefaults standardUserDefaults] boolForKey:SETTING_UNITS_IN_MOLES]) {
         self.valueField.text = [NSString stringWithFormat:@"%.1f", [((BGReading*)self.item).quantity floatValue]];
     } else {
-        self.valueField.text = [NSString stringWithFormat:@"%.0f", [((BGReading*)self.item).quantity floatValue]*CONVERSIONFACTOR];
+        self.valueField.text = [NSString stringWithFormat:@"%.0f", [((BGReading*)self.item).quantity floatValue] * MG_PER_DL_PER_MMOL_PER_L];
     }
     
     self.valueTitleLabel.text = @"Glucose";
