@@ -165,12 +165,13 @@
                     sum = sum + interpolatedValue*ramp;
                     sumRamp = sumRamp + ramp;
                     twBGAve = sum/sumRamp;
-                    NSLog(@"weighted average BG: %f", MG_PER_DL_PER_MMOL_PER_L*twBGAve);
-                    twHA1c = (46.7 + MG_PER_DL_PER_MMOL_PER_L*twBGAve)/28.7;
-                    NSLog(@"weighted average HA1c: %f", twHA1c);
+                    //NSLog(@"weighted average BG: %f", MG_PER_DL_PER_MMOL_PER_L*twBGAve);
+                    //twHA1c = (46.7 + MG_PER_DL_PER_MMOL_PER_L*twBGAve)/28.7;
+                    //NSLog(@"weighted average HA1c: %f", twHA1c);
                     ramp = ramp - delta;
                     bigIndex++;
                 }
+        }
         }
         twHA1c = (46.7 + MG_PER_DL_PER_MMOL_PER_L*twBGAve)/28.7;
         //log &Add final result to CoreData
@@ -210,6 +211,5 @@
     [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
     [self loadArrays];
 >>>>>>> e2c94af448cb13ede477432b662a513cc6a3440b*/
-    }
 }
 @end
