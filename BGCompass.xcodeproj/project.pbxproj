@@ -125,6 +125,7 @@
 		DE758DF11DDABDE200135F5D /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DE758DF01DDABDE200135F5D /* Launch Screen.storyboard */; };
 		DEABA8A21DFCEEDC00B42AEA /* TrendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEABA8A11DFCEEDC00B42AEA /* TrendViewController.swift */; };
 		DEB332DE1DFFC9EA00989771 /* TrendsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEB332DD1DFFC9EA00989771 /* TrendsViewControllerTests.swift */; };
+		DEB8DEE51E19AE4700270CB6 /* TrendsAlgorithmModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEB8DEE41E19AE4700270CB6 /* TrendsAlgorithmModelTests.swift */; };
 		DEEEF1C81DFE0A140027D955 /* TrendsAlgorithmModelExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEEEF1C71DFE0A140027D955 /* TrendsAlgorithmModelExtension.swift */; };
 /* End PBXBuildFile section */
 
@@ -333,6 +334,7 @@
 		DEABA8A11DFCEEDC00B42AEA /* TrendViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrendViewController.swift; sourceTree = "<group>"; };
 		DEB332DC1DFFC9E900989771 /* BGCompassTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BGCompassTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		DEB332DD1DFFC9EA00989771 /* TrendsViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrendsViewControllerTests.swift; sourceTree = "<group>"; };
+		DEB8DEE41E19AE4700270CB6 /* TrendsAlgorithmModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrendsAlgorithmModelTests.swift; sourceTree = "<group>"; };
 		DEEEF1C71DFE0A140027D955 /* TrendsAlgorithmModelExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrendsAlgorithmModelExtension.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -452,6 +454,7 @@
 			isa = PBXGroup;
 			children = (
 				833A3E471831FB7000C1FF5C /* BGAlgorithmTests.m */,
+				DEB8DEE41E19AE4700270CB6 /* TrendsAlgorithmModelTests.swift */,
 				83E3E68118A6B4C300F3C560 /* TrendsAlgorithmTests.m */,
 				DEB332DD1DFFC9EA00989771 /* TrendsViewControllerTests.swift */,
 				2C23311E182B6C82008A6F88 /* Supporting Files */,
@@ -1042,6 +1045,7 @@
 			files = (
 				833A3E481831FB7000C1FF5C /* BGAlgorithmTests.m in Sources */,
 				8337DF2718E459FE00055E59 /* CompassRose.xcdatamodeld in Sources */,
+				DEB8DEE51E19AE4700270CB6 /* TrendsAlgorithmModelTests.swift in Sources */,
 				83E3E68218A6B4C300F3C560 /* TrendsAlgorithmTests.m in Sources */,
 				DEB332DE1DFFC9EA00989771 /* TrendsViewControllerTests.swift in Sources */,
 			);
