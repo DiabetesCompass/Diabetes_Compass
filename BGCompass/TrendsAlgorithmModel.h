@@ -21,14 +21,12 @@
 + (id) sharedInstance;
 
 - (void) computeHA1c:(NSDate*) timeStamp;
-//- (void) calculateAg15:(BGReading*) reading;
 
 - (NSNumber*) ha1cArrayCount;
 - (NSNumber*) bgArrayCount;
-//- (NSNumber*) ag15ArrayCount;
+
 - (Ha1cReading*) getFromHa1cArray:(NSUInteger)index;
 - (BGReading*) getFromBGArray:(NSUInteger)index;
-//- (AG15Reading*) getFromAg15Array:(NSUInteger)index;
 
 //Just for demo purpose. Should not be public usually. Delete after.
 //- (void) correctTrendReadingsAfterDate:(NSDate*) lowerBound;
