@@ -15,8 +15,7 @@
 
 @implementation TrendsAlgorithmModel
 
-+ (id)sharedInstance
-{
++ (id)sharedInstance {
     static TrendsAlgorithmModel *sharedInstance = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
@@ -24,8 +23,8 @@
     });
     return sharedInstance;
 }
-- (id)init
-{
+
+- (id)init {
     self = [super init];
     if (self) {
         self.trend_queue = dispatch_queue_create("trend_queue", DISPATCH_QUEUE_SERIAL);
@@ -34,13 +33,16 @@
     }
     return self;
 }
+
 // - observer
+
 - (void)addObservers {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleNotifications:) name:NOTE_REJECTED object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleNotifications:) name:NOTE_SETTINGS_CHANGED object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleNotifications:) name:NOTE_BGREADING_ADDED object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleNotifications:) name:NOTE_BGREADING_EDITED object:nil];
 }
+
 - (void) handleNotifications:(NSNotification*) note {
     NSLog(@"Received notification name: %@", [note name]);
     if ([[note name] isEqualToString:NOTE_BGREADING_ADDED]) {
@@ -55,15 +57,14 @@
         });
     }
 }
-- (void) loadArrays
-{
+
+- (void) loadArrays {
     self.ha1cArray = [Ha1cReading MR_findAllSortedBy:@"timeStamp" ascending:YES inContext:[NSManagedObjectContext MR_defaultContext]];
     self.bgArray = [BGReading MR_findAllSortedBy:@"timeStamp" ascending:YES inContext:[NSManagedObjectContext MR_defaultContext]];
 }
 
 //count HA1c readings?
-- (NSNumber*) ha1cArrayCount
-{
+- (NSNumber*) ha1cArrayCount {
     NSNumber* result;
     if (self.ha1cArray) {
         result = @([self.ha1cArray count]);
@@ -74,9 +75,9 @@
     
     return result;
 }
+
 //count BG readings?
-- (NSNumber*) bgArrayCount
-{
+- (NSNumber*) bgArrayCount {
     NSNumber* result;
     if (self.bgArray) {
         result = @([self.bgArray count]);
@@ -128,8 +129,8 @@
 }
 >>>>>>> e2c94af448cb13ede477432b662a513cc6a3440b
 */
-- (void) computeHA1c:(NSDate*) timeStamp
-{
+
+- (void) computeHA1c:(NSDate*) timeStamp {
     BGReading* lastReading = [BGReading MR_findFirstOrderedByAttribute:@"timeStamp" ascending:NO inContext:[NSManagedObjectContext MR_defaultContext]];
         int HEMOGLOBIN_LIFESPAN = 100*HOURS_IN_ONE_DAY*SECONDS_IN_ONE_HOUR;
         NSDate* one_hundred_days_ago = [lastReading.timeStamp dateByAddingTimeInterval: -HEMOGLOBIN_LIFESPAN];
@@ -214,4 +215,5 @@
     [self loadArrays];
 >>>>>>> e2c94af448cb13ede477432b662a513cc6a3440b*/
 }
+
 @end
