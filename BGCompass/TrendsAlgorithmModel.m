@@ -129,7 +129,6 @@
     float sumRamp = 0.0;
     float twBGAve = 0.0;
     float twHA1c = 0.0;
-    float interpolatedValue = 0;
 
     for (BGReading* reading in fetchedReadings) {
         NSLog(@"calculating for BG: %f", MG_PER_DL_PER_MMOL_PER_L*reading.quantity.floatValue);
@@ -142,6 +141,7 @@
             //            NSLog(@"sum: %f", sum);
             bigIndex++; }
         else {
+            float interpolatedValue = 0;
             int minutesBetweenReadings = (int)[reading.timeStamp timeIntervalSinceDate:previousReading.timeStamp]/(SECONDS_IN_ONE_MINUTE);
             minutesBetweenReadings = abs(minutesBetweenReadings);
             for (int index = 0; index < minutesBetweenReadings/interval; index++ ) {
