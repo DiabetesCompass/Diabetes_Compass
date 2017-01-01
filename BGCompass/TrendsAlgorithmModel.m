@@ -162,7 +162,8 @@
         }
     }
 
-    twHA1c = (46.7 + MG_PER_DL_PER_MMOL_PER_L*twBGAve)/28.7;
+    float twBgMgPerDl = MG_PER_DL_PER_MMOL_PER_L * twBGAve;
+    twHA1c = [TrendsAlgorithmModel hA1cFromBloodGlucose: twBgMgPerDl];
     //log &Add final result to CoreData
     NSLog(@"weighted average HA1c: %f", twHA1c);
     Ha1cReading* reading = [Ha1cReading MR_createEntityInContext:[NSManagedObjectContext MR_defaultContext]];
