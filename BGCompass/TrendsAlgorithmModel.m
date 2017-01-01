@@ -110,15 +110,16 @@
 }
 
 - (void) computeHA1c:(NSDate*) timeStamp {
+    
     BGReading* lastReading = [BGReading MR_findFirstOrderedByAttribute:@"timeStamp" ascending:NO inContext:[NSManagedObjectContext MR_defaultContext]];
-        int HEMOGLOBIN_LIFESPAN = 100*HOURS_IN_ONE_DAY*SECONDS_IN_ONE_HOUR;
-        NSDate* one_hundred_days_ago = [lastReading.timeStamp dateByAddingTimeInterval: -HEMOGLOBIN_LIFESPAN];
-//    NSLog(@"timeStamp: %@", one_hundred_days_ago);
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"timeStamp >= %@", one_hundred_days_ago];
+    int HEMOGLOBIN_LIFESPAN = 100*HOURS_IN_ONE_DAY*SECONDS_IN_ONE_HOUR;
+    NSDate* one_hundred_days_ago = [lastReading.timeStamp dateByAddingTimeInterval: -HEMOGLOBIN_LIFESPAN];
+    //    NSLog(@"timeStamp: %@", one_hundred_days_ago);
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"timeStamp >= %@", one_hundred_days_ago];
     NSArray *fetchedReadings = [BGReading MR_findAllSortedBy:@"timeStamp" ascending:NO withPredicate:predicate inContext:[NSManagedObjectContext MR_defaultContext]];
     u_long count = fetchedReadings.count;
     NSLog(@"# of readings: %lu", (unsigned long)count);
-//    NSLog(@"timeStamp: %@", one_hundred_days_ago);
+    //    NSLog(@"timeStamp: %@", one_hundred_days_ago);
     int interval = 1;
     BGReading* previousReading = nil;
     int bigIndex = 0;
@@ -129,6 +130,7 @@
     float twBGAve = 0.0;
     float twHA1c = 0.0;
     float interpolatedValue = 0;
+
     for (BGReading* reading in fetchedReadings) {
         NSLog(@"calculating for BG: %f", MG_PER_DL_PER_MMOL_PER_L*reading.quantity.floatValue);
         if (bigIndex == 0){
@@ -137,33 +139,34 @@
             twBGAve = sum/ramp;
             sumRamp = sumRamp + ramp;
             ramp = ramp - delta;
-//            NSLog(@"sum: %f", sum);
+            //            NSLog(@"sum: %f", sum);
             bigIndex++; }
         else {
-                int minutesBetweenReadings = (int)[reading.timeStamp timeIntervalSinceDate:previousReading.timeStamp]/(SECONDS_IN_ONE_MINUTE);
-                minutesBetweenReadings = abs(minutesBetweenReadings);
-                for (int index = 0; index < minutesBetweenReadings/interval; index++ ) {
-                    interpolatedValue = previousReading.quantity.floatValue + ((1+index)*(reading.quantity.floatValue - previousReading.quantity.floatValue)/(minutesBetweenReadings/interval));
-                    sum = sum + interpolatedValue*ramp;
-                    sumRamp = sumRamp + ramp;
-                    twBGAve = sum/sumRamp;
-                    //NSLog(@"weighted average BG: %f", MG_PER_DL_PER_MMOL_PER_L*twBGAve);
-                    //twHA1c = (46.7 + MG_PER_DL_PER_MMOL_PER_L*twBGAve)/28.7;
-                    //NSLog(@"weighted average HA1c: %f", twHA1c);
-                    ramp = ramp - delta;
-                    bigIndex++;
-                }
+            int minutesBetweenReadings = (int)[reading.timeStamp timeIntervalSinceDate:previousReading.timeStamp]/(SECONDS_IN_ONE_MINUTE);
+            minutesBetweenReadings = abs(minutesBetweenReadings);
+            for (int index = 0; index < minutesBetweenReadings/interval; index++ ) {
+                interpolatedValue = previousReading.quantity.floatValue + ((1+index)*(reading.quantity.floatValue - previousReading.quantity.floatValue)/(minutesBetweenReadings/interval));
+                sum = sum + interpolatedValue*ramp;
+                sumRamp = sumRamp + ramp;
+                twBGAve = sum/sumRamp;
+                //NSLog(@"weighted average BG: %f", MG_PER_DL_PER_MMOL_PER_L*twBGAve);
+                //twHA1c = (46.7 + MG_PER_DL_PER_MMOL_PER_L*twBGAve)/28.7;
+                //NSLog(@"weighted average HA1c: %f", twHA1c);
+                ramp = ramp - delta;
+                bigIndex++;
+            }
         }
-        }
-        twHA1c = (46.7 + MG_PER_DL_PER_MMOL_PER_L*twBGAve)/28.7;
-        //log &Add final result to CoreData
-        NSLog(@"weighted average HA1c: %f", twHA1c);
-        Ha1cReading* reading = [Ha1cReading MR_createEntityInContext:[NSManagedObjectContext MR_defaultContext]];
-        reading.quantity = @(twHA1c);
-        //set the timestamp of this HA1c to the timestamp of the last BG reading?
-        reading.timeStamp = lastReading.timeStamp;
-        [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
-        [self loadArrays];
+    }
+
+    twHA1c = (46.7 + MG_PER_DL_PER_MMOL_PER_L*twBGAve)/28.7;
+    //log &Add final result to CoreData
+    NSLog(@"weighted average HA1c: %f", twHA1c);
+    Ha1cReading* reading = [Ha1cReading MR_createEntityInContext:[NSManagedObjectContext MR_defaultContext]];
+    reading.quantity = @(twHA1c);
+    //set the timestamp of this HA1c to the timestamp of the last BG reading?
+    reading.timeStamp = lastReading.timeStamp;
+    [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
+    [self loadArrays];
 }
 
 @end
