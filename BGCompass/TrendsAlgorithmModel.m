@@ -115,10 +115,9 @@
 }
 
 - (void) computeHA1c:(NSDate*) timeStamp {
-    
+
     BGReading* lastReading = [BGReading MR_findFirstOrderedByAttribute:@"timeStamp" ascending:NO inContext:[NSManagedObjectContext MR_defaultContext]];
-    int HEMOGLOBIN_LIFESPAN = 100*HOURS_IN_ONE_DAY*SECONDS_IN_ONE_HOUR;
-    NSDate* one_hundred_days_ago = [lastReading.timeStamp dateByAddingTimeInterval: -HEMOGLOBIN_LIFESPAN];
+    NSDate* one_hundred_days_ago = [lastReading.timeStamp dateByAddingTimeInterval: -TrendsAlgorithmModel.hemoglobinLifespanSeconds];
     //    NSLog(@"timeStamp: %@", one_hundred_days_ago);
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"timeStamp >= %@", one_hundred_days_ago];
     NSArray *fetchedReadings = [BGReading MR_findAllSortedBy:@"timeStamp" ascending:NO withPredicate:predicate inContext:[NSManagedObjectContext MR_defaultContext]];
@@ -129,7 +128,7 @@
     BGReading* previousReading = nil;
     int bigIndex = 0;
     float ramp = 1.0;
-    float delta = 1/HEMOGLOBIN_LIFESPAN;
+    float delta = 1/TrendsAlgorithmModel.hemoglobinLifespanSeconds;
     float sum =0.0;
     float sumRamp = 0.0;
     float twBGAve = 0.0;
