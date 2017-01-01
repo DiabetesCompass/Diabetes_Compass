@@ -297,7 +297,8 @@ extension TrendViewController: CPTPlotDataSource {
         case .bg:
             return UInt(model.bgArrayCount())
         case .ha1c:
-            return UInt(model.ha1cArray.count)
+            //return UInt(model.ha1cArray.count)
+            return UInt(model.ha1cArrayCount())
         }
     }
 
