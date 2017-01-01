@@ -9,6 +9,11 @@
 #import "TrendsAlgorithmModel.h"
 #import "Constants.h"
 
+// import <project name>-Swift.h so Objective C can see Swift code
+// note don't import <class name>-Swift.h, that won't work
+// http://stackoverflow.com/questions/24078043/call-swift-function-from-objective-c-class#24087280
+#import "BGCompass-Swift.h"
+
 @interface TrendsAlgorithmModel()
 
 @end
