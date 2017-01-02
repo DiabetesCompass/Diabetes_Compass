@@ -120,7 +120,8 @@
                                                              ascending:NO
                                                              inContext:[NSManagedObjectContext MR_defaultContext]];
 
-    NSArray *fetchedReadings = [TrendsAlgorithmModel fetchedReadingsForDate: lastReading.timeStamp];
+    NSArray *fetchedReadings = [TrendsAlgorithmModel
+                                bgReadingsWithinHemoglobinLifeSpanBeforeEndDate: lastReading.timeStamp];
 
     u_long count = fetchedReadings.count;
     NSLog(@"# of readings: %lu", (unsigned long)count);
@@ -178,7 +179,7 @@
 /**
  - returns: blood glucose readings between (endDate - hemoglobin lifespan) and endDate
  */
-+ (NSArray *)fetchedReadingsForDate:(NSDate *)endDate {
++ (NSArray *)bgReadingsWithinHemoglobinLifeSpanBeforeEndDate:(NSDate *)endDate {
 
     // startDate is hemoglobin lifespan before endDate
     NSDate* startDate = [endDate
