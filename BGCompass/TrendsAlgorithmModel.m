@@ -175,16 +175,37 @@
     [self loadArrays];
 }
 
-+ (NSArray *) fetchedReadingsForDate:(NSDate *)date {
+/**
+ - returns: blood glucose readings between (endDate - hemoglobin lifespan) and endDate
+ */
++ (NSArray *)fetchedReadingsForDate:(NSDate *)endDate {
 
-    NSDate* one_hundred_days_ago = [date
-                                    dateByAddingTimeInterval: -TrendsAlgorithmModel.hemoglobinLifespanSeconds];
-    //    NSLog(@"timeStamp: %@", one_hundred_days_ago);
+    // startDate is hemoglobin lifespan before endDate
+    NSDate* startDate = [endDate
+                         dateByAddingTimeInterval: -TrendsAlgorithmModel.hemoglobinLifespanSeconds];
 
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"timeStamp >= %@", one_hundred_days_ago];
+    NSArray *readings = [TrendsAlgorithmModel bloodGlucoseReadingsForStartDate:startDate
+                                                                       endDate:endDate];
+    return readings;
+}
+
+/**
+ - returns: blood glucose readings between startDate (inclusive) and endDate (inclusive)
+ */
++ (NSArray *)bloodGlucoseReadingsForStartDate:(NSDate *)startDate
+                                      endDate:(NSDate *)endDate {
+
+    NSPredicate *startDatePredicate = [NSPredicate predicateWithFormat:@"timeStamp >= %@",
+                                       startDate];
+    NSPredicate *endDatePredicate = [NSPredicate predicateWithFormat:@"timeStamp <= %@",
+                                     endDate];
+    // andPredicate specifies logical &&
+    NSPredicate *compoundPredicate = [NSCompoundPredicate
+                                      andPredicateWithSubpredicates:@[startDatePredicate, endDatePredicate]];
 
     NSArray *readings = [BGReading MR_findAllSortedBy:@"timeStamp"
-                                            ascending:NO withPredicate:predicate
+                                            ascending:NO
+                                        withPredicate:compoundPredicate
                                             inContext:[NSManagedObjectContext MR_defaultContext]];
     return readings;
 }
