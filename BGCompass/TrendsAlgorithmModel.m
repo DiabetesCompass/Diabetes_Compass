@@ -125,7 +125,8 @@
     u_long count = fetchedReadings.count;
     NSLog(@"# of readings: %lu", (unsigned long)count);
 
-    int interval = 1;
+    // interval in seconds
+    int interval = 60;
     BGReading* previousReading = nil;
     int bigIndex = 0;
     float ramp = 1.0;
@@ -147,10 +148,11 @@
             bigIndex++; }
         else {
             float interpolatedValue = 0;
-            int minutesBetweenReadings = (int)[reading.timeStamp timeIntervalSinceDate:previousReading.timeStamp]/(SECONDS_IN_ONE_MINUTE);
-            minutesBetweenReadings = abs(minutesBetweenReadings);
-            for (int index = 0; index < minutesBetweenReadings/interval; index++ ) {
-                interpolatedValue = previousReading.quantity.floatValue + ((1+index)*(reading.quantity.floatValue - previousReading.quantity.floatValue)/(minutesBetweenReadings/interval));
+            NSTimeInterval secondsBetweenReadings = [reading.timeStamp
+                                                     timeIntervalSinceDate:previousReading.timeStamp];
+            secondsBetweenReadings = fabs(secondsBetweenReadings);
+            for (int index = 0; index < (int)secondsBetweenReadings/interval; index++ ) {
+                interpolatedValue = previousReading.quantity.floatValue + ((1+index)*(reading.quantity.floatValue - previousReading.quantity.floatValue)/(secondsBetweenReadings/interval));
                 sum = sum + interpolatedValue*ramp;
                 sumRamp = sumRamp + ramp;
                 twBGAve = sum/sumRamp;
