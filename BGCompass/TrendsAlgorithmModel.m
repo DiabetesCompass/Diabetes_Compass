@@ -116,12 +116,11 @@
 
 - (void) computeHA1c:(NSDate*) timeStamp {
 
-    BGReading* lastReading = [BGReading MR_findFirstOrderedByAttribute:@"timeStamp"
-                                                             ascending:NO
-                                                             inContext:[NSManagedObjectContext MR_defaultContext]];
-
+    // TODO: check if sort order is correct for use in loops
     NSArray *fetchedReadings = [TrendsAlgorithmModel
-                                bgReadingsWithinHemoglobinLifeSpanBeforeEndDate: lastReading.timeStamp];
+                                bgReadingsWithinHemoglobinLifeSpanBeforeEndDate: timeStamp];
+
+    BGReading* lastReading = fetchedReadings.firstObject;
 
     u_long count = fetchedReadings.count;
     NSLog(@"# of readings: %lu", (unsigned long)count);
