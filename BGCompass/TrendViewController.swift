@@ -146,7 +146,7 @@ class TrendViewController : UIViewController {
     class func xAxisLabelHeight(trend: Trend) -> Double {
         switch trend {
         case .bg:
-            return 5.0
+            return 10.0
         case .ha1c:
             return 0.5
         }
