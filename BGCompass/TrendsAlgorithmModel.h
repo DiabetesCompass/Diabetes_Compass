@@ -8,13 +8,11 @@
 
 #import <CoreData/CoreData.h>
 #import "BGReading.h"
-//#import "AG15Reading.h"
 #import "Ha1cReading.h"
 
 @interface TrendsAlgorithmModel : NSObject
 
 @property (strong, nonatomic) NSArray* ha1cArray;
-//@property (strong, nonatomic) NSArray* ag15Array;
 @property (strong, nonatomic) NSArray* bgArray;
 @property (strong, nonatomic) dispatch_queue_t trend_queue;
 
