@@ -125,7 +125,6 @@
     u_long count = fetchedReadings.count;
     NSLog(@"# of readings: %lu", (unsigned long)count);
 
-    // interval in seconds
     int intervalSeconds = 60;
     BGReading* previousReading = nil;
     int bigIndex = 0;
