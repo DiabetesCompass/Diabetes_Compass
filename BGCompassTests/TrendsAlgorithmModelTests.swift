@@ -93,7 +93,7 @@ class TrendsAlgorithmModelTests: XCTestCase {
 
         // call method under test
         let actual = TrendsAlgorithmModel.averageDecayedBGReadingQuantity(bgReadings,
-                                                                          date: endDate,
+                                                                          endDate: endDate,
                                                                           decayLifeSeconds: TrendsAlgorithmModel.hemoglobinLifespanSeconds)
 
         let expected: Float = 135.0
@@ -109,7 +109,7 @@ class TrendsAlgorithmModelTests: XCTestCase {
 
         // call method under test
         let actual = TrendsAlgorithmModel.averageDecayedBGReadingQuantity(bgReadings,
-                                                                          date: endDate,
+                                                                          endDate: endDate,
                                                                           decayLifeSeconds: TrendsAlgorithmModel.hemoglobinLifespanSeconds)
 
         let expected: Float = 152.327
@@ -125,9 +125,9 @@ class TrendsAlgorithmModelTests: XCTestCase {
 
         // call method under test
         let actual = TrendsAlgorithmModel.averageDecayedBGReadingQuantity(bgReadings,
-                                                                          date: endDate,
+                                                                          endDate: endDate,
                                                                           decayLifeSeconds: TrendsAlgorithmModel.hemoglobinLifespanSeconds)
-
+        
         let expected: Float = 100.792
         let accuracy: Float = 0.1
         XCTAssertEqualWithAccuracy(actual, expected, accuracy: accuracy)
