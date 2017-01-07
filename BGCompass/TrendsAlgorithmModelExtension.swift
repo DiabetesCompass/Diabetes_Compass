@@ -80,8 +80,9 @@ extension TrendsAlgorithmModel {
     // MARK: -
 
     /**
-     - parameter bgReadings: blood glucose readings to average
-     - parameter date: date on or after the last blood glucose reading was taken
+     - parameter bgReadings: blood glucose readings to average.
+       readings may appear in any chronological order, the method reads their timeStamp
+     - parameter date: date on or after the chronologically last blood glucose reading was taken
      - parameter decayLifeSeconds: time for blood glucose from a reading to decay to 0.0.
      Typically hemoglobin lifespan seconds.
      - returns: average of decayed BG reading.quantity
