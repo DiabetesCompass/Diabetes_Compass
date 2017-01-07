@@ -89,7 +89,7 @@ class TrendsAlgorithmModelTests: XCTestCase {
 
         let endDate = Date()
         let bgReadings = BGReadingTestHelper.bgReadings135(endDate) as! [BGReading]
-        XCTAssertEqual(bgReadings.count, (Int)(90 * HOURS_IN_ONE_DAY))
+        XCTAssertEqual(bgReadings.count, 100)
 
         // call method under test
         let actual = TrendsAlgorithmModel.averageDecayedBGReadingQuantity(bgReadings,
@@ -105,14 +105,14 @@ class TrendsAlgorithmModelTests: XCTestCase {
 
         let endDate = Date()
         let bgReadings = BGReadingTestHelper.bgReadingsAlternating135and170(endDate) as! [BGReading]
-        XCTAssertEqual(bgReadings.count, 90)
+        XCTAssertEqual(bgReadings.count, 100)
 
         // call method under test
         let actual = TrendsAlgorithmModel.averageDecayedBGReadingQuantity(bgReadings,
                                                                           date: endDate,
                                                                           decayLifeSeconds: TrendsAlgorithmModel.hemoglobinLifespanSeconds)
 
-        let expected: Float = 152.661
+        let expected: Float = 152.327
         let accuracy: Float = 0.1
         XCTAssertEqualWithAccuracy(actual, expected, accuracy: accuracy)
     }

@@ -14,7 +14,8 @@
 
     NSMutableArray *bgReadings = [NSMutableArray arrayWithArray:@[]];
 
-    for (int i = 90 * HOURS_IN_ONE_DAY; i > 0 ; i--) {
+    int numberOfReadings = 100;
+    for (int i = 0; i < numberOfReadings; i++) {
 
         // use MagicalRecord/CoreData to create the entity but don't save it
         BGReading *bgReading = [BGReading MR_createEntity];
@@ -38,7 +39,8 @@
 
     NSMutableArray *bgReadings = [NSMutableArray arrayWithArray:@[]];
 
-    for (int i = 90; i > 0 ; i--) {
+    int numberOfReadings = 100;
+    for (int i = 0; i < numberOfReadings; i++) {
 
         // use MagicalRecord/CoreData to create the entity but don't save it
         BGReading *bgReading = [BGReading MR_createEntity];
