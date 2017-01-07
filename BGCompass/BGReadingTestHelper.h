@@ -18,4 +18,6 @@
 /// - returns: an array of BGReading, all with quantity 135
 + (NSArray *)bgReadings135:(NSDate *)endDate;
 
++ (NSArray *)bgReadingsAlternating135and170:(NSDate *)endDate;
+
 @end
