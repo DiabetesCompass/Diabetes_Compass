@@ -34,4 +34,6 @@
 
 + (NSArray *)bgReadings30at150then70at50:(NSDate *)endDate;
 
++ (NSArray *)bgReadings50at150then50at50:(NSDate *)endDate;
+
 @end
