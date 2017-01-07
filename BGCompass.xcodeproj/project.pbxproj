@@ -126,6 +126,7 @@
 		DEABA8A21DFCEEDC00B42AEA /* TrendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEABA8A11DFCEEDC00B42AEA /* TrendViewController.swift */; };
 		DEB332DE1DFFC9EA00989771 /* TrendsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEB332DD1DFFC9EA00989771 /* TrendsViewControllerTests.swift */; };
 		DEB8DEE51E19AE4700270CB6 /* TrendsAlgorithmModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEB8DEE41E19AE4700270CB6 /* TrendsAlgorithmModelTests.swift */; };
+		DEDC8E4D1E20A93B003D9E88 /* BGReadingTestHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = DEDC8E4C1E20A93B003D9E88 /* BGReadingTestHelper.m */; };
 		DEEEF1C81DFE0A140027D955 /* TrendsAlgorithmModelExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEEEF1C71DFE0A140027D955 /* TrendsAlgorithmModelExtension.swift */; };
 /* End PBXBuildFile section */
 
@@ -335,6 +336,8 @@
 		DEB332DC1DFFC9E900989771 /* BGCompassTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BGCompassTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		DEB332DD1DFFC9EA00989771 /* TrendsViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrendsViewControllerTests.swift; sourceTree = "<group>"; };
 		DEB8DEE41E19AE4700270CB6 /* TrendsAlgorithmModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrendsAlgorithmModelTests.swift; sourceTree = "<group>"; };
+		DEDC8E4B1E20A93B003D9E88 /* BGReadingTestHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BGReadingTestHelper.h; sourceTree = "<group>"; };
+		DEDC8E4C1E20A93B003D9E88 /* BGReadingTestHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BGReadingTestHelper.m; sourceTree = "<group>"; };
 		DEEEF1C71DFE0A140027D955 /* TrendsAlgorithmModelExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrendsAlgorithmModelExtension.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -411,6 +414,8 @@
 				848D6EAF19CC023F003C611F /* BGCompass.entitlements */,
 				2C2330FD182B6C82008A6F88 /* AppDelegate.h */,
 				2C2330FE182B6C82008A6F88 /* AppDelegate.m */,
+				DEDC8E4B1E20A93B003D9E88 /* BGReadingTestHelper.h */,
+				DEDC8E4C1E20A93B003D9E88 /* BGReadingTestHelper.m */,
 				2C18D36E183210F100B622C8 /* Images.xcassets */,
 				2C30405718556DE200BCD3FF /* User Interface */,
 				DE1AD7FA1DFBB34500720F5F /* Trends */,
@@ -968,6 +973,7 @@
 				8337DF2D18EA332A00055E59 /* UPCScannerViewController.m in Sources */,
 				2C253F8B18BC90DA00DB7D2A /* TutorialPickerItem.m in Sources */,
 				8337DF3318EA3ED400055E59 /* NutritionixUPCFood.m in Sources */,
+				DEDC8E4D1E20A93B003D9E88 /* BGReadingTestHelper.m in Sources */,
 				2C2330FF182B6C82008A6F88 /* AppDelegate.m in Sources */,
 				2C5FC4F818307D830018C56D /* ItemSelectionTableViewController.m in Sources */,
 				835A91441845BBA5006A2BDC /* AG15Reading.m in Sources */,
