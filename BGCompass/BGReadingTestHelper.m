@@ -21,8 +21,7 @@
         BGReading *bgReading = [BGReading MR_createEntity];
         bgReading.name = @"BloodGlucose";
 
-        NSTimeInterval secondsPerDay = HOURS_IN_ONE_DAY * SECONDS_IN_ONE_HOUR;
-        bgReading.timeStamp = [NSDate dateWithTimeInterval:-secondsPerDay * i
+        bgReading.timeStamp = [NSDate dateWithTimeInterval:-SECONDS_PER_DAY * i
                                                  sinceDate:endDate];
 
         bgReading.isPending = [NSNumber numberWithBool:NO];
@@ -46,8 +45,7 @@
         BGReading *bgReading = [BGReading MR_createEntity];
         bgReading.name = @"BloodGlucose";
 
-        NSTimeInterval secondsPerDay = HOURS_IN_ONE_DAY * SECONDS_IN_ONE_HOUR;
-        bgReading.timeStamp = [NSDate dateWithTimeInterval:-secondsPerDay * i
+        bgReading.timeStamp = [NSDate dateWithTimeInterval:-SECONDS_PER_DAY * i
                                                  sinceDate:endDate];
 
         bgReading.isPending = [NSNumber numberWithBool:NO];
@@ -77,8 +75,8 @@
         BGReading *bgReading = [BGReading MR_createEntity];
         bgReading.name = @"BloodGlucose";
 
-        NSTimeInterval secondsPerDay = HOURS_IN_ONE_DAY * SECONDS_IN_ONE_HOUR;
-        bgReading.timeStamp = [NSDate dateWithTimeInterval:-secondsPerDay * i
+        // i == 0 at endDate
+        bgReading.timeStamp = [NSDate dateWithTimeInterval:-SECONDS_PER_DAY * i
                                                  sinceDate:endDate];
 
         bgReading.isPending = [NSNumber numberWithBool:NO];
