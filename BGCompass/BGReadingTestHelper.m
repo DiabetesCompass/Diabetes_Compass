@@ -19,10 +19,14 @@
         // use MagicalRecord/CoreData to create the entity but don't save it
         BGReading *bgReading = [BGReading MR_createEntity];
         bgReading.name = @"BloodGlucose";
-        bgReading.quantity = @(135);
-        bgReading.timeStamp = [NSDate dateWithTimeInterval:-i*SECONDS_IN_ONE_HOUR
+
+        NSTimeInterval secondsPerDay = HOURS_IN_ONE_DAY * SECONDS_IN_ONE_HOUR;
+        bgReading.timeStamp = [NSDate dateWithTimeInterval:-secondsPerDay * i
                                                  sinceDate:endDate];
+
         bgReading.isPending = [NSNumber numberWithBool:NO];
+
+        bgReading.quantity = @(135);
 
         [bgReadings addObject:bgReading];
     }
@@ -39,9 +43,11 @@
         // use MagicalRecord/CoreData to create the entity but don't save it
         BGReading *bgReading = [BGReading MR_createEntity];
         bgReading.name = @"BloodGlucose";
-        NSTimeInterval timeInterval = -(HOURS_IN_ONE_DAY * SECONDS_IN_ONE_HOUR * i);
-        bgReading.timeStamp = [NSDate dateWithTimeInterval:timeInterval
+
+        NSTimeInterval secondsPerDay = HOURS_IN_ONE_DAY * SECONDS_IN_ONE_HOUR;
+        bgReading.timeStamp = [NSDate dateWithTimeInterval:-secondsPerDay * i
                                                  sinceDate:endDate];
+
         bgReading.isPending = [NSNumber numberWithBool:NO];
 
         // use modulo operator %
@@ -50,6 +56,35 @@
             bgReading.quantity = @(135);
         } else {
             bgReading.quantity = @(170);
+        }
+
+        [bgReadings addObject:bgReading];
+    }
+    // use copy to return NSArray instead of NSMutableArray
+    return [bgReadings copy];
+}
+
++ (NSArray *)bgReadings150then50:(NSDate *)endDate {
+
+    NSMutableArray *bgReadings = [NSMutableArray arrayWithArray:@[]];
+
+    int numberOfReadings = 100;
+    for (int i = 0; i < numberOfReadings; i++) {
+
+        // use MagicalRecord/CoreData to create the entity but don't save it
+        BGReading *bgReading = [BGReading MR_createEntity];
+        bgReading.name = @"BloodGlucose";
+
+        NSTimeInterval secondsPerDay = HOURS_IN_ONE_DAY * SECONDS_IN_ONE_HOUR;
+        bgReading.timeStamp = [NSDate dateWithTimeInterval:-secondsPerDay * i
+                                                 sinceDate:endDate];
+
+        bgReading.isPending = [NSNumber numberWithBool:NO];
+
+        if (i < 30) {
+            bgReading.quantity = @(150);
+        } else {
+            bgReading.quantity = @(50);
         }
 
         [bgReadings addObject:bgReading];

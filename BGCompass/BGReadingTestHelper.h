@@ -20,4 +20,6 @@
 
 + (NSArray *)bgReadingsAlternating135and170:(NSDate *)endDate;
 
++ (NSArray *)bgReadings150then50:(NSDate *)endDate;
+
 @end
