@@ -10,6 +10,21 @@
 
 @implementation BGReadingTestHelper
 
++ (BGReading *)bgReadingWithName:(NSString *)name
+                       timeStamp:(NSDate *)timeStamp
+                        quantity:(NSNumber *)quantity
+                       isPending:(Boolean)isPending {
+
+    // use MagicalRecord/CoreData to create the entity but don't save it
+    BGReading *bgReading = [BGReading MR_createEntity];
+    bgReading.name = name;
+    bgReading.timeStamp = timeStamp;
+    bgReading.quantity = quantity;
+    bgReading.isPending = [NSNumber numberWithBool:isPending];
+
+    return bgReading;
+}
+
 + (NSArray *)bgReadings135:(NSDate *)endDate {
 
     NSMutableArray *bgReadings = [NSMutableArray arrayWithArray:@[]];
@@ -82,9 +97,10 @@
         bgReading.isPending = [NSNumber numberWithBool:NO];
 
         if (i < 30) {
-            bgReading.quantity = @(150);
-        } else {
+            // the most recent dates as loop iterates back in time
             bgReading.quantity = @(50);
+        } else {
+            bgReading.quantity = @(150);
         }
 
         [bgReadings addObject:bgReading];

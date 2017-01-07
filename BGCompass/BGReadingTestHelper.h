@@ -15,7 +15,19 @@
  */
 @interface BGReadingTestHelper : NSObject
 
-/// - returns: an array of BGReading, all with quantity 135
+/** This is a convenience method for use by Swift.
+    Currently don't know how to use MagicalRecord from Swift.
+ - returns: a BGReading, not saved in CoreData
+ */
++ (BGReading *)bgReadingWithName:(NSString *)name
+                       timeStamp:(NSDate *)timeStamp
+                        quantity:(NSNumber *)quantity
+                       isPending:(Boolean)isPending;
+
+/** This is a convenience method for use by Swift unit tests.
+ Currently don't know how to use MagicalRecord from Swift.
+ - returns: an array of BGReading, not saved in CoreData, all with quantity 135
+ */
 + (NSArray *)bgReadings135:(NSDate *)endDate;
 
 + (NSArray *)bgReadingsAlternating135and170:(NSDate *)endDate;
