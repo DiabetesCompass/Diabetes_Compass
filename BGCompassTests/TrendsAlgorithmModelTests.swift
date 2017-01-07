@@ -150,10 +150,10 @@ class TrendsAlgorithmModelTests: XCTestCase {
         XCTAssertEqualWithAccuracy(actual, expected, accuracy: accuracy)
     }
 
-    func testAverageDecayedBGReadingQuantity150then50() {
+    func testAverageDecayedBGReadingQuantityBgReadings30at150then70at50() {
 
         let endDate = Date()
-        let bgReadings = BGReadingTestHelper.bgReadings150then50(endDate) as! [BGReading]
+        let bgReadings = BGReadingTestHelper.bgReadings30at150then70at50(endDate) as! [BGReading]
         XCTAssertEqual(bgReadings.count, 100)
 
         // call method under test
@@ -166,12 +166,12 @@ class TrendsAlgorithmModelTests: XCTestCase {
         XCTAssertEqualWithAccuracy(actual, expected, accuracy: accuracy)
     }
 
-    func testAverageDecayedBGReadingQuantity150then50EndDate20DaysAgo() {
+    func testAverageDecayedBGReadingQuantityBgReadings30at150then70at50_20DaysAgo() {
 
         let bgReadingsLastDate = Date()
         let endDate = bgReadingsLastDate.addingTimeInterval(-20.0 * Double(SECONDS_PER_DAY))
         
-        let bgReadings = BGReadingTestHelper.bgReadings150then50(bgReadingsLastDate) as! [BGReading]
+        let bgReadings = BGReadingTestHelper.bgReadings30at150then70at50(bgReadingsLastDate) as! [BGReading]
         XCTAssertEqual(bgReadings.count, 100)
 
         // call method under test
@@ -184,12 +184,12 @@ class TrendsAlgorithmModelTests: XCTestCase {
         XCTAssertEqualWithAccuracy(actual, expected, accuracy: accuracy)
     }
 
-    func testAverageDecayedBGReadingQuantity150then50EndDate29DaysAgo() {
+    func testAverageDecayedBGReadingQuantityBgReadings30at150then70at50_29DaysAgo() {
 
         let bgReadingsLastDate = Date()
         let endDate = bgReadingsLastDate.addingTimeInterval(-29.0 * Double(SECONDS_PER_DAY))
 
-        let bgReadings = BGReadingTestHelper.bgReadings150then50(bgReadingsLastDate) as! [BGReading]
+        let bgReadings = BGReadingTestHelper.bgReadings30at150then70at50(bgReadingsLastDate) as! [BGReading]
         XCTAssertEqual(bgReadings.count, 100)
 
         // call method under test

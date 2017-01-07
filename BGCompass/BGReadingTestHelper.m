@@ -79,7 +79,7 @@
     return [bgReadings copy];
 }
 
-+ (NSArray *)bgReadings150then50:(NSDate *)endDate {
++ (NSArray *)bgReadings30at150then70at50:(NSDate *)endDate {
 
     NSMutableArray *bgReadings = [NSMutableArray arrayWithArray:@[]];
 
