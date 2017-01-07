@@ -117,6 +117,23 @@ class TrendsAlgorithmModelTests: XCTestCase {
         XCTAssertEqualWithAccuracy(actual, expected, accuracy: accuracy)
     }
 
+    func testAverageDecayedBGReadingQuantityEndDateDistantFuture() {
+
+        let bgReadingsLastDate = Date()
+        let bgReadings = BGReadingTestHelper.bgReadings135(bgReadingsLastDate) as! [BGReading]
+        XCTAssertEqual(bgReadings.count, 100)
+
+        // call method under test
+        let actual = TrendsAlgorithmModel.averageDecayedBGReadingQuantity(bgReadings,
+                                                                          endDate: Date.distantFuture,
+                                                                          decayLifeSeconds: TrendsAlgorithmModel.hemoglobinLifespanSeconds)
+        // all readings are long before end date. hemoglobin has decayed and their weights are 0.
+        let expected: Float = 0.0
+        let accuracy: Float = 0.1
+        XCTAssertEqualWithAccuracy(actual, expected, accuracy: accuracy)
+    }
+    
+
     func testAverageDecayedBGReadingQuantityAlternating135and170() {
 
         let endDate = Date()
