@@ -56,10 +56,7 @@ class TrendsViewController: UIViewController {
         if reading == nil {
             return "No data"
         } else {
-            return BGReading.displayString(reading!.quantity,
-                                           withConversion: true)
-                + " "
-                + Constants.milligramsPerDeciliter
+            return reading!.displayString()
         }
     }
 
