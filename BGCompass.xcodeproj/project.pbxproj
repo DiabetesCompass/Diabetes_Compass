@@ -676,10 +676,10 @@
 		833A3E491837007A00C1FF5C /* Algorithms */ = {
 			isa = PBXGroup;
 			children = (
-				833A3E4A1837009C00C1FF5C /* CurveModel.h */,
-				833A3E4B1837009C00C1FF5C /* CurveModel.m */,
 				833A3E4D183B3EFB00C1FF5C /* BGAlgorithmModel.h */,
 				833A3E4E183B3EFB00C1FF5C /* BGAlgorithmModel.m */,
+				833A3E4A1837009C00C1FF5C /* CurveModel.h */,
+				833A3E4B1837009C00C1FF5C /* CurveModel.m */,
 				83980E0B184808BB00E321CF /* TrendsAlgorithmModel.h */,
 				83980E0C184808BB00E321CF /* TrendsAlgorithmModel.m */,
 				DEEEF1C71DFE0A140027D955 /* TrendsAlgorithmModelExtension.swift */,
