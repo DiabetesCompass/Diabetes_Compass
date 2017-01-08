@@ -116,7 +116,28 @@
 
 - (void) computeHA1c:(NSDate*) timeStamp {
 
-    // TODO: check if sort order is correct for use in loops
+    // TODO: check if sort order is correct for use in enumeration
+    NSArray *fetchedReadings = [TrendsAlgorithmModel
+                                bgReadingsWithinHemoglobinLifeSpanBeforeEndDate: timeStamp];
+
+    float twHA1c = [TrendsAlgorithmModel ha1cValueForBgReadings:fetchedReadings
+                                                        endDate:timeStamp
+                                               decayLifeSeconds:TrendsAlgorithmModel.hemoglobinLifespanSeconds];
+    // log & add result to CoreData
+    NSLog(@"computeHA1c weighted average HA1c: %f", twHA1c);
+
+    Ha1cReading* reading = [Ha1cReading MR_createEntityInContext:[NSManagedObjectContext MR_defaultContext]];
+    reading.quantity = @(twHA1c);
+    reading.timeStamp = timeStamp;
+    [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
+
+    [self loadArrays];
+}
+
+/*
+- (void) computeHA1c:(NSDate*) timeStamp {
+
+    // TODO: check if sort order is correct for use in enumeration
     NSArray *fetchedReadings = [TrendsAlgorithmModel
                                 bgReadingsWithinHemoglobinLifeSpanBeforeEndDate: timeStamp];
 
@@ -175,6 +196,7 @@
     [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
     [self loadArrays];
 }
+ */
 
 /**
  - returns: blood glucose readings between (endDate - hemoglobin lifespan) and endDate
