@@ -636,28 +636,28 @@
 		2C9D9297183E0C4D00061B65 /* Image Resources */ = {
 			isa = PBXGroup;
 			children = (
+				2C253FA718BCADF400DB7D2A /* appIcon.png */,
+				2C521B18184215D400AA1475 /* blue.png */,
+				2C309DB2183F73A100F2DD5D /* blur.png */,
+				2C9A5175184AF9AD00D9DCC2 /* blurCloud.png */,
+				2C846CA41844B68C0071559D /* cloud.png */,
+				2CF6D27218480F3E00872B8F /* compass.png */,
 				2C9A5171184AF5EA00D9DCC2 /* cool.png */,
 				2C9A5177184B07FC00D9DCC2 /* cool2.png */,
-				2C9A5175184AF9AD00D9DCC2 /* blurCloud.png */,
-				2CC964E0184749620092FFD1 /* green.png */,
 				2C31378F18477BAA008AFA46 /* gray.png */,
+				2CC964E0184749620092FFD1 /* green.png */,
 				2CC964E1184749620092FFD1 /* greyBlue.png */,
 				2CC964E2184749620092FFD1 /* lightBlue.png */,
-				2CF6D2741848121200872B8F /* solid.png */,
-				2CF6D27218480F3E00872B8F /* compass.png */,
 				2CC964E3184749620092FFD1 /* lightPink.png */,
 				2CC964E4184749620092FFD1 /* odd.png */,
-				2C253FA718BCADF400DB7D2A /* appIcon.png */,
 				2CC964E5184749620092FFD1 /* orange.png */,
 				2CC964E6184749620092FFD1 /* persian.png */,
 				2CC964E7184749620092FFD1 /* Purple.png */,
 				2CC964E8184749620092FFD1 /* red.png */,
+				2CF6D2741848121200872B8F /* solid.png */,
 				2CC964E9184749620092FFD1 /* weird.png */,
-				2CC964EA184749620092FFD1 /* weird2.png */,
-				2C846CA41844B68C0071559D /* cloud.png */,
-				2C521B18184215D400AA1475 /* blue.png */,
-				2C309DB2183F73A100F2DD5D /* blur.png */,
 				2C9D92A0183E219700061B65 /* tableviewBackground.png */,
+				2CC964EA184749620092FFD1 /* weird2.png */,
 			);
 			name = "Image Resources";
 			sourceTree = "<group>";
