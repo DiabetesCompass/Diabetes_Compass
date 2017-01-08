@@ -129,15 +129,15 @@
     
     NSMutableArray *labelsArray = [NSMutableArray new];
     if([[NSUserDefaults standardUserDefaults] boolForKey:SETTING_UNITS_IN_MOLES]) {
-        self.valueSlider.maximumValue = 300.0/CONVERSIONFACTOR;
+        self.valueSlider.maximumValue = 300.0/MG_PER_DL_PER_MMOL_PER_L;
         [self.valueSlider setCurrentValue:[((BGReading*)self.item).quantity floatValue]];
         self.valueUnitsLabel.text = @"mmol/L";
         for(int i=1; i<11; i++) {
-            [labelsArray addObject:[NSString stringWithFormat:@"%.0f", i*30.0/CONVERSIONFACTOR]];
+            [labelsArray addObject:[NSString stringWithFormat:@"%.0f", i*30.0/MG_PER_DL_PER_MMOL_PER_L]];
         }
     } else {
         self.valueSlider.maximumValue = 300;
-        [self.valueSlider setCurrentValue:[((BGReading*)self.item).quantity floatValue]*CONVERSIONFACTOR];
+        [self.valueSlider setCurrentValue:[((BGReading*)self.item).quantity floatValue]*MG_PER_DL_PER_MMOL_PER_L];
         self.valueUnitsLabel.text = @"mg/dL";
         for(int i=1; i<11; i++) {
             [labelsArray addObject:[NSString stringWithFormat:@"%.0f", i*30.0]];
