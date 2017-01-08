@@ -1,4 +1,4 @@
-s//
+//
 //  TrendsAlgorithmModelTests.swift
 //  BGCompass
 //
@@ -14,11 +14,11 @@ class TrendsAlgorithmModelTests: XCTestCase {
     func testHA1cFromBloodGlucose() {
         //https://en.wikipedia.org/wiki/Glycated_hemoglobin
         // BGReading.quantity units mmol/L
-        XCTAssertEqualWithAccuracy(TrendsAlgorithmModel.hA1cFromBloodGlucose(97.0/MG_PER_DL_PER_MMOL_PER_L),
+        XCTAssertEqualWithAccuracy(TrendsAlgorithmModel.hA1cFromBloodGlucose(97.0 / MG_PER_DL_PER_MMOL_PER_L),
                                    5.0, accuracy: 0.02)
-        XCTAssertEqualWithAccuracy(TrendsAlgorithmModel.hA1cFromBloodGlucose(240.0/MG_PER_DL_PER_MMOL_PER_L),
+        XCTAssertEqualWithAccuracy(TrendsAlgorithmModel.hA1cFromBloodGlucose(240.0 / MG_PER_DL_PER_MMOL_PER_L),
                                    10.0, accuracy: 0.02)
-        XCTAssertEqualWithAccuracy(TrendsAlgorithmModel.hA1cFromBloodGlucose(499.0/MG_PER_DL_PER_MMOL_PER_L),
+        XCTAssertEqualWithAccuracy(TrendsAlgorithmModel.hA1cFromBloodGlucose(499.0 / MG_PER_DL_PER_MMOL_PER_L),
                                    19.0, accuracy: 0.02)
     }
 
