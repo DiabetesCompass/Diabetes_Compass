@@ -22,8 +22,15 @@ extern NSString *const stringForUnitsInMilligrams;
  */
 @property (nonatomic, retain) NSNumber * quantity;
 
-+(NSString *) displayString:(NSNumber*) value withConversion:(BOOL)convert;
+/**
+ - returns: a string with quantity in units per current value of shouldDisplayBgInMmolPerL
+ e.g. if shouldDisplayBgInMmolPerL is true, "10 mmol/L"
+ e.g. if shouldDisplayBgInMmolPerL is false, "180 mg/dL"
+ */
 -(NSString *) displayString;
+
+
++(NSString *) displayString:(NSNumber*) value withConversion:(BOOL)convert;
 
 // TODO: Consider move to Settings
 /** Can be used to display BGReading.quantity in mmol/L or mg/dL.
