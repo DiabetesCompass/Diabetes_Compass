@@ -32,7 +32,6 @@ extern NSString *const stringForUnitsInMilligrams;
  */
 +(BOOL) isInMoles;
 
-//-(NSString *) itemValue;
 -(void) setQuantity:(NSNumber *)quantity withConversion:(BOOL)action;
 + (float) getValue:(float)value withConversion: (BOOL) convert;
 
