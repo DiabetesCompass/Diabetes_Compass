@@ -128,7 +128,7 @@
     [self.valueSlider addTarget:self action:@selector(newValue:) forControlEvents:UIControlEventValueChanged];
     
     NSMutableArray *labelsArray = [NSMutableArray new];
-    if([[NSUserDefaults standardUserDefaults] boolForKey:SETTING_UNITS_IN_MOLES]) {
+    if([[NSUserDefaults standardUserDefaults] boolForKey:SETTING_SHOULD_DISPLAY_BG_IN_MMOL_PER_L]) {
         self.valueSlider.maximumValue = 300.0/MG_PER_DL_PER_MMOL_PER_L;
         [self.valueSlider setCurrentValue:[((BGReading*)self.item).quantity floatValue]];
         self.valueUnitsLabel.text = @"mmol/L";
@@ -143,13 +143,13 @@
             [labelsArray addObject:[NSString stringWithFormat:@"%.0f", i*30.0]];
         }
     }*/
-    if([[NSUserDefaults standardUserDefaults] boolForKey:SETTING_UNITS_IN_MOLES]) {
+    if([[NSUserDefaults standardUserDefaults] boolForKey:SETTING_SHOULD_DISPLAY_BG_IN_MMOL_PER_L]) {
         self.valueUnitsLabel.text = @"mmol/L";
     } else {
         self.valueUnitsLabel.text = @"mg/dL";
     }
     
-    if([[NSUserDefaults standardUserDefaults] boolForKey:SETTING_UNITS_IN_MOLES]) {
+    if([[NSUserDefaults standardUserDefaults] boolForKey:SETTING_SHOULD_DISPLAY_BG_IN_MMOL_PER_L]) {
         self.valueField.text = [NSString stringWithFormat:@"%.1f", [((BGReading*)self.item).quantity floatValue]];
     } else {
         self.valueField.text = [NSString stringWithFormat:@"%.0f", [((BGReading*)self.item).quantity floatValue] * MG_PER_DL_PER_MMOL_PER_L];
@@ -286,7 +286,7 @@
 
 
 - (void) newValue:(EFCircularSlider*)sender {
-    if([[NSUserDefaults standardUserDefaults] boolForKey:SETTING_UNITS_IN_MOLES]) {
+    if([[NSUserDefaults standardUserDefaults] boolForKey:SETTING_SHOULD_DISPLAY_BG_IN_MMOL_PER_L]) {
         self.valueField.text = [NSString stringWithFormat:@"%.1f", sender.currentValue];
     } else {
         self.valueField.text = [NSString stringWithFormat:@"%.0f", sender.currentValue];
@@ -320,7 +320,7 @@
 
 - (void) saveBG:(BGReading*)bg asNew:(BOOL)isNew {
     bg.name = @"Blood Glucose";
-    if ([BGReading isInMoles]) {
+    if ([BGReading shouldDisplayBgInMmolPerL]) {
         [bg setQuantity:[NSNumber numberWithFloat:[self.valueField.text floatValue]] withConversion:NO];
     } else {
         [bg setQuantity:[NSNumber numberWithFloat:[self.valueField.text floatValue]] withConversion:YES];

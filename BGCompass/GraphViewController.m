@@ -248,7 +248,7 @@ shouldHandlePointingDeviceUpEvent:(UIEvent *)event
         if ([value floatValue] < 1.6) {
             value = @(1.6);
         }
-        if ([BGReading isInMoles]) {
+        if ([BGReading shouldDisplayBgInMmolPerL]) {
             return value;
         }
         return @([value floatValue] * MG_PER_DL_PER_MMOL_PER_L);
@@ -322,7 +322,7 @@ shouldHandlePointingDeviceUpEvent:(UIEvent *)event
 
 - (void)updateLabels {
     int max_range = 300;
-    if ([BGReading isInMoles]) {
+    if ([BGReading shouldDisplayBgInMmolPerL]) {
         max_range = 300 / MG_PER_DL_PER_MMOL_PER_L;
     }
 
@@ -370,7 +370,7 @@ shouldHandlePointingDeviceUpEvent:(UIEvent *)event
     y.labelTextStyle = whiteText;
     
     NSNumberFormatter *newFormatter = [[NSNumberFormatter alloc] init];
-    if ([BGReading isInMoles]) {
+    if ([BGReading shouldDisplayBgInMmolPerL]) {
         [newFormatter setMinimumFractionDigits:1];
         [newFormatter setMaximumFractionDigits:1];
     } else {
@@ -463,7 +463,7 @@ shouldHandlePointingDeviceUpEvent:(UIEvent *)event
 - (void)setupGraph {
     NSLog(@"setupGraph of GraphViewController is called.");
     int max_range = 300;
-    if ([BGReading isInMoles]) {
+    if ([BGReading shouldDisplayBgInMmolPerL]) {
         max_range = 300 / MG_PER_DL_PER_MMOL_PER_L;
     }
     NSLog(@"The value of max_range is: %d", max_range);

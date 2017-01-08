@@ -68,7 +68,7 @@
     bgUnits.numberOfLines = 1;
     bgUnits.textAlignment = NSTextAlignmentCenter;
     
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:SETTING_UNITS_IN_MOLES]) {
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:SETTING_SHOULD_DISPLAY_BG_IN_MMOL_PER_L]) {
         bgUnits.text = @"mmol/L";
         bgValue.text = [NSString stringWithFormat:@"%.2f", circularSlider.currentValue];
         circularSlider.maximumValue = 300.0/18.0;
@@ -109,7 +109,7 @@
 }
 
 - (void) newValue:(EFCircularSlider*) slider {
-    if([[NSUserDefaults standardUserDefaults] boolForKey:SETTING_UNITS_IN_MOLES]) {
+    if([[NSUserDefaults standardUserDefaults] boolForKey:SETTING_SHOULD_DISPLAY_BG_IN_MMOL_PER_L]) {
         self.bgValue.text = [NSString stringWithFormat:@"%.1f", slider.currentValue];
     } else {
         self.bgValue.text = [NSString stringWithFormat:@"%.0f", slider.currentValue];
@@ -128,7 +128,7 @@
     
     BGReading *bg = [BGReading MR_createEntity];
     bg.name = @"Blood Glucose";
-    [bg setQuantity:[NSNumber numberWithFloat:self.circularSlider.currentValue] withConversion:![[NSUserDefaults standardUserDefaults]boolForKey:SETTING_UNITS_IN_MOLES]];
+    [bg setQuantity:[NSNumber numberWithFloat:self.circularSlider.currentValue] withConversion:![[NSUserDefaults standardUserDefaults] boolForKey:SETTING_SHOULD_DISPLAY_BG_IN_MMOL_PER_L]];
     bg.timeStamp = [NSDate date];
     bg.isPending = [NSNumber numberWithBool:NO];
     

@@ -33,7 +33,7 @@
 + (NSString*) createFormattedStringFromNumber:(NSNumber *)number forReadingType:(Class)type {
     NSNumberFormatter *formatter = [NSNumberFormatter new];
     if (type == [BGReading class]) {
-        if ([[NSUserDefaults standardUserDefaults] boolForKey:SETTING_UNITS_IN_MOLES]) {
+        if ([[NSUserDefaults standardUserDefaults] boolForKey:SETTING_SHOULD_DISPLAY_BG_IN_MMOL_PER_L]) {
             [formatter setMinimumFractionDigits:1];
             [formatter setMaximumFractionDigits:1];
             NSString *result = [formatter stringFromNumber:number];
@@ -61,7 +61,7 @@
 }
 
 + (NSString*) getUnitsForBG {
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"unitsAreInMoles"]) {
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:SETTING_SHOULD_DISPLAY_BG_IN_MMOL_PER_L]) {
         return @"mmol/L";
     } else {
         return @"mg/dL";

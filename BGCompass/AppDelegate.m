@@ -44,7 +44,7 @@
                                   SETTING_INSULIN_SENSITIVITY: [NSNumber numberWithFloat:30.0],
                                   SETTING_INSULIN_TYPE: [NSNumber numberWithInt:INSULINTYPE_REGULAR],
                                   SETTING_INSULIN_DURATION: [NSNumber numberWithInt:515],
-                                  SETTING_UNITS_IN_MOLES: [NSNumber numberWithBool:NO],
+                                  SETTING_SHOULD_DISPLAY_BG_IN_MMOL_PER_L: [NSNumber numberWithBool:NO],
                                   SETTING_MILITARY_TIME: [NSNumber numberWithBool:NO],
                                   SETTING_CARB_SENSITIVITY: [NSNumber numberWithFloat:3.0],
                                   SETTING_IDEALBG_MAX: [NSNumber numberWithFloat:120],

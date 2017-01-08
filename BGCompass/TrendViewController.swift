@@ -346,7 +346,7 @@ extension TrendViewController: CPTPlotDataSource {
                 return NSNumber(value: timeIntervalMinutes)
 
             } else if plotField == .Y {
-                if BGReading.isInMoles() {
+                if BGReading.shouldDisplayBgInMmolPerL() {
                     // display mmol/L
                     return reading.quantity
                 } else {

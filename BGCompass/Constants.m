@@ -25,7 +25,7 @@ NSString *const NOTE_INSULINREADING_ADDED = @"insulinReadingAdded";
 NSString *const NOTE_INSULINREADING_EDITED = @"insulinReadingEdited";
 NSString *const NOTE_PENDINGREADING_DELETED = @"pendingReadingEdited";
 
-NSString *const SETTING_UNITS_IN_MOLES = @"unitsAreInMoles";
+NSString *const SETTING_SHOULD_DISPLAY_BG_IN_MMOL_PER_L = @"shouldDisplayBgInMmolPerL";
 NSString *const SETTING_INSULIN_SENSITIVITY = @"insulinSensitivity";
 NSString *const SETTING_INSULIN_DURATION = @"insulinDuration";
 NSString *const SETTING_INSULIN_TYPE = @"insulinType";

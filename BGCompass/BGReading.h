@@ -16,7 +16,7 @@
 extern NSString *const stringForUnitsInMoles;
 extern NSString *const stringForUnitsInMilligrams;
 
-/** BGReading.quantity units are millimoles/liter, never milligram/deciliter.
+/** BGReading.quantity units are millimole/liter, never milligram/deciliter.
  This keeps database and methods consistent.
  UI input and display can use either unit via Settings
  */
@@ -25,12 +25,12 @@ extern NSString *const stringForUnitsInMilligrams;
 +(NSString *) displayString:(NSNumber*) value withConversion:(BOOL)convert;
 -(NSString *) displayString;
 
-// TODO: Consider rename isInMoles to displayBGQuantityInMoles and move to Settings
-/** Can be used to display BGReading.quantity in mmole/L or mg/dL.
- mmole/L is popular in EU.
- mg/dL is popular in US.
+// TODO: Consider move to Settings
+/** Can be used to display BGReading.quantity in mmol/L or mg/dL.
+ millimole/liter is popular in EU.
+ milligram/deciliter is popular in US.
  */
-+(BOOL) isInMoles;
++(BOOL) shouldDisplayBgInMmolPerL;
 
 -(void) setQuantity:(NSNumber *)quantity withConversion:(BOOL)action;
 + (float) getValue:(float)value withConversion: (BOOL) convert;
