@@ -29,7 +29,7 @@ extern NSString *const stringForUnitsInMilligrams;
  */
 -(NSString *) displayString;
 
-
+// TODO: rename parameter withConversion to shouldDisplayInMmolPerL and invert logic
 +(NSString *) displayString:(NSNumber*) value withConversion:(BOOL)convert;
 
 // TODO: Consider move to Settings
@@ -39,7 +39,10 @@ extern NSString *const stringForUnitsInMilligrams;
  */
 +(BOOL) shouldDisplayBgInMmolPerL;
 
+// TODO: consider delete this method. Always write quantity in mmol/L
 -(void) setQuantity:(NSNumber *)quantity withConversion:(BOOL)action;
+
+// TODO: consider delete this method or at least rename parameter withConversion.
 + (float) getValue:(float)value withConversion: (BOOL) convert;
 
 @end
