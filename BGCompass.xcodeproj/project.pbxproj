@@ -417,15 +417,15 @@
 				2C2330FD182B6C82008A6F88 /* AppDelegate.h */,
 				2C2330FE182B6C82008A6F88 /* AppDelegate.m */,
 				2C18D36E183210F100B622C8 /* Images.xcassets */,
-				2C30405718556DE200BCD3FF /* User Interface */,
-				DE1AD7FA1DFBB34500720F5F /* Trends */,
-				2C30405918556E8E00BCD3FF /* View Controllers */,
-				2C30405B18556F6600BCD3FF /* Delegates */,
-				2C30405818556E6700BCD3FF /* Animations Controllers */,
-				2C9D9297183E0C4D00061B65 /* Image Resources */,
 				833A3E491837007A00C1FF5C /* Algorithms */,
+				2C30405818556E6700BCD3FF /* Animations Controllers */,
 				83EAFABE182F52B300CE5FA9 /* Data Models */,
+				2C30405B18556F6600BCD3FF /* Delegates */,
+				2C9D9297183E0C4D00061B65 /* Image Resources */,
 				2C2330F5182B6C82008A6F88 /* Supporting Files */,
+				DE1AD7FA1DFBB34500720F5F /* Trends */,
+				2C30405718556DE200BCD3FF /* User Interface */,
+				2C30405918556E8E00BCD3FF /* View Controllers */,
 			);
 			path = BGCompass;
 			sourceTree = "<group>";
