@@ -488,7 +488,7 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:NOTE_GRAPH_RECALCULATED object:self];
     //NSLog(@"Finished Calculation");
 }
-//find the current estimated BG.
+
 - (NSNumber*) getCurrentBG
 {
     float current_value = [[self.graphArray firstObject] floatValue];
@@ -535,7 +535,7 @@
     }
     return @(0);
 }
-//Find the settling BG.
+
 - (NSNumber *) getSettlingBG
 {
     float asymptote_value = [[self.graphArray lastObject] floatValue];

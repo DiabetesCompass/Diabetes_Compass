@@ -41,7 +41,7 @@
 
         bgReading.isPending = [NSNumber numberWithBool:NO];
 
-        bgReading.quantity = @(135);
+        bgReading.quantity = @(135 / MG_PER_DL_PER_MMOL_PER_L);
 
         [bgReadings addObject:bgReading];
     }
@@ -68,9 +68,9 @@
         // use modulo operator %
         if (i % 2 == 0) {
             // i is even
-            bgReading.quantity = @(135);
+            bgReading.quantity = @(135 / MG_PER_DL_PER_MMOL_PER_L);
         } else {
-            bgReading.quantity = @(170);
+            bgReading.quantity = @(170 / MG_PER_DL_PER_MMOL_PER_L);
         }
 
         [bgReadings addObject:bgReading];
@@ -98,9 +98,9 @@
 
         if (i < 30) {
             // the most recent dates as loop iterates back in time
-            bgReading.quantity = @(50);
+            bgReading.quantity = @(50 / MG_PER_DL_PER_MMOL_PER_L);
         } else {
-            bgReading.quantity = @(150);
+            bgReading.quantity = @(150 / MG_PER_DL_PER_MMOL_PER_L);
         }
 
         [bgReadings addObject:bgReading];
@@ -128,9 +128,9 @@
 
         if (i < 50) {
             // the most recent dates as loop iterates back in time
-            bgReading.quantity = @(50);
+            bgReading.quantity = @(50 / MG_PER_DL_PER_MMOL_PER_L);
         } else {
-            bgReading.quantity = @(150);
+            bgReading.quantity = @(150 / MG_PER_DL_PER_MMOL_PER_L);
         }
 
         [bgReadings addObject:bgReading];
@@ -158,9 +158,9 @@
 
         if (i < 50) {
             // the most recent dates as loop iterates back in time
-            bgReading.quantity = @(150);
+            bgReading.quantity = @(150 / MG_PER_DL_PER_MMOL_PER_L);
         } else {
-            bgReading.quantity = @(50);
+            bgReading.quantity = @(50 / MG_PER_DL_PER_MMOL_PER_L);
         }
 
         [bgReadings addObject:bgReading];

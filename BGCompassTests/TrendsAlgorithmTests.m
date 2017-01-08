@@ -39,10 +39,10 @@
     
     // Create BG Readings.
     BGReading *bgReading;
-    for (int i = 90*HOURS_IN_ONE_DAY; i > 0 ; i--) {
+    for (int i = 90 * HOURS_IN_ONE_DAY; i > 0 ; i--) {
         bgReading = [BGReading MR_createEntity];
         bgReading.name = @"BloodGlucose";
-        bgReading.quantity = @(135);
+        bgReading.quantity = @(135 / MG_PER_DL_PER_MMOL_PER_L);
         bgReading.timeStamp = [NSDate dateWithTimeInterval:-i*SECONDS_IN_ONE_HOUR sinceDate:origin];
         bgReading.isPending = [NSNumber numberWithBool:NO];
     }
@@ -74,7 +74,7 @@
     for (int i = 90*HOURS_IN_ONE_DAY; i > 0 ; i--) {
         bgReading = [BGReading MR_createEntity];
         bgReading.name = @"BloodGlucose";
-        bgReading.quantity = @(170);
+        bgReading.quantity = @(170 / MG_PER_DL_PER_MMOL_PER_L);
         bgReading.timeStamp = [NSDate dateWithTimeInterval:-i*SECONDS_IN_ONE_HOUR sinceDate:origin];
         bgReading.isPending = [NSNumber numberWithBool:NO];
     }
@@ -109,10 +109,10 @@
         bgReading.timeStamp = [NSDate dateWithTimeInterval:-i*SECONDS_IN_ONE_HOUR sinceDate:origin];
         bgReading.isPending = [NSNumber numberWithBool:NO];
         if (toggle) {
-            bgReading.quantity = @(170);
+            bgReading.quantity = @(170 / MG_PER_DL_PER_MMOL_PER_L);
             toggle = NO;
         } else {
-            bgReading.quantity = @(135);
+            bgReading.quantity = @(135 / MG_PER_DL_PER_MMOL_PER_L);
             toggle = YES;
         }
     }

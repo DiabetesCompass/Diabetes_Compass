@@ -328,9 +328,11 @@ extension TrendViewController: CPTPlotDataSource {
 
             } else if plotField == .Y {
                 if BGReading.isInMoles() {
+                    // display mmol/L
                     return reading.quantity
                 } else {
-                    return reading.quantity.floatValue * Float(MG_PER_DL_PER_MMOL_PER_L)
+                    // display mg/dL
+                    return MG_PER_DL_PER_MMOL_PER_L * reading.quantity.floatValue
                 }
             }
 
