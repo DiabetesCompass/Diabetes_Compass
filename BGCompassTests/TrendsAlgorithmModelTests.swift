@@ -83,7 +83,9 @@ class TrendsAlgorithmModelTests: XCTestCase {
         XCTAssertEqualWithAccuracy(weight, 1.0, accuracy: 0.01)
     }
 
-    // MARK: - test averageDecayedBGReadingQuantity 135
+    // MARK: - test averageDecayedBGReadingQuantity
+
+    // MARK: blood glucose 135
 
     func testAverageDecayedBGReadingQuantity135() {
 
@@ -133,7 +135,7 @@ class TrendsAlgorithmModelTests: XCTestCase {
         XCTAssertEqualWithAccuracy(actual, expected, accuracy: accuracy)
     }
 
-    // MARK: -
+    // MARK: blood glucose 135 and 170
 
     func testAverageDecayedBGReadingQuantityAlternating135and170() {
 
@@ -151,6 +153,8 @@ class TrendsAlgorithmModelTests: XCTestCase {
         XCTAssertEqualWithAccuracy(actual, expected, accuracy: accuracy)
     }
 
+    // MARK: blood glucose 150 and 50
+
     func testAverageDecayedBGReadingQuantityBgReadings50at150then50at50() {
 
         let endDate = Date()
@@ -166,6 +170,8 @@ class TrendsAlgorithmModelTests: XCTestCase {
         let accuracy: Float = 0.1
         XCTAssertEqualWithAccuracy(actual, expected, accuracy: accuracy)
     }
+
+    // MARK: blood glucose 50 and 150
 
     func testAverageDecayedBGReadingQuantityBgReadings50at50then50at150() {
 
@@ -183,7 +189,7 @@ class TrendsAlgorithmModelTests: XCTestCase {
         XCTAssertEqualWithAccuracy(actual, expected, accuracy: accuracy)
     }
 
-    // MARK: - test averageDecayedBGReadingQuantity 30at150then70at50
+    // MARK: 30 at 150 then 70 at 50
 
     func testAverageDecayedBGReadingQuantityBgReadings30at150then70at50() {
 
@@ -235,6 +241,25 @@ class TrendsAlgorithmModelTests: XCTestCase {
         let expected: Float = 147.833
         let accuracy: Float = 0.1
         XCTAssertEqualWithAccuracy(actual, expected, accuracy: accuracy)
+    }
+
+    // MARK: - testHa1cValueForBgReadings
+
+    func testHa1cValueForBgReadings() {
+
+        let endDate = Date()
+        let bgReadings = BGReadingTestHelper.bgReadings135(endDate) as! [BGReading]
+        XCTAssertEqual(bgReadings.count, 100)
+
+        // call method under test
+        let actual = TrendsAlgorithmModel.ha1cValueForBgReadings(bgReadings,
+                                                                 endDate: endDate,
+                                                                 decayLifeSeconds: TrendsAlgorithmModel.hemoglobinLifespanSeconds)
+
+        let expected: Float = 6.331
+        let accuracy: Float = 0.1
+        XCTAssertEqualWithAccuracy(actual, expected, accuracy: accuracy)
+
     }
 
 }
