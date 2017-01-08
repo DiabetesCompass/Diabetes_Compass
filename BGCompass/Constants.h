@@ -59,7 +59,7 @@ FOUNDATION_EXPORT int const MINUTES_IN_ONE_HOUR;
 FOUNDATION_EXPORT int const HOURS_IN_ONE_DAY;
 FOUNDATION_EXPORT int const DAYS_IN_ONE_WEEK;
 
-/// (milligrams/deciliter) / (millimoles/liter)
+/// (milligram/deciliter) / (millimole/liter)
 FOUNDATION_EXPORT float const MG_PER_DL_PER_MMOL_PER_L;
 
 FOUNDATION_EXPORT int const BG_EXPIRATION_MINUTES;
