@@ -498,13 +498,13 @@
 		2C30405718556DE200BCD3FF /* User Interface */ = {
 			isa = PBXGroup;
 			children = (
-				2C233100182B6C82008A6F88 /* Main_iPhone.storyboard */,
+				DE758DF01DDABDE200135F5D /* Launch Screen.storyboard */,
 				2C233103182B6C82008A6F88 /* Main_iPad.storyboard */,
+				2C233100182B6C82008A6F88 /* Main_iPhone.storyboard */,
+				2C30405A18556EB600BCD3FF /* TableView Cells */,
+				2C253F7F18BC7EAB00DB7D2A /* Tutorial TableView Items */,
 				839E34A7182F81520083960E /* UselessSegue.h */,
 				839E34A8182F81520083960E /* UselessSegue.m */,
-				2C253F7F18BC7EAB00DB7D2A /* Tutorial TableView Items */,
-				2C30405A18556EB600BCD3FF /* TableView Cells */,
-				DE758DF01DDABDE200135F5D /* Launch Screen.storyboard */,
 			);
 			name = "User Interface";
 			sourceTree = "<group>";
