@@ -81,7 +81,7 @@ extension TrendsAlgorithmModel {
     // MARK: -
 
     /**
-     - parameter bgReadings: blood glucose readings to average.
+     - parameter bgReadings: blood glucose readings to average. quantity units mmol/L
      readings may appear in any chronological order, the method reads their timeStamp
      - parameter endDate: end date for decay. Blood glucose readings after endDate are ignored.
      - parameter decayLifeSeconds: time for blood glucose from a reading to decay to 0.0.
@@ -96,8 +96,7 @@ extension TrendsAlgorithmModel {
                                                                                     endDate: endDate,
                                                                                     decayLifeSeconds: decayLifeSeconds)
 
-        // TODO: consider renaming bg quantities to make units more obvious
-        let ha1cValue = hA1cFromBloodGlucose(Float(MG_PER_DL_PER_MMOL_PER_L) * averageDecayedBG)
+        let ha1cValue = hA1cFromBloodGlucose(averageDecayedBG)
         return ha1cValue
     }
     
@@ -167,17 +166,15 @@ extension TrendsAlgorithmModel {
         return weight
     }
 
-    // FIXME: ha1cForBGReadings was calling this method with bg units not multiplied by MG_PER_DL_PER_MMOL_PER_L
-    // e.g. called with bloodGlucose 8.49, should be 8.49 * 18 = 152.82?
-    // so method returned value like 1.92 instead of correct 6.95
     /**
      Generally physiologic HA1c is >= 5
      https://en.wikipedia.org/wiki/Glycated_hemoglobin
-     - parameter bloodGlucose: blood glucose, units mg/dL
+     - parameter bloodGlucose: blood glucose quantity, units mmol/L
      - returns: HA1c in DCCT percentage
      */
     class func hA1cFromBloodGlucose(_ bloodGlucose: Float) -> Float {
-        let hA1c = (bloodGlucose + 46.7) / 28.7
+        let bloodGlucoseMgPerDl = bloodGlucose * MG_PER_DL_PER_MMOL_PER_L
+        let hA1c = (bloodGlucoseMgPerDl + 46.7) / 28.7
         return hA1c
     }
 

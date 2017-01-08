@@ -13,11 +13,12 @@ class TrendsAlgorithmModelTests: XCTestCase {
 
     func testHA1cFromBloodGlucose() {
         //https://en.wikipedia.org/wiki/Glycated_hemoglobin
-        XCTAssertEqualWithAccuracy(TrendsAlgorithmModel.hA1cFromBloodGlucose(97.0),
+        // BGReading.quantity units mmol/L
+        XCTAssertEqualWithAccuracy(TrendsAlgorithmModel.hA1cFromBloodGlucose(97.0 / MG_PER_DL_PER_MMOL_PER_L),
                                    5.0, accuracy: 0.02)
-        XCTAssertEqualWithAccuracy(TrendsAlgorithmModel.hA1cFromBloodGlucose(240.0),
+        XCTAssertEqualWithAccuracy(TrendsAlgorithmModel.hA1cFromBloodGlucose(240.0 / MG_PER_DL_PER_MMOL_PER_L),
                                    10.0, accuracy: 0.02)
-        XCTAssertEqualWithAccuracy(TrendsAlgorithmModel.hA1cFromBloodGlucose(499.0),
+        XCTAssertEqualWithAccuracy(TrendsAlgorithmModel.hA1cFromBloodGlucose(499.0 / MG_PER_DL_PER_MMOL_PER_L),
                                    19.0, accuracy: 0.02)
     }
 
@@ -98,7 +99,7 @@ class TrendsAlgorithmModelTests: XCTestCase {
                                                                           endDate: endDate,
                                                                           decayLifeSeconds: TrendsAlgorithmModel.hemoglobinLifespanSeconds)
 
-        let expected: Float = 135.0
+        let expected: Float = 135.0 / MG_PER_DL_PER_MMOL_PER_L
         let accuracy: Float = 0.1
         XCTAssertEqualWithAccuracy(actual, expected, accuracy: accuracy)
     }
@@ -148,7 +149,7 @@ class TrendsAlgorithmModelTests: XCTestCase {
                                                                           endDate: endDate,
                                                                           decayLifeSeconds: TrendsAlgorithmModel.hemoglobinLifespanSeconds)
 
-        let expected: Float = 152.327
+        let expected: Float = 152.327 / MG_PER_DL_PER_MMOL_PER_L
         let accuracy: Float = 0.1
         XCTAssertEqualWithAccuracy(actual, expected, accuracy: accuracy)
     }
@@ -166,7 +167,7 @@ class TrendsAlgorithmModelTests: XCTestCase {
                                                                           endDate: endDate,
                                                                           decayLifeSeconds: TrendsAlgorithmModel.hemoglobinLifespanSeconds)
 
-        let expected: Float = 75.25
+        let expected: Float = 75.25 / MG_PER_DL_PER_MMOL_PER_L
         let accuracy: Float = 0.1
         XCTAssertEqualWithAccuracy(actual, expected, accuracy: accuracy)
     }
@@ -184,7 +185,7 @@ class TrendsAlgorithmModelTests: XCTestCase {
                                                                           endDate: endDate,
                                                                           decayLifeSeconds: TrendsAlgorithmModel.hemoglobinLifespanSeconds)
 
-        let expected: Float = 124.752
+        let expected: Float = 124.752 / MG_PER_DL_PER_MMOL_PER_L
         let accuracy: Float = 0.1
         XCTAssertEqualWithAccuracy(actual, expected, accuracy: accuracy)
     }
@@ -202,7 +203,7 @@ class TrendsAlgorithmModelTests: XCTestCase {
                                                                           endDate: endDate,
                                                                           decayLifeSeconds: TrendsAlgorithmModel.hemoglobinLifespanSeconds)
         
-        let expected: Float = 99.2079
+        let expected: Float = 99.2079 / MG_PER_DL_PER_MMOL_PER_L
         let accuracy: Float = 0.1
         XCTAssertEqualWithAccuracy(actual, expected, accuracy: accuracy)
     }
@@ -220,7 +221,7 @@ class TrendsAlgorithmModelTests: XCTestCase {
                                                                           endDate: endDate,
                                                                           decayLifeSeconds: TrendsAlgorithmModel.hemoglobinLifespanSeconds)
 
-        let expected: Float = 130.269
+        let expected: Float = 130.269 / MG_PER_DL_PER_MMOL_PER_L
         let accuracy: Float = 0.1
         XCTAssertEqualWithAccuracy(actual, expected, accuracy: accuracy)
     }
@@ -238,7 +239,7 @@ class TrendsAlgorithmModelTests: XCTestCase {
                                                                           endDate: endDate,
                                                                           decayLifeSeconds: TrendsAlgorithmModel.hemoglobinLifespanSeconds)
 
-        let expected: Float = 147.833
+        let expected: Float = 147.833 / MG_PER_DL_PER_MMOL_PER_L
         let accuracy: Float = 0.1
         XCTAssertEqualWithAccuracy(actual, expected, accuracy: accuracy)
     }

@@ -43,7 +43,7 @@ class TrendViewController : UIViewController {
         configurePaddings(graph: newGraph)
         if trend != nil {
             configurePlotSpace(graph: newGraph, trend: trend!)
-            configureAxes(graph: newGraph)
+            configureAxes(graph: newGraph, trend: trend!)
 
             let boundLinePlot = styledPlot(trend: trend!)
             boundLinePlot.dataSource = self
@@ -136,10 +136,15 @@ class TrendViewController : UIViewController {
     }
 
     class func globalYRange(trend: Trend) -> CPTPlotRange {
+
+        let location = NSNumber(value: TrendViewController.rangeMinimum(trend: trend)
+            - xAxisLabelHeight(trend: trend))
+        
         let length = NSNumber(value:TrendViewController.rangeMaximum(trend: trend)
+            - TrendViewController.rangeMinimum(trend: trend)
             + TrendViewController.xAxisLabelHeight(trend: trend))
-        let range = CPTPlotRange(location: NSNumber(value: -xAxisLabelHeight(trend: trend)),
-                                 length: length)
+
+        let range = CPTPlotRange(location: location, length: length)
         return range
     }
     
@@ -152,19 +157,26 @@ class TrendViewController : UIViewController {
         }
     }
 
-    // TODO: ha1c rangeMinimum 5
-
     class func rangeMaximum(trend: Trend) -> Double {
         switch trend {
         case .bg:
             return 300.0
         case .ha1c:
-            // TODO: set to all readings maximum
+            // TODO: set to maximum of all readings
             return 11.0
         }
     }
 
-    func configureAxes(graph: CPTXYGraph) {
+    class func rangeMinimum(trend: Trend) -> Double {
+        switch trend {
+        case .bg:
+            return 0.0
+        case .ha1c:
+            return 5.0
+        }
+    }
+    
+    func configureAxes(graph: CPTXYGraph, trend: Trend) {
 
         let axisSet = graph.axisSet as! CPTXYAxisSet
 
@@ -177,8 +189,15 @@ class TrendViewController : UIViewController {
             x.majorTickLineStyle = TrendViewController.lineStyleThinWhite()
             x.minorTickLineStyle = TrendViewController.lineStyleThinWhite()
             x.majorIntervalLength   = TrendViewController.minutesPerWeek as NSNumber?
+
             // x axis located at y coordinate == x.orthogonalPosition
-            x.orthogonalPosition    = 0.0
+            switch trend {
+            case .bg:
+                x.orthogonalPosition = 0.0
+            case .ha1c:
+                x.orthogonalPosition = 5.0
+            }
+
             // one day per minor tick
             x.minorTicksPerInterval = UInt(DAYS_IN_ONE_WEEK) - 1
             x.labelExclusionRanges  = [
@@ -198,14 +217,14 @@ class TrendViewController : UIViewController {
 
             // y axis located at x coordinate == y.orthogonalPosition
             y.orthogonalPosition    = 0.0
+
             y.labelExclusionRanges  = [
                 //CPTPlotRange(location: 0.99, length: 0.02),
                 //CPTPlotRange(location: 1.99, length: 0.02),
                 //CPTPlotRange(location: 3.99, length: 0.02)
             ]
 
-            guard let trendUnwrapped = trend else { return }
-            switch trendUnwrapped {
+            switch trend {
             case .bg:
                 y.majorIntervalLength   = 10
                 y.minorTicksPerInterval = 1
@@ -328,9 +347,11 @@ extension TrendViewController: CPTPlotDataSource {
 
             } else if plotField == .Y {
                 if BGReading.isInMoles() {
+                    // display mmol/L
                     return reading.quantity
                 } else {
-                    return reading.quantity.floatValue * Float(MG_PER_DL_PER_MMOL_PER_L)
+                    // display mg/dL
+                    return MG_PER_DL_PER_MMOL_PER_L * reading.quantity.floatValue
                 }
             }
 

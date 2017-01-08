@@ -15,7 +15,8 @@ class BGReadingTests: XCTestCase {
     func testBGReading() {
         let name = "foo"
         let timeStamp = Date()
-        let quantity = 123 as NSNumber
+        // BGReading.quantity units mmol/L
+        let quantity = (123 / MG_PER_DL_PER_MMOL_PER_L) as NSNumber
         let isPending = false
         let bgReading = BGReadingTestHelper.bgReading(withName: name,
                                                       timeStamp: timeStamp,
