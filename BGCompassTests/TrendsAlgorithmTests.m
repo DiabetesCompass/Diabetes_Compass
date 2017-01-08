@@ -58,7 +58,8 @@
     NSArray* readings = [Ha1cReading MR_findAll];
     Ha1cReading* ha1c = [readings firstObject];
 
-    XCTAssertEqual([[ha1c quantity] floatValue], 6.75, @"The result was incorrect for all readings at 135 mg/dL");
+    XCTAssertEqualWithAccuracy([[ha1c quantity] floatValue], 6.33, 0.01,
+                               @"The result was incorrect for all readings at 135 mg/dL");
     
     [Ha1cReading MR_truncateAll];
     [[NSManagedObjectContext MR_defaultContext] MR_saveOnlySelfAndWait];
@@ -89,7 +90,8 @@
     NSArray* readings = [Ha1cReading MR_findAll];
     Ha1cReading* ha1c = [readings firstObject];
     
-    XCTAssertEqual([[ha1c quantity] floatValue], 8.5, @"The result was incorrect for all readings at 170 mg/dL");
+    XCTAssertEqualWithAccuracy([[ha1c quantity] floatValue], 7.55, 0.01,
+                               @"The result was incorrect for all readings at 170 mg/dL");
     
     [Ha1cReading MR_truncateAll];
     [[NSManagedObjectContext MR_defaultContext] MR_saveOnlySelfAndWait];
@@ -122,11 +124,14 @@
     [[NSManagedObjectContext MR_defaultContext] MR_saveOnlySelfAndWait];
     
     NSNumber* count = [Ha1cReading MR_numberOfEntities];
+
+    // FIXME: count increases by 1 each time test is run. cleanUp isn't deleting readings?
     XCTAssertEqual([count intValue], 1, @"The number of Ha1c readings was NOT one.");
     
     Ha1cReading* ha1c = [Ha1cReading MR_findFirst];
     
-    XCTAssertEqualWithAccuracy([[ha1c quantity] floatValue], 7.62, 0.01, @"The result was incorrect for BG readings oscillating between 170 and 135 mg/dL");
+    XCTAssertEqualWithAccuracy([[ha1c quantity] floatValue], 6.93, 0.01,
+                               @"The result was incorrect for BG readings oscillating between 170 and 135 mg/dL");
     
     [Ha1cReading MR_truncateAll];
     [[NSManagedObjectContext MR_defaultContext] MR_saveOnlySelfAndWait];
