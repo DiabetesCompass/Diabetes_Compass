@@ -512,18 +512,18 @@
 		2C30405818556E6700BCD3FF /* Animations Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				2C253FBE18C05B0300DB7D2A /* BlurTransitionDelegate.h */,
-				2C253FBF18C05B0300DB7D2A /* BlurTransitionDelegate.m */,
 				2C253FC118C05B4700DB7D2A /* BlurAnimator.h */,
 				2C253FC218C05B4700DB7D2A /* BlurAnimator.m */,
+				2C253FBE18C05B0300DB7D2A /* BlurTransitionDelegate.h */,
+				2C253FBF18C05B0300DB7D2A /* BlurTransitionDelegate.m */,
 				2C253FB218C0358500DB7D2A /* FadeAnimator.h */,
 				2C253FB318C0358500DB7D2A /* FadeAnimator.m */,
+				2C253FB518C0397B00DB7D2A /* ItemsNavigationTransitionControllerDelegate.h */,
+				2C253FB618C0397B00DB7D2A /* ItemsNavigationTransitionControllerDelegate.m */,
 				2C58E0991846E7AB0091797A /* ZoomModalAnimator.h */,
 				2C58E09A1846E7AB0091797A /* ZoomModalAnimator.m */,
 				2C58E09F1846F6950091797A /* ZoomModalTransitionDelegate.h */,
 				2C58E0A01846F6950091797A /* ZoomModalTransitionDelegate.m */,
-				2C253FB518C0397B00DB7D2A /* ItemsNavigationTransitionControllerDelegate.h */,
-				2C253FB618C0397B00DB7D2A /* ItemsNavigationTransitionControllerDelegate.m */,
 			);
 			name = "Animations Controllers";
 			sourceTree = "<group>";
