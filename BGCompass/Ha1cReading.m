@@ -14,6 +14,5 @@
 @dynamic quantity;
 @dynamic insufficientDataWarning;
 @dynamic insufficientDataError;
-//@dynamic timeStamp;
 
 @end

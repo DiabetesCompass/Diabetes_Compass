@@ -11,11 +11,8 @@
 
 @implementation InsulinReading
 
-//@dynamic name;
 @dynamic insulinType;
 @dynamic quantity;
-//@dynamic timeStamp;
-//@dynamic isFavorite;
 
 -(NSString *) quantityWeightedString
 {

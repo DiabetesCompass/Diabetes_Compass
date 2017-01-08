@@ -15,10 +15,7 @@
 NSString *const stringForUnitsInMoles = @"mmol/L";
 NSString *const stringForUnitsInMilligrams = @"mg/dL";
 
-//@dynamic name;
 @dynamic quantity;
-//@dynamic timeStamp;
-//@dynamic isFavorite;
 
 
 +(BOOL) isInMoles

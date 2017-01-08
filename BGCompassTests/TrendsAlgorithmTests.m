@@ -34,8 +34,7 @@
     [super tearDown];
 }
 
-- (void)testOneHundredThirtyFiveConstant
-{
+- (void)testOneHundredThirtyFiveConstant {
     NSDate* origin = [NSDate new];
     
     // Create BG Readings.
@@ -48,8 +47,8 @@
         bgReading.isPending = [NSNumber numberWithBool:NO];
     }
 
-    [[TrendsAlgorithmModel sharedInstance] calculateHa1c:bgReading];
-    
+    [[TrendsAlgorithmModel sharedInstance] computeHA1c:bgReading.timeStamp];
+
     [[NSManagedObjectContext MR_defaultContext] MR_saveOnlySelfAndWait];
     
     
@@ -80,8 +79,8 @@
         bgReading.isPending = [NSNumber numberWithBool:NO];
     }
 
-    [[TrendsAlgorithmModel sharedInstance] calculateHa1c:bgReading];
-    
+    [[TrendsAlgorithmModel sharedInstance] computeHA1c:bgReading.timeStamp];
+
     [[NSManagedObjectContext MR_defaultContext] MR_saveOnlySelfAndWait];
     
     NSNumber* count = [Ha1cReading MR_numberOfEntities];
@@ -118,8 +117,8 @@
         }
     }
     
-    [[TrendsAlgorithmModel sharedInstance] calculateHa1c:bgReading];
-    
+    [[TrendsAlgorithmModel sharedInstance] computeHA1c:bgReading.timeStamp];
+
     [[NSManagedObjectContext MR_defaultContext] MR_saveOnlySelfAndWait];
     
     NSNumber* count = [Ha1cReading MR_numberOfEntities];

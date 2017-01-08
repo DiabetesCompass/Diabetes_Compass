@@ -15,6 +15,5 @@
 @property (nonatomic, retain) NSNumber * quantity;
 @property (nonatomic, retain) NSNumber * insufficientDataWarning;
 @property (nonatomic, retain) NSNumber * insufficientDataError;
-//@property (nonatomic, retain) NSDate * timeStamp;
 
 @end
