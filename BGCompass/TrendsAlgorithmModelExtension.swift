@@ -95,7 +95,9 @@ extension TrendsAlgorithmModel {
         let averageDecayedBG = TrendsAlgorithmModel.averageDecayedBGReadingQuantity(bgReadings,
                                                                                     endDate: endDate,
                                                                                     decayLifeSeconds: decayLifeSeconds)
-        let ha1cValue = hA1cFromBloodGlucose(averageDecayedBG)
+
+        // TODO: consider renaming bg quantities to make units more obvious
+        let ha1cValue = hA1cFromBloodGlucose(Float(MG_PER_DL_PER_MMOL_PER_L) * averageDecayedBG)
         return ha1cValue
     }
     
@@ -165,7 +167,11 @@ extension TrendsAlgorithmModel {
         return weight
     }
 
+    // FIXME: ha1cForBGReadings was calling this method with bg units not multiplied by MG_PER_DL_PER_MMOL_PER_L
+    // e.g. called with bloodGlucose 8.49, should be 8.49 * 18 = 152.82?
+    // so method returned value like 1.92 instead of correct 6.95
     /**
+     Generally physiologic HA1c is >= 5
      https://en.wikipedia.org/wiki/Glycated_hemoglobin
      - parameter bloodGlucose: blood glucose, units mg/dL
      - returns: HA1c in DCCT percentage

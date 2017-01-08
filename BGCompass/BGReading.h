@@ -16,6 +16,7 @@
 extern NSString *const stringForUnitsInMoles;
 extern NSString *const stringForUnitsInMilligrams;
 
+// FIXME: Explicitly state quantity units and use them consistently
 @property (nonatomic, retain) NSNumber * quantity;
 
 +(NSString *) displayString:(NSNumber*) value withConversion:(BOOL)convert;
