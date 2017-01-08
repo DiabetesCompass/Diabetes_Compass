@@ -130,7 +130,7 @@
     
     Ha1cReading* ha1c = [Ha1cReading MR_findFirst];
     
-    XCTAssertEqualWithAccuracy([[ha1c quantity] floatValue], 6.16, 0.01,
+    XCTAssertEqualWithAccuracy([[ha1c quantity] floatValue], 6.93, 0.01,
                                @"The result was incorrect for BG readings oscillating between 170 and 135 mg/dL");
     
     [Ha1cReading MR_truncateAll];
