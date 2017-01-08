@@ -56,6 +56,8 @@ class TrendsViewController: UIViewController {
         if reading == nil {
             return "No data"
         } else {
+            // displayString() returns a string with quantity in units
+            // per current value of shouldDisplayBgInMmolPerL
             return reading!.displayString()
         }
     }
