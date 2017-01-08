@@ -58,6 +58,7 @@ extension TrendsAlgorithmModel {
         }
     }
 
+
     /**
      - returns: readings between startDate (inclusive) and endDate (inclusive)
      */
@@ -79,6 +80,25 @@ extension TrendsAlgorithmModel {
 
     // MARK: -
 
+    /**
+     - parameter bgReadings: blood glucose readings to average.
+     readings may appear in any chronological order, the method reads their timeStamp
+     - parameter endDate: end date for decay. Blood glucose readings after endDate are ignored.
+     - parameter decayLifeSeconds: time for blood glucose from a reading to decay to 0.0.
+     Typically hemoglobin lifespan seconds.
+     - returns: ha1c value based on average of decayed BG reading.quantity
+     */
+    class func ha1cValueForBgReadings(_ bgReadings: [BGReading],
+                                      endDate: Date,
+                                      decayLifeSeconds: TimeInterval) -> Float {
+
+        let averageDecayedBG = TrendsAlgorithmModel.averageDecayedBGReadingQuantity(bgReadings,
+                                                                                    endDate: endDate,
+                                                                                    decayLifeSeconds: decayLifeSeconds)
+        let ha1cValue = hA1cFromBloodGlucose(averageDecayedBG)
+        return ha1cValue
+    }
+    
     /**
      - parameter bgReadings: blood glucose readings to average.
        readings may appear in any chronological order, the method reads their timeStamp
