@@ -12,11 +12,8 @@
 
 @interface InsulinReading : Reading
 
-//@property (nonatomic, retain) NSString * name;
 @property (nonatomic, retain) NSNumber * insulinType;
 @property (nonatomic, retain) NSNumber * quantity;
-//@property (nonatomic, retain) NSDate * timeStamp;
-//@property (nonatomic, retain) NSNumber * isFavorite;
 
 -(NSString *) quantityWeightedString;
 //-(NSString *) itemValue;

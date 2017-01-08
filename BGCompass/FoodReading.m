@@ -12,11 +12,8 @@
 @implementation FoodReading
 
 @dynamic carbs;
-//@dynamic name;
-//@dynamic timeStamp;
 @dynamic numberOfServings;
 @dynamic servingUnitAndQuantity;
-//@dynamic isFavorite;
 
 - (NSString *) itemValue {
     NSNumber *value = [NSNumber numberWithFloat:([self.numberOfServings floatValue] * [self.carbs floatValue])];

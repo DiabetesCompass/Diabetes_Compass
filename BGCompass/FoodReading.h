@@ -13,11 +13,7 @@
 @interface FoodReading : Reading
 
 @property (nonatomic, retain) NSNumber * carbs;
-//@property (nonatomic, retain) NSString * name;
-//@property (nonatomic, retain) NSDate * timeStamp;
 @property (nonatomic, retain) NSNumber * numberOfServings;
 @property (nonatomic, retain) NSString * servingUnitAndQuantity;
-//@property (nonatomic, retain) NSNumber * isFavorite;
 
-//-(NSString *) itemValue;
 @end

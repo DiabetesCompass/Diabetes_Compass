@@ -7,18 +7,14 @@
 //
 
 #import "BGReading.h"
-
-#define CONVERSIONFACTOR 18.0182
+#import "Constants.h"
 
 @implementation BGReading
 
 NSString *const stringForUnitsInMoles = @"mmol/L";
 NSString *const stringForUnitsInMilligrams = @"mg/dL";
 
-//@dynamic name;
 @dynamic quantity;
-//@dynamic timeStamp;
-//@dynamic isFavorite;
 
 
 +(BOOL) isInMoles
@@ -39,7 +35,7 @@ NSString *const stringForUnitsInMilligrams = @"mg/dL";
         [formatter setMaximumFractionDigits:0];
         float multiplier = 1.0;
         if (convert) {
-            multiplier = CONVERSIONFACTOR;
+            multiplier = MG_PER_DL_PER_MMOL_PER_L;
         }
         NSString *result = [formatter stringFromNumber:[NSNumber numberWithFloat:(value.floatValue * multiplier)]];
         return result;
@@ -48,7 +44,7 @@ NSString *const stringForUnitsInMilligrams = @"mg/dL";
 
 - (void) setQuantity: (NSNumber*) quantity withConversion: (BOOL)action {
     if (action) {
-        self.quantity = [NSNumber numberWithFloat:([quantity floatValue]/CONVERSIONFACTOR)];
+        self.quantity = [NSNumber numberWithFloat:([quantity floatValue]/MG_PER_DL_PER_MMOL_PER_L)];
     } else {
         self.quantity = quantity;
     }
@@ -57,7 +53,7 @@ NSString *const stringForUnitsInMilligrams = @"mg/dL";
 + (float) getValue:(float)value withConversion: (BOOL) convert
 {
     if (convert && ![BGReading isInMoles]) {
-        return value*CONVERSIONFACTOR;
+        return value * MG_PER_DL_PER_MMOL_PER_L;
     }
     return value;
 }
@@ -74,7 +70,7 @@ NSString *const stringForUnitsInMilligrams = @"mg/dL";
     } else {
         [formatter setMinimumFractionDigits:0];
         [formatter setMaximumFractionDigits:0];
-        result = [formatter stringFromNumber:[NSNumber numberWithFloat:(self.quantity.floatValue * CONVERSIONFACTOR)]];
+        result = [formatter stringFromNumber:[NSNumber numberWithFloat:(self.quantity.floatValue * MG_PER_DL_PER_MMOL_PER_L)]];
         return [result stringByAppendingString:@" mg/dL"];
     }
 }

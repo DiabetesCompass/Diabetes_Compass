@@ -125,6 +125,9 @@
 		DE758DF11DDABDE200135F5D /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DE758DF01DDABDE200135F5D /* Launch Screen.storyboard */; };
 		DEABA8A21DFCEEDC00B42AEA /* TrendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEABA8A11DFCEEDC00B42AEA /* TrendViewController.swift */; };
 		DEB332DE1DFFC9EA00989771 /* TrendsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEB332DD1DFFC9EA00989771 /* TrendsViewControllerTests.swift */; };
+		DEB8DEE51E19AE4700270CB6 /* TrendsAlgorithmModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEB8DEE41E19AE4700270CB6 /* TrendsAlgorithmModelTests.swift */; };
+		DEC553E21E215537009BE3BD /* BGReadingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEC553E11E215537009BE3BD /* BGReadingTests.swift */; };
+		DEDC8E4D1E20A93B003D9E88 /* BGReadingTestHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = DEDC8E4C1E20A93B003D9E88 /* BGReadingTestHelper.m */; };
 		DEEEF1C81DFE0A140027D955 /* TrendsAlgorithmModelExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEEEF1C71DFE0A140027D955 /* TrendsAlgorithmModelExtension.swift */; };
 /* End PBXBuildFile section */
 
@@ -333,6 +336,10 @@
 		DEABA8A11DFCEEDC00B42AEA /* TrendViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrendViewController.swift; sourceTree = "<group>"; };
 		DEB332DC1DFFC9E900989771 /* BGCompassTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BGCompassTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		DEB332DD1DFFC9EA00989771 /* TrendsViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrendsViewControllerTests.swift; sourceTree = "<group>"; };
+		DEB8DEE41E19AE4700270CB6 /* TrendsAlgorithmModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrendsAlgorithmModelTests.swift; sourceTree = "<group>"; };
+		DEC553E11E215537009BE3BD /* BGReadingTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BGReadingTests.swift; sourceTree = "<group>"; };
+		DEDC8E4B1E20A93B003D9E88 /* BGReadingTestHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BGReadingTestHelper.h; sourceTree = "<group>"; };
+		DEDC8E4C1E20A93B003D9E88 /* BGReadingTestHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BGReadingTestHelper.m; sourceTree = "<group>"; };
 		DEEEF1C71DFE0A140027D955 /* TrendsAlgorithmModelExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrendsAlgorithmModelExtension.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -410,15 +417,15 @@
 				2C2330FD182B6C82008A6F88 /* AppDelegate.h */,
 				2C2330FE182B6C82008A6F88 /* AppDelegate.m */,
 				2C18D36E183210F100B622C8 /* Images.xcassets */,
-				2C30405718556DE200BCD3FF /* User Interface */,
-				DE1AD7FA1DFBB34500720F5F /* Trends */,
-				2C30405918556E8E00BCD3FF /* View Controllers */,
-				2C30405B18556F6600BCD3FF /* Delegates */,
-				2C30405818556E6700BCD3FF /* Animations Controllers */,
-				2C9D9297183E0C4D00061B65 /* Image Resources */,
 				833A3E491837007A00C1FF5C /* Algorithms */,
+				2C30405818556E6700BCD3FF /* Animations Controllers */,
 				83EAFABE182F52B300CE5FA9 /* Data Models */,
+				2C30405B18556F6600BCD3FF /* Delegates */,
+				2C9D9297183E0C4D00061B65 /* Image Resources */,
 				2C2330F5182B6C82008A6F88 /* Supporting Files */,
+				DE1AD7FA1DFBB34500720F5F /* Trends */,
+				2C30405718556DE200BCD3FF /* User Interface */,
+				2C30405918556E8E00BCD3FF /* View Controllers */,
 			);
 			path = BGCompass;
 			sourceTree = "<group>";
@@ -452,6 +459,8 @@
 			isa = PBXGroup;
 			children = (
 				833A3E471831FB7000C1FF5C /* BGAlgorithmTests.m */,
+				DEC553E11E215537009BE3BD /* BGReadingTests.swift */,
+				DEB8DEE41E19AE4700270CB6 /* TrendsAlgorithmModelTests.swift */,
 				83E3E68118A6B4C300F3C560 /* TrendsAlgorithmTests.m */,
 				DEB332DD1DFFC9EA00989771 /* TrendsViewControllerTests.swift */,
 				2C23311E182B6C82008A6F88 /* Supporting Files */,
@@ -489,13 +498,13 @@
 		2C30405718556DE200BCD3FF /* User Interface */ = {
 			isa = PBXGroup;
 			children = (
-				2C233100182B6C82008A6F88 /* Main_iPhone.storyboard */,
+				DE758DF01DDABDE200135F5D /* Launch Screen.storyboard */,
 				2C233103182B6C82008A6F88 /* Main_iPad.storyboard */,
+				2C233100182B6C82008A6F88 /* Main_iPhone.storyboard */,
+				2C30405A18556EB600BCD3FF /* TableView Cells */,
+				2C253F7F18BC7EAB00DB7D2A /* Tutorial TableView Items */,
 				839E34A7182F81520083960E /* UselessSegue.h */,
 				839E34A8182F81520083960E /* UselessSegue.m */,
-				2C253F7F18BC7EAB00DB7D2A /* Tutorial TableView Items */,
-				2C30405A18556EB600BCD3FF /* TableView Cells */,
-				DE758DF01DDABDE200135F5D /* Launch Screen.storyboard */,
 			);
 			name = "User Interface";
 			sourceTree = "<group>";
@@ -503,18 +512,18 @@
 		2C30405818556E6700BCD3FF /* Animations Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				2C253FBE18C05B0300DB7D2A /* BlurTransitionDelegate.h */,
-				2C253FBF18C05B0300DB7D2A /* BlurTransitionDelegate.m */,
 				2C253FC118C05B4700DB7D2A /* BlurAnimator.h */,
 				2C253FC218C05B4700DB7D2A /* BlurAnimator.m */,
+				2C253FBE18C05B0300DB7D2A /* BlurTransitionDelegate.h */,
+				2C253FBF18C05B0300DB7D2A /* BlurTransitionDelegate.m */,
 				2C253FB218C0358500DB7D2A /* FadeAnimator.h */,
 				2C253FB318C0358500DB7D2A /* FadeAnimator.m */,
+				2C253FB518C0397B00DB7D2A /* ItemsNavigationTransitionControllerDelegate.h */,
+				2C253FB618C0397B00DB7D2A /* ItemsNavigationTransitionControllerDelegate.m */,
 				2C58E0991846E7AB0091797A /* ZoomModalAnimator.h */,
 				2C58E09A1846E7AB0091797A /* ZoomModalAnimator.m */,
 				2C58E09F1846F6950091797A /* ZoomModalTransitionDelegate.h */,
 				2C58E0A01846F6950091797A /* ZoomModalTransitionDelegate.m */,
-				2C253FB518C0397B00DB7D2A /* ItemsNavigationTransitionControllerDelegate.h */,
-				2C253FB618C0397B00DB7D2A /* ItemsNavigationTransitionControllerDelegate.m */,
 			);
 			name = "Animations Controllers";
 			sourceTree = "<group>";
@@ -522,39 +531,39 @@
 		2C30405918556E8E00BCD3FF /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				2C253F7418BC6CC400DB7D2A /* TutorialViewController.h */,
-				2C253F7518BC6CC400DB7D2A /* TutorialViewController.m */,
-				845D24681BA52C2F00981091 /* WarningViewController.h */,
-				845D24691BA52C2F00981091 /* WarningViewController.m */,
-				2C253FAC18BE0AAA00DB7D2A /* MenuViewController.h */,
-				2C253FAD18BE0AAA00DB7D2A /* MenuViewController.m */,
-				2C2AD85718C59EF100249DA9 /* ImportExportViewController.h */,
-				2C2AD85818C59EF100249DA9 /* ImportExportViewController.m */,
+				2C6D7764184C83DC00267E38 /* APPaginalTableViewComponents */,
 				2C253FA918BDE7E900DB7D2A /* AddBGOverlayViewController.h */,
 				2C253FAA18BDE7E900DB7D2A /* AddBGOverlayViewController.m */,
-				839E3498182F61080083960E /* HomeViewController.h */,
-				839E3499182F61080083960E /* HomeViewController.m */,
 				839E349E182F699F0083960E /* AddedListViewController.h */,
 				839E349F182F699F0083960E /* AddedListViewController.m */,
 				839E34A1182F6A020083960E /* CurrentBGViewController.h */,
 				839E34A2182F6A020083960E /* CurrentBGViewController.m */,
-				839E34A4182F80DC0083960E /* SwapperViewController.h */,
-				839E34A5182F80DC0083960E /* SwapperViewController.m */,
-				839E349B182F697A0083960E /* GraphViewController.h */,
-				839E349C182F697A0083960E /* GraphViewController.m */,
-				2C9D92A8183EC64900061B65 /* ItemsNavigationViewController.h */,
-				2C9D92A9183EC64900061B65 /* ItemsNavigationViewController.m */,
-				2C51452718304FF30028DAA4 /* ItemSelectionTableViewController.h */,
-				2C5FC4F718307D830018C56D /* ItemSelectionTableViewController.m */,
 				2CD96E7F18C2FCF100361C64 /* EditItemViewController.h */,
 				2CD96E8018C2FCF100361C64 /* EditItemViewController.m */,
 				2C5AE7881848A6D2009D487F /* EditTableViewController.h */,
 				2C5AE7891848A6D2009D487F /* EditTableViewController.m */,
-				8337DF2B18EA332A00055E59 /* UPCScannerViewController.h */,
-				8337DF2C18EA332A00055E59 /* UPCScannerViewController.m */,
+				839E349B182F697A0083960E /* GraphViewController.h */,
+				839E349C182F697A0083960E /* GraphViewController.m */,
+				839E3498182F61080083960E /* HomeViewController.h */,
+				839E3499182F61080083960E /* HomeViewController.m */,
+				2C2AD85718C59EF100249DA9 /* ImportExportViewController.h */,
+				2C2AD85818C59EF100249DA9 /* ImportExportViewController.m */,
+				2C51452718304FF30028DAA4 /* ItemSelectionTableViewController.h */,
+				2C5FC4F718307D830018C56D /* ItemSelectionTableViewController.m */,
+				2C9D92A8183EC64900061B65 /* ItemsNavigationViewController.h */,
+				2C9D92A9183EC64900061B65 /* ItemsNavigationViewController.m */,
+				2C253FAC18BE0AAA00DB7D2A /* MenuViewController.h */,
+				2C253FAD18BE0AAA00DB7D2A /* MenuViewController.m */,
 				2C5AE78B1848C8A1009D487F /* SettingsController.h */,
 				2C5AE78C1848C8A1009D487F /* SettingsController.m */,
-				2C6D7764184C83DC00267E38 /* APPaginalTableViewComponents */,
+				839E34A4182F80DC0083960E /* SwapperViewController.h */,
+				839E34A5182F80DC0083960E /* SwapperViewController.m */,
+				2C253F7418BC6CC400DB7D2A /* TutorialViewController.h */,
+				2C253F7518BC6CC400DB7D2A /* TutorialViewController.m */,
+				8337DF2B18EA332A00055E59 /* UPCScannerViewController.h */,
+				8337DF2C18EA332A00055E59 /* UPCScannerViewController.m */,
+				845D24681BA52C2F00981091 /* WarningViewController.h */,
+				845D24691BA52C2F00981091 /* WarningViewController.m */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -627,28 +636,28 @@
 		2C9D9297183E0C4D00061B65 /* Image Resources */ = {
 			isa = PBXGroup;
 			children = (
+				2C253FA718BCADF400DB7D2A /* appIcon.png */,
+				2C521B18184215D400AA1475 /* blue.png */,
+				2C309DB2183F73A100F2DD5D /* blur.png */,
+				2C9A5175184AF9AD00D9DCC2 /* blurCloud.png */,
+				2C846CA41844B68C0071559D /* cloud.png */,
+				2CF6D27218480F3E00872B8F /* compass.png */,
 				2C9A5171184AF5EA00D9DCC2 /* cool.png */,
 				2C9A5177184B07FC00D9DCC2 /* cool2.png */,
-				2C9A5175184AF9AD00D9DCC2 /* blurCloud.png */,
-				2CC964E0184749620092FFD1 /* green.png */,
 				2C31378F18477BAA008AFA46 /* gray.png */,
+				2CC964E0184749620092FFD1 /* green.png */,
 				2CC964E1184749620092FFD1 /* greyBlue.png */,
 				2CC964E2184749620092FFD1 /* lightBlue.png */,
-				2CF6D2741848121200872B8F /* solid.png */,
-				2CF6D27218480F3E00872B8F /* compass.png */,
 				2CC964E3184749620092FFD1 /* lightPink.png */,
 				2CC964E4184749620092FFD1 /* odd.png */,
-				2C253FA718BCADF400DB7D2A /* appIcon.png */,
 				2CC964E5184749620092FFD1 /* orange.png */,
 				2CC964E6184749620092FFD1 /* persian.png */,
 				2CC964E7184749620092FFD1 /* Purple.png */,
 				2CC964E8184749620092FFD1 /* red.png */,
+				2CF6D2741848121200872B8F /* solid.png */,
 				2CC964E9184749620092FFD1 /* weird.png */,
-				2CC964EA184749620092FFD1 /* weird2.png */,
-				2C846CA41844B68C0071559D /* cloud.png */,
-				2C521B18184215D400AA1475 /* blue.png */,
-				2C309DB2183F73A100F2DD5D /* blur.png */,
 				2C9D92A0183E219700061B65 /* tableviewBackground.png */,
+				2CC964EA184749620092FFD1 /* weird2.png */,
 			);
 			name = "Image Resources";
 			sourceTree = "<group>";
@@ -667,10 +676,10 @@
 		833A3E491837007A00C1FF5C /* Algorithms */ = {
 			isa = PBXGroup;
 			children = (
-				833A3E4A1837009C00C1FF5C /* CurveModel.h */,
-				833A3E4B1837009C00C1FF5C /* CurveModel.m */,
 				833A3E4D183B3EFB00C1FF5C /* BGAlgorithmModel.h */,
 				833A3E4E183B3EFB00C1FF5C /* BGAlgorithmModel.m */,
+				833A3E4A1837009C00C1FF5C /* CurveModel.h */,
+				833A3E4B1837009C00C1FF5C /* CurveModel.m */,
 				83980E0B184808BB00E321CF /* TrendsAlgorithmModel.h */,
 				83980E0C184808BB00E321CF /* TrendsAlgorithmModel.m */,
 				DEEEF1C71DFE0A140027D955 /* TrendsAlgorithmModelExtension.swift */,
@@ -682,24 +691,26 @@
 			isa = PBXGroup;
 			children = (
 				2C233106182B6C82008A6F88 /* CompassRose.xcdatamodeld */,
-				83EAFAB5182F521000CE5FA9 /* InsulinReading.h */,
-				83EAFAB6182F521000CE5FA9 /* InsulinReading.m */,
-				835A91451845BBA6006A2BDC /* Ha1cReading.h */,
-				835A91461845BBA6006A2BDC /* Ha1cReading.m */,
 				835A91421845BBA5006A2BDC /* AG15Reading.h */,
 				835A91431845BBA5006A2BDC /* AG15Reading.m */,
-				83EAFAB7182F521000CE5FA9 /* FoodReading.h */,
-				83EAFAB8182F521000CE5FA9 /* FoodReading.m */,
+				8337DF3418EA701B00055E59 /* Barcode.h */,
+				8337DF3518EA701B00055E59 /* Barcode.m */,
 				83EAFAB9182F521000CE5FA9 /* BGReading.h */,
 				83EAFABA182F521000CE5FA9 /* BGReading.m */,
-				83E030E6183BEBC400F47F89 /* Reading.h */,
-				83E030E7183BEBC400F47F89 /* Reading.m */,
+				DEDC8E4B1E20A93B003D9E88 /* BGReadingTestHelper.h */,
+				DEDC8E4C1E20A93B003D9E88 /* BGReadingTestHelper.m */,
+				83EAFAB7182F521000CE5FA9 /* FoodReading.h */,
+				83EAFAB8182F521000CE5FA9 /* FoodReading.m */,
+				835A91451845BBA6006A2BDC /* Ha1cReading.h */,
+				835A91461845BBA6006A2BDC /* Ha1cReading.m */,
+				83EAFAB5182F521000CE5FA9 /* InsulinReading.h */,
+				83EAFAB6182F521000CE5FA9 /* InsulinReading.m */,
 				2C4552CF1831AF4900B16073 /* NutritionixSearchFood.h */,
 				2C4552D01831AF4900B16073 /* NutritionixSearchFood.m */,
 				8337DF3118EA3ED400055E59 /* NutritionixUPCFood.h */,
 				8337DF3218EA3ED400055E59 /* NutritionixUPCFood.m */,
-				8337DF3418EA701B00055E59 /* Barcode.h */,
-				8337DF3518EA701B00055E59 /* Barcode.m */,
+				83E030E6183BEBC400F47F89 /* Reading.h */,
+				83E030E7183BEBC400F47F89 /* Reading.m */,
 			);
 			name = "Data Models";
 			sourceTree = "<group>";
@@ -780,7 +791,7 @@
 				ORGANIZATIONNAME = "Clif Alferness";
 				TargetAttributes = {
 					2C2330E8182B6C82008A6F88 = {
-						DevelopmentTeam = J2LXK9FK3W;
+						DevelopmentTeam = UKCY2P766T;
 						LastSwiftMigration = 0810;
 						SystemCapabilities = {
 							com.apple.HealthKit = {
@@ -965,6 +976,7 @@
 				8337DF2D18EA332A00055E59 /* UPCScannerViewController.m in Sources */,
 				2C253F8B18BC90DA00DB7D2A /* TutorialPickerItem.m in Sources */,
 				8337DF3318EA3ED400055E59 /* NutritionixUPCFood.m in Sources */,
+				DEDC8E4D1E20A93B003D9E88 /* BGReadingTestHelper.m in Sources */,
 				2C2330FF182B6C82008A6F88 /* AppDelegate.m in Sources */,
 				2C5FC4F818307D830018C56D /* ItemSelectionTableViewController.m in Sources */,
 				835A91441845BBA5006A2BDC /* AG15Reading.m in Sources */,
@@ -1042,8 +1054,10 @@
 			files = (
 				833A3E481831FB7000C1FF5C /* BGAlgorithmTests.m in Sources */,
 				8337DF2718E459FE00055E59 /* CompassRose.xcdatamodeld in Sources */,
+				DEB8DEE51E19AE4700270CB6 /* TrendsAlgorithmModelTests.swift in Sources */,
 				83E3E68218A6B4C300F3C560 /* TrendsAlgorithmTests.m in Sources */,
 				DEB332DE1DFFC9EA00989771 /* TrendsViewControllerTests.swift in Sources */,
+				DEC553E21E215537009BE3BD /* BGReadingTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1112,8 +1126,7 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Clifton Alferness (7R92MTX5QG)";
-				"CODE_SIGN_IDENTITY[sdk=*]" = "iPhone Distribution: Clifton Alferness (7R92MTX5QG)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -1159,8 +1172,7 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Clifton Alferness (7R92MTX5QG)";
-				"CODE_SIGN_IDENTITY[sdk=*]" = "iPhone Distribution: Clifton Alferness (7R92MTX5QG)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -1187,14 +1199,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = J2LXK9FK3W;
+				DEVELOPMENT_TEAM = UKCY2P766T;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "BGCompass/BGCompass-Prefix.pch";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				INFOPLIST_FILE = "$(SRCROOT)/BGCompass/BGCompass-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.calferness.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = BGCompass;
@@ -1214,14 +1223,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = J2LXK9FK3W;
+				DEVELOPMENT_TEAM = UKCY2P766T;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "BGCompass/BGCompass-Prefix.pch";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				INFOPLIST_FILE = "$(SRCROOT)/BGCompass/BGCompass-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.calferness.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = BGCompass;
@@ -1239,7 +1245,6 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ENABLE_MODULES = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "BGCompass/BGCompass-Prefix.pch";
@@ -1270,7 +1275,6 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ENABLE_MODULES = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "BGCompass/BGCompass-Prefix.pch";

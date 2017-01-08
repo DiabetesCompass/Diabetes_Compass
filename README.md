@@ -21,5 +21,19 @@ Of course, any such estimates can be different from previous ones due to the man
 Trend data and plots are available to review progress in tuning our management.  
 These plots extend back in time as far as the recorded data exists and can be helpful in improving management.  
 
+# Info for Developers
+
+## Objective C and Swift
+Initially the app was written in Objective C. Some newer code uses Swift.  
+The app may use a bridging header such as BGCompass-Bridging-Header.h to expose Objective C to Swift.  
+Swift extensions to Objective C classes may not need or allow annotation @objc.  
+For example the app may use an extension such as TrendsAlgorithmModelExtension.swift.  
+http://ctarda.com/2016/05/swift-extensions-can-be-applied-to-objective-c-types/  
+
+## Core Data / Magical Record
+The app uses Core Data and Magical Record. Most of this is done in Objective C.  
+The current developers have not figured out how to share the database context between Objective C and Swift.  
+Objective C writes to Core Data. It may provide helper methods to supply managed objects to Swift.  
+
 # References
 https://en.wikipedia.org/wiki/Glycated_hemoglobin
