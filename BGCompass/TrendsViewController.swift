@@ -14,6 +14,7 @@ class TrendsViewController: UIViewController {
     struct Constants {
         // concentration units
         static let milligramsPerDeciliter = "mg/dL"
+        static let percent = "%"
     }
 
     struct SegueIdentifiers {
@@ -70,7 +71,7 @@ class TrendsViewController: UIViewController {
             numberFormatter.numberStyle = .decimal
             return numberFormatter.string(from: reading!.quantity)!
                 + " "
-                + Constants.milligramsPerDeciliter
+                + Constants.percent
         }
     }
 
