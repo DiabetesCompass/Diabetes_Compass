@@ -254,9 +254,9 @@ class TrendViewController : UIViewController {
 
         switch trend {
         case .bg:
-            plot.identifier    = NSString.init(string: "bg")
+            plot.identifier = NSString.init(string: "bg")
         case .ha1c:
-            plot.identifier    = NSString.init(string: "ha1c")
+            plot.identifier = NSString.init(string: "ha1c")
         }
         return plot
     }
