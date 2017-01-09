@@ -158,13 +158,19 @@ class TrendViewController : UIViewController {
     }
 
     class func rangeMaximum(trend: Trend) -> Double {
+        var rangeMaximum = 0.0
         switch trend {
         case .bg:
-            return 300.0
+            if BGReading.shouldDisplayBgInMmolPerL() {
+                rangeMaximum = 300.0 / Double(MG_PER_DL_PER_MMOL_PER_L)
+            } else {
+                rangeMaximum = 300.0
+            }
         case .ha1c:
             // TODO: set to maximum of all readings
-            return 11.0
+            rangeMaximum = 11.0
         }
+        return rangeMaximum
     }
 
     class func rangeMinimum(trend: Trend) -> Double {
