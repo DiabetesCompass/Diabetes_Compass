@@ -210,6 +210,7 @@ class TrendViewController : UIViewController {
         if let y = axisSet.yAxis {
             y.delegate = self
 
+            y.labelFormatter = yLabelFormatter()
             y.labelTextStyle = TrendViewController.textStyleWhite()
             y.axisLineStyle = TrendViewController.lineStyleThinWhite()
             y.majorTickLineStyle = TrendViewController.lineStyleThinWhite()
@@ -279,6 +280,8 @@ class TrendViewController : UIViewController {
         return textStyle
     }
 
+    // MARK: - label formatters 
+
     func xLabelFormatter() -> CPTCalendarFormatter {
         guard let firstReading = trendsAlgorithmModel?.ha1cArrayReadingFirst() else {
             return CPTCalendarFormatter()
@@ -298,6 +301,20 @@ class TrendViewController : UIViewController {
         cptFormatter.referenceDate = firstReading.timeStamp
         cptFormatter.referenceCalendarUnit = NSCalendar.Unit.minute
         return cptFormatter
+    }
+
+    func yLabelFormatter() -> NumberFormatter {
+
+        let formatter = NumberFormatter()
+
+        if BGReading.shouldDisplayBgInMmolPerL() {
+            formatter.minimumFractionDigits = 1
+            formatter.maximumFractionDigits = 1
+        } else {
+            formatter.minimumFractionDigits = 0
+            formatter.maximumFractionDigits = 0
+        }
+        return formatter
     }
 
 }
