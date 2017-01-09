@@ -239,8 +239,13 @@ class TrendViewController : UIViewController {
 
             switch trend {
             case .bg:
-                y.majorIntervalLength   = 10
-                y.minorTicksPerInterval = 1
+                if BGReading.shouldDisplayBgInMmolPerL() {
+                    y.majorIntervalLength   = 1
+                    y.minorTicksPerInterval = 1
+                } else {
+                    y.majorIntervalLength   = 20
+                    y.minorTicksPerInterval = 1
+                }
             case .ha1c:
                 y.majorIntervalLength   = 1
                 y.minorTicksPerInterval = 1
