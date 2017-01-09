@@ -149,12 +149,18 @@ class TrendViewController : UIViewController {
     }
     
     class func xAxisLabelHeight(trend: Trend) -> Double {
+        var height = 0.0
         switch trend {
         case .bg:
-            return 10.0
+            if BGReading.shouldDisplayBgInMmolPerL() {
+                height = 1.0
+            } else {
+                height = 10.0
+            }
         case .ha1c:
-            return 0.5
+            height = 0.5
         }
+        return height
     }
 
     class func rangeMaximum(trend: Trend) -> Double {
