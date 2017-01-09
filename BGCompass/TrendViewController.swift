@@ -210,7 +210,7 @@ class TrendViewController : UIViewController {
         if let y = axisSet.yAxis {
             y.delegate = self
 
-            y.labelFormatter = yLabelFormatter()
+            y.labelFormatter = yLabelFormatter(trend: trend)
             y.labelTextStyle = TrendViewController.textStyleWhite()
             y.axisLineStyle = TrendViewController.lineStyleThinWhite()
             y.majorTickLineStyle = TrendViewController.lineStyleThinWhite()
@@ -303,16 +303,22 @@ class TrendViewController : UIViewController {
         return cptFormatter
     }
 
-    func yLabelFormatter() -> NumberFormatter {
+    func yLabelFormatter(trend: Trend) -> NumberFormatter {
 
         let formatter = NumberFormatter()
 
-        if BGReading.shouldDisplayBgInMmolPerL() {
+        switch trend {
+        case .bg:
+            if BGReading.shouldDisplayBgInMmolPerL() {
+                formatter.minimumFractionDigits = 1
+                formatter.maximumFractionDigits = 1
+            } else {
+                formatter.minimumFractionDigits = 0
+                formatter.maximumFractionDigits = 0
+            }
+        case .ha1c:
             formatter.minimumFractionDigits = 1
             formatter.maximumFractionDigits = 1
-        } else {
-            formatter.minimumFractionDigits = 0
-            formatter.maximumFractionDigits = 0
         }
         return formatter
     }
