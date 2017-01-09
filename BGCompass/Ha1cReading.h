@@ -12,7 +12,14 @@
 
 @interface Ha1cReading : Reading
 
+/**
+ Ha1cReading.quantity units are percent of hemoglobin that is glycated.
+ Generally physiologic HA1c is >= 5.
+ 5 represents 5%, or 0.05
+ https://en.wikipedia.org/wiki/Glycated_hemoglobin
+ */
 @property (nonatomic, retain) NSNumber * quantity;
+
 @property (nonatomic, retain) NSNumber * insufficientDataWarning;
 @property (nonatomic, retain) NSNumber * insufficientDataError;
 

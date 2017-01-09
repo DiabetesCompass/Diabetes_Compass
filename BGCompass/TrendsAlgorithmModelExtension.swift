@@ -167,7 +167,9 @@ extension TrendsAlgorithmModel {
     }
 
     /**
-     Generally physiologic HA1c is >= 5
+     Ha1c units are percent of hemoglobin that is glycated.
+     Generally physiologic HA1c is >= 5.
+     5 represents 5%, or 0.05
      https://en.wikipedia.org/wiki/Glycated_hemoglobin
      - parameter bloodGlucose: blood glucose quantity, units mmol/L
      - returns: HA1c in DCCT percentage
