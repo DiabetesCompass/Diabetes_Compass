@@ -67,8 +67,9 @@ int const BG_EXPIRATION_MINUTES = 720;
 int const FOOD_CURVE_LENGTH_MINUTES = 120;
 int const PREDICT_MINUTES = 180;
 
-NSString *const ACTION_STRING1 = @"Settles at ";
+NSString *const ACTION_STRING1 = @"Latest Estimated HA1c ";
 NSString *const ACTION_STRING2 = @",\n Estimated deficit ";
 NSString *const CARBS_STRING = @" carbs.";
 NSString *const INSULIN_STRING = @" insulin units.";
 NSString *const NO_ACTION_STRING = @",\n within range!";
+NSString *const HA1C_UNITS_STRING = @"%";

@@ -13,6 +13,7 @@
 #import "FoodReading.h"
 #import "InsulinReading.h"
 #import "Utilities.h"
+#import "TrendsAlgorithmModel.h"
 
 @interface CurrentBGViewController ()
 
@@ -61,9 +62,15 @@
     NSLog(@"update data on current BG");
     NSNumber *bgCurrent = [[BGAlgorithmModel sharedInstance] getCurrentBG];
     NSLog(@"Current BG is: %@", bgCurrent);
-    NSNumber *bgSettling = [[BGAlgorithmModel sharedInstance] getSettlingBG];
+    NSLog(@"update latest HA1c data");
+    Ha1cReading* lastHA1c = [Ha1cReading MR_findFirstOrderedByAttribute:@"timeStamp" ascending:NO inContext:[NSManagedObjectContext MR_defaultContext]];
+    NSNumber *latestHA1c = lastHA1c.quantity;
+    NSLog(@"latest HA1c: %@", latestHA1c);
+    NSString *latestEstimatedHA1c = [NSString stringWithFormat: @ "%@", latestHA1c];
+    
+//    NSNumber *bgSettling = [[BGAlgorithmModel sharedInstance] getSettlingBG];
     NSString *bgCurrentString = [Utilities createFormattedStringFromNumber:bgCurrent forReadingType:[BGReading class]];
-    NSString *bgSettlingString = [Utilities createFormattedStringFromNumber:bgSettling forReadingType:[BGReading class]];
+//    NSString *bgSettlingString = [Utilities createFormattedStringFromNumber:bgSettling forReadingType:[BGReading class]];
     // These are the colors & styles for the present est BG & deficit texts
     //general texts
     NSDictionary *thin = @{NSForegroundColorAttributeName:[UIColor whiteColor],
@@ -79,11 +86,12 @@
     //NSLog(@"Deficit value is:%f", [deficit floatValue]);
     NSString *deficitType;
     NSString *units = [Utilities getUnitsForBG];
+    NSString *hA1cUnits = @"%";
     
     
     NSMutableAttributedString *aString1 = [[NSMutableAttributedString new] initWithString:ACTION_STRING1 attributes:thin];
-    NSAttributedString *aString2 = [[NSAttributedString new] initWithString:bgSettlingString attributes:bold];
-    NSAttributedString *aString3 = [[NSAttributedString new] initWithString:[@" " stringByAppendingString:units] attributes:thin];
+    NSAttributedString *aString2 = [[NSAttributedString new] initWithString:latestEstimatedHA1c attributes:bold];
+    NSAttributedString *aString8 = [[NSAttributedString new] initWithString:[@" " stringByAppendingString:hA1cUnits] attributes:thin];
     
     NSString *deficitString;
     
@@ -97,19 +105,20 @@
     }
     
     if ([deficit isEqualToNumber:[NSNumber numberWithInt:0]]) {
-        NSAttributedString *aString7 = [[NSMutableAttributedString new] initWithString:NO_ACTION_STRING attributes:thin];
+        //NSAttributedString *aString7 = [[NSMutableAttributedString new] initWithString:NO_ACTION_STRING attributes:thin];
         
         [aString1 appendAttributedString:aString2];
-        [aString1 appendAttributedString:aString3];
-        [aString1 appendAttributedString:aString7];
+        [aString1 appendAttributedString:aString8];
+        //[aString1 appendAttributedString:aString7];
         
     } else {
+//        NSAttributedString *aString3 = [[NSAttributedString new] initWithString:[@" " stringByAppendingString:units] attributes:thin];
         NSAttributedString *aString4 = [[NSAttributedString new] initWithString:ACTION_STRING2 attributes:thin];
         NSAttributedString *aString5 = [[NSAttributedString new] initWithString:deficitString attributes:bold];
         NSAttributedString *aString6 = [[NSAttributedString new] initWithString:deficitType attributes:thin];
         
         [aString1 appendAttributedString:aString2];
-        [aString1 appendAttributedString:aString3];
+        [aString1 appendAttributedString:aString8];
         [aString1 appendAttributedString:aString4];
         [aString1 appendAttributedString:aString5];
         [aString1 appendAttributedString:aString6];
@@ -119,6 +128,7 @@
     self.actionTextView.textAlignment = NSTextAlignmentCenter;
     
     NSMutableAttributedString *bString = [[NSMutableAttributedString new] initWithString:bgCurrentString attributes:thinBig];
+    NSAttributedString *aString3 = [[NSAttributedString new] initWithString:[@" " stringByAppendingString:units] attributes:thin];
     
     [bString appendAttributedString:aString3];
     self.bgTextView.attributedText = bString;
