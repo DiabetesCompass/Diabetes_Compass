@@ -495,6 +495,12 @@
     current_value = [BGReading getValue:current_value withConversion:YES];
     return @(current_value);
 }
+- (NSNumber*) getCurrentMmolPerLBG
+{
+    float current_value = [[self.graphArray firstObject] floatValue];
+    current_value = [BGReading getValue:current_value withConversion:NO];
+    return @(current_value);
+}
 
 - (NSNumber*) getDeficit
 {

@@ -67,6 +67,8 @@
     NSNumber *latestHA1c = lastHA1c.quantity;
     NSLog(@"latest HA1c: %@", latestHA1c);
     NSString *latestEstimatedHA1c = [NSString stringWithFormat: @ "%@", latestHA1c];
+    NSNumber *bgCurrentForTest = [[BGAlgorithmModel sharedInstance] getCurrentMmolPerLBG];
+    NSLog(@"Current BG is: %@", bgCurrent);
     
 //    NSNumber *bgSettling = [[BGAlgorithmModel sharedInstance] getSettlingBG];
     NSString *bgCurrentString = [Utilities createFormattedStringFromNumber:bgCurrent forReadingType:[BGReading class]];
@@ -87,11 +89,13 @@
     NSString *deficitType;
     NSString *units = [Utilities getUnitsForBG];
     NSString *hA1cUnits = @"%";
+    NSString *unknownBG = @"???";
     
     
     NSMutableAttributedString *aString1 = [[NSMutableAttributedString new] initWithString:ACTION_STRING1 attributes:thin];
     NSAttributedString *aString2 = [[NSAttributedString new] initWithString:latestEstimatedHA1c attributes:bold];
     NSAttributedString *aString8 = [[NSAttributedString new] initWithString:[@" " stringByAppendingString:hA1cUnits] attributes:thin];
+    NSAttributedString *aString9 = [[NSAttributedString new] initWithString:[@" " stringByAppendingString:unknownBG] attributes:thin];
     
     NSString *deficitString;
     
@@ -126,13 +130,25 @@
     
     self.actionTextView.attributedText = aString1;
     self.actionTextView.textAlignment = NSTextAlignmentCenter;
+    if ([bgCurrentForTest doubleValue] < 1.7) {
+        NSLog(@"mmol/L");
+        NSMutableAttributedString *aString9 = [[NSMutableAttributedString new] initWithString:unknownBG attributes:thinBig];
+        NSAttributedString *aString3 = [[NSAttributedString new] initWithString:[@" " stringByAppendingString:units] attributes:thin];
+        [aString9 appendAttributedString:aString3];
+        self.bgTextView.attributedText = aString9;
+        self.bgTextView.textAlignment = NSTextAlignmentCenter;
+    }
+    else {
+        NSLog(@"mg/dL");
+        NSMutableAttributedString *bString = [[NSMutableAttributedString new] initWithString:bgCurrentString attributes:thinBig];
+        NSAttributedString *aString3 = [[NSAttributedString new] initWithString:[@" " stringByAppendingString:units] attributes:thin];
+        [bString appendAttributedString:aString3];
+        self.bgTextView.attributedText = bString;
+        self.bgTextView.textAlignment = NSTextAlignmentCenter;
+    }
     
-    NSMutableAttributedString *bString = [[NSMutableAttributedString new] initWithString:bgCurrentString attributes:thinBig];
-    NSAttributedString *aString3 = [[NSAttributedString new] initWithString:[@" " stringByAppendingString:units] attributes:thin];
     
-    [bString appendAttributedString:aString3];
-    self.bgTextView.attributedText = bString;
-    self.bgTextView.textAlignment = NSTextAlignmentCenter;
+    
     //self.bgTextView.frame = CGRectMake(26, 0, 320, 107);
 
 }
