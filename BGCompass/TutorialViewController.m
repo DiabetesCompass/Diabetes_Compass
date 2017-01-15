@@ -187,7 +187,7 @@
     finishButton.layer.borderWidth = 1.0f;
     finishButton.layer.cornerRadius = 5;
     finishButton.layer.borderColor = [[UIColor colorWithRed:1 green:1 blue:1 alpha:0.2] CGColor];
-    [finishButton addTarget:self action:@selector(completedTutorial) forControlEvents:UIControlEventTouchUpInside];
+    [finishButton addTarget:self action:@selector(checkBGValue) forControlEvents:UIControlEventTouchUpInside];
 
     [firstBGView addSubview:title2];
     [firstBGView addSubview:finishButton];
@@ -417,16 +417,60 @@
     
 }
 
+- (void) checkBGValue {
+    
+    if ([[NSNumber numberWithFloat:self.circularSlider.currentValue] doubleValue] < 1.7) {
+        double valueMessage = [[NSNumber numberWithFloat:self.circularSlider.currentValue] doubleValue];
+        NSString *s = [NSString stringWithFormat:@"Do you really want to record %f?", valueMessage];
+        UIAlertController* lowBGAlert = [UIAlertController alertControllerWithTitle:@"Very Low BG Alert" message:s preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *cancelAction = [UIAlertAction
+                                       actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel action")
+                                       style:UIAlertActionStyleCancel
+                                       handler:^(UIAlertAction *action)
+                                       {
+                                           [self setupTutorial];
+                                           NSLog(@"Cancel action");
+                                       }];
+        
+        UIAlertAction *okAction = [UIAlertAction
+                                   actionWithTitle:NSLocalizedString(@"OK", @"OK action")
+                                   style:UIAlertActionStyleDefault
+                                   handler:^(UIAlertAction *cancelAction)
+                                   {
+                                       [self completedTutorial];
+                                       NSLog(@"OK action");
+                                   }];
+        
+        [lowBGAlert addAction:cancelAction];
+        [lowBGAlert addAction:okAction];
+        [self presentViewController:lowBGAlert animated:YES completion:nil];
+    }
+    else {
+        [self completedTutorial];
+    }
+ //   [self completedTutorial];
+}
+
+- (void) cancelAction {
+    [self setupTutorial];
+}
+
+- (void) okAction {
+    [self completedTutorial];
+}
 
 - (void) completedTutorial {
     NSNumberFormatter * f = [NSNumberFormatter new];
     [f setNumberStyle:NSNumberFormatterDecimalStyle];
+
+
     
-    BGReading *bg = [BGReading MR_createEntity];
+        BGReading *bg = [BGReading MR_createEntity];
     bg.name = @"Blood Glucose";
     [bg setQuantity:[NSNumber numberWithFloat:self.circularSlider.currentValue] withConversion:!self.useMoleUnitsItem.value];
     bg.timeStamp = [NSDate date];
     bg.isPending = [NSNumber numberWithBool:NO];
+    //insert test for low BG value here
     
     
     NSDictionary *d = @{ @"timeStamp":bg.timeStamp };
