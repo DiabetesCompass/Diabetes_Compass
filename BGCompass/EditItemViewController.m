@@ -377,6 +377,7 @@
     } else {
         
         if ([[self.item class] isSubclassOfClass:[BGReading class]]) {
+            //This would be a good place to test the BG value to see if it is in a reasonable range and offer a way to abort or go back.
             [self saveBG:self.item asNew:YES];
             NSDictionary *d = @{ @"timeStamp":((BGReading*)self.item).timeStamp };
             [[NSNotificationCenter defaultCenter] postNotificationName:NOTE_BGREADING_ADDED object:nil userInfo:d];
