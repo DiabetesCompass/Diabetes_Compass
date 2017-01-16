@@ -196,38 +196,9 @@ class TrendViewController : UIViewController {
         if let x = axisSet.xAxis {
             configureAxis(x: x, trend: trend)
         }
-
+        
         if let y = axisSet.yAxis {
-            y.delegate = self
-
-            y.labelFormatter = yLabelFormatter(trend: trend)
-            y.labelTextStyle = TrendViewController.textStyleWhite()
-            y.axisLineStyle = TrendViewController.lineStyleThinWhite()
-            y.majorTickLineStyle = TrendViewController.lineStyleThinWhite()
-            y.minorTickLineStyle = TrendViewController.lineStyleThinWhite()
-
-            // y axis located at x coordinate == y.orthogonalPosition
-            y.orthogonalPosition    = 0.0
-
-            y.labelExclusionRanges  = [
-                //CPTPlotRange(location: 0.99, length: 0.02),
-                //CPTPlotRange(location: 1.99, length: 0.02),
-                //CPTPlotRange(location: 3.99, length: 0.02)
-            ]
-
-            switch trend {
-            case .bg:
-                if BGReading.shouldDisplayBgInMmolPerL() {
-                    y.majorIntervalLength   = 1
-                    y.minorTicksPerInterval = 1
-                } else {
-                    y.majorIntervalLength   = 20
-                    y.minorTicksPerInterval = 1
-                }
-            case .ha1c:
-                y.majorIntervalLength   = 1
-                y.minorTicksPerInterval = 1
-            }
+            configureAxis(y: y, trend: trend)
         }
     }
 
@@ -256,6 +227,39 @@ class TrendViewController : UIViewController {
             //CPTPlotRange(location: 1.99, length: 0.02),
             //CPTPlotRange(location: 2.99, length: 0.02)
         ]
+    }
+
+    func configureAxis(y: CPTXYAxis, trend: Trend) {
+        y.delegate = self
+
+        y.labelFormatter = yLabelFormatter(trend: trend)
+        y.labelTextStyle = TrendViewController.textStyleWhite()
+        y.axisLineStyle = TrendViewController.lineStyleThinWhite()
+        y.majorTickLineStyle = TrendViewController.lineStyleThinWhite()
+        y.minorTickLineStyle = TrendViewController.lineStyleThinWhite()
+
+        // y axis located at x coordinate == y.orthogonalPosition
+        y.orthogonalPosition    = 0.0
+
+        y.labelExclusionRanges  = [
+            //CPTPlotRange(location: 0.99, length: 0.02),
+            //CPTPlotRange(location: 1.99, length: 0.02),
+            //CPTPlotRange(location: 3.99, length: 0.02)
+        ]
+
+        switch trend {
+        case .bg:
+            if BGReading.shouldDisplayBgInMmolPerL() {
+                y.majorIntervalLength   = 1
+                y.minorTicksPerInterval = 1
+            } else {
+                y.majorIntervalLength   = 20
+                y.minorTicksPerInterval = 1
+            }
+        case .ha1c:
+            y.majorIntervalLength   = 1
+            y.minorTicksPerInterval = 1
+        }
     }
 
     func styledPlot(trend: Trend) -> CPTScatterPlot {
