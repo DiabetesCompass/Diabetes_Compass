@@ -446,7 +446,13 @@ extension TrendViewController: CPTPlotDataSource {
 }
 
 // MARK: - CPTAxisDelegate
+
 extension TrendViewController: CPTAxisDelegate {
+
+    func plotSpace(_ space: CPTPlotSpace, willDisplaceBy: CGPoint) -> CGPoint {
+        // translate horizontally but not vertically
+        return CGPoint(x: 1.5 * willDisplaceBy.x, y: 0)
+    }
 
     private func axis(_ axis: CPTAxis,
                       shouldUpdateAxisLabelsAtLocations locations: NSSet!) -> Bool {
