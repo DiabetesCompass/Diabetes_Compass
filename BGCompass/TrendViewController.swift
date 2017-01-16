@@ -194,30 +194,7 @@ class TrendViewController : UIViewController {
         let axisSet = graph.axisSet as! CPTXYAxisSet
 
         if let x = axisSet.xAxis {
-            x.delegate = self
-
-            x.labelFormatter = xLabelFormatter(range: nil)
-            x.labelTextStyle = TrendViewController.textStyleWhite()
-            x.axisLineStyle = TrendViewController.lineStyleThinWhite()
-            x.majorTickLineStyle = TrendViewController.lineStyleThinWhite()
-            x.minorTickLineStyle = TrendViewController.lineStyleThinWhite()
-            x.majorIntervalLength   = TrendViewController.minutesPerWeek as NSNumber?
-
-            // x axis located at y coordinate == x.orthogonalPosition
-            switch trend {
-            case .bg:
-                x.orthogonalPosition = 0.0
-            case .ha1c:
-                x.orthogonalPosition = 5.0
-            }
-
-            // one day per minor tick
-            x.minorTicksPerInterval = UInt(DAYS_IN_ONE_WEEK) - 1
-            x.labelExclusionRanges  = [
-                //CPTPlotRange(location: 0.99, length: 0.02),
-                //CPTPlotRange(location: 1.99, length: 0.02),
-                //CPTPlotRange(location: 2.99, length: 0.02)
-            ]
+            configureAxis(x: x, trend: trend)
         }
 
         if let y = axisSet.yAxis {
@@ -252,6 +229,33 @@ class TrendViewController : UIViewController {
                 y.minorTicksPerInterval = 1
             }
         }
+    }
+
+    func configureAxis(x: CPTXYAxis, trend: Trend) {
+        x.delegate = self
+
+        x.labelFormatter = xLabelFormatter(range: nil)
+        x.labelTextStyle = TrendViewController.textStyleWhite()
+        x.axisLineStyle = TrendViewController.lineStyleThinWhite()
+        x.majorTickLineStyle = TrendViewController.lineStyleThinWhite()
+        x.minorTickLineStyle = TrendViewController.lineStyleThinWhite()
+        x.majorIntervalLength   = TrendViewController.minutesPerWeek as NSNumber?
+
+        // x axis located at y coordinate == x.orthogonalPosition
+        switch trend {
+        case .bg:
+            x.orthogonalPosition = 0.0
+        case .ha1c:
+            x.orthogonalPosition = 5.0
+        }
+
+        // one day per minor tick
+        x.minorTicksPerInterval = UInt(DAYS_IN_ONE_WEEK) - 1
+        x.labelExclusionRanges  = [
+            //CPTPlotRange(location: 0.99, length: 0.02),
+            //CPTPlotRange(location: 1.99, length: 0.02),
+            //CPTPlotRange(location: 2.99, length: 0.02)
+        ]
     }
 
     func styledPlot(trend: Trend) -> CPTScatterPlot {
