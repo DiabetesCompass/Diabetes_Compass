@@ -196,7 +196,7 @@ class TrendViewController : UIViewController {
         if let x = axisSet.xAxis {
             configureAxis(x: x, trend: trend)
         }
-        
+
         if let y = axisSet.yAxis {
             configureAxis(y: y, trend: trend)
         }
@@ -239,7 +239,18 @@ class TrendViewController : UIViewController {
         y.minorTickLineStyle = TrendViewController.lineStyleThinWhite()
 
         // y axis located at x coordinate == y.orthogonalPosition
-        y.orthogonalPosition    = 0.0
+        ///////////////////////////////////////////////////////////
+        // FIXME- set to end time - one week?
+        //y.orthogonalPosition    = 0.0
+        // location is axis start, length is axis (end - start)
+        let xRange = TrendViewController.xRange(trendsAlgorithmModel: trendsAlgorithmModel,
+                                                      trend: trend)
+        let xRangeLocation = xRange.location.doubleValue
+        let xRangeLength = xRange.length.doubleValue
+        let yalwf = TrendViewController.yAxisLabelWidthFraction
+        y.orthogonalPosition = NSNumber(value:(xRangeLocation + (yalwf * xRangeLength)))
+        ///////////////////////////////////////////////////////////
+
 
         y.labelExclusionRanges  = [
             //CPTPlotRange(location: 0.99, length: 0.02),
