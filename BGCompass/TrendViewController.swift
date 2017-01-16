@@ -195,7 +195,7 @@ class TrendViewController : UIViewController {
         if let x = axisSet.xAxis {
             x.delegate = self
 
-            x.labelFormatter = xLabelFormatter()
+            x.labelFormatter = xLabelFormatter(range: nil)
             x.labelTextStyle = TrendViewController.textStyleWhite()
             x.axisLineStyle = TrendViewController.lineStyleThinWhite()
             x.majorTickLineStyle = TrendViewController.lineStyleThinWhite()
@@ -299,7 +299,7 @@ class TrendViewController : UIViewController {
 
     // MARK: - label formatters 
 
-    func xLabelFormatter() -> CPTCalendarFormatter {
+    func xLabelFormatter(range: CPTPlotRange?) -> CPTCalendarFormatter {
         guard let firstReading = trendsAlgorithmModel?.ha1cArrayReadingFirst() else {
             return CPTCalendarFormatter()
         }
@@ -310,7 +310,9 @@ class TrendViewController : UIViewController {
         // e.g. "Dec 5, 2016"
         //dateFormatter.dateStyle = .medium
         // e.g. "12/05"
-        let formatString = DateFormatter.dateFormat(fromTemplate: "MM/dd", options:0, locale:NSLocale.current)
+        let templateString = templateStringForRange(range)
+        let formatString = DateFormatter.dateFormat(fromTemplate: templateString,
+                                                    options:0, locale:NSLocale.current)
         dateFormatter.dateFormat = formatString
 
         let cptFormatter = CPTCalendarFormatter()
@@ -318,6 +320,34 @@ class TrendViewController : UIViewController {
         cptFormatter.referenceDate = firstReading.timeStamp
         cptFormatter.referenceCalendarUnit = NSCalendar.Unit.minute
         return cptFormatter
+    }
+
+    /**
+     - parameter range: plot range
+     - returns: a template string suitable for use by a date formatter
+     */
+    func templateStringForRange(_ range: CPTPlotRange?) -> String {
+
+        var templateString = "MM/dd"
+
+        guard let axisRange = range else {
+            return templateString
+        }
+
+        if axisRange.lengthDouble >= Double(MINUTES_IN_ONE_HOUR * HOURS_IN_ONE_DAY * DAYS_IN_ONE_WEEK * 52) {
+            templateString = "MM/dd"
+        } else if axisRange.lengthDouble >= Double(MINUTES_IN_ONE_HOUR * HOURS_IN_ONE_DAY * 8) {
+            templateString = "MMM dd"
+        } else if axisRange.lengthDouble >= Double(MINUTES_IN_ONE_HOUR * HOURS_IN_ONE_DAY * 2) {
+            templateString = "Md"
+        } else {
+            if UserDefaults.standard.bool(forKey: SETTING_MILITARY_TIME) {
+                templateString = "HH Md"
+            } else {
+                templateString = "hh a Md"
+            }
+        }
+        return templateString
     }
 
     func yLabelFormatter(trend: Trend) -> NumberFormatter {
@@ -454,6 +484,7 @@ extension TrendViewController: CPTAxisDelegate {
 }
 
 // MARK: - CPTPlotSpaceDelegate
+
 extension TrendViewController: CPTPlotSpaceDelegate {
 
     func plotSpace(_ space: CPTPlotSpace,
@@ -475,6 +506,8 @@ extension TrendViewController: CPTPlotSpaceDelegate {
         let axisSet: CPTXYAxisSet = space.graph!.axisSet as! CPTXYAxisSet
         if coordinate == CPTCoordinate.X {
             axisSet.yAxis?.orthogonalPosition = NSNumber(value:(range.location.doubleValue + TrendViewController.yAxisLabelWidth))
+            axisSet.xAxis?.labelFormatter = xLabelFormatter(range: range)
+
             //axisSet.xAxis?.titleLocation = CPTDecimalFromDouble(range.locationDouble + (range.lengthDouble / 2.0)) as NSNumber?
         } else if (coordinate == CPTCoordinate.Y)
             && (trend != nil) {
