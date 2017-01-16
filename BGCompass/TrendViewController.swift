@@ -105,7 +105,6 @@ class TrendViewController : UIViewController {
         guard let first = dateFirst, let last = dateLast else { return rangeEmpty }
 
         let minutesLastMinusFirst = last.timeIntervalSince(first) / Double(SECONDS_IN_ONE_MINUTE)
-        // TODO: Fix me vertical axis not visible when graph first appears
         let length = NSNumber(value: (1.0 + yAxisLabelWidthFraction) * minutesLastMinusFirst)
         let range = CPTPlotRange(location: NSNumber(value: yAxisLabelWidthFraction * minutesLastMinusFirst),
                                  length: length)
@@ -244,7 +243,6 @@ class TrendViewController : UIViewController {
                                                       trend: trend)
         let xRangeLocation = xRange.location.doubleValue
         let xRangeLength = xRange.length.doubleValue
-        //let yalwf = TrendViewController.yAxisLabelWidthFraction
         y.orthogonalPosition = NSNumber(value:(xRangeLocation + (TrendViewController.yAxisLabelWidthFraction * xRangeLength)))
 
         y.labelExclusionRanges  = [
