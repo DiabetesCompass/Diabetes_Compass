@@ -513,13 +513,10 @@ extension TrendViewController: CPTPlotSpaceDelegate {
         if coordinate == CPTCoordinate.X {
             axisSet.yAxis?.orthogonalPosition = NSNumber(value:(range.location.doubleValue + TrendViewController.yAxisLabelWidth))
             axisSet.xAxis?.labelFormatter = xLabelFormatter(range: range)
-
-            //axisSet.xAxis?.titleLocation = CPTDecimalFromDouble(range.locationDouble + (range.lengthDouble / 2.0)) as NSNumber?
         } else if (coordinate == CPTCoordinate.Y)
             && (trend != nil) {
             axisSet.xAxis?.orthogonalPosition = NSNumber(value:(range.location.doubleValue
                 + TrendViewController.xAxisLabelHeight(trend: trend!)))
-            //axisSet.yAxis?.titleLocation = CPTDecimalFromDouble(range.locationDouble + (range.lengthDouble / 2.0)) as NSNumber?
         }
         return range
     }
