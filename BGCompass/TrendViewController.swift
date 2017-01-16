@@ -17,7 +17,7 @@ class TrendViewController : UIViewController {
     }
 
     static let minutesPerWeek = Double(MINUTES_IN_ONE_HOUR * HOURS_IN_ONE_DAY * DAYS_IN_ONE_WEEK)
-    static let yAxisLabelWidth = 1200.0
+    static let yAxisLabelWidthFraction = 0.1
 
     var trendsAlgorithmModel: TrendsAlgorithmModel?
 
@@ -106,8 +106,9 @@ class TrendViewController : UIViewController {
 
         let minutesLastMinusFirst = last.timeIntervalSince(first) / Double(SECONDS_IN_ONE_MINUTE)
         // TODO: Fix me vertical axis not visible when graph first appears
-        let length = NSNumber(value: minutesLastMinusFirst + yAxisLabelWidth)
-        let range = CPTPlotRange(location: NSNumber(value: -yAxisLabelWidth), length: length)
+        let length = NSNumber(value: (1.0 + yAxisLabelWidthFraction) * minutesLastMinusFirst)
+        let range = CPTPlotRange(location: NSNumber(value: yAxisLabelWidthFraction * minutesLastMinusFirst),
+                                 length: length)
         return range
     }
 
@@ -500,18 +501,11 @@ extension TrendViewController: CPTPlotSpaceDelegate {
         let range: CPTMutablePlotRange = CPTMutablePlotRange(location: newRange.location,
                                                              length:newRange.length)
 
-        // Display only Quadrant I: never let the location go negative.
-        //
-        //        if range.locationDouble < 0.0 {
-        //            range.location = 0.0
-        //        }
-
-        // Adjust axis to keep them in view at the left and bottom;
-        // adjust scale-labels to match the scroll.
-        //
+        // Adjust axes to keep them in view at the left and bottom
         let axisSet: CPTXYAxisSet = space.graph!.axisSet as! CPTXYAxisSet
         if coordinate == CPTCoordinate.X {
-            axisSet.yAxis?.orthogonalPosition = NSNumber(value:(range.location.doubleValue + TrendViewController.yAxisLabelWidth))
+            axisSet.yAxis?.orthogonalPosition = NSNumber(value:(range.location.doubleValue
+                + (0.1 * range.lengthDouble)))
             axisSet.xAxis?.labelFormatter = xLabelFormatter(range: range)
         } else if (coordinate == CPTCoordinate.Y)
             && (trend != nil) {
