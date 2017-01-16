@@ -66,7 +66,7 @@
     Ha1cReading* lastHA1c = [Ha1cReading MR_findFirstOrderedByAttribute:@"timeStamp" ascending:NO inContext:[NSManagedObjectContext MR_defaultContext]];
     NSNumber *latestHA1c = lastHA1c.quantity;
     NSLog(@"latest HA1c: %@", latestHA1c);
-    NSString *latestEstimatedHA1c = [NSString stringWithFormat: @ "%@", latestHA1c];
+    NSString *latestEstimatedHA1c = [NSString stringWithFormat: @ "%.2f", [latestHA1c floatValue]];
     NSNumber *bgCurrentForTest = [[BGAlgorithmModel sharedInstance] getCurrentMmolPerLBG];
     NSLog(@"Current BG is: %@", bgCurrent);
     
