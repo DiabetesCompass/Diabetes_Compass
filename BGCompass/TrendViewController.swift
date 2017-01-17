@@ -521,10 +521,8 @@ extension TrendViewController: CPTPlotSpaceDelegate {
 
         } else if (coordinate == CPTCoordinate.Y) && (trend != nil) {
 
-            axisSet.xAxis?.orthogonalPosition = NSNumber(value:(range.location.doubleValue
-                + TrendViewController.xAxisLabelHeight(trend: trend!)))
-
-            range = TrendViewController.globalYRange(trend: .bg)
+            // keep original range, don't change to newRange
+            range = TrendViewController.globalYRange(trend: trend!)
         }
         return range
     }
