@@ -25,7 +25,7 @@ NSString *const NOTE_INSULINREADING_ADDED = @"insulinReadingAdded";
 NSString *const NOTE_INSULINREADING_EDITED = @"insulinReadingEdited";
 NSString *const NOTE_PENDINGREADING_DELETED = @"pendingReadingEdited";
 
-NSString *const SETTING_UNITS_IN_MOLES = @"unitsAreInMoles";
+NSString *const SETTING_SHOULD_DISPLAY_BG_IN_MMOL_PER_L = @"shouldDisplayBgInMmolPerL";
 NSString *const SETTING_INSULIN_SENSITIVITY = @"insulinSensitivity";
 NSString *const SETTING_INSULIN_DURATION = @"insulinDuration";
 NSString *const SETTING_INSULIN_TYPE = @"insulinType";
@@ -67,8 +67,9 @@ int const BG_EXPIRATION_MINUTES = 720;
 int const FOOD_CURVE_LENGTH_MINUTES = 120;
 int const PREDICT_MINUTES = 180;
 
-NSString *const ACTION_STRING1 = @"Settles at ";
+NSString *const ACTION_STRING1 = @"Latest Estimated HA1c ";
 NSString *const ACTION_STRING2 = @",\n Estimated deficit ";
 NSString *const CARBS_STRING = @" carbs.";
 NSString *const INSULIN_STRING = @" insulin units.";
 NSString *const NO_ACTION_STRING = @",\n within range!";
+NSString *const HA1C_UNITS_STRING = @"%";

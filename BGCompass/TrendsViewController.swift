@@ -14,6 +14,7 @@ class TrendsViewController: UIViewController {
     struct Constants {
         // concentration units
         static let milligramsPerDeciliter = "mg/dL"
+        static let percent = "%"
     }
 
     struct SegueIdentifiers {
@@ -56,10 +57,9 @@ class TrendsViewController: UIViewController {
         if reading == nil {
             return "No data"
         } else {
-            return BGReading.displayString(reading!.quantity,
-                                           withConversion: true)
-                + " "
-                + Constants.milligramsPerDeciliter
+            // displayString() returns a string with quantity in units
+            // per current value of shouldDisplayBgInMmolPerL
+            return reading!.displayString()
         }
     }
 
@@ -71,7 +71,7 @@ class TrendsViewController: UIViewController {
             numberFormatter.numberStyle = .decimal
             return numberFormatter.string(from: reading!.quantity)!
                 + " "
-                + Constants.milligramsPerDeciliter
+                + Constants.percent
         }
     }
 

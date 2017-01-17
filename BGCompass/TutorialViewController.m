@@ -250,7 +250,7 @@
     self.idealBGMaxItem = [TutorialTextItem itemWithTitle:@"Ideal Max" value:[Utilities createFormattedStringFromNumber:((NSNumber*)[settings valueForKey:SETTING_IDEALBG_MAX]) forReadingType:[BGReading class]]];
     self.idealBGMinItem = [TutorialTextItem itemWithTitle:@"Ideal Min" value:[Utilities createFormattedStringFromNumber:((NSNumber*)[settings valueForKey:SETTING_IDEALBG_MIN]) forReadingType:[BGReading class]]];
     
-    self.useMoleUnitsItem = [TutorialBoolItem itemWithTitle:@"Use mmol/L" value:[settings boolForKey:SETTING_UNITS_IN_MOLES]];
+    self.useMoleUnitsItem = [TutorialBoolItem itemWithTitle:@"Use mmol/L" value:[settings boolForKey:SETTING_SHOULD_DISPLAY_BG_IN_MMOL_PER_L]];
     self.militaryTimeItem = [TutorialBoolItem itemWithTitle:@"Use 24 Hr clock" value:[settings boolForKey:SETTING_MILITARY_TIME]];
     
     NSArray* InsulinMappingArray = @[INSULINTYPE_STRING_REGULAR, INSULINTYPE_STRING_GLULISINE, INSULINTYPE_STRING_LISPRO, INSULINTYPE_STRING_ASPART];
@@ -387,7 +387,7 @@
     NSNumber* new_idealBGMinItem = [Utilities roundNumber:[f numberFromString:self.idealBGMinItem.value] withNumberOfDecimalPlaces:2];
     
     
-    [settings setValue:new_UseMoleUnits forKey:SETTING_UNITS_IN_MOLES];
+    [settings setValue:new_UseMoleUnits forKey:SETTING_SHOULD_DISPLAY_BG_IN_MMOL_PER_L];
     [settings setValue:new_insulinSensitivity forKey:SETTING_INSULIN_SENSITIVITY];
     [settings setValue:new_carbSensitivity forKey:SETTING_CARB_SENSITIVITY];
     [settings setValue:new_idealBGMaxItem forKey:SETTING_IDEALBG_MAX];

@@ -299,7 +299,7 @@
             return reading.quantity;
         } else { //if ([plot.identifier isEqual:PLOT_TREND_BG]) {
             BGReading* reading = [[TrendsAlgorithmModel sharedInstance] getFromBGArray:index];
-            if ([BGReading isInMoles]) {
+            if ([BGReading shouldDisplayBgInMmolPerL]) {
                 return reading.quantity;
             }
             return @([reading.quantity floatValue] * MG_PER_DL_PER_MMOL_PER_L);
@@ -420,7 +420,7 @@
     y.labelTextStyle = whiteText;
     
     NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
-    if ([BGReading isInMoles]) {
+    if ([BGReading shouldDisplayBgInMmolPerL]) {
         [numberFormatter setMinimumFractionDigits:1];
         [numberFormatter setMaximumFractionDigits:1];
     } else {

@@ -17,15 +17,14 @@ NSString *const stringForUnitsInMilligrams = @"mg/dL";
 @dynamic quantity;
 
 
-+(BOOL) isInMoles
-{
-    return [[NSUserDefaults standardUserDefaults] boolForKey:@"unitsAreInMoles"];
++(BOOL) shouldDisplayBgInMmolPerL {
+    return [[NSUserDefaults standardUserDefaults] boolForKey:SETTING_SHOULD_DISPLAY_BG_IN_MMOL_PER_L];
 }
 
 +(NSString *) displayString:(NSNumber*) value withConversion:(BOOL) convert
 {
     NSNumberFormatter *formatter = [NSNumberFormatter new];
-    if ([BGReading isInMoles]) {
+    if ([BGReading shouldDisplayBgInMmolPerL]) {
         [formatter setMinimumFractionDigits:1];
         [formatter setMaximumFractionDigits:1];
         NSString *result = [formatter stringFromNumber:value];
@@ -52,7 +51,7 @@ NSString *const stringForUnitsInMilligrams = @"mg/dL";
 
 + (float) getValue:(float)value withConversion: (BOOL) convert
 {
-    if (convert && ![BGReading isInMoles]) {
+    if (convert && ![BGReading shouldDisplayBgInMmolPerL]) {
         return value * MG_PER_DL_PER_MMOL_PER_L;
     }
     return value;
@@ -62,7 +61,7 @@ NSString *const stringForUnitsInMilligrams = @"mg/dL";
 {
     NSNumberFormatter *formatter = [NSNumberFormatter new];
     NSString* result;
-    if ([BGReading isInMoles]) {
+    if ([BGReading shouldDisplayBgInMmolPerL]) {
         [formatter setMinimumFractionDigits:1];
         [formatter setMaximumFractionDigits:1];
         result = [formatter stringFromNumber:[NSNumber numberWithFloat:self.quantity.floatValue]];

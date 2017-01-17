@@ -130,7 +130,7 @@
     //self.ha1cConstantItem = [TutorialTextItem itemWithTitle:@"HA1c Constant" value:[Utilities createFormattedStringFromNumber:((NSNumber*)[settings valueForKey:SETTING_HA1C_CONSTANT]) withNumberOfDecimalPlaces:1]];
     //self.ag15ConstantItem = [TutorialTextItem itemWithTitle:@"1,5AG Constant" value:[Utilities createFormattedStringFromNumber:((NSNumber*)[settings valueForKey:SETTING_15AG_CONSTANT]) withNumberOfDecimalPlaces:1]];
     
-    self.useMoleUnitsItem = [TutorialBoolItem itemWithTitle:@"Use mmol/L" value:[settings boolForKey:SETTING_UNITS_IN_MOLES]];
+    self.useMoleUnitsItem = [TutorialBoolItem itemWithTitle:@"Use mmol/L" value:[settings boolForKey:SETTING_SHOULD_DISPLAY_BG_IN_MMOL_PER_L]];
     self.militaryTimeItem = [TutorialBoolItem itemWithTitle:@"Use 24 Hr clock" value:[settings boolForKey:SETTING_MILITARY_TIME]];
     
     NSArray* InsulinMappingArray = @[INSULINTYPE_STRING_REGULAR, INSULINTYPE_STRING_GLULISINE, INSULINTYPE_STRING_LISPRO, INSULINTYPE_STRING_ASPART];
@@ -261,7 +261,7 @@
 //    NSNumber* new_ha1cConstant = [Utilities roundNumber:[f numberFromString:self.ha1cConstantItem.value] withNumberOfDecimalPlaces:2];
     //NSNumber* new_ag15Constant = [Utilities roundNumber:[f numberFromString:self.ag15ConstantItem.value] withNumberOfDecimalPlaces:2];
     
-    [settings setValue:new_UseMoleUnits forKey:SETTING_UNITS_IN_MOLES];
+    [settings setValue:new_UseMoleUnits forKey:SETTING_SHOULD_DISPLAY_BG_IN_MMOL_PER_L];
     [settings setValue:new_insulinSensitivity forKey:SETTING_INSULIN_SENSITIVITY];
     [settings setValue:new_carbSensitivity forKey:SETTING_CARB_SENSITIVITY];
     [settings setValue:new_idealBGMax forKey:SETTING_IDEALBG_MAX];

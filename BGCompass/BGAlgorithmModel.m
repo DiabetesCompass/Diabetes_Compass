@@ -540,9 +540,7 @@
 {
     float asymptote_value = [[self.graphArray lastObject] floatValue];
     asymptote_value = [BGReading getValue:asymptote_value withConversion:YES];
-    if (asymptote_value < 30){
-        asymptote_value = 30;
-    }
+
     return @(asymptote_value);
 }
 

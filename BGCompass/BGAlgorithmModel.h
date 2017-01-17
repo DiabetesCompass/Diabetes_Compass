@@ -21,14 +21,14 @@
 - (NSNumber*) getFromGraphArray:(NSUInteger)index;
 - (NSNumber*) getFromPredictArray:(NSUInteger)index;
 
-// FIXME: Either use mmol/L or use isInMoles to set units
+// FIXME: Either use mmol/L or use shouldDisplayBgInMmolPerL to set units
 /// - returns: current estimated BG in mg/dL
 - (NSNumber*) getCurrentBG;
 
 - (NSNumber*) getDeficit;
 - (NSNumber*) getSettlingBG;
 
-// FIXME: Either use mmol/L or use isInMoles to set units
+// FIXME: Either use mmol/L or use shouldDisplayBgInMmolPerL to set units
 /// - returns: settling BG in mg/dL
 - (NSNumber *) getPredictSettlingBG;
 
