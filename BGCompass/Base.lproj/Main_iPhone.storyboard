@@ -352,7 +352,7 @@
                                     <action selector="rejectPendingItems:" destination="AUd-aH-ASn" eventType="touchUpInside" id="yaY-RY-tjv"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lmB-6U-Spe">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lmB-6U-Spe">
                                 <rect key="frame" x="228" y="25" width="30" height="37"/>
                                 <fontDescription key="fontDescription" name="FontAwesome" family="FontAwesome" pointSize="24"/>
                                 <state key="normal" title="C">
@@ -409,6 +409,7 @@
                             <constraint firstAttribute="width" secondItem="1wC-kA-FMF" secondAttribute="width" id="VQu-et-Sb0"/>
                             <constraint firstItem="1wC-kA-FMF" firstAttribute="leading" secondItem="XRs-Li-vfh" secondAttribute="leading" id="f12-M7-i2d"/>
                             <constraint firstItem="PXz-yT-3Ec" firstAttribute="centerY" secondItem="SIB-7f-Z61" secondAttribute="centerY" id="g2F-tq-MFC"/>
+                            <constraint firstItem="CdN-sQ-Gvx" firstAttribute="centerX" secondItem="lmB-6U-Spe" secondAttribute="centerX" id="i5l-wM-Mc5"/>
                             <constraint firstItem="1wC-kA-FMF" firstAttribute="top" secondItem="XRs-Li-vfh" secondAttribute="bottom" id="ixR-Tr-xE1"/>
                             <constraint firstItem="SIB-7f-Z61" firstAttribute="leading" secondItem="0J4-FE-ueM" secondAttribute="leading" constant="16" id="jcr-BL-Pcr"/>
                             <constraint firstItem="lmB-6U-Spe" firstAttribute="centerY" secondItem="SIB-7f-Z61" secondAttribute="centerY" id="pCc-KY-1EB"/>
@@ -424,7 +425,7 @@
                         <outlet property="acceptButton" destination="lmB-6U-Spe" id="7rY-CQ-eUU"/>
                         <outlet property="menuButton" destination="PTp-dD-KMA" id="FR4-q0-dGs"/>
                         <outlet property="rejectButton" destination="PXz-yT-3Ec" id="GFx-5R-OcW"/>
-                        <outlet property="trendsButton2" destination="CdN-sQ-Gvx" id="DDh-q9-eeI"/>
+                        <outlet property="trendsButton" destination="CdN-sQ-Gvx" id="htT-F7-MkF"/>
                         <segue destination="qKj-Rw-Udn" kind="modal" identifier="NeedBGSegue" id="4Wp-uS-j3H"/>
                         <segue destination="xLC-8b-qhY" kind="custom" identifier="warningPopup" customClass="BlurryModalSegue" id="vNy-m4-XHz"/>
                     </connections>

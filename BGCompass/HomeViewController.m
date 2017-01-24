@@ -45,7 +45,7 @@
     self.navigationController.navigationBar.titleTextAttributes = [NSDictionary dictionaryWithObject:[UIColor whiteColor] forKey:NSForegroundColorAttributeName];
 
     // button font may be set to custom FontAwesome in storyboard
-    [self.trendsButton2 setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"icon-bar-chart"]
+    [self.trendsButton setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"icon-bar-chart"]
                        forState:UIControlStateNormal];
     [self.acceptButton setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"icon-ok"]
                        forState:UIControlStateNormal];
@@ -153,7 +153,7 @@
             [swapper showPendingItemsList];
         }
     }
-    [self.trendsButton2 setHidden:YES];
+    [self.trendsButton setHidden:YES];
     [self.acceptButton setHidden:NO];
     [self.rejectButton setHidden:NO];
     //[self.menuButton setHidden:YES];
@@ -168,7 +168,7 @@
     }
     [self.acceptButton setHidden:YES];
     [self.rejectButton setHidden:YES];
-    [self.trendsButton2 setHidden:NO];
+    [self.trendsButton setHidden:NO];
     //[self.menuButton setHidden:NO];
 }
 

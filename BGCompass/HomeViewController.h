@@ -26,7 +26,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *rejectButton;
 @property (weak, nonatomic) IBOutlet UIButton *menuButton;
 
-@property (weak, nonatomic) IBOutlet UIButton *trendsButton2;
+@property (weak, nonatomic) IBOutlet UIButton *trendsButton;
 
 @property (assign, nonatomic) int selectedSegmentIndex;
 
