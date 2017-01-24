@@ -126,7 +126,7 @@
         UIViewController *modalViewController = segue.destinationViewController;
         modalViewController.transitioningDelegate = self.blurTransitionDelegate;
 
-    } else if ([[segue identifier] isEqualToString:@"TrendsSegue2"]) {
+    } else if ([[segue identifier] isEqualToString:@"TrendsSegue"]) {
         // do nothing
 
     } else if ([[segue identifier] isEqualToString:@"NeedBGSegue"]) {

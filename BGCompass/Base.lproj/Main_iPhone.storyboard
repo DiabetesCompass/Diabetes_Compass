@@ -391,7 +391,7 @@
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <segue destination="cqU-Wd-8OR" kind="push" identifier="TrendsSegue2" id="V7X-x0-Vle"/>
+                                    <segue destination="cqU-Wd-8OR" kind="push" identifier="TrendsSegue" id="V7X-x0-Vle"/>
                                 </connections>
                             </button>
                         </subviews>
