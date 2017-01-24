@@ -16,6 +16,12 @@ class TrendViewController : UIViewController {
         case bg, ha1c
     }
 
+    //TODO: Consider use DateComponents
+    /// A rough scale, may be used to set axis label formats and tick mark intervals
+    enum RangeScale {
+        case hour, hour24, day, week, month
+    }
+
     static let minutesPerWeek = Double(MINUTES_IN_ONE_HOUR * HOURS_IN_ONE_DAY * DAYS_IN_ONE_WEEK)
     static let yAxisLabelWidthFraction = 0.1
 
@@ -323,7 +329,8 @@ class TrendViewController : UIViewController {
         // e.g. "Dec 5, 2016"
         //dateFormatter.dateStyle = .medium
         // e.g. "12/05"
-        let templateString = templateStringForRange(range)
+        let rangeScale = TrendViewController.rangeScale(range)
+        let templateString = templateStringForRangeScale(rangeScale)
         let formatString = DateFormatter.dateFormat(fromTemplate: templateString,
                                                     options:0, locale:NSLocale.current)
         dateFormatter.dateFormat = formatString
@@ -335,30 +342,49 @@ class TrendViewController : UIViewController {
         return cptFormatter
     }
 
+    class func rangeScale(_ range: CPTPlotRange?) -> RangeScale {
+
+        guard let axisRange = range else {
+            return .month
+        }
+
+        var scale: RangeScale = .month
+
+        if axisRange.lengthDouble >= Double(MINUTES_IN_ONE_HOUR * HOURS_IN_ONE_DAY * DAYS_IN_ONE_WEEK * 52) {
+            scale = .month
+        } else if axisRange.lengthDouble >= Double(MINUTES_IN_ONE_HOUR * HOURS_IN_ONE_DAY * 8) {
+            scale = .week
+        } else if axisRange.lengthDouble >= Double(MINUTES_IN_ONE_HOUR * HOURS_IN_ONE_DAY * 2) {
+            scale = .day
+        } else {
+            if UserDefaults.standard.bool(forKey: SETTING_MILITARY_TIME) {
+                scale = .hour24
+            } else {
+                scale = .hour
+            }
+        }
+        return scale
+    }
+
     /**
-     - parameter range: plot range
+     - parameter rangeScale: a RangeScale
      - returns: a template string suitable for use by a date formatter
      */
-    func templateStringForRange(_ range: CPTPlotRange?) -> String {
+    func templateStringForRangeScale(_ rangeScale: RangeScale) -> String {
 
         var templateString = "MM/dd"
 
-        guard let axisRange = range else {
-            return templateString
-        }
-
-        if axisRange.lengthDouble >= Double(MINUTES_IN_ONE_HOUR * HOURS_IN_ONE_DAY * DAYS_IN_ONE_WEEK * 52) {
+        switch rangeScale {
+        case .month:
             templateString = "MM/dd"
-        } else if axisRange.lengthDouble >= Double(MINUTES_IN_ONE_HOUR * HOURS_IN_ONE_DAY * 8) {
+        case .week:
             templateString = "MMM dd"
-        } else if axisRange.lengthDouble >= Double(MINUTES_IN_ONE_HOUR * HOURS_IN_ONE_DAY * 2) {
+            case .day:
             templateString = "Md"
-        } else {
-            if UserDefaults.standard.bool(forKey: SETTING_MILITARY_TIME) {
+        case .hour24:
                 templateString = "HH Md"
-            } else {
+        case .hour:
                 templateString = "hh a Md"
-            }
         }
         return templateString
     }
