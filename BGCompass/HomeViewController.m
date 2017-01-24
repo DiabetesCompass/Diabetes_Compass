@@ -45,7 +45,7 @@
     self.navigationController.navigationBar.titleTextAttributes = [NSDictionary dictionaryWithObject:[UIColor whiteColor] forKey:NSForegroundColorAttributeName];
 
     // button font may be set to custom FontAwesome in storyboard
-    [self.trendsButton setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"icon-bar-chart"]
+    [self.trendsButton2 setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"icon-bar-chart"]
                        forState:UIControlStateNormal];
     [self.acceptButton setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"icon-ok"]
                        forState:UIControlStateNormal];
@@ -56,9 +56,6 @@
 
     self.transitionController = [ZoomModalTransitionDelegate new];
     self.blurTransitionDelegate = [BlurTransitionDelegate new];
-
-    [self.trendsButton2 setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"icon-bar-chart"]
-                       forState:UIControlStateNormal];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -129,10 +126,6 @@
         UIViewController *modalViewController = segue.destinationViewController;
         modalViewController.transitioningDelegate = self.blurTransitionDelegate;
 
-    } else if ([[segue identifier] isEqualToString:@"TrendsSegue"]) {
-        UIViewController *modalViewController = segue.destinationViewController;
-        modalViewController.transitioningDelegate = self.transitionController;
-
     } else if ([[segue identifier] isEqualToString:@"TrendsSegue2"]) {
         // do nothing
 
@@ -153,10 +146,6 @@
     }
 }
 
-- (IBAction)clickTrends:(id)sender {
-}
-
-
 -(void)showPendingItemsList {
     for (UIViewController* controller in [self childViewControllers]) {
         if ([controller isKindOfClass:[SwapperViewController class]]) {
@@ -164,7 +153,7 @@
             [swapper showPendingItemsList];
         }
     }
-    [self.trendsButton setHidden:YES];
+    [self.trendsButton2 setHidden:YES];
     [self.acceptButton setHidden:NO];
     [self.rejectButton setHidden:NO];
     //[self.menuButton setHidden:YES];
@@ -179,7 +168,7 @@
     }
     [self.acceptButton setHidden:YES];
     [self.rejectButton setHidden:YES];
-    [self.trendsButton setHidden:NO];
+    [self.trendsButton2 setHidden:NO];
     //[self.menuButton setHidden:NO];
 }
 
