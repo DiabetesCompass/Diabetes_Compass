@@ -510,19 +510,19 @@ extension TrendViewController: CPTPlotSpaceDelegate {
                    willChangePlotRangeTo newRange: CPTPlotRange,
                    for coordinate: CPTCoordinate) -> CPTPlotRange? {
 
-        let range: CPTMutablePlotRange = CPTMutablePlotRange(location: newRange.location,
+        var range: CPTPlotRange = CPTMutablePlotRange(location: newRange.location,
                                                              length:newRange.length)
-
-        // Adjust axes to keep them in view at the left and bottom
         let axisSet: CPTXYAxisSet = space.graph!.axisSet as! CPTXYAxisSet
+
         if coordinate == CPTCoordinate.X {
             axisSet.yAxis?.orthogonalPosition = NSNumber(value:(range.location.doubleValue
                 + (0.1 * range.lengthDouble)))
             axisSet.xAxis?.labelFormatter = xLabelFormatter(range: range)
-        } else if (coordinate == CPTCoordinate.Y)
-            && (trend != nil) {
-            axisSet.xAxis?.orthogonalPosition = NSNumber(value:(range.location.doubleValue
-                + TrendViewController.xAxisLabelHeight(trend: trend!)))
+
+        } else if (coordinate == CPTCoordinate.Y) && (trend != nil) {
+
+            // keep original range, don't change to newRange
+            range = TrendViewController.globalYRange(trend: trend!)
         }
         return range
     }

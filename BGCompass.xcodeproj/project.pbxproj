@@ -8,8 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		2C0739911840342000B413BE /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2C233120182B6C82008A6F88 /* InfoPlist.strings */; };
-		2C1334531854DA0800CECB76 /* CollapsedTrendMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2C1334521854DA0800CECB76 /* CollapsedTrendMenu.xib */; };
-		2C1334561854DA2000CECB76 /* CollapsedTrendMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C1334551854DA2000CECB76 /* CollapsedTrendMenu.m */; };
 		2C18D36F183210F100B622C8 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2C18D36E183210F100B622C8 /* Images.xcassets */; };
 		2C2330ED182B6C82008A6F88 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C2330EC182B6C82008A6F88 /* Foundation.framework */; };
 		2C2330EF182B6C82008A6F88 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C2330EE182B6C82008A6F88 /* CoreGraphics.framework */; };
@@ -52,7 +50,6 @@
 		2C4552CE1831AE7300B16073 /* APIDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C4552CD1831AE7300B16073 /* APIDelegate.m */; };
 		2C4552D11831AF4900B16073 /* NutritionixSearchFood.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C4552D01831AF4900B16073 /* NutritionixSearchFood.m */; };
 		2C4552D71831E99A00B16073 /* EditCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C4552D61831E99A00B16073 /* EditCell.m */; };
-		2C45A49D1841493000BBFA15 /* TrendsContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C45A49C1841493000BBFA15 /* TrendsContainerViewController.m */; };
 		2C51452C183052460028DAA4 /* ItemTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C51452B183052460028DAA4 /* ItemTableViewCell.m */; };
 		2C521B19184215D400AA1475 /* blue.png in Resources */ = {isa = PBXBuildFile; fileRef = 2C521B18184215D400AA1475 /* blue.png */; };
 		2C58E09B1846E7AB0091797A /* ZoomModalAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C58E09A1846E7AB0091797A /* ZoomModalAnimator.m */; };
@@ -61,10 +58,6 @@
 		2C5AE78D1848C8A1009D487F /* SettingsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C5AE78C1848C8A1009D487F /* SettingsController.m */; };
 		2C5FC4F818307D830018C56D /* ItemSelectionTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C5FC4F718307D830018C56D /* ItemSelectionTableViewController.m */; };
 		2C634F451837395B003B0DA4 /* PendingItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C634F441837395B003B0DA4 /* PendingItemCell.m */; };
-		2C6D776F184C83DC00267E38 /* APPaginalContainerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C6D7767184C83DC00267E38 /* APPaginalContainerView.m */; };
-		2C6D7770184C83DC00267E38 /* APPaginalContainerViewPage.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C6D7769184C83DC00267E38 /* APPaginalContainerViewPage.m */; };
-		2C6D7771184C83DC00267E38 /* APPaginalTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C6D776C184C83DC00267E38 /* APPaginalTableView.m */; };
-		2C6D7772184C83DC00267E38 /* APPaginalTableViewElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C6D776E184C83DC00267E38 /* APPaginalTableViewElement.m */; };
 		2C846CA51844B68C0071559D /* cloud.png in Resources */ = {isa = PBXBuildFile; fileRef = 2C846CA41844B68C0071559D /* cloud.png */; };
 		2C9A5172184AF5EA00D9DCC2 /* cool.png in Resources */ = {isa = PBXBuildFile; fileRef = 2C9A5171184AF5EA00D9DCC2 /* cool.png */; };
 		2C9A5176184AF9AD00D9DCC2 /* blurCloud.png in Resources */ = {isa = PBXBuildFile; fileRef = 2C9A5175184AF9AD00D9DCC2 /* blurCloud.png */; };
@@ -72,10 +65,6 @@
 		2C9A517B184B34CA00D9DCC2 /* Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C9A517A184B34CA00D9DCC2 /* Utilities.m */; };
 		2C9D92A1183E219700061B65 /* tableviewBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 2C9D92A0183E219700061B65 /* tableviewBackground.png */; };
 		2C9D92AA183EC64900061B65 /* ItemsNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C9D92A9183EC64900061B65 /* ItemsNavigationViewController.m */; };
-		2CA18FE21854B5560057826B /* CollapsedTrend.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2CA18FE11854B5560057826B /* CollapsedTrend.xib */; };
-		2CA18FE51854B5890057826B /* CollapsedTrendView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CA18FE41854B5890057826B /* CollapsedTrendView.m */; };
-		2CBCC2AB1854B99000430B19 /* ExpandedTrend.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2CBCC2AA1854B99000430B19 /* ExpandedTrend.xib */; };
-		2CBCC2AE1854B9A400430B19 /* ExpandedTrendView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CBCC2AD1854B9A400430B19 /* ExpandedTrendView.m */; };
 		2CC964DC18470B3F0092FFD1 /* ILTranslucentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CC964DB18470B3F0092FFD1 /* ILTranslucentView.m */; };
 		2CC964DF184714930092FFD1 /* UIImage+ImageEffects.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CC964DE184714930092FFD1 /* UIImage+ImageEffects.m */; };
 		2CC964EC184749620092FFD1 /* green.png in Resources */ = {isa = PBXBuildFile; fileRef = 2CC964E0184749620092FFD1 /* green.png */; };
@@ -143,9 +132,6 @@
 
 /* Begin PBXFileReference section */
 		07A032BB06065678DAFBE376 /* Pods-BGCompass.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BGCompass.release.xcconfig"; path = "Pods/Target Support Files/Pods-BGCompass/Pods-BGCompass.release.xcconfig"; sourceTree = "<group>"; };
-		2C1334521854DA0800CECB76 /* CollapsedTrendMenu.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CollapsedTrendMenu.xib; sourceTree = "<group>"; };
-		2C1334541854DA2000CECB76 /* CollapsedTrendMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollapsedTrendMenu.h; sourceTree = "<group>"; };
-		2C1334551854DA2000CECB76 /* CollapsedTrendMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollapsedTrendMenu.m; sourceTree = "<group>"; };
 		2C18D36E183210F100B622C8 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		2C2330E9182B6C82008A6F88 /* BGCompass.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BGCompass.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2C2330EC182B6C82008A6F88 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -216,8 +202,6 @@
 		2C4552D01831AF4900B16073 /* NutritionixSearchFood.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NutritionixSearchFood.m; sourceTree = "<group>"; };
 		2C4552D51831E99A00B16073 /* EditCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = EditCell.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		2C4552D61831E99A00B16073 /* EditCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = EditCell.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		2C45A49B1841493000BBFA15 /* TrendsContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TrendsContainerViewController.h; sourceTree = "<group>"; };
-		2C45A49C1841493000BBFA15 /* TrendsContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TrendsContainerViewController.m; sourceTree = "<group>"; };
 		2C51452718304FF30028DAA4 /* ItemSelectionTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ItemSelectionTableViewController.h; sourceTree = "<group>"; };
 		2C51452A183052460028DAA4 /* ItemTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = ItemTableViewCell.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		2C51452B183052460028DAA4 /* ItemTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = ItemTableViewCell.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
@@ -233,14 +217,6 @@
 		2C5FC4F718307D830018C56D /* ItemSelectionTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ItemSelectionTableViewController.m; sourceTree = "<group>"; };
 		2C634F431837395B003B0DA4 /* PendingItemCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = PendingItemCell.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		2C634F441837395B003B0DA4 /* PendingItemCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = PendingItemCell.m; path = BGCompass/PendingItemCell.m; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		2C6D7766184C83DC00267E38 /* APPaginalContainerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APPaginalContainerView.h; sourceTree = "<group>"; };
-		2C6D7767184C83DC00267E38 /* APPaginalContainerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APPaginalContainerView.m; sourceTree = "<group>"; };
-		2C6D7768184C83DC00267E38 /* APPaginalContainerViewPage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APPaginalContainerViewPage.h; sourceTree = "<group>"; };
-		2C6D7769184C83DC00267E38 /* APPaginalContainerViewPage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APPaginalContainerViewPage.m; sourceTree = "<group>"; };
-		2C6D776B184C83DC00267E38 /* APPaginalTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APPaginalTableView.h; sourceTree = "<group>"; };
-		2C6D776C184C83DC00267E38 /* APPaginalTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APPaginalTableView.m; sourceTree = "<group>"; };
-		2C6D776D184C83DC00267E38 /* APPaginalTableViewElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APPaginalTableViewElement.h; sourceTree = "<group>"; };
-		2C6D776E184C83DC00267E38 /* APPaginalTableViewElement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APPaginalTableViewElement.m; sourceTree = "<group>"; };
 		2C846CA41844B68C0071559D /* cloud.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cloud.png; sourceTree = "<group>"; };
 		2C9A5167184AE39E00D9DCC2 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		2C9A5169184AE3A400D9DCC2 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
@@ -252,12 +228,6 @@
 		2C9D92A0183E219700061B65 /* tableviewBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tableviewBackground.png; sourceTree = "<group>"; };
 		2C9D92A8183EC64900061B65 /* ItemsNavigationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ItemsNavigationViewController.h; sourceTree = "<group>"; };
 		2C9D92A9183EC64900061B65 /* ItemsNavigationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ItemsNavigationViewController.m; sourceTree = "<group>"; };
-		2CA18FE11854B5560057826B /* CollapsedTrend.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CollapsedTrend.xib; sourceTree = "<group>"; };
-		2CA18FE31854B5890057826B /* CollapsedTrendView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollapsedTrendView.h; sourceTree = "<group>"; };
-		2CA18FE41854B5890057826B /* CollapsedTrendView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollapsedTrendView.m; sourceTree = "<group>"; };
-		2CBCC2AA1854B99000430B19 /* ExpandedTrend.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ExpandedTrend.xib; sourceTree = "<group>"; };
-		2CBCC2AC1854B9A400430B19 /* ExpandedTrendView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExpandedTrendView.h; sourceTree = "<group>"; };
-		2CBCC2AD1854B9A400430B19 /* ExpandedTrendView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExpandedTrendView.m; sourceTree = "<group>"; };
 		2CC964DA18470B3F0092FFD1 /* ILTranslucentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ILTranslucentView.h; sourceTree = "<group>"; };
 		2CC964DB18470B3F0092FFD1 /* ILTranslucentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ILTranslucentView.m; sourceTree = "<group>"; };
 		2CC964DD184714930092FFD1 /* UIImage+ImageEffects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+ImageEffects.h"; sourceTree = "<group>"; };
@@ -531,7 +501,6 @@
 		2C30405918556E8E00BCD3FF /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				2C6D7764184C83DC00267E38 /* APPaginalTableViewComponents */,
 				2C253FA918BDE7E900DB7D2A /* AddBGOverlayViewController.h */,
 				2C253FAA18BDE7E900DB7D2A /* AddBGOverlayViewController.m */,
 				839E349E182F699F0083960E /* AddedListViewController.h */,
@@ -600,37 +569,6 @@
 				8376D6D41831BE840026D0CD /* BackgroundTaskDelegate.m */,
 			);
 			name = Delegates;
-			sourceTree = "<group>";
-		};
-		2C6D7764184C83DC00267E38 /* APPaginalTableViewComponents */ = {
-			isa = PBXGroup;
-			children = (
-				2C6D7765184C83DC00267E38 /* APPaginalContainerView */,
-				2C6D776A184C83DC00267E38 /* APPaginalTableView */,
-			);
-			path = APPaginalTableViewComponents;
-			sourceTree = "<group>";
-		};
-		2C6D7765184C83DC00267E38 /* APPaginalContainerView */ = {
-			isa = PBXGroup;
-			children = (
-				2C6D7766184C83DC00267E38 /* APPaginalContainerView.h */,
-				2C6D7767184C83DC00267E38 /* APPaginalContainerView.m */,
-				2C6D7768184C83DC00267E38 /* APPaginalContainerViewPage.h */,
-				2C6D7769184C83DC00267E38 /* APPaginalContainerViewPage.m */,
-			);
-			path = APPaginalContainerView;
-			sourceTree = "<group>";
-		};
-		2C6D776A184C83DC00267E38 /* APPaginalTableView */ = {
-			isa = PBXGroup;
-			children = (
-				2C6D776B184C83DC00267E38 /* APPaginalTableView.h */,
-				2C6D776C184C83DC00267E38 /* APPaginalTableView.m */,
-				2C6D776D184C83DC00267E38 /* APPaginalTableViewElement.h */,
-				2C6D776E184C83DC00267E38 /* APPaginalTableViewElement.m */,
-			);
-			path = APPaginalTableView;
 			sourceTree = "<group>";
 		};
 		2C9D9297183E0C4D00061B65 /* Image Resources */ = {
@@ -718,19 +656,8 @@
 		DE1AD7FA1DFBB34500720F5F /* Trends */ = {
 			isa = PBXGroup;
 			children = (
-				2CA18FE11854B5560057826B /* CollapsedTrend.xib */,
-				2C1334541854DA2000CECB76 /* CollapsedTrendMenu.h */,
-				2C1334551854DA2000CECB76 /* CollapsedTrendMenu.m */,
-				2C1334521854DA0800CECB76 /* CollapsedTrendMenu.xib */,
-				2CA18FE31854B5890057826B /* CollapsedTrendView.h */,
-				2CA18FE41854B5890057826B /* CollapsedTrendView.m */,
-				2CBCC2AC1854B9A400430B19 /* ExpandedTrendView.h */,
-				2CBCC2AD1854B9A400430B19 /* ExpandedTrendView.m */,
-				2CBCC2AA1854B99000430B19 /* ExpandedTrend.xib */,
 				DEABA8A11DFCEEDC00B42AEA /* TrendViewController.swift */,
 				DE106E1C1DFC7E32002B0B63 /* Trend.storyboard */,
-				2C45A49B1841493000BBFA15 /* TrendsContainerViewController.h */,
-				2C45A49C1841493000BBFA15 /* TrendsContainerViewController.m */,
 				DE1AD7F81DFBB2E500720F5F /* Trends.storyboard */,
 				DE1AD7FC1DFBB3C400720F5F /* TrendsViewController.swift */,
 			);
@@ -855,11 +782,8 @@
 				2C521B19184215D400AA1475 /* blue.png in Resources */,
 				2CC964EF184749620092FFD1 /* lightPink.png in Resources */,
 				2CC964F0184749620092FFD1 /* odd.png in Resources */,
-				2CA18FE21854B5560057826B /* CollapsedTrend.xib in Resources */,
 				2CF6D27318480F3E00872B8F /* compass.png in Resources */,
 				2C9D92A1183E219700061B65 /* tableviewBackground.png in Resources */,
-				2C1334531854DA0800CECB76 /* CollapsedTrendMenu.xib in Resources */,
-				2CBCC2AB1854B99000430B19 /* ExpandedTrend.xib in Resources */,
 				2CC964F1184749620092FFD1 /* orange.png in Resources */,
 				2C31379018477BAA008AFA46 /* gray.png in Resources */,
 			);
@@ -1002,13 +926,11 @@
 				839E34A6182F80DC0083960E /* SwapperViewController.m in Sources */,
 				2CC964DC18470B3F0092FFD1 /* ILTranslucentView.m in Sources */,
 				2C253F7E18BC7E9D00DB7D2A /* TutorialTextItem.m in Sources */,
-				2C1334561854DA2000CECB76 /* CollapsedTrendMenu.m in Sources */,
 				2C253FB718C0397B00DB7D2A /* ItemsNavigationTransitionControllerDelegate.m in Sources */,
 				839E34A9182F81520083960E /* UselessSegue.m in Sources */,
 				2C253F7B18BC7E0A00DB7D2A /* TutorialTextCell.m in Sources */,
 				2C253FAB18BDE7E900DB7D2A /* AddBGOverlayViewController.m in Sources */,
 				2CC964DF184714930092FFD1 /* UIImage+ImageEffects.m in Sources */,
-				2CA18FE51854B5890057826B /* CollapsedTrendView.m in Sources */,
 				839E34A0182F699F0083960E /* AddedListViewController.m in Sources */,
 				2C253F8518BC89DA00DB7D2A /* TutorialTitleItem.m in Sources */,
 				83EAFABC182F521000CE5FA9 /* FoodReading.m in Sources */,
@@ -1016,13 +938,10 @@
 				833A3E4C1837009C00C1FF5C /* CurveModel.m in Sources */,
 				2C2330FB182B6C82008A6F88 /* main.m in Sources */,
 				2C253F8E18BC91C200DB7D2A /* TutorialPickerCell.m in Sources */,
-				2C6D776F184C83DC00267E38 /* APPaginalContainerView.m in Sources */,
 				2C253F9718BCA20A00DB7D2A /* TutorialBoolItem.m in Sources */,
 				DEABA8A21DFCEEDC00B42AEA /* TrendViewController.swift in Sources */,
-				2C6D7771184C83DC00267E38 /* APPaginalTableView.m in Sources */,
 				2C233108182B6C82008A6F88 /* CompassRose.xcdatamodeld in Sources */,
 				839E349A182F61080083960E /* HomeViewController.m in Sources */,
-				2C6D7772184C83DC00267E38 /* APPaginalTableViewElement.m in Sources */,
 				845D246A1BA52C2F00981091 /* WarningViewController.m in Sources */,
 				833A3E4F183B3EFB00C1FF5C /* BGAlgorithmModel.m in Sources */,
 				2C51452C183052460028DAA4 /* ItemTableViewCell.m in Sources */,
@@ -1032,8 +951,6 @@
 				2C253FB418C0358500DB7D2A /* FadeAnimator.m in Sources */,
 				83EAFABB182F521000CE5FA9 /* InsulinReading.m in Sources */,
 				2C2AD85918C59EF100249DA9 /* ImportExportViewController.m in Sources */,
-				2C45A49D1841493000BBFA15 /* TrendsContainerViewController.m in Sources */,
-				2C6D7770184C83DC00267E38 /* APPaginalContainerViewPage.m in Sources */,
 				2C253F9418BC994E00DB7D2A /* TutorialInlinePickerCell.m in Sources */,
 				2C5AE78A1848A6D2009D487F /* EditTableViewController.m in Sources */,
 				DEEEF1C81DFE0A140027D955 /* TrendsAlgorithmModelExtension.swift in Sources */,
@@ -1044,7 +961,6 @@
 				839E34A3182F6A020083960E /* CurrentBGViewController.m in Sources */,
 				2C253FC318C05B4700DB7D2A /* BlurAnimator.m in Sources */,
 				2C253F9A18BCA22F00DB7D2A /* TutorialBoolCell.m in Sources */,
-				2CBCC2AE1854B9A400430B19 /* ExpandedTrendView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
