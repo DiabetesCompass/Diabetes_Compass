@@ -56,9 +56,6 @@
 
     self.transitionController = [ZoomModalTransitionDelegate new];
     self.blurTransitionDelegate = [BlurTransitionDelegate new];
-
-    [self.trendsButton2 setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"icon-bar-chart"]
-                       forState:UIControlStateNormal];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -130,10 +127,6 @@
         modalViewController.transitioningDelegate = self.blurTransitionDelegate;
 
     } else if ([[segue identifier] isEqualToString:@"TrendsSegue"]) {
-        UIViewController *modalViewController = segue.destinationViewController;
-        modalViewController.transitioningDelegate = self.transitionController;
-
-    } else if ([[segue identifier] isEqualToString:@"TrendsSegue2"]) {
         // do nothing
 
     } else if ([[segue identifier] isEqualToString:@"NeedBGSegue"]) {
@@ -152,10 +145,6 @@
         modalViewController.transitioningDelegate = self.blurTransitionDelegate;
     }
 }
-
-- (IBAction)clickTrends:(id)sender {
-}
-
 
 -(void)showPendingItemsList {
     for (UIViewController* controller in [self childViewControllers]) {

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16C67" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES" initialViewController="rS3-R9-Ivy">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES" initialViewController="rS3-R9-Ivy">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -293,7 +293,7 @@
                 <navigationController definesPresentationContext="YES" id="Ajb-Am-Nma" customClass="ItemsNavigationViewController" sceneMemberID="viewController">
                     <navigationItem key="navigationItem" id="PHt-q2-4vF"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="9tR-xP-7if">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" barStyle="black" id="9tR-xP-7if">
                         <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -333,19 +333,8 @@
                                     <segue destination="kjW-3c-CgD" kind="embed" identifier="HomeToGraphSegue" id="JRt-Hn-2oB"/>
                                 </connections>
                             </containerView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TNg-Xn-eGe">
-                                <rect key="frame" x="228" y="25" width="30" height="40"/>
-                                <fontDescription key="fontDescription" name="FontAwesome" family="FontAwesome" pointSize="24"/>
-                                <state key="normal" title="Tr">
-                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                    <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                </state>
-                                <connections>
-                                    <action selector="clickTrends:" destination="AUd-aH-ASn" eventType="touchUpInside" id="yZS-VU-6WT"/>
-                                </connections>
-                            </button>
                             <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SIB-7f-Z61">
-                                <rect key="frame" x="16" y="24.5" width="137" height="41"/>
+                                <rect key="frame" x="16" y="23" width="137" height="41"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="24"/>
                                 <state key="normal" title="BG Compass">
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -353,7 +342,7 @@
                                 </state>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PXz-yT-3Ec">
-                                <rect key="frame" x="168" y="25" width="30" height="40"/>
+                                <rect key="frame" x="168" y="25" width="30" height="37"/>
                                 <fontDescription key="fontDescription" name="FontAwesome" family="FontAwesome" pointSize="24"/>
                                 <state key="normal" title="X">
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -364,7 +353,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lmB-6U-Spe">
-                                <rect key="frame" x="228" y="25" width="30" height="40"/>
+                                <rect key="frame" x="228" y="25" width="30" height="37"/>
                                 <fontDescription key="fontDescription" name="FontAwesome" family="FontAwesome" pointSize="24"/>
                                 <state key="normal" title="C">
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -375,7 +364,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PTp-dD-KMA">
-                                <rect key="frame" x="313" y="25" width="30" height="40"/>
+                                <rect key="frame" x="313" y="25" width="30" height="37"/>
                                 <fontDescription key="fontDescription" name="FontAwesome" family="FontAwesome" pointSize="24"/>
                                 <state key="normal" title="M">
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -396,14 +385,13 @@
                                 </connections>
                             </containerView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CdN-sQ-Gvx">
-                                <rect key="frame" x="198" y="25" width="30" height="40"/>
+                                <rect key="frame" x="228" y="25" width="30" height="37"/>
                                 <fontDescription key="fontDescription" name="FontAwesome" family="FontAwesome" pointSize="24"/>
                                 <state key="normal" title="t">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="clickTrends:" destination="AUd-aH-ASn" eventType="touchUpInside" id="UWw-e5-EcE"/>
-                                    <segue destination="cqU-Wd-8OR" kind="push" identifier="TrendsSegue2" id="V7X-x0-Vle"/>
+                                    <segue destination="cqU-Wd-8OR" kind="push" identifier="TrendsSegue" id="V7X-x0-Vle"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -411,19 +399,17 @@
                         <constraints>
                             <constraint firstItem="PTp-dD-KMA" firstAttribute="top" secondItem="siz-Qs-ork" secondAttribute="bottom" constant="5" id="363-j5-18i"/>
                             <constraint firstAttribute="trailingMargin" secondItem="PTp-dD-KMA" secondAttribute="trailing" constant="16" id="3WV-eY-ZyX"/>
-                            <constraint firstItem="CdN-sQ-Gvx" firstAttribute="leading" secondItem="PXz-yT-3Ec" secondAttribute="trailing" id="B4C-1J-blE"/>
-                            <constraint firstItem="TNg-Xn-eGe" firstAttribute="leading" secondItem="PXz-yT-3Ec" secondAttribute="trailing" constant="30" id="JFK-LE-J5E"/>
+                            <constraint firstItem="CdN-sQ-Gvx" firstAttribute="leading" secondItem="PXz-yT-3Ec" secondAttribute="trailing" constant="30" id="B4C-1J-blE"/>
                             <constraint firstItem="qFq-yJ-PxK" firstAttribute="top" secondItem="1wC-kA-FMF" secondAttribute="bottom" id="K8T-1J-frq"/>
                             <constraint firstItem="PTp-dD-KMA" firstAttribute="centerY" secondItem="SIB-7f-Z61" secondAttribute="centerY" id="LEf-za-ttT"/>
                             <constraint firstAttribute="width" secondItem="XRs-Li-vfh" secondAttribute="width" id="NuM-K8-NJD"/>
                             <constraint firstItem="CdN-sQ-Gvx" firstAttribute="centerY" secondItem="SIB-7f-Z61" secondAttribute="centerY" id="O6n-sC-g0o"/>
-                            <constraint firstItem="TNg-Xn-eGe" firstAttribute="centerY" secondItem="SIB-7f-Z61" secondAttribute="centerY" id="QK0-pM-Tp7"/>
                             <constraint firstItem="PXz-yT-3Ec" firstAttribute="leading" secondItem="SIB-7f-Z61" secondAttribute="trailing" constant="15" id="Skc-e8-IkN"/>
                             <constraint firstItem="1wC-kA-FMF" firstAttribute="leading" secondItem="0J4-FE-ueM" secondAttribute="leading" id="Sno-sl-fGI"/>
-                            <constraint firstItem="TNg-Xn-eGe" firstAttribute="centerX" secondItem="lmB-6U-Spe" secondAttribute="centerX" id="VMt-sg-ok0"/>
                             <constraint firstAttribute="width" secondItem="1wC-kA-FMF" secondAttribute="width" id="VQu-et-Sb0"/>
                             <constraint firstItem="1wC-kA-FMF" firstAttribute="leading" secondItem="XRs-Li-vfh" secondAttribute="leading" id="f12-M7-i2d"/>
                             <constraint firstItem="PXz-yT-3Ec" firstAttribute="centerY" secondItem="SIB-7f-Z61" secondAttribute="centerY" id="g2F-tq-MFC"/>
+                            <constraint firstItem="CdN-sQ-Gvx" firstAttribute="centerX" secondItem="lmB-6U-Spe" secondAttribute="centerX" id="i5l-wM-Mc5"/>
                             <constraint firstItem="1wC-kA-FMF" firstAttribute="top" secondItem="XRs-Li-vfh" secondAttribute="bottom" id="ixR-Tr-xE1"/>
                             <constraint firstItem="SIB-7f-Z61" firstAttribute="leading" secondItem="0J4-FE-ueM" secondAttribute="leading" constant="16" id="jcr-BL-Pcr"/>
                             <constraint firstItem="lmB-6U-Spe" firstAttribute="centerY" secondItem="SIB-7f-Z61" secondAttribute="centerY" id="pCc-KY-1EB"/>
@@ -439,8 +425,7 @@
                         <outlet property="acceptButton" destination="lmB-6U-Spe" id="7rY-CQ-eUU"/>
                         <outlet property="menuButton" destination="PTp-dD-KMA" id="FR4-q0-dGs"/>
                         <outlet property="rejectButton" destination="PXz-yT-3Ec" id="GFx-5R-OcW"/>
-                        <outlet property="trendsButton" destination="TNg-Xn-eGe" id="42M-N4-f4z"/>
-                        <outlet property="trendsButton2" destination="CdN-sQ-Gvx" id="DDh-q9-eeI"/>
+                        <outlet property="trendsButton" destination="CdN-sQ-Gvx" id="htT-F7-MkF"/>
                         <segue destination="qKj-Rw-Udn" kind="modal" identifier="NeedBGSegue" id="4Wp-uS-j3H"/>
                         <segue destination="xLC-8b-qhY" kind="custom" identifier="warningPopup" customClass="BlurryModalSegue" id="vNy-m4-XHz"/>
                     </connections>
