@@ -201,24 +201,24 @@
     if ([deficit isEqualToNumber:[NSNumber numberWithInt:0]]) {
         NSAttributedString *aString7 = [[NSMutableAttributedString new] initWithString:NO_ACTION_STRING attributes:thin];
         
-        [aString1 appendAttributedString:aString2];
-        [aString1 appendAttributedString:aString3];
-        [aString1 appendAttributedString:aString7];
+//        [aString1 appendAttributedString:aString2];
+//        [aString1 appendAttributedString:aString3];
+//        [aString1 appendAttributedString:aString7];
         
     } else {
         NSAttributedString *aString4 = [[NSAttributedString new] initWithString:ACTION_STRING2 attributes:thin];
         NSAttributedString *aString5 = [[NSAttributedString new] initWithString:deficitString attributes:bold];
         NSAttributedString *aString6 = [[NSAttributedString new] initWithString:deficitType attributes:thin];
         
-        [aString1 appendAttributedString:aString2];
+/*        [aString1 appendAttributedString:aString2];
         [aString1 appendAttributedString:aString3];
         [aString1 appendAttributedString:aString4];
         [aString1 appendAttributedString:aString5];
-        [aString1 appendAttributedString:aString6];
+        [aString1 appendAttributedString:aString6];*/
     }
     
-    self.actionTextView.attributedText = aString1;
-    self.actionTextView.textAlignment = NSTextAlignmentCenter;
+//    self.actionTextView.attributedText = aString1;
+//    self.actionTextView.textAlignment = NSTextAlignmentCenter;
     
     //self.bgTextView.frame = CGRectMake(26, 0, 320, 107);
 }
