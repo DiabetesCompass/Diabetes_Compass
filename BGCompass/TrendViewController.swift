@@ -23,8 +23,9 @@ class TrendViewController : UIViewController {
     }
 
     static let minutesPerWeek = Double(MINUTES_IN_ONE_HOUR * HOURS_IN_ONE_DAY * DAYS_IN_ONE_WEEK)
-    /// margin for xAxis before first data point and after last data point, as a fraction of original range
-    static let xAxisRangeMarginFraction = 0.10
+
+    /// margin for xAxis range before first data point and after last data point
+    static let xAxisRangeMargin = 1000.0
 
     var trendsAlgorithmModel: TrendsAlgorithmModel?
 
@@ -112,8 +113,8 @@ class TrendViewController : UIViewController {
         guard let first = dateFirst, let last = dateLast else { return rangeEmpty }
 
         let minutesLastMinusFirst = last.timeIntervalSince(first) / Double(SECONDS_IN_ONE_MINUTE)
-        let location = NSNumber(value:  -xAxisRangeMarginFraction * minutesLastMinusFirst)
-        let length = NSNumber(value: (1.0 + (2 * xAxisRangeMarginFraction)) * minutesLastMinusFirst)
+        let location = NSNumber(value: -xAxisRangeMargin)
+        let length = NSNumber(value: minutesLastMinusFirst + (2 * xAxisRangeMargin))
         let range = CPTPlotRange(location: location, length: length)
         return range
     }
@@ -137,7 +138,7 @@ class TrendViewController : UIViewController {
         guard let first = dateFirst, let last = dateLast else { return rangeEmpty }
 
         let minutesLastMinusFirst = last.timeIntervalSince(first) / Double(SECONDS_IN_ONE_MINUTE)
-        let location = minutesLastMinusFirst - minutesPerWeek
+        let location = minutesLastMinusFirst - minutesPerWeek + xAxisRangeMargin
         let range = CPTPlotRange(location: NSNumber(value:location), length: NSNumber(value: minutesPerWeek))
         return range
     }
