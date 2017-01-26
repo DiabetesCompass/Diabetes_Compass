@@ -127,9 +127,6 @@
     self.idealBGMaxItem = [TutorialTextItem itemWithTitle:@"Ideal Max" value:[Utilities createFormattedStringFromNumber:((NSNumber*)[settings valueForKey:SETTING_IDEALBG_MAX]) forReadingType:[BGReading class]]];
     self.idealBGMinItem = [TutorialTextItem itemWithTitle:@"Ideal Min" value:[Utilities createFormattedStringFromNumber:((NSNumber*)[settings valueForKey:SETTING_IDEALBG_MIN]) forReadingType:[BGReading class]]];
     
-    //self.ha1cConstantItem = [TutorialTextItem itemWithTitle:@"HA1c Constant" value:[Utilities createFormattedStringFromNumber:((NSNumber*)[settings valueForKey:SETTING_HA1C_CONSTANT]) withNumberOfDecimalPlaces:1]];
-    //self.ag15ConstantItem = [TutorialTextItem itemWithTitle:@"1,5AG Constant" value:[Utilities createFormattedStringFromNumber:((NSNumber*)[settings valueForKey:SETTING_15AG_CONSTANT]) withNumberOfDecimalPlaces:1]];
-    
     self.useMoleUnitsItem = [TutorialBoolItem itemWithTitle:@"Use mmol/L" value:[settings boolForKey:SETTING_SHOULD_DISPLAY_BG_IN_MMOL_PER_L]];
     self.militaryTimeItem = [TutorialBoolItem itemWithTitle:@"Use 24 Hr clock" value:[settings boolForKey:SETTING_MILITARY_TIME]];
     
@@ -147,10 +144,6 @@
     self.idealBGMinItem.keyboardAppearance = UIKeyboardAppearanceDark;
     self.idealBGMaxItem.keyboardType = UIKeyboardTypeDecimalPad;
     self.idealBGMaxItem.keyboardAppearance = UIKeyboardAppearanceDark;
-    //self.ha1cConstantItem.keyboardType = UIKeyboardTypeDecimalPad;
-    //self.ha1cConstantItem.keyboardAppearance = UIKeyboardAppearanceDark;
-    //self.ag15ConstantItem.keyboardType = UIKeyboardTypeDecimalPad;
-    //self.ag15ConstantItem.keyboardAppearance = UIKeyboardAppearanceDark;
     
     self.insulinTypeItem.inlinePicker = YES;
     __unsafe_unretained typeof(self) weakSelf = self;
@@ -230,8 +223,6 @@
     [bgSection addItem:self.idealBGMinItem];
     
     //[trendsSection addItem:trendsTitle];
-    //[trendsSection addItem:self.ha1cConstantItem];
-    //[trendsSection addItem:self.ag15ConstantItem];
     
     [miscellaneousSection addItem:miscTitle];
     [miscellaneousSection addItem:self.useMoleUnitsItem];
@@ -258,16 +249,12 @@
     NSNumber* new_idealBGMax = [Utilities roundNumber:[f numberFromString:self.idealBGMaxItem.value] withNumberOfDecimalPlaces:2];
     NSNumber* new_idealBGMin = [Utilities roundNumber:[f numberFromString:self.idealBGMinItem.value] withNumberOfDecimalPlaces:2];
     
-//    NSNumber* new_ha1cConstant = [Utilities roundNumber:[f numberFromString:self.ha1cConstantItem.value] withNumberOfDecimalPlaces:2];
-    //NSNumber* new_ag15Constant = [Utilities roundNumber:[f numberFromString:self.ag15ConstantItem.value] withNumberOfDecimalPlaces:2];
     
     [settings setValue:new_UseMoleUnits forKey:SETTING_SHOULD_DISPLAY_BG_IN_MMOL_PER_L];
     [settings setValue:new_insulinSensitivity forKey:SETTING_INSULIN_SENSITIVITY];
     [settings setValue:new_carbSensitivity forKey:SETTING_CARB_SENSITIVITY];
     [settings setValue:new_idealBGMax forKey:SETTING_IDEALBG_MAX];
     [settings setValue:new_idealBGMin forKey:SETTING_IDEALBG_MIN];
-//    [settings setValue:new_ha1cConstant forKey:SETTING_HA1C_CONSTANT];
-    //[settings setValue:new_ag15Constant forKey:SETTING_15AG_CONSTANT];
     
     //[settings setValue:[f numberFromString:self.insulinDurationItem.value]  forKey:SETTING_INSULIN_DURATION];
     
