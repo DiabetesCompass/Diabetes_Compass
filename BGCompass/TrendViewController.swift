@@ -269,9 +269,7 @@ class TrendViewController : UIViewController {
         // range.location is axis start, range.length is axis (end - start)
         let xRange = TrendViewController.xRange(trendsAlgorithmModel: trendsAlgorithmModel,
                                                       trend: trend)
-        let xRangeLocation = xRange.location.doubleValue
-        let xRangeLength = xRange.length.doubleValue
-        y.orthogonalPosition = NSNumber(value:(xRangeLocation + (TrendViewController.yAxisLabelWidthFraction * xRangeLength)))
+        y.orthogonalPosition = TrendViewController.yOrthogonalPosition(xRange: xRange)
 
         y.labelExclusionRanges  = [
             //CPTPlotRange(location: 0.99, length: 0.02),
@@ -292,6 +290,19 @@ class TrendViewController : UIViewController {
             y.majorIntervalLength   = 1
             y.minorTicksPerInterval = 1
         }
+    }
+
+    /** typically caller will set y.orthogonalPosition = yOrthogonalPosition()
+    - parameter xRangeLocation: axis start
+    - parameter xRangeLength: axis (end - start)
+    - returns: x cooridinate for y axis to cross x axis
+    */
+    class func yOrthogonalPosition(xRange: CPTPlotRange) -> NSNumber {
+        let xRangeLocation = xRange.location.doubleValue
+        let xRangeLength = xRange.length.doubleValue
+        let yAxisLabelWidth = 0.1 * xRangeLength
+        let position = NSNumber(value:(xRangeLocation + yAxisLabelWidth))
+        return position
     }
 
     func styledPlot(trend: Trend) -> CPTScatterPlot {
@@ -563,8 +574,7 @@ extension TrendViewController: CPTPlotSpaceDelegate {
         let axisSet: CPTXYAxisSet = space.graph!.axisSet as! CPTXYAxisSet
 
         if coordinate == CPTCoordinate.X {
-            axisSet.yAxis?.orthogonalPosition = NSNumber(value:(range.location.doubleValue
-                + (0.1 * range.lengthDouble)))
+            axisSet.yAxis?.orthogonalPosition = TrendViewController.yOrthogonalPosition(xRange: range)
             axisSet.xAxis?.labelFormatter = xLabelFormatter(range: range)
 
             if let xAxis = axisSet.xAxis {
