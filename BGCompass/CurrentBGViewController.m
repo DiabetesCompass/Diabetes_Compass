@@ -23,8 +23,7 @@
 
 #pragma mark - lifecycle
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     [self addObservers];
@@ -47,8 +46,7 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleNotifications:) name:NOTE_GRAPH_SHIFTED object:nil];
 }
 
-- (void)handleNotifications:(NSNotification *) note
-{
+- (void)handleNotifications:(NSNotification *) note {
     NSLog(@"CurrentBGViewController received notification name: %@", [note name]);
     if ([[note name] isEqualToString:NOTE_GRAPH_RECALCULATED]) {
         [self performSelectorOnMainThread:@selector(updateData) withObject:self waitUntilDone:NO];
@@ -57,8 +55,7 @@
     }
 }
 
--(void) updateData
-{
+-(void) updateData {
     NSLog(@"update data on current BG");
     NSNumber *bgCurrent = [[BGAlgorithmModel sharedInstance] getCurrentBG];
     NSLog(@"Current BG is: %@", bgCurrent);
@@ -70,9 +67,8 @@
     NSNumber *bgCurrentForTest = [[BGAlgorithmModel sharedInstance] getCurrentMmolPerLBG];
     NSLog(@"Current BG is: %@", bgCurrent);
     
-//    NSNumber *bgSettling = [[BGAlgorithmModel sharedInstance] getSettlingBG];
     NSString *bgCurrentString = [Utilities createFormattedStringFromNumber:bgCurrent forReadingType:[BGReading class]];
-//    NSString *bgSettlingString = [Utilities createFormattedStringFromNumber:bgSettling forReadingType:[BGReading class]];
+
     // These are the colors & styles for the present est BG & deficit texts
     //general texts
     NSDictionary *thin = @{NSForegroundColorAttributeName:[UIColor whiteColor],
@@ -91,11 +87,9 @@
     NSString *hA1cUnits = @"%";
     NSString *unknownBG = @"???";
     
-    
     NSMutableAttributedString *aString1 = [[NSMutableAttributedString new] initWithString:ACTION_STRING1 attributes:thin];
     NSAttributedString *aString2 = [[NSAttributedString new] initWithString:latestEstimatedHA1c attributes:bold];
     NSAttributedString *aString8 = [[NSAttributedString new] initWithString:[@" " stringByAppendingString:hA1cUnits] attributes:thin];
-    NSAttributedString *aString9 = [[NSAttributedString new] initWithString:[@" " stringByAppendingString:unknownBG] attributes:thin];
     
     NSString *deficitString;
     
@@ -109,14 +103,10 @@
     }
     
     if ([deficit isEqualToNumber:[NSNumber numberWithInt:0]]) {
-        //NSAttributedString *aString7 = [[NSMutableAttributedString new] initWithString:NO_ACTION_STRING attributes:thin];
-        
         [aString1 appendAttributedString:aString2];
         [aString1 appendAttributedString:aString8];
-        //[aString1 appendAttributedString:aString7];
-        
+
     } else {
-//        NSAttributedString *aString3 = [[NSAttributedString new] initWithString:[@" " stringByAppendingString:units] attributes:thin];
         NSAttributedString *aString4 = [[NSAttributedString new] initWithString:ACTION_STRING2 attributes:thin];
         NSAttributedString *aString5 = [[NSAttributedString new] initWithString:deficitString attributes:bold];
         NSAttributedString *aString6 = [[NSAttributedString new] initWithString:deficitType attributes:thin];
@@ -127,7 +117,7 @@
         [aString1 appendAttributedString:aString5];
         [aString1 appendAttributedString:aString6];
     }
-    
+
     self.actionTextView.attributedText = aString1;
     self.actionTextView.textAlignment = NSTextAlignmentCenter;
     if ([bgCurrentForTest doubleValue] < 1.7) {
@@ -137,8 +127,8 @@
         [aString9 appendAttributedString:aString3];
         self.bgTextView.attributedText = aString9;
         self.bgTextView.textAlignment = NSTextAlignmentCenter;
-    }
-    else {
+
+    } else {
         NSLog(@"mg/dL");
         NSMutableAttributedString *bString = [[NSMutableAttributedString new] initWithString:bgCurrentString attributes:thinBig];
         NSAttributedString *aString3 = [[NSAttributedString new] initWithString:[@" " stringByAppendingString:units] attributes:thin];
@@ -147,10 +137,6 @@
         self.bgTextView.textAlignment = NSTextAlignmentCenter;
     }
     
-    
-    
-    //self.bgTextView.frame = CGRectMake(26, 0, 320, 107);
-
 }
 
 @end
