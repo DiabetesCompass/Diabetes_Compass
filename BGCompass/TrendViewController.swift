@@ -340,7 +340,7 @@ class TrendViewController : UIViewController {
         let lineStyle = CPTMutableLineStyle()
         lineStyle.lineColor = .white()
         lineStyle.lineWidth = 4.0
-        lineStyle.miterLimit = 4.0
+        lineStyle.miterLimit = 2.0
         return lineStyle
     }
 
