@@ -107,6 +107,7 @@
 		83EAFABC182F521000CE5FA9 /* FoodReading.m in Sources */ = {isa = PBXBuildFile; fileRef = 83EAFAB8182F521000CE5FA9 /* FoodReading.m */; };
 		83EAFABD182F521000CE5FA9 /* BGReading.m in Sources */ = {isa = PBXBuildFile; fileRef = 83EAFABA182F521000CE5FA9 /* BGReading.m */; };
 		83FD930E1830529600F4F19E /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = 83FD930D1830529600F4F19E /* Constants.m */; };
+		840FA0281E3ACA0E0045D63E /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 840FA0271E3ACA0E0045D63E /* CloudKit.framework */; };
 		845D246A1BA52C2F00981091 /* WarningViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 845D24691BA52C2F00981091 /* WarningViewController.m */; };
 		DE106E1D1DFC7E32002B0B63 /* Trend.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DE106E1C1DFC7E32002B0B63 /* Trend.storyboard */; };
 		DE1AD7F91DFBB2E500720F5F /* Trends.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DE1AD7F81DFBB2E500720F5F /* Trends.storyboard */; };
@@ -291,6 +292,7 @@
 		83EAFABA182F521000CE5FA9 /* BGReading.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = BGReading.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		83FD930C1830529600F4F19E /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = Constants.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		83FD930D1830529600F4F19E /* Constants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = Constants.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		840FA0271E3ACA0E0045D63E /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		845D24681BA52C2F00981091 /* WarningViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WarningViewController.h; sourceTree = "<group>"; };
 		845D24691BA52C2F00981091 /* WarningViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WarningViewController.m; sourceTree = "<group>"; };
 		848D6EAF19CC023F003C611F /* BGCompass.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = BGCompass.entitlements; sourceTree = "<group>"; };
@@ -318,6 +320,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				840FA0281E3ACA0E0045D63E /* CloudKit.framework in Frameworks */,
 				83E907DB195FBE8F00F8E5A4 /* SystemConfiguration.framework in Frameworks */,
 				2C2330EF182B6C82008A6F88 /* CoreGraphics.framework in Frameworks */,
 				2C2330F3182B6C82008A6F88 /* CoreData.framework in Frameworks */,
@@ -366,6 +369,7 @@
 		2C2330EB182B6C82008A6F88 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				840FA0271E3ACA0E0045D63E /* CloudKit.framework */,
 				2C9A5169184AE3A400D9DCC2 /* MobileCoreServices.framework */,
 				2C9A5167184AE39E00D9DCC2 /* SystemConfiguration.framework */,
 				2C2330EC182B6C82008A6F88 /* Foundation.framework */,
@@ -720,9 +724,16 @@
 					2C2330E8182B6C82008A6F88 = {
 						DevelopmentTeam = UKCY2P766T;
 						LastSwiftMigration = 0810;
+						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.HealthKit = {
 								enabled = 0;
+							};
+							com.apple.Push = {
+								enabled = 1;
+							};
+							com.apple.iCloud = {
+								enabled = 1;
 							};
 						};
 					};
@@ -1115,13 +1126,15 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = BGCompass/BGCompass.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = UKCY2P766T;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "BGCompass/BGCompass-Prefix.pch";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				INFOPLIST_FILE = "$(SRCROOT)/BGCompass/BGCompass-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.calferness.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_BUNDLE_IDENTIFIER = com.calferness.BGCompass2;
 				PRODUCT_NAME = BGCompass;
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "BGCompass/BGCompass-Bridging-Header.h";
@@ -1139,13 +1152,15 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = BGCompass/BGCompass.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = UKCY2P766T;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "BGCompass/BGCompass-Prefix.pch";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				INFOPLIST_FILE = "$(SRCROOT)/BGCompass/BGCompass-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.calferness.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_BUNDLE_IDENTIFIER = com.calferness.BGCompass2;
 				PRODUCT_NAME = BGCompass;
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "BGCompass/BGCompass-Bridging-Header.h";
