@@ -48,17 +48,13 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleNotifications:) name:NOTE_BGREADING_EDITED object:nil];
 }
 
-- (void) handleNotifications:(NSNotification*) note {
+- (void)handleNotifications:(NSNotification*) note {
     NSLog(@"Received notification name: %@", [note name]);
-    if ([[note name] isEqualToString:NOTE_BGREADING_ADDED]) {
+    if ([[note name] isEqualToString:NOTE_BGREADING_ADDED]
+        || [[note name] isEqualToString:NOTE_BGREADING_EDITED]) {
+
         NSDate* timeStamp = [note.userInfo valueForKey:@"timeStamp"];
-        dispatch_async(self.trend_queue, ^{
-            //FIXME: recalculate all ha1c instead
-            [self computeHA1c:timeStamp];
-            [self loadArrays];
-        });
-    } else if ([[note name] isEqualToString:NOTE_BGREADING_EDITED]) {
-        NSDate* timeStamp = [note.userInfo valueForKey:@"timeStamp"];
+        
         dispatch_async(self.trend_queue, ^{
             //FIXME: recalculate all ha1c instead
             [self computeHA1c:timeStamp];
