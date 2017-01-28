@@ -306,14 +306,14 @@
         date = [date dateByAddingTimeInterval:timeIntervalSeconds];
     }
     
-    [self loadArrays];
+    [self loadHa1cArray];
 }
 
 - (void)deleteAllHa1cReadings {
     // http://stackoverflow.com/questions/22313929/how-to-delete-every-core-data-entity-without-faulting-errorsj
     [Ha1cReading MR_truncateAll];
     [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
-    [self loadArrays];
+    [self loadHa1cArray];
 }
 
 @end
