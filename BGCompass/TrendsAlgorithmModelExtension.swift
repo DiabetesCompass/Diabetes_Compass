@@ -141,9 +141,9 @@ extension TrendsAlgorithmModel {
     }
 
     /**
-     weight linearly decaying over time range (secondDate - decayLifeSeconds) to secondDate
+     weight that decreases linearly from 1 to 0 as firstDate decreases from secondDate to (secondDate - decayLifeSeconds).
      - parameter firstDate: date at which weight is calculated
-     - parameter secondDate: second date. At this date or later weight is 1.0
+     - parameter secondDate: Occurs after firstDate. At this date or later weight is 1.0
      - parameter decayLifeSeconds: time for weight to decay to 0.0. Typically hemoglobin lifespan seconds.
      - returns: weight from 0.0 to 1.0 inclusive.
      returns 0.0 if firstDate is decayLifeSeconds or more before secondDate
