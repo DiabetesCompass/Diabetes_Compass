@@ -240,13 +240,16 @@
  Clears and populates ha1cReadings based on averages of decayed BG reading.quantity
  First ha1cReading timeStamp is chronologically first bgReading timeStamp.
  End date is chronologically last bgReading timeStamp plus decayLifeSeconds.
- Last ha1cReading timeStamp will be approximately equal to end date + timeIntervalSeconds.
+ Last ha1cReading timeStamp will be approximately equal to end date.
  The readings are managed objects, stored in CoreData.
 
  - parameter bgReadings: blood glucose readings to average. quantity units mmol/L
- readings may appear in any chronological order, the method reads their timeStamp
+ readings may appear in any chronological order,
+ the method sorts them chronologically and reads their timeStamp
+
  - parameter decayLifeSeconds: time for blood glucose from a reading to decay to 0.0.
  Typically hemoglobin lifespan seconds.
+
  - parameter timeIntervalSeconds: number of seconds between calculated readings
  Typically >= 600
  */
