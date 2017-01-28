@@ -178,6 +178,10 @@
 
 // MARK: -
 
+/**
+   Fetches BGReadings, adds one Ha1cReading and loads ha1cArray
+ - parameter timeStamp: used to fetch all BGReadings within hemoglobin lifespan before timeStamp
+ */
 - (void)computeHA1c:(NSDate*) timeStamp {
     NSArray *fetchedReadings = [TrendsAlgorithmModel
                                 bgReadingsWithinHemoglobinLifeSpanBeforeEndDate: timeStamp];
