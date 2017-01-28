@@ -126,8 +126,7 @@
     return result;
 }
 
-- (void) computeHA1c:(NSDate*) timeStamp {
-
+- (void)computeHA1c:(NSDate*) timeStamp {
     NSArray *fetchedReadings = [TrendsAlgorithmModel
                                 bgReadingsWithinHemoglobinLifeSpanBeforeEndDate: timeStamp];
 
