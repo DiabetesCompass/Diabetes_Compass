@@ -53,12 +53,16 @@
     if ([[note name] isEqualToString:NOTE_BGREADING_ADDED]) {
         NSDate* timeStamp = [note.userInfo valueForKey:@"timeStamp"];
         dispatch_async(self.trend_queue, ^{
+            //FIXME: recalculate all ha1c instead
             [self computeHA1c:timeStamp];
+            [self loadArrays];
         });
     } else if ([[note name] isEqualToString:NOTE_BGREADING_EDITED]) {
         NSDate* timeStamp = [note.userInfo valueForKey:@"timeStamp"];
         dispatch_async(self.trend_queue, ^{
+            //FIXME: recalculate all ha1c instead
             [self computeHA1c:timeStamp];
+            [self loadArrays];
         });
     }
 }
