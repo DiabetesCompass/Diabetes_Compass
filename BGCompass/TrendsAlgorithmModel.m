@@ -104,17 +104,6 @@
     return result;
 }
 
-/// - returns: HA1cArray object at index
-- (Ha1cReading *)getFromHa1cArray:(NSUInteger)index {
-    Ha1cReading* result;
-    if (self.ha1cArray) {
-        result = [self.ha1cArray objectAtIndex:index];
-    } else {
-        result = nil;
-    }
-    return result;
-}
-
 /// - returns: BGArray object at index
 - (BGReading *)getFromBGArray:(NSUInteger)index {
     BGReading* result;
@@ -126,39 +115,18 @@
     return result;
 }
 
-- (void)computeHA1c:(NSDate*) timeStamp {
-    NSArray *fetchedReadings = [TrendsAlgorithmModel
-                                bgReadingsWithinHemoglobinLifeSpanBeforeEndDate: timeStamp];
-
-    [self addHa1cReadingForBgReadings:fetchedReadings
-                              date:timeStamp
-                     decayLifeSeconds:TrendsAlgorithmModel.hemoglobinLifespanSeconds];
-
-    [self loadHa1cArray];
+/// - returns: HA1cArray object at index
+- (Ha1cReading *)getFromHa1cArray:(NSUInteger)index {
+    Ha1cReading* result;
+    if (self.ha1cArray) {
+        result = [self.ha1cArray objectAtIndex:index];
+    } else {
+        result = nil;
+    }
+    return result;
 }
 
-/** calculates time weighted average ha1c, creates an Ha1cReading and adds it to Core Data
- After calling this method, typically caller will call loadHa1cArray
- = parameter bgReadings: readings may be in any chronological order
- - parameter date: date for the ha1cReading. bgReadings with timeStamp after date are ignored.
- */
-- (void)addHa1cReadingForBgReadings:(NSArray *)bgReadings
-                               date:(NSDate *)date
-                   decayLifeSeconds:(NSTimeInterval)decayLifeSeconds {
-
-    // call method defined in TrendsAlgorithmModel.swift from Objective C
-    float ha1cTimeWeightedAverage = [TrendsAlgorithmModel ha1cValueForBgReadings:bgReadings
-                                                                         endDate:date
-                                                                decayLifeSeconds:TrendsAlgorithmModel.hemoglobinLifespanSeconds];
-
-    NSLog(@"weighted average HA1c: %f", ha1cTimeWeightedAverage);
-
-    // save to Core Data
-    Ha1cReading* reading = [Ha1cReading MR_createEntityInContext:[NSManagedObjectContext MR_defaultContext]];
-    reading.quantity = @(ha1cTimeWeightedAverage);
-    reading.timeStamp = date;
-    [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
-}
+// MARK: - get BGReadings
 
 /**
  - returns: blood glucose readings between (endDate - hemoglobin lifespan) and endDate
@@ -195,7 +163,27 @@
     return readings;
 }
 
+// MARK: -
 
+- (void)deleteAllHa1cReadings {
+    // http://stackoverflow.com/questions/22313929/how-to-delete-every-core-data-entity-without-faulting-errorsj
+    [Ha1cReading MR_truncateAll];
+    [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
+    [self loadHa1cArray];
+}
+
+// MARK: -
+
+- (void)computeHA1c:(NSDate*) timeStamp {
+    NSArray *fetchedReadings = [TrendsAlgorithmModel
+                                bgReadingsWithinHemoglobinLifeSpanBeforeEndDate: timeStamp];
+
+    [self addHa1cReadingForBgReadings:fetchedReadings
+                              date:timeStamp
+                     decayLifeSeconds:TrendsAlgorithmModel.hemoglobinLifespanSeconds];
+
+    [self loadHa1cArray];
+}
 
 //TODO: check if this method works!
 //TODO: check method doesn't crash if other code inserts a ha1c reading while this method is running
@@ -257,11 +245,27 @@
     [self loadHa1cArray];
 }
 
-- (void)deleteAllHa1cReadings {
-    // http://stackoverflow.com/questions/22313929/how-to-delete-every-core-data-entity-without-faulting-errorsj
-    [Ha1cReading MR_truncateAll];
+/** calculates time weighted average ha1c, creates an Ha1cReading and adds it to Core Data
+ After calling this method, typically caller will call loadHa1cArray
+ = parameter bgReadings: readings may be in any chronological order
+ - parameter date: date for the ha1cReading. bgReadings with timeStamp after date are ignored.
+ */
+- (void)addHa1cReadingForBgReadings:(NSArray *)bgReadings
+                               date:(NSDate *)date
+                   decayLifeSeconds:(NSTimeInterval)decayLifeSeconds {
+
+    // call method defined in TrendsAlgorithmModel.swift from Objective C
+    float ha1cTimeWeightedAverage = [TrendsAlgorithmModel ha1cValueForBgReadings:bgReadings
+                                                                         endDate:date
+                                                                decayLifeSeconds:TrendsAlgorithmModel.hemoglobinLifespanSeconds];
+
+    NSLog(@"weighted average HA1c: %f", ha1cTimeWeightedAverage);
+
+    // save to Core Data
+    Ha1cReading* reading = [Ha1cReading MR_createEntityInContext:[NSManagedObjectContext MR_defaultContext]];
+    reading.quantity = @(ha1cTimeWeightedAverage);
+    reading.timeStamp = date;
     [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
-    [self loadHa1cArray];
 }
 
 @end
