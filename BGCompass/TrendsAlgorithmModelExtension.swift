@@ -22,13 +22,15 @@ extension TrendsAlgorithmModel {
 
     /**
     - returns: first reading in blood glucose array, else nil
+    based on index, not date
     */
     func bgArrayReadingFirst() -> BGReading? {
         return self.getFromBGArray(0)
     }
 
     /**
-    - returns: last reading in blood glucose array, else nil
+    - returns: last element in blood glucose array, else nil
+    based on index, not date
     */
     func bgArrayReadingLast() -> BGReading? {
         if self.bgArrayCount() == 0 {
@@ -41,6 +43,7 @@ extension TrendsAlgorithmModel {
 
     /**
      - returns: first reading in HA1c array, else nil
+    based on index, not date
      */
     func ha1cArrayReadingFirst() -> Ha1cReading? {
         return self.getFromHa1cArray(0)
@@ -48,6 +51,7 @@ extension TrendsAlgorithmModel {
 
     /**
      - returns: last reading in HA1c array, else nil
+    based on index, not date
     */
     func ha1cArrayReadingLast() -> Ha1cReading? {
         if self.ha1cArrayCount() == 0 {
