@@ -286,6 +286,8 @@
     NSDate *date = startDate;
     while ([date compare:endDate] == NSOrderedAscending) {
         // date is on or before endDate
+
+        // call method defined in TrendsAlgorithmModel.swift from Objective C
         double ha1cValue = [TrendsAlgorithmModel
                             ha1cValueForBgReadings:bgReadingsChronologicallyIncreasing
                             endDate: date
