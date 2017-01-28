@@ -257,6 +257,13 @@
                           decayLifeSeconds:(NSTimeInterval)decayLifeSeconds
                        timeIntervalSeconds:(NSTimeInterval)timeIntervalSeconds {
 
+    // if inputs aren't valid, return
+    if ( (bgReadings.count == 0)
+        || (decayLifeSeconds < 0.0)
+        || (timeIntervalSeconds <= 0.0) ) {
+        return;
+    }
+
     //delete all entities in ha1cArray
     // http://stackoverflow.com/questions/22313929/how-to-delete-every-core-data-entity-without-faulting-errorsj
     [Ha1cReading MR_truncateAll];
@@ -270,12 +277,6 @@
                                                         NSDate *second = [(BGReading*)b timeStamp];
                                                         return [first compare:second];
                                                     }];
-
-    if ( (bgReadingsChronologicallyIncreasing.count == 0)
-        || (decayLifeSeconds < 0.0)
-        || (timeIntervalSeconds < 0.0) ) {
-        return;
-    }
 
     NSDate *startDate = [(BGReading *)bgReadingsChronologicallyIncreasing[0] timeStamp];
     NSDate *bgLastDate = [(BGReading *)[bgReadingsChronologicallyIncreasing lastObject] timeStamp];
