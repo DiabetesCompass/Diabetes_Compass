@@ -233,4 +233,73 @@
     return readings;
 }
 
+
+
+//TODO: check if this method works!
+/**
+ Clears and populates ha1cReadings based on averages of decayed BG reading.quantity
+ First ha1cReading timeStamp is chronologically first bgReading timeStamp.
+ End date is chronologically last bgReading timeStamp plus decayLifeSeconds.
+ Last ha1cReading timeStamp will be approximately equal to end date + timeIntervalSeconds.
+ The readings are managed objects, stored in CoreData.
+
+ - parameter bgReadings: blood glucose readings to average. quantity units mmol/L
+ readings may appear in any chronological order, the method reads their timeStamp
+ - parameter decayLifeSeconds: time for blood glucose from a reading to decay to 0.0.
+ Typically hemoglobin lifespan seconds.
+ - parameter timeIntervalSeconds: number of seconds between calculated readings
+ Typically >= 600
+ */
+- (void)populateHa1cReadingsFromBgReadings:(NSArray*)bgReadings
+                          decayLifeSeconds:(NSTimeInterval)decayLifeSeconds
+                       timeIntervalSeconds:(NSTimeInterval)timeIntervalSeconds {
+
+    //delete all entities in ha1cArray
+    // http://stackoverflow.com/questions/22313929/how-to-delete-every-core-data-entity-without-faulting-errorsj
+    [Ha1cReading MR_truncateAll];
+    [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
+    [self loadArrays];
+
+    // http://stackoverflow.com/questions/805547/how-to-sort-an-nsmutablearray-with-custom-objects-in-it?noredirect=1&lq=1j
+    NSArray *bgReadingsChronologicallyIncreasing = [bgReadings
+                                                    sortedArrayUsingComparator:^NSComparisonResult(id a, id b) {
+                                                        NSDate *first = [(BGReading*)a timeStamp];
+                                                        NSDate *second = [(BGReading*)b timeStamp];
+                                                        return [first compare:second];
+                                                    }];
+
+    if ( (bgReadingsChronologicallyIncreasing.count == 0)
+        || (decayLifeSeconds < 0.0)
+        || (timeIntervalSeconds < 0.0) ) {
+        return;
+    }
+
+    NSDate *startDate = [(BGReading *)bgReadingsChronologicallyIncreasing[0] timeStamp];
+    NSDate *bgLastDate = [(BGReading *)[bgReadingsChronologicallyIncreasing lastObject] timeStamp];
+    NSDate *endDate = [bgLastDate dateByAddingTimeInterval:timeIntervalSeconds];
+
+    // divide date range into time intervals and add an ha1cReading at every interval
+    NSDate *date = startDate;
+    while ([date compare:endDate] == NSOrderedAscending) {
+        // date is on or before endDate
+        double ha1cValue = [TrendsAlgorithmModel
+                            ha1cValueForBgReadings:bgReadingsChronologicallyIncreasing
+                            endDate: date
+                            decayLifeSeconds: decayLifeSeconds];
+
+        Ha1cReading* reading = [Ha1cReading MR_createEntityInContext:[NSManagedObjectContext MR_defaultContext]];
+        reading.quantity = @(ha1cValue);
+        reading.timeStamp = date;
+        [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
+
+        // increment while loop control
+        date = [date dateByAddingTimeInterval:timeIntervalSeconds];
+    }
+    
+    [self loadArrays];
+}
+
+
+
+
 @end
