@@ -64,8 +64,16 @@
 }
 
 - (void) loadArrays {
-    self.ha1cArray = [Ha1cReading MR_findAllSortedBy:@"timeStamp" ascending:YES inContext:[NSManagedObjectContext MR_defaultContext]];
+    [self loadHa1cArray];
+    [self loadBgArray];
+}
+
+- (void) loadBgArray {
     self.bgArray = [BGReading MR_findAllSortedBy:@"timeStamp" ascending:YES inContext:[NSManagedObjectContext MR_defaultContext]];
+}
+
+- (void) loadHa1cArray {
+    self.ha1cArray = [Ha1cReading MR_findAllSortedBy:@"timeStamp" ascending:YES inContext:[NSManagedObjectContext MR_defaultContext]];
 }
 
 //count HA1c readings?
