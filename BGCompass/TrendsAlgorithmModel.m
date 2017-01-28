@@ -81,20 +81,6 @@
 }
 
 /**
- - returns: ha1cArray count.
- returns 0 if ha1cArray is nil.
-*/
-- (NSNumber*) ha1cArrayCount {
-    NSNumber* result;
-    if (self.ha1cArray) {
-        result = @([self.ha1cArray count]);
-    } else {
-        result = @(0);
-    }
-    return result;
-}
-
-/**
  - returns: bgArray count.
  returns 0 if bgArray is nil.
 */
@@ -102,6 +88,20 @@
     NSNumber* result;
     if (self.bgArray) {
         result = @([self.bgArray count]);
+    } else {
+        result = @(0);
+    }
+    return result;
+}
+
+/**
+ - returns: ha1cArray count.
+ returns 0 if ha1cArray is nil.
+*/
+- (NSNumber*) ha1cArrayCount {
+    NSNumber* result;
+    if (self.ha1cArray) {
+        result = @([self.ha1cArray count]);
     } else {
         result = @(0);
     }
