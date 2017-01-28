@@ -244,6 +244,7 @@
 
 
 //TODO: check if this method works!
+//TODO: check method doesn't crash if other code inserts a ha1c reading while this method is running
 /**
  Clears and populates ha1cReadings based on averages of decayed BG reading.quantity
  First ha1cReading timeStamp is chronologically first bgReading timeStamp.
