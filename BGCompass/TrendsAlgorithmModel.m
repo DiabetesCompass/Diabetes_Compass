@@ -80,20 +80,24 @@
     self.ha1cArray = [Ha1cReading MR_findAllSortedBy:@"timeStamp" ascending:YES inContext:[NSManagedObjectContext MR_defaultContext]];
 }
 
-//count HA1c readings?
+/**
+ - returns: ha1cArray count.
+ returns 0 if ha1cArray is nil.
+*/
 - (NSNumber*) ha1cArrayCount {
     NSNumber* result;
     if (self.ha1cArray) {
         result = @([self.ha1cArray count]);
-        NSLog(@"There are HA1c readings:%@", result);
     } else {
         result = @(0);
     }
-    
     return result;
 }
 
-//count BG readings?
+/**
+ - returns: bgArray count.
+ returns 0 if bgArray is nil.
+*/
 - (NSNumber*) bgArrayCount {
     NSNumber* result;
     if (self.bgArray) {
