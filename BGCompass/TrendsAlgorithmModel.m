@@ -68,8 +68,8 @@
 }
 
 - (void) loadArrays {
-    [self loadHa1cArray];
     [self loadBgArray];
+    [self loadHa1cArray];
 }
 
 - (void) loadBgArray {
