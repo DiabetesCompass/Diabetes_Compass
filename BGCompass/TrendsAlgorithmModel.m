@@ -272,11 +272,7 @@
         return;
     }
 
-    //delete all entities in ha1cArray
-    // http://stackoverflow.com/questions/22313929/how-to-delete-every-core-data-entity-without-faulting-errorsj
-    [Ha1cReading MR_truncateAll];
-    [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
-    [self loadArrays];
+    [self deleteAllHa1cReadings];
 
     // http://stackoverflow.com/questions/805547/how-to-sort-an-nsmutablearray-with-custom-objects-in-it?noredirect=1&lq=1j
     NSArray *bgReadingsChronologicallyIncreasing = [bgReadings
@@ -313,7 +309,11 @@
     [self loadArrays];
 }
 
-
-
+- (void)deleteAllHa1cReadings {
+    // http://stackoverflow.com/questions/22313929/how-to-delete-every-core-data-entity-without-faulting-errorsj
+    [Ha1cReading MR_truncateAll];
+    [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
+    [self loadArrays];
+}
 
 @end
