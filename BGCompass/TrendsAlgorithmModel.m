@@ -253,7 +253,7 @@
     [self loadHa1cArray];
 }
 
-/** calculates time weighted average ha1c, creates an Ha1cReading and adds it to Core Data
+/** Calculates time weighted average ha1c, creates an Ha1cReading and adds it to Core Data
  After calling this method, typically caller will call loadHa1cArray
  = parameter bgReadings: readings may be in any chronological order
  - parameter date: date for the ha1cReading. bgReadings with timeStamp after date are ignored.
