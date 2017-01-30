@@ -56,8 +56,15 @@
         NSDate* timeStamp = [note.userInfo valueForKey:@"timeStamp"];
         
         dispatch_async(self.trend_queue, ^{
-            //FIXME: recalculate all ha1c instead
+
             [self computeHA1c:timeStamp];
+            //FIXME: recalculate all ha1c instead of just one.
+            // This crashes with error array index out of bounds.
+            // I think one or more view controllers such as GraphViewController are observing changes to any Reading.
+            // [self populateHa1cReadingsFromBgReadings:self.bgArray
+            //                         decayLifeSeconds:TrendsAlgorithmModel.hemoglobinLifespanSeconds
+            //                      timeIntervalSeconds:SECONDS_IN_ONE_HOUR];
+            
             [self loadArrays];
         });
     }
