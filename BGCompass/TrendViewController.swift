@@ -326,7 +326,7 @@ class TrendViewController : UIViewController {
         let symbol = CPTPlotSymbol.ellipse()
         symbol.fill          = CPTFill(color: .white())
         symbol.lineStyle     = symbolLineStyle
-        symbol.size          = CGSize(width: 8.0, height: 8.0)
+        symbol.size          = CGSize(width: 4.0, height: 4.0)
         return symbol
     }
 
@@ -340,7 +340,7 @@ class TrendViewController : UIViewController {
     class func lineStyleWhite() -> CPTMutableLineStyle {
         let lineStyle = CPTMutableLineStyle()
         lineStyle.lineColor = .white()
-        lineStyle.lineWidth = 4.0
+        lineStyle.lineWidth = 2.0
         lineStyle.miterLimit = 2.0
         return lineStyle
     }
