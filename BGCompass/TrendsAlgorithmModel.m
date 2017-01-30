@@ -273,7 +273,7 @@
                                                                          endDate:date
                                                                 decayLifeSeconds:TrendsAlgorithmModel.hemoglobinLifespanSeconds];
 
-    NSLog(@"weighted average HA1c: %f", ha1cTimeWeightedAverage);
+    NSLog(@"adding HA1c date: %@: quantity: %f", date, ha1cTimeWeightedAverage);
 
     // save to Core Data
     Ha1cReading* reading = [Ha1cReading MR_createEntityInContext:[NSManagedObjectContext MR_defaultContext]];
