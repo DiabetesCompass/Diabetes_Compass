@@ -66,7 +66,7 @@
             // I think one or more view controllers such as GraphViewController are observing changes to any Reading.
              [self populateHa1cReadingsFromBgReadings:self.bgArray
                                      decayLifeSeconds:TrendsAlgorithmModel.hemoglobinLifespanSeconds
-                                  timeIntervalSeconds:SECONDS_IN_ONE_HOUR];
+                                  timeIntervalSeconds:HOURS_IN_ONE_DAY * SECONDS_IN_ONE_HOUR];
 
             [self loadArrays];
         });
