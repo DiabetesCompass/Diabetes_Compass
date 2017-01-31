@@ -176,10 +176,38 @@
 // MARK: -
 
 - (void)deleteAllHa1cReadings {
-    // http://stackoverflow.com/questions/22313929/how-to-delete-every-core-data-entity-without-faulting-errorsj
-    [Ha1cReading MR_truncateAll];
-    [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
+
     [self loadHa1cArray];
+    NSLog(@"deleteAllHa1cReadings ha1cArray.count %lu", (unsigned long)self.ha1cArray.count);
+
+
+    // Magical Record doesn't directly support batch delete?
+    // https://github.com/magicalpanda/MagicalRecord/issues/1246
+
+    // this didn't work, not sure why
+    // http://stackoverflow.com/questions/22313929/how-to-delete-every-core-data-entity-without-faulting-errorsj
+    //[Ha1cReading MR_truncateAll];
+    //[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
+    //[Ha1cReading MR_truncateAll];
+    //[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
+    
+//    [self loadHa1cArray];
+
+
+//    for ((Ha1cReading.h *)ha1cReading in self.ha1cArray) {
+//        [ha1cReading deleteInContext:[NSManagedObjectContext MR_defaultContext]];
+//        [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
+//    }
+
+    for (Ha1cReading *ha1cReading in self.ha1cArray) {
+        [ha1cReading MR_deleteEntity];
+        //[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
+        // [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreWithCompletion:^(BOOL success, NSError *error) {}];
+        [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
+    }
+
+    // log says 86
+    NSLog(@"ha1cArray.count %lu", (unsigned long)self.ha1cArray.count);
 }
 
 // MARK: -
