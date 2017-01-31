@@ -188,7 +188,7 @@
     // http://stackoverflow.com/questions/22313929/how-to-delete-every-core-data-entity-without-faulting-errorsj
     //[Ha1cReading MR_truncateAll];
     //[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
-    
+
     for (Ha1cReading *ha1cReading in self.ha1cArray) {
         [ha1cReading MR_deleteEntity];
         // [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreWithCompletion:^(BOOL success, NSError *error) {}];
@@ -290,7 +290,7 @@
                                                                          endDate:date
                                                                 decayLifeSeconds:TrendsAlgorithmModel.hemoglobinLifespanSeconds];
 
-    NSLog(@"adding HA1c date: %@: quantity: %f", date, ha1cTimeWeightedAverage);
+    NSLog(@"adding HA1c %@: qty: %f", date, ha1cTimeWeightedAverage);
 
     // save to Core Data
     Ha1cReading* reading = [Ha1cReading MR_createEntityInContext:[NSManagedObjectContext MR_defaultContext]];
