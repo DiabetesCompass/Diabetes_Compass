@@ -114,24 +114,28 @@
     return result;
 }
 
-/// - returns: BGArray object at index
+/** - returns: BGArray object at index
+ returns nil if self.bgArray is nil or empty
+ */
 - (BGReading *)getFromBGArray:(NSUInteger)index {
     BGReading* result;
-    if (self.bgArray && self.bgArray.count != 0) {
-        result = [self.bgArray objectAtIndex:index];
-    } else {
+    if ([self.bgArrayCount isEqual: @0]) {
         result = nil;
+    } else {
+        result = [self.bgArray objectAtIndex:index];
     }
     return result;
 }
 
-/// - returns: HA1cArray object at index
+/** - returns: HA1cArray object at index
+ returns nil if self.ha1cArray is nil or empty
+ */
 - (Ha1cReading *)getFromHa1cArray:(NSUInteger)index {
     Ha1cReading* result;
-    if (self.ha1cArray) {
-        result = [self.ha1cArray objectAtIndex:index];
-    } else {
+    if ([self.ha1cArrayCount isEqual: @0]) {
         result = nil;
+    } else {
+        result = [self.ha1cArray objectAtIndex:index];
     }
     return result;
 }
