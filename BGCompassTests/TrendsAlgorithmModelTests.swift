@@ -22,6 +22,13 @@ class TrendsAlgorithmModelTests: XCTestCase {
                                    19.0, accuracy: 0.02)
     }
 
+    func testHA1cFromBloodGlucoseZero() {
+        //https://en.wikipedia.org/wiki/Glycated_hemoglobin
+        // BGReading.quantity units mmol/L
+        XCTAssertEqualWithAccuracy(TrendsAlgorithmModel.hA1cFromBloodGlucose(0.0),
+                                   1.62718, accuracy: 0.02)
+    }
+
     // MARK: - testWeightLinearDecay
 
     func testWeightLinearDecayFirstDateSecondDateSame() {
