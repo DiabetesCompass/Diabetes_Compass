@@ -280,8 +280,11 @@ shouldHandlePointingDeviceUpEvent:(UIEvent *)event
     NSLog(@"UpdateGraphData was called");
     // If there is any data stored in the cache remove all of it.
 
-    if ([[self.graph plotWithIdentifier:@"estimatedBGPlot"] cachedDataCount] != 0) {
-        [[self.graph plotWithIdentifier:@"estimatedBGPlot"] deleteDataInIndexRange:NSMakeRange(0, _graphCount-1)];
+    if (([self.graph plotWithIdentifier:@"estimatedBGPlot"] != nil)
+        && ([[self.graph plotWithIdentifier:@"estimatedBGPlot"] cachedDataCount] != 0)) {
+        NSRange range = NSMakeRange(0, _graphCount - 1);
+        NSLog(@"range %@", NSStringFromRange(range));
+        [[self.graph plotWithIdentifier:@"estimatedBGPlot"] deleteDataInIndexRange: range];
     }
     if ([[BGAlgorithmModel sharedInstance] graphArrayCount].intValue != 0) {
         _graphCount = 1;
