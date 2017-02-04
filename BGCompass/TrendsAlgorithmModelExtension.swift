@@ -100,7 +100,7 @@ extension TrendsAlgorithmModel {
                                                                                     endDate: endDate,
                                                                                     decayLifeSeconds: decayLifeSeconds)
 
-        let ha1cValue = hA1cFromBloodGlucose(averageDecayedBG)
+        let ha1cValue = hA1c(bloodGlucoseMmolPerL: averageDecayedBG)
         return ha1cValue
     }
     
@@ -176,13 +176,13 @@ extension TrendsAlgorithmModel {
      Generally physiologic HA1c is >= 5.
      5 represents 5%, or 0.05
      https://en.wikipedia.org/wiki/Glycated_hemoglobin
-     - parameter bloodGlucose: blood glucose quantity, units mmol/L
+     - parameter bloodGlucoseMmolPerL: blood glucose quantity, units mmol/L
      - returns: HA1c in DCCT percentage
      */
-    class func hA1cFromBloodGlucose(_ bloodGlucose: Float) -> Float {
-        let bloodGlucoseMgPerDl = bloodGlucose * MG_PER_DL_PER_MMOL_PER_L
-        let hA1c = (bloodGlucoseMgPerDl + 46.7) / 28.7
-        return hA1c
+    class func hA1c(bloodGlucoseMmolPerL: Float) -> Float {
+        let bloodGlucoseMgPerDl = bloodGlucoseMmolPerL * MG_PER_DL_PER_MMOL_PER_L
+        let hA1cFromBg = (bloodGlucoseMgPerDl + 46.7) / 28.7
+        return hA1cFromBg
     }
 
 }
