@@ -131,7 +131,8 @@ extension TrendsAlgorithmModel {
             }
 
             let weight = TrendsAlgorithmModel.weightLinearDecayFirstDate(bgReading.timeStamp,
-                                                                         secondDate: endDate,decayLifeSeconds: decayLifeSeconds)
+                                                                         secondDate: endDate,
+                                                                         decayLifeSeconds: decayLifeSeconds)
 
             sumOfWeightedBgReadings += weight * bgReading.quantity.floatValue
             sumOfWeights += weight
