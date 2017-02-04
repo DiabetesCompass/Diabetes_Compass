@@ -282,8 +282,14 @@ shouldHandlePointingDeviceUpEvent:(UIEvent *)event
 
     if (([self.graph plotWithIdentifier:@"estimatedBGPlot"] != nil)
         && ([[self.graph plotWithIdentifier:@"estimatedBGPlot"] cachedDataCount] != 0)) {
+
+        NSUInteger cachedDataCount = [[self.graph plotWithIdentifier:@"estimatedBGPlot"] cachedDataCount];
+        NSLog(@"cachedDataCount %lu", (unsigned long)cachedDataCount);
+        NSLog(@"_graphCount %lu", (unsigned long)_graphCount);
+
         NSRange range = NSMakeRange(0, _graphCount - 1);
         NSLog(@"range %@", NSStringFromRange(range));
+
         [[self.graph plotWithIdentifier:@"estimatedBGPlot"] deleteDataInIndexRange: range];
     }
     if ([[BGAlgorithmModel sharedInstance] graphArrayCount].intValue != 0) {
