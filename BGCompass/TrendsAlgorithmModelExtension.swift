@@ -154,22 +154,22 @@ extension TrendsAlgorithmModel {
      returns 0.0 if firstDate is decayLifeSeconds or more before secondDate
      returns 1.0 if firstDate is on or after secondDate
      */
-    class func weightLinearDecayFirstDate(_ firstDate: Date,
-                                          secondDate: Date,
-                                          decayLifeSeconds: TimeInterval) -> Float {
-        let timeIntervalFromFirstToSecond = secondDate.timeIntervalSince(firstDate)
-        // weightUnclamped may be < 0.0 or > 1.0
-        let weightUnclamped = 1.0 - (timeIntervalFromFirstToSecond/decayLifeSeconds)
-        var weight: Float = 0.0;
-        if weightUnclamped < 0.0 {
-            weight = 0.0;
-        } else if weightUnclamped > 1.0 {
-            weight = 1.0
-        } else {
-            weight = Float(weightUnclamped)
-        }
-        return weight
-    }
+     class func weightLinearDecayFirstDate(_ firstDate: Date, secondDate: Date, decayLifeSeconds: TimeInterval) -> Float {
+
+         let timeIntervalSecondDateSinceFirst = secondDate.timeIntervalSince(firstDate)
+
+         var weight: Float = 0.0;
+         if timeIntervalSecondDateSinceFirst >= decayLifeSeconds {
+             // firstDate is decayLifeSeconds or more before secondDate
+             weight = 0.0;
+         } else if timeIntervalSecondDateSinceFirst <= 0 {
+             // firstDate is on or after secondDate
+             weight = 1.0
+         } else {
+             weight = Float(1.0 - (timeIntervalSecondDateSinceFirst/decayLifeSeconds))
+         }
+         return weight
+     }
 
     /**
      Ha1c units are percent of hemoglobin that is glycated.
