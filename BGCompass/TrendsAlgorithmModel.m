@@ -67,7 +67,7 @@
 
             [self populateHa1cReadingsFromBgReadings:self.bgArray
                                     decayLifeSeconds:TrendsAlgorithmModel.hemoglobinLifespanSeconds
-                                 timeIntervalSeconds: DAYS_IN_ONE_WEEK * HOURS_IN_ONE_DAY * SECONDS_IN_ONE_HOUR];
+                                 timeIntervalSeconds: HOURS_IN_ONE_DAY * SECONDS_IN_ONE_HOUR];
             [self loadHa1cArray];
         });
     }
