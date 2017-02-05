@@ -11,16 +11,7 @@ import XCTest
 
 class TrendsAlgorithmModelTests: XCTestCase {
 
-    func testHA1cFromBloodGlucose() {
-        //https://en.wikipedia.org/wiki/Glycated_hemoglobin
-        // BGReading.quantity units mmol/L
-        XCTAssertEqualWithAccuracy(TrendsAlgorithmModel.hA1c(bloodGlucoseMmolPerL: 97.0 / MG_PER_DL_PER_MMOL_PER_L),
-                                   5.0, accuracy: 0.02)
-        XCTAssertEqualWithAccuracy(TrendsAlgorithmModel.hA1c(bloodGlucoseMmolPerL: 240.0 / MG_PER_DL_PER_MMOL_PER_L),
-                                   10.0, accuracy: 0.02)
-        XCTAssertEqualWithAccuracy(TrendsAlgorithmModel.hA1c(bloodGlucoseMmolPerL: 499.0 / MG_PER_DL_PER_MMOL_PER_L),
-                                   19.0, accuracy: 0.02)
-    }
+    // MARK: - test hA1cFromBloodGlucose
 
     func testHA1cFromBloodGlucoseZero() {
         //https://en.wikipedia.org/wiki/Glycated_hemoglobin
@@ -29,7 +20,42 @@ class TrendsAlgorithmModelTests: XCTestCase {
                                    1.62718, accuracy: 0.02)
     }
 
-    // MARK: - testWeightLinearDecay
+    func testHA1cFromBloodGlucose97() {
+        //https://en.wikipedia.org/wiki/Glycated_hemoglobin
+        // BGReading.quantity units mmol/L
+        XCTAssertEqualWithAccuracy(TrendsAlgorithmModel.hA1c(bloodGlucoseMmolPerL: 97.0 / MG_PER_DL_PER_MMOL_PER_L),
+                                   5.0, accuracy: 0.02)
+    }
+
+    func testHA1cFromBloodGlucose100() {
+        //https://en.wikipedia.org/wiki/Glycated_hemoglobin
+        // BGReading.quantity units mmol/L
+        XCTAssertEqualWithAccuracy(TrendsAlgorithmModel.hA1c(bloodGlucoseMmolPerL: 100.0 / MG_PER_DL_PER_MMOL_PER_L),
+                                   5.11, accuracy: 0.02)
+    }
+
+    func testHA1cFromBloodGlucose200() {
+        //https://en.wikipedia.org/wiki/Glycated_hemoglobin
+        // BGReading.quantity units mmol/L
+        XCTAssertEqualWithAccuracy(TrendsAlgorithmModel.hA1c(bloodGlucoseMmolPerL: 200.0 / MG_PER_DL_PER_MMOL_PER_L),
+                                   8.59, accuracy: 0.02)
+    }
+
+    func testHA1cFromBloodGlucose240() {
+        //https://en.wikipedia.org/wiki/Glycated_hemoglobin
+        // BGReading.quantity units mmol/L
+        XCTAssertEqualWithAccuracy(TrendsAlgorithmModel.hA1c(bloodGlucoseMmolPerL: 240.0 / MG_PER_DL_PER_MMOL_PER_L),
+                                   10.0, accuracy: 0.02)
+    }
+
+    func testHA1cFromBloodGlucose499() {
+        //https://en.wikipedia.org/wiki/Glycated_hemoglobin
+        // BGReading.quantity units mmol/L
+        XCTAssertEqualWithAccuracy(TrendsAlgorithmModel.hA1c(bloodGlucoseMmolPerL: 499.0 / MG_PER_DL_PER_MMOL_PER_L),
+                                   19.0, accuracy: 0.02)
+    }
+
+    // MARK: - test weightLinearDecay
 
     func testWeightLinearDecayFirstDateSecondDateSame() {
         let firstDate = Date()
