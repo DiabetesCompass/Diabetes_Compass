@@ -121,7 +121,8 @@ extension TrendsAlgorithmModel {
         }
 
         var sumOfWeightedBgReadings: Float = 0.0
-        var sumOfWeights: Float = 0.0
+        //var sumOfWeights: Float = 0.0
+        var numBgReadingsInAverage: Int = 0
 
         for bgReading in bgReadings {
 
@@ -135,14 +136,17 @@ extension TrendsAlgorithmModel {
                                                                          decayLifeSeconds: decayLifeSeconds)
 
             sumOfWeightedBgReadings += weight * bgReading.quantity.floatValue
-            sumOfWeights += weight
+            //sumOfWeights += weight
+            numBgReadingsInAverage += 1
         }
 
         // avoid potential divide by 0
-        if sumOfWeights == 0 {
+        //if sumOfWeights == 0 {
+        if numBgReadingsInAverage == 0 {
             return 0.0
         }
-        let average = sumOfWeightedBgReadings / sumOfWeights
+        //let average = sumOfWeightedBgReadings / sumOfWeights
+        let average = sumOfWeightedBgReadings / Float(numBgReadingsInAverage)
         print("averageDecayedBGReadingQuantity \(average)")
         return average
     }

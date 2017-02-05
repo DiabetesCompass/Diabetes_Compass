@@ -54,9 +54,9 @@
         || [[notification name] isEqualToString:NOTE_BGREADING_EDITED]) {
 
         //NSDate* timeStamp = [notification.userInfo valueForKey:@"timeStamp"];
-        
-        dispatch_async(self.trend_queue, ^{
+        [self loadArrays];
 
+        dispatch_async(self.trend_queue, ^{
 
             //[self computeHA1c:timeStamp];
             // TODO: Check this works correctly.
@@ -64,11 +64,11 @@
             // This was crashing with error array index out of bounds.
             // may have been fixed in git commit b314d
             // I think one or more view controllers such as GraphViewController are observing changes to any Reading.
-             [self populateHa1cReadingsFromBgReadings:self.bgArray
-                                     decayLifeSeconds:TrendsAlgorithmModel.hemoglobinLifespanSeconds
-                                  timeIntervalSeconds:HOURS_IN_ONE_DAY * SECONDS_IN_ONE_HOUR];
 
-            [self loadArrays];
+            [self populateHa1cReadingsFromBgReadings:self.bgArray
+                                    decayLifeSeconds:TrendsAlgorithmModel.hemoglobinLifespanSeconds
+                                 timeIntervalSeconds: DAYS_IN_ONE_WEEK * HOURS_IN_ONE_DAY * SECONDS_IN_ONE_HOUR];
+            [self loadHa1cArray];
         });
     }
 }
