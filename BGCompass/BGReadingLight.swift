@@ -17,6 +17,12 @@ struct BGReadingLight {
     var timeStamp: Date
     var quantity: Float
 
+    init(timeStamp: Date, quantity: Float) {
+        self.timeStamp = timeStamp
+        self.quantity = quantity
+    }
+
+    /// initialize with a BGReading
     init(bgReading: BGReading) {
         timeStamp = bgReading.timeStamp
         quantity = bgReading.quantity as Float

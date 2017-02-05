@@ -12,6 +12,17 @@ import XCTest
 class BGReadingLightTests: XCTestCase {
     
     func testBGReadingLightInit() {
+        let timeStamp = Date()
+        let quantity = (123 / MG_PER_DL_PER_MMOL_PER_L)
+
+        // method under test
+        let bgReadingLight = BGReadingLight(timeStamp: timeStamp, quantity: quantity)
+
+        XCTAssertEqual(bgReadingLight.timeStamp, timeStamp)
+        XCTAssertEqual(bgReadingLight.quantity, quantity)
+    }
+
+    func testBGReadingLightInitWithBGReading() {
         let name = "foo"
         let timeStamp = Date()
         // BGReading.quantity units mmol/L
@@ -19,12 +30,12 @@ class BGReadingLightTests: XCTestCase {
         let isPending = false
         // use convenience method from Swift
         guard let bgReading = BGReadingTestHelper.bgReading(withName: name,
-                                                      timeStamp: timeStamp,
-                                                      quantity: quantity,
-                                                      isPending: isPending)
-        else {
-            XCTFail("couldn't initialize a BGReading for use by BGReadingLight")
-            return
+                                                            timeStamp: timeStamp,
+                                                            quantity: quantity,
+                                                            isPending: isPending)
+            else {
+                XCTFail("couldn't initialize a BGReading for use by BGReadingLight")
+                return
         }
 
         // method under test
