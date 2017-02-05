@@ -100,9 +100,10 @@ class TrendsAlgorithmModelTests: XCTestCase {
         let endDate = Date()
         let bgReadings = BGReadingTestHelper.bgReadings135(endDate) as! [BGReading]
         XCTAssertEqual(bgReadings.count, 100)
+        let bgReadingLights = TrendsAlgorithmModel.bgReadingLights(bgReadings: bgReadings)
 
         // call method under test
-        let actual = TrendsAlgorithmModel.averageDecayedBGReadingQuantity(bgReadings,
+        let actual = TrendsAlgorithmModel.averageDecayedBGReadingQuantity(bgReadingLights,
                                                                           date:endDate,
                                                                           decayLifeSeconds: TrendsAlgorithmModel.hemoglobinLifespanSeconds)
 
@@ -116,9 +117,10 @@ class TrendsAlgorithmModelTests: XCTestCase {
         let bgReadingsLastDate = Date()
         let bgReadings = BGReadingTestHelper.bgReadings135(bgReadingsLastDate) as! [BGReading]
         XCTAssertEqual(bgReadings.count, 100)
+        let bgReadingLights = TrendsAlgorithmModel.bgReadingLights(bgReadings: bgReadings)
 
         // call method under test
-        let actual = TrendsAlgorithmModel.averageDecayedBGReadingQuantity(bgReadings,
+        let actual = TrendsAlgorithmModel.averageDecayedBGReadingQuantity(bgReadingLights,
                                                                           date: Date.distantPast,
                                                                           decayLifeSeconds: TrendsAlgorithmModel.hemoglobinLifespanSeconds)
         // all readings are after end date and were ignored
@@ -132,9 +134,10 @@ class TrendsAlgorithmModelTests: XCTestCase {
         let bgReadingsLastDate = Date()
         let bgReadings = BGReadingTestHelper.bgReadings135(bgReadingsLastDate) as! [BGReading]
         XCTAssertEqual(bgReadings.count, 100)
+        let bgReadingLights = TrendsAlgorithmModel.bgReadingLights(bgReadings: bgReadings)
 
         // call method under test
-        let actual = TrendsAlgorithmModel.averageDecayedBGReadingQuantity(bgReadings,
+        let actual = TrendsAlgorithmModel.averageDecayedBGReadingQuantity(bgReadingLights,
                                                                           date: Date.distantFuture,
                                                                           decayLifeSeconds: TrendsAlgorithmModel.hemoglobinLifespanSeconds)
         // all readings are long before end date. hemoglobin has decayed and their weights are 0.
@@ -150,9 +153,10 @@ class TrendsAlgorithmModelTests: XCTestCase {
         let endDate = Date()
         let bgReadings = BGReadingTestHelper.bgReadingsAlternating135and170(endDate) as! [BGReading]
         XCTAssertEqual(bgReadings.count, 100)
+        let bgReadingLights = TrendsAlgorithmModel.bgReadingLights(bgReadings: bgReadings)
 
         // call method under test
-        let actual = TrendsAlgorithmModel.averageDecayedBGReadingQuantity(bgReadings,
+        let actual = TrendsAlgorithmModel.averageDecayedBGReadingQuantity(bgReadingLights,
                                                                           date: endDate,
                                                                           decayLifeSeconds: TrendsAlgorithmModel.hemoglobinLifespanSeconds)
 
@@ -168,9 +172,10 @@ class TrendsAlgorithmModelTests: XCTestCase {
         let endDate = Date()
         let bgReadings = BGReadingTestHelper.bgReadings50at150then50at50(endDate) as! [BGReading]
         XCTAssertEqual(bgReadings.count, 100)
+        let bgReadingLights = TrendsAlgorithmModel.bgReadingLights(bgReadings: bgReadings)
 
         // call method under test
-        let actual = TrendsAlgorithmModel.averageDecayedBGReadingQuantity(bgReadings,
+        let actual = TrendsAlgorithmModel.averageDecayedBGReadingQuantity(bgReadingLights,
                                                                           date: endDate,
                                                                           decayLifeSeconds: TrendsAlgorithmModel.hemoglobinLifespanSeconds)
 
@@ -186,9 +191,10 @@ class TrendsAlgorithmModelTests: XCTestCase {
         let endDate = Date()
         let bgReadings = BGReadingTestHelper.bgReadings50at50then50at150(endDate) as! [BGReading]
         XCTAssertEqual(bgReadings.count, 100)
+        let bgReadingLights = TrendsAlgorithmModel.bgReadingLights(bgReadings: bgReadings)
 
         // call method under test
-        let actual = TrendsAlgorithmModel.averageDecayedBGReadingQuantity(bgReadings,
+        let actual = TrendsAlgorithmModel.averageDecayedBGReadingQuantity(bgReadingLights,
                                                                           date: endDate,
                                                                           decayLifeSeconds: TrendsAlgorithmModel.hemoglobinLifespanSeconds)
 
@@ -204,9 +210,10 @@ class TrendsAlgorithmModelTests: XCTestCase {
         let endDate = Date()
         let bgReadings = BGReadingTestHelper.bgReadings30at150then70at50(endDate) as! [BGReading]
         XCTAssertEqual(bgReadings.count, 100)
+        let bgReadingLights = TrendsAlgorithmModel.bgReadingLights(bgReadings: bgReadings)
 
         // call method under test
-        let actual = TrendsAlgorithmModel.averageDecayedBGReadingQuantity(bgReadings,
+        let actual = TrendsAlgorithmModel.averageDecayedBGReadingQuantity(bgReadingLights,
                                                                           date: endDate,
                                                                           decayLifeSeconds: TrendsAlgorithmModel.hemoglobinLifespanSeconds)
         
@@ -222,9 +229,10 @@ class TrendsAlgorithmModelTests: XCTestCase {
         
         let bgReadings = BGReadingTestHelper.bgReadings30at150then70at50(bgReadingsLastDate) as! [BGReading]
         XCTAssertEqual(bgReadings.count, 100)
+        let bgReadingLights = TrendsAlgorithmModel.bgReadingLights(bgReadings: bgReadings)
 
         // call method under test
-        let actual = TrendsAlgorithmModel.averageDecayedBGReadingQuantity(bgReadings,
+        let actual = TrendsAlgorithmModel.averageDecayedBGReadingQuantity(bgReadingLights,
                                                                           date: endDate,
                                                                           decayLifeSeconds: TrendsAlgorithmModel.hemoglobinLifespanSeconds)
 
@@ -240,9 +248,10 @@ class TrendsAlgorithmModelTests: XCTestCase {
 
         let bgReadings = BGReadingTestHelper.bgReadings30at150then70at50(bgReadingsLastDate) as! [BGReading]
         XCTAssertEqual(bgReadings.count, 100)
+        let bgReadingLights = TrendsAlgorithmModel.bgReadingLights(bgReadings: bgReadings)
 
         // call method under test
-        let actual = TrendsAlgorithmModel.averageDecayedBGReadingQuantity(bgReadings,
+        let actual = TrendsAlgorithmModel.averageDecayedBGReadingQuantity(bgReadingLights,
                                                                           date: endDate,
                                                                           decayLifeSeconds: TrendsAlgorithmModel.hemoglobinLifespanSeconds)
 
