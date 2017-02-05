@@ -21,6 +21,21 @@ extension TrendsAlgorithmModel {
     // MARK: get readings
 
     /**
+    Creates [BGReadingLight] from [BGReading]
+    - returns: array of BGReadingLight.
+    returns empty array [] if bgReadings is empty.
+    */
+    class func bgReadingLights(bgReadings: [BGReading]) -> [BGReadingLight] {
+        var bgLights: [BGReadingLight] = []
+
+        for bgReading in bgReadings {
+            let bgReadingLight = BGReadingLight(bgReading: bgReading)
+            bgLights.append(bgReadingLight)
+        }
+        return bgLights
+    }
+
+    /**
     - returns: first reading in blood glucose array, else nil
     based on index, not date
     */
