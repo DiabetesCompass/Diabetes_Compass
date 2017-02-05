@@ -110,7 +110,10 @@ extension TrendsAlgorithmModel {
                                       date: Date,
                                       decayLifeSeconds: TimeInterval) -> Float {
 
-        let averageDecayedBG = TrendsAlgorithmModel.averageDecayedBGReadingQuantity(bgReadings,
+        // create [BGReadingLight] from [BGReading]
+        let bgReadingLights = TrendsAlgorithmModel.bgReadingLights(bgReadings: bgReadings)
+
+        let averageDecayedBG = TrendsAlgorithmModel.averageDecayedBGReadingQuantity(bgReadingLights,
                                                                                     date: date,
                                                                                     decayLifeSeconds: decayLifeSeconds)
 
