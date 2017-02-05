@@ -39,10 +39,13 @@
     
     // Create BG Readings.
     BGReading *bgReading;
+    NSNumber *bgQuantity = @(135 / MG_PER_DL_PER_MMOL_PER_L);
+    XCTAssertEqualWithAccuracy(bgQuantity.floatValue, 7.49, 0.01);
+
     for (int i = 90 * HOURS_IN_ONE_DAY; i > 0 ; i--) {
         bgReading = [BGReading MR_createEntity];
         bgReading.name = @"BloodGlucose";
-        bgReading.quantity = @(135 / MG_PER_DL_PER_MMOL_PER_L);
+        bgReading.quantity = bgQuantity;
         bgReading.timeStamp = [NSDate dateWithTimeInterval:-i*SECONDS_IN_ONE_HOUR sinceDate:origin];
         bgReading.isPending = [NSNumber numberWithBool:NO];
     }
@@ -72,10 +75,13 @@
     
     // Create BG Readings.
     BGReading *bgReading;
+    NSNumber *bgQuantity = @(170 / MG_PER_DL_PER_MMOL_PER_L);
+    XCTAssertEqualWithAccuracy(bgQuantity.floatValue, 9.43, 0.01);
+
     for (int i = 90*HOURS_IN_ONE_DAY; i > 0 ; i--) {
         bgReading = [BGReading MR_createEntity];
         bgReading.name = @"BloodGlucose";
-        bgReading.quantity = @(170 / MG_PER_DL_PER_MMOL_PER_L);
+        bgReading.quantity = bgQuantity;
         bgReading.timeStamp = [NSDate dateWithTimeInterval:-i*SECONDS_IN_ONE_HOUR sinceDate:origin];
         bgReading.isPending = [NSNumber numberWithBool:NO];
     }
