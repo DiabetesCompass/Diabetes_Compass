@@ -135,6 +135,65 @@ class TrendsAlgorithmModelTests: XCTestCase {
     
     // MARK: - test averageDecayedBGReadingQuantity
 
+    func testAverageDecayedBGReadingQuantity200EndDateNow() {
+
+        let accuracy: Float = 0.1
+
+        let date = Date()
+        let quantity = 200.0 / MG_PER_DL_PER_MMOL_PER_L
+        XCTAssertEqualWithAccuracy(quantity, 11.0999, accuracy: accuracy)
+
+        let bgReadingLight0 = BGReadingLight(timeStamp: date, quantity: quantity)
+        let bgReadingLights = [bgReadingLight0]
+
+        let endDate = date
+
+        // call method under test
+        let actual = TrendsAlgorithmModel.averageDecayedBGReadingQuantity(bgReadingLights,
+                                                                          date:endDate,
+                                                                          decayLifeSeconds: TrendsAlgorithmModel.hemoglobinLifespanSeconds)
+
+        XCTAssertEqualWithAccuracy(actual, quantity, accuracy: accuracy)
+    }
+
+    func testAverageDecayedBGReadingQuantity200EndDateHalfHemoglobinDecayLifetime() {
+
+        let accuracy: Float = 0.01
+        let date = Date()
+        let quantity = 200.0 / MG_PER_DL_PER_MMOL_PER_L
+        XCTAssertEqualWithAccuracy(quantity, 11.0999, accuracy: accuracy)
+        let bgReadingLight0 = BGReadingLight(timeStamp: date, quantity: quantity)
+        let bgReadingLights = [bgReadingLight0]
+
+        let endDate = date.addingTimeInterval(0.5 * TrendsAlgorithmModel.hemoglobinLifespanSeconds)
+
+        // call method under test
+        let actual = TrendsAlgorithmModel.averageDecayedBGReadingQuantity(bgReadingLights,
+                                                                          date:endDate,
+                                                                          decayLifeSeconds: TrendsAlgorithmModel.hemoglobinLifespanSeconds)
+
+        // FIXME: this should be >0 and < quantity
+        XCTAssertEqualWithAccuracy(actual, quantity, accuracy: accuracy)
+    }
+
+    func testAverageDecayedBGReadingQuantity200EndDateHemoglobinDecayLifetime() {
+
+        let accuracy: Float = 0.01
+        let date = Date()
+        let quantity = 200.0 / MG_PER_DL_PER_MMOL_PER_L
+        let bgReadingLight0 = BGReadingLight(timeStamp: date, quantity: quantity)
+        let bgReadingLights = [bgReadingLight0]
+
+        let endDate = date.addingTimeInterval(TrendsAlgorithmModel.hemoglobinLifespanSeconds)
+
+        // call method under test
+        let actual = TrendsAlgorithmModel.averageDecayedBGReadingQuantity(bgReadingLights,
+                                                                          date:endDate,
+                                                                          decayLifeSeconds: TrendsAlgorithmModel.hemoglobinLifespanSeconds)
+
+        XCTAssertEqualWithAccuracy(actual, 0.00, accuracy: accuracy)
+    }
+
     // MARK: blood glucose 135
 
     func testAverageDecayedBGReadingQuantity135() {
