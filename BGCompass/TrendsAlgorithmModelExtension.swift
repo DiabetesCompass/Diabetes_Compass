@@ -87,17 +87,17 @@ extension TrendsAlgorithmModel {
     /**
      - parameter bgReadings: blood glucose readings to average. quantity units mmol/L
      readings may appear in any chronological order, the method reads their timeStamp
-     - parameter endDate: end date for decay. Blood glucose readings after endDate are ignored.
+     - parameter date: date for ha1cValue. Blood glucose readings after date are ignored.
      - parameter decayLifeSeconds: time for blood glucose from a reading to decay to 0.0.
      Typically hemoglobin lifespan seconds.
      - returns: ha1c value based on average of decayed BG reading.quantity
      */
     class func ha1cValueForBgReadings(_ bgReadings: [BGReading],
-                                      endDate: Date,
+                                      date: Date,
                                       decayLifeSeconds: TimeInterval) -> Float {
 
         let averageDecayedBG = TrendsAlgorithmModel.averageDecayedBGReadingQuantity(bgReadings,
-                                                                                    endDate: endDate,
+                                                                                    date: date,
                                                                                     decayLifeSeconds: decayLifeSeconds)
 
         let ha1cValue = hA1c(bloodGlucoseMmolPerL: averageDecayedBG)
@@ -107,13 +107,13 @@ extension TrendsAlgorithmModel {
     /**
      - parameter bgReadings: blood glucose readings to average.
        readings may appear in any chronological order, the method reads their timeStamp
-     - parameter endDate: end date for decay. Blood glucose readings after endDate are ignored.
+     - parameter date: date for quantity. Blood glucose readings after date are ignored.
      - parameter decayLifeSeconds: time for blood glucose from a reading to decay to 0.0.
      Typically hemoglobin lifespan seconds.
      - returns: average of decayed BG reading.quantity
      */
     class func averageDecayedBGReadingQuantity(_ bgReadings: [BGReading],
-                                        endDate: Date,
+                                        date: Date,
                                         decayLifeSeconds: TimeInterval) -> Float {
 
         if bgReadings.count == 0 {
@@ -125,13 +125,13 @@ extension TrendsAlgorithmModel {
 
         for bgReading in bgReadings {
 
-            if bgReading.timeStamp > endDate {
+            if bgReading.timeStamp > date {
                 // skip this reading, continue loop
                 continue
             }
 
             let weight = TrendsAlgorithmModel.weightLinearDecayFirstDate(bgReading.timeStamp,
-                                                                         secondDate: endDate,
+                                                                         secondDate: date,
                                                                          decayLifeSeconds: decayLifeSeconds)
 
             sumOfWeightedBgReadings += weight * bgReading.quantity.floatValue
@@ -142,7 +142,9 @@ extension TrendsAlgorithmModel {
         if sumOfWeights == 0 {
             return 0.0
         }
-        return sumOfWeightedBgReadings / sumOfWeights
+        let average = sumOfWeightedBgReadings / sumOfWeights
+        print("averageDecayedBGReadingQuantity \(average)")
+        return average
     }
 
     /**

@@ -260,18 +260,19 @@
                                                         return [first compare:second];
                                                     }];
 
-    NSDate *startDate = [(BGReading *)bgReadingsChronologicallyIncreasing[0] timeStamp];
-    NSDate *bgLastDate = [(BGReading *)[bgReadingsChronologicallyIncreasing lastObject] timeStamp];
-    NSDate *endDate = [bgLastDate dateByAddingTimeInterval:timeIntervalSeconds];
+    NSDate *bgDateEarliest = [(BGReading *)bgReadingsChronologicallyIncreasing[0] timeStamp];
+    NSDate *bgDateLatest = [(BGReading *)[bgReadingsChronologicallyIncreasing lastObject] timeStamp];
+    // bgReadings only affect ha1cReadings until dateAllBgDecayed
+    NSDate *dateAllBgDecayed = [bgDateLatest dateByAddingTimeInterval: decayLifeSeconds];
 
     // divide date range into time intervals and add an ha1cReading at every interval
-    NSDate *date = startDate;
-    while ([date compare:endDate] == NSOrderedAscending) {
-        // date is on or before endDate
+    NSDate *date = bgDateEarliest;
+    while ([date compare: dateAllBgDecayed] == NSOrderedAscending) {
+        // date is on or before dateAllBgDecayed
 
         [self addHa1cReadingForBgReadings:bgReadingsChronologicallyIncreasing
                                      date:date
-                         decayLifeSeconds:TrendsAlgorithmModel.hemoglobinLifespanSeconds];
+                         decayLifeSeconds:decayLifeSeconds];
 
         // increment while loop control
         date = [date dateByAddingTimeInterval:timeIntervalSeconds];
@@ -291,8 +292,8 @@
 
     // call method defined in TrendsAlgorithmModel.swift from Objective C
     float ha1cTimeWeightedAverage = [TrendsAlgorithmModel ha1cValueForBgReadings:bgReadings
-                                                                         endDate:date
-                                                                decayLifeSeconds:TrendsAlgorithmModel.hemoglobinLifespanSeconds];
+                                                                            date:date
+                                                                decayLifeSeconds:decayLifeSeconds];
 
     NSLog(@"adding HA1c %@: qty: %f", date, ha1cTimeWeightedAverage);
 
