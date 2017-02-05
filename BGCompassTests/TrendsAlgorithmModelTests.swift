@@ -91,6 +91,22 @@ class TrendsAlgorithmModelTests: XCTestCase {
         XCTAssertEqualWithAccuracy(weight, 1.0, accuracy: 0.01)
     }
 
+    // MARK: - test bgReadingLights
+
+    func testBgReadingLightsEmpty() {
+        let bgReadingLights = TrendsAlgorithmModel.bgReadingLights(bgReadings: [])
+        XCTAssertEqual(bgReadingLights.count, 0)
+    }
+
+    func testBgReadingLights() {
+
+        let endDate = Date()
+        let bgReadings = BGReadingTestHelper.bgReadings135(endDate) as! [BGReading]
+        XCTAssertEqual(bgReadings.count, 100)
+        let bgReadingLights = TrendsAlgorithmModel.bgReadingLights(bgReadings: bgReadings)
+        XCTAssertEqual(bgReadingLights.count, bgReadings.count)
+    }
+    
     // MARK: - test averageDecayedBGReadingQuantity
 
     // MARK: blood glucose 135
