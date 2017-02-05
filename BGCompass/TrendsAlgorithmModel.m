@@ -263,12 +263,12 @@
     NSDate *bgDateEarliest = [(BGReading *)bgReadingsChronologicallyIncreasing[0] timeStamp];
     NSDate *bgDateLatest = [(BGReading *)[bgReadingsChronologicallyIncreasing lastObject] timeStamp];
     // bgReadings only affect ha1cReadings until dateAllBgDecayed
-    NSDate *dateAllBgDecayed = [bgDateLatest dateByAddingTimeInterval: decayLifeSeconds];
+    // NSDate *dateAllBgDecayed = [bgDateLatest dateByAddingTimeInterval: decayLifeSeconds];
 
     // divide date range into time intervals and add an ha1cReading at every interval
     NSDate *date = bgDateEarliest;
-    while ([date compare: dateAllBgDecayed] == NSOrderedAscending) {
-        // date is on or before dateAllBgDecayed
+    while ([date compare: bgDateLatest] == NSOrderedAscending) {
+        // date is on or before bgDateLatest
 
         [self addHa1cReadingForBgReadings:bgReadingsChronologicallyIncreasing
                                      date:date
