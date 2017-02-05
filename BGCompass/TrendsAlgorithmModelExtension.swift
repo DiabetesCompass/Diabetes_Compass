@@ -122,27 +122,6 @@ extension TrendsAlgorithmModel {
     }
     
     /**
-    This method uses BGReading, a CoreData managed object.
-     - parameter bgReadings: BGReading readings to average.
-       readings may appear in any chronological order, the method reads their timeStamp
-     - parameter date: date for quantity. Blood glucose readings after date are ignored.
-     - parameter decayLifeSeconds: time for blood glucose from a reading to decay to 0.0.
-     Typically hemoglobin lifespan seconds.
-     - returns: average of decayed BG reading.quantity
-     */
-    class func averageDecayedBGReadingQuantity(_ bgReadings: [BGReading],
-                                        date: Date,
-                                        decayLifeSeconds: TimeInterval) -> Float {
-
-        // create [BGReadingLight] from [BGReading]
-        let bgReadingLights = TrendsAlgorithmModel.bgReadingLights(bgReadings: bgReadings)
-        let averageDecayedBG = TrendsAlgorithmModel.averageDecayedBGReadingQuantity(bgReadingLights,
-                                                                                    date: date,
-                                                                                    decayLifeSeconds: decayLifeSeconds)
-        return averageDecayedBG
-    }
-
-    /**
     This method uses BGReadingLight, and may be tested without a CoreData context.
      - parameter bgReadingLights: BGReadingLight readings to average.
        readings may appear in any chronological order, the method reads their timeStamp
