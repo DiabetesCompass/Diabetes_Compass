@@ -66,21 +66,21 @@ extension TrendsAlgorithmModel {
     /**
      - returns: readings between startDate (inclusive) and endDate (inclusive)
      */
-    func bloodGlucoseReadings(_ readings: [BGReading],
-                              startDate: Date,
-                              endDate: Date) -> [BGReading] {
-
-        // Swift 3 Date is a struct, implements comparable, can be compared using < >
-        // NSDate is an object.
-        // Need to use something like comparisonResult .orderedAscending
-        // Using < on NSDate would compare memory addresses.
-        // http://stackoverflow.com/questions/26198526/nsdate-comparison-using-swift#28109990
-        let readingsBetweenDates = readings
-            .filter( { ($0.timeStamp != nil)
-                && ($0.timeStamp >= startDate)
-                && ($0.timeStamp <= endDate) } )
-        return readingsBetweenDates
-    }
+//    func bloodGlucoseReadings(_ readings: [BGReading],
+//                              startDate: Date,
+//                              endDate: Date) -> [BGReading] {
+//
+//        // Swift 3 Date is a struct, implements comparable, can be compared using < >
+//        // NSDate is an object.
+//        // Need to use something like comparisonResult .orderedAscending
+//        // Using < on NSDate would compare memory addresses.
+//        // http://stackoverflow.com/questions/26198526/nsdate-comparison-using-swift#28109990
+//        let readingsBetweenDates = readings
+//            .filter( { ($0.timeStamp != nil)
+//                && ($0.timeStamp >= startDate)
+//                && ($0.timeStamp <= endDate) } )
+//        return readingsBetweenDates
+//    }
 
     // MARK: -
 
