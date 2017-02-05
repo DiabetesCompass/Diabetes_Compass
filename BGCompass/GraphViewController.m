@@ -208,7 +208,6 @@ shouldHandlePointingDeviceUpEvent:(UIEvent *)event
     return CGPointMake(displacement.x*1.5,0);
 }
 
-
 -(CPTPlotRange *)plotSpace:(CPTPlotSpace *)space
      willChangePlotRangeTo:(CPTPlotRange *)newRange
              forCoordinate:(CPTCoordinate)coordinate {
