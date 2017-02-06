@@ -24,7 +24,7 @@
 // FIXME: Either use mmol/L or use shouldDisplayBgInMmolPerL to set units
 /// - returns: current estimated BG in mg/dL
 - (NSNumber*) getCurrentBG;
-
+- (NSNumber*) getCurrentMmolPerLBG;
 - (NSNumber*) getDeficit;
 - (NSNumber*) getSettlingBG;
 

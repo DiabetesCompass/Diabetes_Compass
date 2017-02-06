@@ -16,8 +16,16 @@ class TrendViewController : UIViewController {
         case bg, ha1c
     }
 
+    //TODO: Consider use DateComponents
+    /// A rough scale, may be used to set axis label formats and tick mark intervals
+    enum RangeScale {
+        case hour, hour24, day, week, month
+    }
+
     static let minutesPerWeek = Double(MINUTES_IN_ONE_HOUR * HOURS_IN_ONE_DAY * DAYS_IN_ONE_WEEK)
-    static let yAxisLabelWidthFraction = 0.1
+
+    /// margin for xAxis range before first data point and after last data point
+    static let xAxisRangeMargin = 1000.0
 
     var trendsAlgorithmModel: TrendsAlgorithmModel?
 
@@ -105,9 +113,9 @@ class TrendViewController : UIViewController {
         guard let first = dateFirst, let last = dateLast else { return rangeEmpty }
 
         let minutesLastMinusFirst = last.timeIntervalSince(first) / Double(SECONDS_IN_ONE_MINUTE)
-        let length = NSNumber(value: (1.0 + yAxisLabelWidthFraction) * minutesLastMinusFirst)
-        let range = CPTPlotRange(location: NSNumber(value: yAxisLabelWidthFraction * minutesLastMinusFirst),
-                                 length: length)
+        let location = NSNumber(value: -xAxisRangeMargin)
+        let length = NSNumber(value: minutesLastMinusFirst + (2 * xAxisRangeMargin))
+        let range = CPTPlotRange(location: location, length: length)
         return range
     }
 
@@ -130,7 +138,7 @@ class TrendViewController : UIViewController {
         guard let first = dateFirst, let last = dateLast else { return rangeEmpty }
 
         let minutesLastMinusFirst = last.timeIntervalSince(first) / Double(SECONDS_IN_ONE_MINUTE)
-        let location = minutesLastMinusFirst - minutesPerWeek
+        let location = minutesLastMinusFirst - minutesPerWeek + xAxisRangeMargin
         let range = CPTPlotRange(location: NSNumber(value:location), length: NSNumber(value: minutesPerWeek))
         return range
     }
@@ -209,7 +217,6 @@ class TrendViewController : UIViewController {
         x.axisLineStyle = TrendViewController.lineStyleThinWhite()
         x.majorTickLineStyle = TrendViewController.lineStyleThinWhite()
         x.minorTickLineStyle = TrendViewController.lineStyleThinWhite()
-        x.majorIntervalLength   = TrendViewController.minutesPerWeek as NSNumber?
 
         // x axis located at y coordinate == x.orthogonalPosition
         switch trend {
@@ -218,14 +225,37 @@ class TrendViewController : UIViewController {
         case .ha1c:
             x.orthogonalPosition = 5.0
         }
+        configureAxisIntervals(x: x, rangeScale: .day)
+    }
 
-        // one day per minor tick
-        x.minorTicksPerInterval = UInt(DAYS_IN_ONE_WEEK) - 1
+    /**
+     - parameter rangeScale: a RangeScale
+     */
+    func configureAxisIntervals(x: CPTXYAxis, rangeScale: RangeScale) {
+
         x.labelExclusionRanges  = [
             //CPTPlotRange(location: 0.99, length: 0.02),
             //CPTPlotRange(location: 1.99, length: 0.02),
             //CPTPlotRange(location: 2.99, length: 0.02)
         ]
+
+        x.minorTicksPerInterval = 1
+
+        var majorIntervalLength = TrendViewController.minutesPerWeek as NSNumber?
+        print("rangeScale \(rangeScale)")
+        
+        switch rangeScale {
+        case .month:
+            //let dayPerMonth = 30
+            majorIntervalLength = NSNumber(value: Int(DAYS_IN_ONE_WEEK * HOURS_IN_ONE_DAY * MINUTES_IN_ONE_HOUR))
+        case .week:
+            majorIntervalLength = NSNumber(value: Int(DAYS_IN_ONE_WEEK * HOURS_IN_ONE_DAY * MINUTES_IN_ONE_HOUR))
+        case .day:
+            majorIntervalLength = NSNumber(value: (DAYS_IN_ONE_WEEK * HOURS_IN_ONE_DAY * MINUTES_IN_ONE_HOUR))
+        case .hour24, .hour:
+            majorIntervalLength = NSNumber(value: (HOURS_IN_ONE_DAY * MINUTES_IN_ONE_HOUR))
+        }
+        x.majorIntervalLength = majorIntervalLength
     }
 
     func configureAxis(y: CPTXYAxis, trend: Trend) {
@@ -241,9 +271,7 @@ class TrendViewController : UIViewController {
         // range.location is axis start, range.length is axis (end - start)
         let xRange = TrendViewController.xRange(trendsAlgorithmModel: trendsAlgorithmModel,
                                                       trend: trend)
-        let xRangeLocation = xRange.location.doubleValue
-        let xRangeLength = xRange.length.doubleValue
-        y.orthogonalPosition = NSNumber(value:(xRangeLocation + (TrendViewController.yAxisLabelWidthFraction * xRangeLength)))
+        y.orthogonalPosition = TrendViewController.yOrthogonalPosition(xRange: xRange)
 
         y.labelExclusionRanges  = [
             //CPTPlotRange(location: 0.99, length: 0.02),
@@ -266,6 +294,19 @@ class TrendViewController : UIViewController {
         }
     }
 
+    /** typically caller will set y.orthogonalPosition = yOrthogonalPosition()
+    - parameter xRangeLocation: axis start
+    - parameter xRangeLength: axis (end - start)
+    - returns: x cooridinate for y axis to cross x axis
+    */
+    class func yOrthogonalPosition(xRange: CPTPlotRange) -> NSNumber {
+        let xRangeLocation = xRange.location.doubleValue
+        let xRangeLength = xRange.length.doubleValue
+        let yAxisLabelWidth = 0.1 * xRangeLength
+        let position = NSNumber(value:(xRangeLocation + yAxisLabelWidth))
+        return position
+    }
+
     func styledPlot(trend: Trend) -> CPTScatterPlot {
         let plot = CPTScatterPlot(frame: .zero)
         plot.dataLineStyle = TrendViewController.lineStyleWhite()
@@ -285,7 +326,7 @@ class TrendViewController : UIViewController {
         let symbol = CPTPlotSymbol.ellipse()
         symbol.fill          = CPTFill(color: .white())
         symbol.lineStyle     = symbolLineStyle
-        symbol.size          = CGSize(width: 10.0, height: 10.0)
+        symbol.size          = CGSize(width: 4.0, height: 4.0)
         return symbol
     }
 
@@ -299,8 +340,8 @@ class TrendViewController : UIViewController {
     class func lineStyleWhite() -> CPTMutableLineStyle {
         let lineStyle = CPTMutableLineStyle()
         lineStyle.lineColor = .white()
-        lineStyle.lineWidth = 3.0
-        lineStyle.miterLimit = 1.0
+        lineStyle.lineWidth = 2.0
+        lineStyle.miterLimit = 2.0
         return lineStyle
     }
 
@@ -323,7 +364,8 @@ class TrendViewController : UIViewController {
         // e.g. "Dec 5, 2016"
         //dateFormatter.dateStyle = .medium
         // e.g. "12/05"
-        let templateString = templateStringForRange(range)
+        let rangeScale = TrendViewController.rangeScale(range: range)
+        let templateString = templateStringForRangeScale(rangeScale)
         let formatString = DateFormatter.dateFormat(fromTemplate: templateString,
                                                     options:0, locale:NSLocale.current)
         dateFormatter.dateFormat = formatString
@@ -335,30 +377,49 @@ class TrendViewController : UIViewController {
         return cptFormatter
     }
 
+    class func rangeScale(range: CPTPlotRange?) -> RangeScale {
+
+        guard let axisRange = range else {
+            return .month
+        }
+
+        var scale: RangeScale = .month
+
+        if axisRange.lengthDouble >= Double(MINUTES_IN_ONE_HOUR * HOURS_IN_ONE_DAY * DAYS_IN_ONE_WEEK * 52) {
+            scale = .month
+        } else if axisRange.lengthDouble >= Double(MINUTES_IN_ONE_HOUR * HOURS_IN_ONE_DAY * 8) {
+            scale = .week
+        } else if axisRange.lengthDouble >= Double(MINUTES_IN_ONE_HOUR * HOURS_IN_ONE_DAY * 2) {
+            scale = .day
+        } else {
+            if UserDefaults.standard.bool(forKey: SETTING_MILITARY_TIME) {
+                scale = .hour24
+            } else {
+                scale = .hour
+            }
+        }
+        return scale
+    }
+
     /**
-     - parameter range: plot range
+     - parameter rangeScale: a RangeScale
      - returns: a template string suitable for use by a date formatter
      */
-    func templateStringForRange(_ range: CPTPlotRange?) -> String {
+    func templateStringForRangeScale(_ rangeScale: RangeScale) -> String {
 
         var templateString = "MM/dd"
 
-        guard let axisRange = range else {
-            return templateString
-        }
-
-        if axisRange.lengthDouble >= Double(MINUTES_IN_ONE_HOUR * HOURS_IN_ONE_DAY * DAYS_IN_ONE_WEEK * 52) {
+        switch rangeScale {
+        case .month:
             templateString = "MM/dd"
-        } else if axisRange.lengthDouble >= Double(MINUTES_IN_ONE_HOUR * HOURS_IN_ONE_DAY * 8) {
+        case .week:
             templateString = "MMM dd"
-        } else if axisRange.lengthDouble >= Double(MINUTES_IN_ONE_HOUR * HOURS_IN_ONE_DAY * 2) {
+            case .day:
             templateString = "Md"
-        } else {
-            if UserDefaults.standard.bool(forKey: SETTING_MILITARY_TIME) {
+        case .hour24:
                 templateString = "HH Md"
-            } else {
+        case .hour:
                 templateString = "hh a Md"
-            }
         }
         return templateString
     }
@@ -515,9 +576,13 @@ extension TrendViewController: CPTPlotSpaceDelegate {
         let axisSet: CPTXYAxisSet = space.graph!.axisSet as! CPTXYAxisSet
 
         if coordinate == CPTCoordinate.X {
-            axisSet.yAxis?.orthogonalPosition = NSNumber(value:(range.location.doubleValue
-                + (0.1 * range.lengthDouble)))
+            axisSet.yAxis?.orthogonalPosition = TrendViewController.yOrthogonalPosition(xRange: range)
             axisSet.xAxis?.labelFormatter = xLabelFormatter(range: range)
+
+            if let xAxis = axisSet.xAxis {
+                let rangeScale = TrendViewController.rangeScale(range: range)
+                configureAxisIntervals(x: xAxis, rangeScale: rangeScale)
+            }
 
         } else if (coordinate == CPTCoordinate.Y) && (trend != nil) {
 

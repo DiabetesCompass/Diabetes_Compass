@@ -22,13 +22,15 @@ extension TrendsAlgorithmModel {
 
     /**
     - returns: first reading in blood glucose array, else nil
+    based on index, not date
     */
     func bgArrayReadingFirst() -> BGReading? {
         return self.getFromBGArray(0)
     }
 
     /**
-    - returns: last reading in blood glucose array, else nil
+    - returns: last element in blood glucose array, else nil
+    based on index, not date
     */
     func bgArrayReadingLast() -> BGReading? {
         if self.bgArrayCount() == 0 {
@@ -41,6 +43,7 @@ extension TrendsAlgorithmModel {
 
     /**
      - returns: first reading in HA1c array, else nil
+    based on index, not date
      */
     func ha1cArrayReadingFirst() -> Ha1cReading? {
         return self.getFromHa1cArray(0)
@@ -48,6 +51,7 @@ extension TrendsAlgorithmModel {
 
     /**
      - returns: last reading in HA1c array, else nil
+    based on index, not date
     */
     func ha1cArrayReadingLast() -> Ha1cReading? {
         if self.ha1cArrayCount() == 0 {
@@ -62,54 +66,54 @@ extension TrendsAlgorithmModel {
     /**
      - returns: readings between startDate (inclusive) and endDate (inclusive)
      */
-    func bloodGlucoseReadings(_ readings: [BGReading],
-                              startDate: Date,
-                              endDate: Date) -> [BGReading] {
-
-        // Swift 3 Date is a struct, implements comparable, can be compared using < >
-        // NSDate is an object.
-        // Need to use something like comparisonResult .orderedAscending
-        // Using < on NSDate would compare memory addresses.
-        // http://stackoverflow.com/questions/26198526/nsdate-comparison-using-swift#28109990
-        let readingsBetweenDates = readings
-            .filter( { ($0.timeStamp != nil)
-                && ($0.timeStamp >= startDate)
-                && ($0.timeStamp <= endDate) } )
-        return readingsBetweenDates
-    }
+//    func bloodGlucoseReadings(_ readings: [BGReading],
+//                              startDate: Date,
+//                              endDate: Date) -> [BGReading] {
+//
+//        // Swift 3 Date is a struct, implements comparable, can be compared using < >
+//        // NSDate is an object.
+//        // Need to use something like comparisonResult .orderedAscending
+//        // Using < on NSDate would compare memory addresses.
+//        // http://stackoverflow.com/questions/26198526/nsdate-comparison-using-swift#28109990
+//        let readingsBetweenDates = readings
+//            .filter( { ($0.timeStamp != nil)
+//                && ($0.timeStamp >= startDate)
+//                && ($0.timeStamp <= endDate) } )
+//        return readingsBetweenDates
+//    }
 
     // MARK: -
 
     /**
      - parameter bgReadings: blood glucose readings to average. quantity units mmol/L
      readings may appear in any chronological order, the method reads their timeStamp
-     - parameter endDate: end date for decay. Blood glucose readings after endDate are ignored.
+     - parameter date: date for ha1cValue. Blood glucose readings after date are ignored.
      - parameter decayLifeSeconds: time for blood glucose from a reading to decay to 0.0.
      Typically hemoglobin lifespan seconds.
      - returns: ha1c value based on average of decayed BG reading.quantity
      */
     class func ha1cValueForBgReadings(_ bgReadings: [BGReading],
-                                      endDate: Date,
+                                      date: Date,
                                       decayLifeSeconds: TimeInterval) -> Float {
 
         let averageDecayedBG = TrendsAlgorithmModel.averageDecayedBGReadingQuantity(bgReadings,
-                                                                                    endDate: endDate,
+                                                                                    date: date,
                                                                                     decayLifeSeconds: decayLifeSeconds)
 
-        let ha1cValue = hA1cFromBloodGlucose(averageDecayedBG)
+        let ha1cValue = hA1c(bloodGlucoseMmolPerL: averageDecayedBG)
         return ha1cValue
     }
     
     /**
      - parameter bgReadings: blood glucose readings to average.
        readings may appear in any chronological order, the method reads their timeStamp
-     - parameter endDate: end date for decay. Blood glucose readings after endDate are ignored.
+     - parameter date: date for quantity. Blood glucose readings after date are ignored.
      - parameter decayLifeSeconds: time for blood glucose from a reading to decay to 0.0.
      Typically hemoglobin lifespan seconds.
      - returns: average of decayed BG reading.quantity
      */
     class func averageDecayedBGReadingQuantity(_ bgReadings: [BGReading],
-                                        endDate: Date,
+                                        date: Date,
                                         decayLifeSeconds: TimeInterval) -> Float {
 
         if bgReadings.count == 0 {
@@ -118,66 +122,73 @@ extension TrendsAlgorithmModel {
 
         var sumOfWeightedBgReadings: Float = 0.0
         var sumOfWeights: Float = 0.0
+        //var numBgReadingsInAverage: Int = 0
 
         for bgReading in bgReadings {
 
-            if bgReading.timeStamp > endDate {
+            if bgReading.timeStamp > date {
                 // skip this reading, continue loop
                 continue
             }
 
             let weight = TrendsAlgorithmModel.weightLinearDecayFirstDate(bgReading.timeStamp,
-                                                                         secondDate: endDate,decayLifeSeconds: decayLifeSeconds)
+                                                                         secondDate: date,
+                                                                         decayLifeSeconds: decayLifeSeconds)
 
             sumOfWeightedBgReadings += weight * bgReading.quantity.floatValue
             sumOfWeights += weight
+            //numBgReadingsInAverage += 1
         }
 
         // avoid potential divide by 0
         if sumOfWeights == 0 {
+        //if numBgReadingsInAverage == 0 {
             return 0.0
         }
-        return sumOfWeightedBgReadings / sumOfWeights
+        let average = sumOfWeightedBgReadings / sumOfWeights
+        //let average = sumOfWeightedBgReadings / Float(numBgReadingsInAverage)
+        print("averageDecayedBGReadingQuantity \(average)")
+        return average
     }
 
     /**
-     weight linearly decaying over time range (secondDate - decayLifeSeconds) to secondDate
+     weight that decreases linearly from 1 to 0 as firstDate decreases from secondDate to (secondDate - decayLifeSeconds).
      - parameter firstDate: date at which weight is calculated
-     - parameter secondDate: second date. At this date or later weight is 1.0
+     - parameter secondDate: Occurs after firstDate. At this date or later weight is 1.0
      - parameter decayLifeSeconds: time for weight to decay to 0.0. Typically hemoglobin lifespan seconds.
      - returns: weight from 0.0 to 1.0 inclusive.
      returns 0.0 if firstDate is decayLifeSeconds or more before secondDate
      returns 1.0 if firstDate is on or after secondDate
      */
-    class func weightLinearDecayFirstDate(_ firstDate: Date,
-                                          secondDate: Date,
-                                          decayLifeSeconds: TimeInterval) -> Float {
-        let timeIntervalFromFirstToSecond = secondDate.timeIntervalSince(firstDate)
-        // weightUnclamped may be < 0.0 or > 1.0
-        let weightUnclamped = 1.0 - (timeIntervalFromFirstToSecond/decayLifeSeconds)
-        var weight: Float = 0.0;
-        if weightUnclamped < 0.0 {
-            weight = 0.0;
-        } else if weightUnclamped > 1.0 {
-            weight = 1.0
-        } else {
-            weight = Float(weightUnclamped)
-        }
-        return weight
-    }
+     class func weightLinearDecayFirstDate(_ firstDate: Date, secondDate: Date, decayLifeSeconds: TimeInterval) -> Float {
+
+         let timeIntervalSecondDateSinceFirst = secondDate.timeIntervalSince(firstDate)
+
+         var weight: Float = 0.0;
+         if timeIntervalSecondDateSinceFirst >= decayLifeSeconds {
+             // firstDate is decayLifeSeconds or more before secondDate
+             weight = 0.0;
+         } else if timeIntervalSecondDateSinceFirst <= 0 {
+             // firstDate is on or after secondDate
+             weight = 1.0
+         } else {
+             weight = Float(1.0 - (timeIntervalSecondDateSinceFirst/decayLifeSeconds))
+         }
+         return weight
+     }
 
     /**
      Ha1c units are percent of hemoglobin that is glycated.
      Generally physiologic HA1c is >= 5.
      5 represents 5%, or 0.05
      https://en.wikipedia.org/wiki/Glycated_hemoglobin
-     - parameter bloodGlucose: blood glucose quantity, units mmol/L
+     - parameter bloodGlucoseMmolPerL: blood glucose quantity, units mmol/L
      - returns: HA1c in DCCT percentage
      */
-    class func hA1cFromBloodGlucose(_ bloodGlucose: Float) -> Float {
-        let bloodGlucoseMgPerDl = bloodGlucose * MG_PER_DL_PER_MMOL_PER_L
-        let hA1c = (bloodGlucoseMgPerDl + 46.7) / 28.7
-        return hA1c
+    class func hA1c(bloodGlucoseMmolPerL: Float) -> Float {
+        let bloodGlucoseMgPerDl = bloodGlucoseMmolPerL * MG_PER_DL_PER_MMOL_PER_L
+        let hA1cFromBg = (bloodGlucoseMgPerDl + 46.7) / 28.7
+        return hA1cFromBg
     }
 
 }

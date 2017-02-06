@@ -208,7 +208,6 @@ shouldHandlePointingDeviceUpEvent:(UIEvent *)event
     return CGPointMake(displacement.x*1.5,0);
 }
 
-
 -(CPTPlotRange *)plotSpace:(CPTPlotSpace *)space
      willChangePlotRangeTo:(CPTPlotRange *)newRange
              forCoordinate:(CPTCoordinate)coordinate {
@@ -277,11 +276,21 @@ shouldHandlePointingDeviceUpEvent:(UIEvent *)event
 }
 
 - (void)updateGraphData {
-    NSLog(@"UpdateGraphData was called");
+    NSLog(@"updateGraphData");
     // If there is any data stored in the cache remove all of it.
 
-    if ([[self.graph plotWithIdentifier:@"estimatedBGPlot"] cachedDataCount] != 0) {
-        [[self.graph plotWithIdentifier:@"estimatedBGPlot"] deleteDataInIndexRange:NSMakeRange(0, _graphCount-1)];
+    if (([self.graph plotWithIdentifier:@"estimatedBGPlot"] != nil)
+        && ([[self.graph plotWithIdentifier:@"estimatedBGPlot"] cachedDataCount] != 0)) {
+
+        NSUInteger cachedDataCount = [[self.graph plotWithIdentifier:@"estimatedBGPlot"] cachedDataCount];
+        NSLog(@"cachedDataCount %lu", (unsigned long)cachedDataCount);
+        NSLog(@"_graphCount %lu", (unsigned long)_graphCount);
+        
+        // Use cachedDataCount to avoid index out of range error if cachedDataCount < _graphCount
+        // NSRange range = NSMakeRange(0, _graphCount - 1);
+        NSRange range = NSMakeRange(0, cachedDataCount - 1);
+        NSLog(@"range %@", NSStringFromRange(range));
+        [[self.graph plotWithIdentifier:@"estimatedBGPlot"] deleteDataInIndexRange: range];
     }
     if ([[BGAlgorithmModel sharedInstance] graphArrayCount].intValue != 0) {
         _graphCount = 1;

@@ -122,8 +122,7 @@
     return context;
 }
 
-- (NSNumber*) graphArrayCount
-{
+- (NSNumber *)graphArrayCount {
     NSNumber* result;
     if (self.graphArray) {
         result = @([self.graphArray count]);
@@ -133,22 +132,19 @@
     return result;
 }
 
-- (NSNumber*) predictArrayCount
-{
-    NSNumber* result;
+- (NSNumber *)predictArrayCount {
+    NSNumber *result;
     if (self.predictArray) {
         result = @([self.predictArray count]);
     } else {
         result = @(0);
     }
-    
     return result;
 }
 
-- (NSNumber*) getFromGraphArray:(NSUInteger)index
-{
-    NSNumber* result;
-    if (self.graphArray) {
+- (NSNumber *)getFromGraphArray:(NSUInteger)index {
+    NSNumber *result;
+    if (self.graphArray && (index < self.graphArray.count)) {
         result = [self.graphArray objectAtIndex:index];
     } else {
         result = @(0);
@@ -156,10 +152,9 @@
     return result;
 }
 
-- (NSNumber*) getFromPredictArray:(NSUInteger)index
-{
-    NSNumber* result;
-    if (self.predictArray) {
+- (NSNumber *)getFromPredictArray:(NSUInteger)index {
+    NSNumber *result;
+    if (self.predictArray && (index < self.predictArray.count)) {
         result = [self.predictArray objectAtIndex:index];
     } else {
         result = @(0);
@@ -493,6 +488,12 @@
 {
     float current_value = [[self.graphArray firstObject] floatValue];
     current_value = [BGReading getValue:current_value withConversion:YES];
+    return @(current_value);
+}
+- (NSNumber*) getCurrentMmolPerLBG
+{
+    float current_value = [[self.graphArray firstObject] floatValue];
+    current_value = [BGReading getValue:current_value withConversion:NO];
     return @(current_value);
 }
 

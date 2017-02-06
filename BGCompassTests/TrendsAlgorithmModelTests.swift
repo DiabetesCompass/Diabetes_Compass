@@ -14,12 +14,19 @@ class TrendsAlgorithmModelTests: XCTestCase {
     func testHA1cFromBloodGlucose() {
         //https://en.wikipedia.org/wiki/Glycated_hemoglobin
         // BGReading.quantity units mmol/L
-        XCTAssertEqualWithAccuracy(TrendsAlgorithmModel.hA1cFromBloodGlucose(97.0 / MG_PER_DL_PER_MMOL_PER_L),
+        XCTAssertEqualWithAccuracy(TrendsAlgorithmModel.hA1c(bloodGlucoseMmolPerL: 97.0 / MG_PER_DL_PER_MMOL_PER_L),
                                    5.0, accuracy: 0.02)
-        XCTAssertEqualWithAccuracy(TrendsAlgorithmModel.hA1cFromBloodGlucose(240.0 / MG_PER_DL_PER_MMOL_PER_L),
+        XCTAssertEqualWithAccuracy(TrendsAlgorithmModel.hA1c(bloodGlucoseMmolPerL: 240.0 / MG_PER_DL_PER_MMOL_PER_L),
                                    10.0, accuracy: 0.02)
-        XCTAssertEqualWithAccuracy(TrendsAlgorithmModel.hA1cFromBloodGlucose(499.0 / MG_PER_DL_PER_MMOL_PER_L),
+        XCTAssertEqualWithAccuracy(TrendsAlgorithmModel.hA1c(bloodGlucoseMmolPerL: 499.0 / MG_PER_DL_PER_MMOL_PER_L),
                                    19.0, accuracy: 0.02)
+    }
+
+    func testHA1cFromBloodGlucoseZero() {
+        //https://en.wikipedia.org/wiki/Glycated_hemoglobin
+        // BGReading.quantity units mmol/L
+        XCTAssertEqualWithAccuracy(TrendsAlgorithmModel.hA1c(bloodGlucoseMmolPerL: 0.0),
+                                   1.62718, accuracy: 0.02)
     }
 
     // MARK: - testWeightLinearDecay
@@ -96,7 +103,7 @@ class TrendsAlgorithmModelTests: XCTestCase {
 
         // call method under test
         let actual = TrendsAlgorithmModel.averageDecayedBGReadingQuantity(bgReadings,
-                                                                          endDate: endDate,
+                                                                          date:endDate,
                                                                           decayLifeSeconds: TrendsAlgorithmModel.hemoglobinLifespanSeconds)
 
         let expected: Float = 135.0 / MG_PER_DL_PER_MMOL_PER_L
@@ -112,7 +119,7 @@ class TrendsAlgorithmModelTests: XCTestCase {
 
         // call method under test
         let actual = TrendsAlgorithmModel.averageDecayedBGReadingQuantity(bgReadings,
-                                                                          endDate: Date.distantPast,
+                                                                          date: Date.distantPast,
                                                                           decayLifeSeconds: TrendsAlgorithmModel.hemoglobinLifespanSeconds)
         // all readings are after end date and were ignored
         let expected: Float = 0.0
@@ -128,7 +135,7 @@ class TrendsAlgorithmModelTests: XCTestCase {
 
         // call method under test
         let actual = TrendsAlgorithmModel.averageDecayedBGReadingQuantity(bgReadings,
-                                                                          endDate: Date.distantFuture,
+                                                                          date: Date.distantFuture,
                                                                           decayLifeSeconds: TrendsAlgorithmModel.hemoglobinLifespanSeconds)
         // all readings are long before end date. hemoglobin has decayed and their weights are 0.
         let expected: Float = 0.0
@@ -146,7 +153,7 @@ class TrendsAlgorithmModelTests: XCTestCase {
 
         // call method under test
         let actual = TrendsAlgorithmModel.averageDecayedBGReadingQuantity(bgReadings,
-                                                                          endDate: endDate,
+                                                                          date: endDate,
                                                                           decayLifeSeconds: TrendsAlgorithmModel.hemoglobinLifespanSeconds)
 
         let expected: Float = 152.327 / MG_PER_DL_PER_MMOL_PER_L
@@ -164,7 +171,7 @@ class TrendsAlgorithmModelTests: XCTestCase {
 
         // call method under test
         let actual = TrendsAlgorithmModel.averageDecayedBGReadingQuantity(bgReadings,
-                                                                          endDate: endDate,
+                                                                          date: endDate,
                                                                           decayLifeSeconds: TrendsAlgorithmModel.hemoglobinLifespanSeconds)
 
         let expected: Float = 75.25 / MG_PER_DL_PER_MMOL_PER_L
@@ -182,7 +189,7 @@ class TrendsAlgorithmModelTests: XCTestCase {
 
         // call method under test
         let actual = TrendsAlgorithmModel.averageDecayedBGReadingQuantity(bgReadings,
-                                                                          endDate: endDate,
+                                                                          date: endDate,
                                                                           decayLifeSeconds: TrendsAlgorithmModel.hemoglobinLifespanSeconds)
 
         let expected: Float = 124.752 / MG_PER_DL_PER_MMOL_PER_L
@@ -200,7 +207,7 @@ class TrendsAlgorithmModelTests: XCTestCase {
 
         // call method under test
         let actual = TrendsAlgorithmModel.averageDecayedBGReadingQuantity(bgReadings,
-                                                                          endDate: endDate,
+                                                                          date: endDate,
                                                                           decayLifeSeconds: TrendsAlgorithmModel.hemoglobinLifespanSeconds)
         
         let expected: Float = 99.2079 / MG_PER_DL_PER_MMOL_PER_L
@@ -218,7 +225,7 @@ class TrendsAlgorithmModelTests: XCTestCase {
 
         // call method under test
         let actual = TrendsAlgorithmModel.averageDecayedBGReadingQuantity(bgReadings,
-                                                                          endDate: endDate,
+                                                                          date: endDate,
                                                                           decayLifeSeconds: TrendsAlgorithmModel.hemoglobinLifespanSeconds)
 
         let expected: Float = 130.269 / MG_PER_DL_PER_MMOL_PER_L
@@ -236,7 +243,7 @@ class TrendsAlgorithmModelTests: XCTestCase {
 
         // call method under test
         let actual = TrendsAlgorithmModel.averageDecayedBGReadingQuantity(bgReadings,
-                                                                          endDate: endDate,
+                                                                          date: endDate,
                                                                           decayLifeSeconds: TrendsAlgorithmModel.hemoglobinLifespanSeconds)
 
         let expected: Float = 147.833 / MG_PER_DL_PER_MMOL_PER_L
@@ -254,7 +261,7 @@ class TrendsAlgorithmModelTests: XCTestCase {
 
         // call method under test
         let actual = TrendsAlgorithmModel.ha1cValueForBgReadings(bgReadings,
-                                                                 endDate: endDate,
+                                                                 date: endDate,
                                                                  decayLifeSeconds: TrendsAlgorithmModel.hemoglobinLifespanSeconds)
 
         let expected: Float = 6.331

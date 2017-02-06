@@ -37,3 +37,4 @@ Objective C writes to Core Data. It may provide helper methods to supply managed
 
 # References
 https://en.wikipedia.org/wiki/Glycated_hemoglobin
+

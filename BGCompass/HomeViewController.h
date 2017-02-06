@@ -27,13 +27,10 @@
 @property (weak, nonatomic) IBOutlet UIButton *menuButton;
 
 @property (weak, nonatomic) IBOutlet UIButton *trendsButton;
-@property (weak, nonatomic) IBOutlet UIButton *trendsButton2;
 
 @property (assign, nonatomic) int selectedSegmentIndex;
 
 @property (strong, nonatomic) BlurTransitionDelegate *blurTransitionDelegate;
-
-- (IBAction)clickTrends:(id)sender;
 
 - (void) showPendingItemsList;
 

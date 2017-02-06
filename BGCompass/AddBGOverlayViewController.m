@@ -131,7 +131,7 @@
     [bg setQuantity:[NSNumber numberWithFloat:self.circularSlider.currentValue] withConversion:![[NSUserDefaults standardUserDefaults] boolForKey:SETTING_SHOULD_DISPLAY_BG_IN_MMOL_PER_L]];
     bg.timeStamp = [NSDate date];
     bg.isPending = [NSNumber numberWithBool:NO];
-    
+    //Here would be a good place to check to see if the BG value was too high or too low (perhaps and alert with the choice to abort).
     
     NSDictionary *d = @{ @"timeStamp":bg.timeStamp };
     [[NSNotificationCenter defaultCenter] postNotificationName:NOTE_BGREADING_ADDED object:nil userInfo:d];
