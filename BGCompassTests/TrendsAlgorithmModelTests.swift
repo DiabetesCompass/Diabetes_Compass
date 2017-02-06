@@ -282,16 +282,15 @@ class TrendsAlgorithmModelTests: XCTestCase {
     func testAverageDecayedBGReadingQuantityBgReadings50at150then50at50() {
 
         let endDate = Date()
-        let bgReadings = BGReadingTestHelper.bgReadings50at150then50at50(endDate) as! [BGReading]
-        XCTAssertEqual(bgReadings.count, 100)
-        let bgReadingLights = TrendsAlgorithmModel.bgReadingLights(bgReadings: bgReadings)
+        let bgReadingLights = BGReadingLightsHelper.bgReadingLights30at150then70at50(endDate: endDate)
+        XCTAssertEqual(bgReadingLights.count, 100)
 
         // call method under test
         let actual = TrendsAlgorithmModel.averageDecayedBGReadingQuantity(bgReadingLights,
                                                                           date: endDate,
                                                                           decayLifeSeconds: TrendsAlgorithmModel.hemoglobinLifespanSeconds)
 
-        let expected: Float = 75.25 / MG_PER_DL_PER_MMOL_PER_L
+        let expected: Float = 59.394 / MG_PER_DL_PER_MMOL_PER_L
         let accuracy: Float = 0.1
         XCTAssertEqualWithAccuracy(actual, expected, accuracy: accuracy)
     }
@@ -320,16 +319,14 @@ class TrendsAlgorithmModelTests: XCTestCase {
     func testAverageDecayedBGReadingQuantityBgReadings30at150then70at50() {
 
         let endDate = Date()
-        let bgReadings = BGReadingTestHelper.bgReadings30at150then70at50(endDate) as! [BGReading]
-        XCTAssertEqual(bgReadings.count, 100)
-        let bgReadingLights = TrendsAlgorithmModel.bgReadingLights(bgReadings: bgReadings)
+        let bgReadingLights = BGReadingLightsHelper.bgReadingLights30at150then70at50(endDate: endDate)
 
         // call method under test
         let actual = TrendsAlgorithmModel.averageDecayedBGReadingQuantity(bgReadingLights,
                                                                           date: endDate,
                                                                           decayLifeSeconds: TrendsAlgorithmModel.hemoglobinLifespanSeconds)
         
-        let expected: Float = 99.2079 / MG_PER_DL_PER_MMOL_PER_L
+        let expected: Float = 59.394 / MG_PER_DL_PER_MMOL_PER_L
         let accuracy: Float = 0.1
         XCTAssertEqualWithAccuracy(actual, expected, accuracy: accuracy)
     }

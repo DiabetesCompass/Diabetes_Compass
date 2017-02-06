@@ -68,17 +68,83 @@ class BGReadingLightsHelper: NSObject {
 
     /// Method name describes mg/dL, method converts units to mmol/L for BGReading.quantity
     class func bgReadingLights30at150then70at50(endDate: Date) -> [BGReadingLight] {
-        return []
+        var bgReadingLights: [BGReadingLight] = []
+
+        let date = Date()
+        let numberOfReadings = 100;
+        for i in 0..<numberOfReadings {
+
+            // start with earliest reading
+            let timeInterval = -Double(Int(SECONDS_PER_DAY) * ((numberOfReadings - 1) - i))
+            let timeStamp = date.addingTimeInterval(timeInterval)
+
+            var quantity: Float = 0.0
+            // use modulo operator %
+            if (i < 30) {
+                quantity = 150.0 / MG_PER_DL_PER_MMOL_PER_L
+            } else {
+                quantity = 50.0 / MG_PER_DL_PER_MMOL_PER_L
+            }
+
+            let bgReadingLight = BGReadingLight(timeStamp: timeStamp, quantity: quantity)
+
+            bgReadingLights.append(bgReadingLight)
+        }
+        return bgReadingLights
     }
 
     /// Method name describes mg/dL, method converts units to mmol/L for BGReading.quantity
     class func bgReadingLights50at150then50at50(endDate: Date) -> [BGReadingLight] {
-        return []
+        var bgReadingLights: [BGReadingLight] = []
+
+        let date = Date()
+        let numberOfReadings = 100;
+        for i in 0..<numberOfReadings {
+
+            // start with earliest reading
+            let timeInterval = -Double(Int(SECONDS_PER_DAY) * ((numberOfReadings - 1) - i))
+            let timeStamp = date.addingTimeInterval(timeInterval)
+
+            var quantity: Float = 0.0
+            // use modulo operator %
+            if (i < 50) {
+                quantity = 150.0 / MG_PER_DL_PER_MMOL_PER_L
+            } else {
+                quantity = 50.0 / MG_PER_DL_PER_MMOL_PER_L
+            }
+
+            let bgReadingLight = BGReadingLight(timeStamp: timeStamp, quantity: quantity)
+
+            bgReadingLights.append(bgReadingLight)
+        }
+        return bgReadingLights
     }
 
     /// Method name describes mg/dL, method converts units to mmol/L for BGReading.quantity
     class func bgReadingLights50at50then50at150(endDate: Date) -> [BGReadingLight] {
-        return []
+        var bgReadingLights: [BGReadingLight] = []
+
+        let date = Date()
+        let numberOfReadings = 100;
+        for i in 0..<numberOfReadings {
+
+            // start with earliest reading
+            let timeInterval = -Double(Int(SECONDS_PER_DAY) * ((numberOfReadings - 1) - i))
+            let timeStamp = date.addingTimeInterval(timeInterval)
+
+            var quantity: Float = 0.0
+            // use modulo operator %
+            if (i < 50) {
+                quantity = 50.0 / MG_PER_DL_PER_MMOL_PER_L
+            } else {
+                quantity = 150.0 / MG_PER_DL_PER_MMOL_PER_L
+            }
+
+            let bgReadingLight = BGReadingLight(timeStamp: timeStamp, quantity: quantity)
+
+            bgReadingLights.append(bgReadingLight)
+        }
+        return bgReadingLights
     }
 
 }

@@ -109,12 +109,12 @@
 		83FD930E1830529600F4F19E /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = 83FD930D1830529600F4F19E /* Constants.m */; };
 		840FA0281E3ACA0E0045D63E /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 840FA0271E3ACA0E0045D63E /* CloudKit.framework */; };
 		845D246A1BA52C2F00981091 /* WarningViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 845D24691BA52C2F00981091 /* WarningViewController.m */; };
-		DE0FC9861E47F4070079B553 /* BGReadingLightsHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE0FC9841E47F0760079B553 /* BGReadingLightsHelper.swift */; };
 		DE106E1D1DFC7E32002B0B63 /* Trend.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DE106E1C1DFC7E32002B0B63 /* Trend.storyboard */; };
 		DE1AD7F91DFBB2E500720F5F /* Trends.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DE1AD7F81DFBB2E500720F5F /* Trends.storyboard */; };
 		DE1AD7FD1DFBB3C400720F5F /* TrendsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE1AD7FC1DFBB3C400720F5F /* TrendsViewController.swift */; };
 		DE758DF11DDABDE200135F5D /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DE758DF01DDABDE200135F5D /* Launch Screen.storyboard */; };
 		DEABA8A21DFCEEDC00B42AEA /* TrendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEABA8A11DFCEEDC00B42AEA /* TrendViewController.swift */; };
+		DEB106CF1E4813DD00B04669 /* BGReadingLightsHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEB106CE1E4813DD00B04669 /* BGReadingLightsHelper.swift */; };
 		DEB332DE1DFFC9EA00989771 /* TrendsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEB332DD1DFFC9EA00989771 /* TrendsViewControllerTests.swift */; };
 		DEB5A9F01E47C21A000C8369 /* BGReadingLight.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEB5A9EF1E47C21A000C8369 /* BGReadingLight.swift */; };
 		DEB5A9F21E47C4B3000C8369 /* BGReadingLightTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEB5A9F11E47C4B3000C8369 /* BGReadingLightTests.swift */; };
@@ -302,7 +302,6 @@
 		8BDCB62A0108EFA37CBB1497 /* Pods-BGCompass.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BGCompass.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BGCompass/Pods-BGCompass.debug.xcconfig"; sourceTree = "<group>"; };
 		A05C80A4E191E60317C670C3 /* libPods-BGCompassTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BGCompassTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA8767A213B9617639CF29F3 /* Pods-BGCompassTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BGCompassTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BGCompassTests/Pods-BGCompassTests.debug.xcconfig"; sourceTree = "<group>"; };
-		DE0FC9841E47F0760079B553 /* BGReadingLightsHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BGReadingLightsHelper.swift; path = BGCompassTests/BGReadingLightsHelper.swift; sourceTree = SOURCE_ROOT; };
 		DE106E1C1DFC7E32002B0B63 /* Trend.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Trend.storyboard; sourceTree = "<group>"; };
 		DE1AD7F81DFBB2E500720F5F /* Trends.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Trends.storyboard; sourceTree = "<group>"; };
 		DE1AD7FB1DFBB3C400720F5F /* BGCompass-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BGCompass-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -310,6 +309,7 @@
 		DE1FE5011DCFEB0C000B6A8A /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		DE758DF01DDABDE200135F5D /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		DEABA8A11DFCEEDC00B42AEA /* TrendViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrendViewController.swift; sourceTree = "<group>"; };
+		DEB106CE1E4813DD00B04669 /* BGReadingLightsHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BGReadingLightsHelper.swift; sourceTree = "<group>"; };
 		DEB332DC1DFFC9E900989771 /* BGCompassTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BGCompassTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		DEB332DD1DFFC9EA00989771 /* TrendsViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrendsViewControllerTests.swift; sourceTree = "<group>"; };
 		DEB5A9EF1E47C21A000C8369 /* BGReadingLight.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BGReadingLight.swift; sourceTree = "<group>"; };
@@ -647,7 +647,7 @@
 				83EAFAB9182F521000CE5FA9 /* BGReading.h */,
 				83EAFABA182F521000CE5FA9 /* BGReading.m */,
 				DEB5A9EF1E47C21A000C8369 /* BGReadingLight.swift */,
-				DE0FC9841E47F0760079B553 /* BGReadingLightsHelper.swift */,
+				DEB106CE1E4813DD00B04669 /* BGReadingLightsHelper.swift */,
 				DEDC8E4B1E20A93B003D9E88 /* BGReadingTestHelper.h */,
 				DEDC8E4C1E20A93B003D9E88 /* BGReadingTestHelper.m */,
 				83EAFAB7182F521000CE5FA9 /* FoodReading.h */,
@@ -963,7 +963,7 @@
 				DEABA8A21DFCEEDC00B42AEA /* TrendViewController.swift in Sources */,
 				2C233108182B6C82008A6F88 /* CompassRose.xcdatamodeld in Sources */,
 				839E349A182F61080083960E /* HomeViewController.m in Sources */,
-				DE0FC9861E47F4070079B553 /* BGReadingLightsHelper.swift in Sources */,
+				DEB106CF1E4813DD00B04669 /* BGReadingLightsHelper.swift in Sources */,
 				845D246A1BA52C2F00981091 /* WarningViewController.m in Sources */,
 				833A3E4F183B3EFB00C1FF5C /* BGAlgorithmModel.m in Sources */,
 				2C51452C183052460028DAA4 /* ItemTableViewCell.m in Sources */,
