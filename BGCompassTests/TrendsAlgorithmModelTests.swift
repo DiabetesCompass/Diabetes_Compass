@@ -199,10 +199,25 @@ class TrendsAlgorithmModelTests: XCTestCase {
     func testAverageDecayedBGReadingQuantity135() {
 
         let endDate = Date()
-        let bgReadings = BGReadingTestHelper.bgReadings135(endDate) as! [BGReading]
-        XCTAssertEqual(bgReadings.count, 100)
-        let bgReadingLights = TrendsAlgorithmModel.bgReadingLights(bgReadings: bgReadings)
+        let bgReadingLights = BGReadingLightsHelper.bgReadingLights135(endDate: endDate)
+        XCTAssertEqual(bgReadingLights.count, 101)
 
+        // check last reading date
+        // this didn't work, though date descriptions appear identical
+        //XCTAssertEqual(bgReadingLights.last?.timeStamp, endDate)
+        let bgReadingsLastTimeStamp = bgReadingLights.last?.timeStamp
+        let compareLast: ComparisonResult = Calendar.current.compare(bgReadingsLastTimeStamp!,
+                                                                     to: endDate,
+                                                                     toGranularity: .second)
+        XCTAssertEqual(compareLast, .orderedSame)
+
+        // check first reading date
+        let bgReadingsFirstTimeStamp = bgReadingLights.first?.timeStamp
+        let expectedFirstDate = endDate.addingTimeInterval(-TrendsAlgorithmModel.hemoglobinLifespanSeconds)
+        let compareFirst: ComparisonResult = Calendar.current.compare(bgReadingsFirstTimeStamp!,
+                                                                      to: expectedFirstDate,
+                                                                      toGranularity: .second)
+        XCTAssertEqual(compareFirst, .orderedSame)
         // call method under test
         let actual = TrendsAlgorithmModel.averageDecayedBGReadingQuantity(bgReadingLights,
                                                                           date:endDate,
@@ -213,35 +228,32 @@ class TrendsAlgorithmModelTests: XCTestCase {
         XCTAssertEqualWithAccuracy(actual, expected, accuracy: accuracy)
     }
 
-    func testAverageDecayedBGReadingQuantityEndDateDistantPast() {
+    func testAverageDecayedBGReadingQuantityDateDistantPast() {
 
-        let bgReadingsLastDate = Date()
-        let bgReadings = BGReadingTestHelper.bgReadings135(bgReadingsLastDate) as! [BGReading]
-        XCTAssertEqual(bgReadings.count, 100)
-        let bgReadingLights = TrendsAlgorithmModel.bgReadingLights(bgReadings: bgReadings)
+        let endDate = Date()
+        let bgReadingLights = BGReadingLightsHelper.bgReadingLights135(endDate: endDate)
 
         // call method under test
         let actual = TrendsAlgorithmModel.averageDecayedBGReadingQuantity(bgReadingLights,
                                                                           date: Date.distantPast,
                                                                           decayLifeSeconds: TrendsAlgorithmModel.hemoglobinLifespanSeconds)
-        // all readings are after end date and were ignored
+        // all readings are after Date.distantPast and were ignored
         let expected: Float = 0.0
         let accuracy: Float = 0.1
         XCTAssertEqualWithAccuracy(actual, expected, accuracy: accuracy)
     }
 
-    func testAverageDecayedBGReadingQuantityEndDateDistantFuture() {
+    func testAverageDecayedBGReadingQuantityDateDistantFuture() {
 
-        let bgReadingsLastDate = Date()
-        let bgReadings = BGReadingTestHelper.bgReadings135(bgReadingsLastDate) as! [BGReading]
-        XCTAssertEqual(bgReadings.count, 100)
-        let bgReadingLights = TrendsAlgorithmModel.bgReadingLights(bgReadings: bgReadings)
+        let endDate = Date()
+        let bgReadingLights = BGReadingLightsHelper.bgReadingLights135(endDate: endDate)
 
         // call method under test
         let actual = TrendsAlgorithmModel.averageDecayedBGReadingQuantity(bgReadingLights,
                                                                           date: Date.distantFuture,
                                                                           decayLifeSeconds: TrendsAlgorithmModel.hemoglobinLifespanSeconds)
-        // all readings are long before end date. hemoglobin has decayed and their weights are 0.
+        // all readings are long before Date.distantFuture.
+        // hemoglobin has decayed and their weights are 0.
         let expected: Float = 0.0
         let accuracy: Float = 0.1
         XCTAssertEqualWithAccuracy(actual, expected, accuracy: accuracy)
