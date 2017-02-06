@@ -264,9 +264,8 @@ class TrendsAlgorithmModelTests: XCTestCase {
     func testAverageDecayedBGReadingQuantityAlternating135and170() {
 
         let endDate = Date()
-        let bgReadings = BGReadingTestHelper.bgReadingsAlternating135and170(endDate) as! [BGReading]
-        XCTAssertEqual(bgReadings.count, 100)
-        let bgReadingLights = TrendsAlgorithmModel.bgReadingLights(bgReadings: bgReadings)
+        let bgReadingLights = BGReadingLightsHelper.bgReadingsLightsAlternating135and170(endDate: endDate)
+        XCTAssertEqual(bgReadingLights.count, 101)
 
         // call method under test
         let actual = TrendsAlgorithmModel.averageDecayedBGReadingQuantity(bgReadingLights,
