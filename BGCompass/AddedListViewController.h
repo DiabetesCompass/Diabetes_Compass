@@ -13,6 +13,4 @@
 @property (strong, nonatomic) NSMutableArray* readingsArray;
 @property (strong, nonatomic) NSObject *selectedItem;
 
-@property (weak, nonatomic) IBOutlet UITextView *actionTextView;
-
 @end
