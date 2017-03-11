@@ -247,7 +247,7 @@ class TrendViewController : UIViewController {
         switch rangeScale {
         case .month:
             //let dayPerMonth = 30
-            majorIntervalLength = NSNumber(value: Int(DAYS_IN_ONE_WEEK * HOURS_IN_ONE_DAY * MINUTES_IN_ONE_HOUR))
+            majorIntervalLength = NSNumber(value: Int(4 * DAYS_IN_ONE_WEEK * HOURS_IN_ONE_DAY * MINUTES_IN_ONE_HOUR))
         case .week:
             majorIntervalLength = NSNumber(value: Int(DAYS_IN_ONE_WEEK * HOURS_IN_ONE_DAY * MINUTES_IN_ONE_HOUR))
         case .day:
@@ -385,9 +385,9 @@ class TrendViewController : UIViewController {
 
         var scale: RangeScale = .month
 
-        if axisRange.lengthDouble >= Double(MINUTES_IN_ONE_HOUR * HOURS_IN_ONE_DAY * DAYS_IN_ONE_WEEK * 52) {
+        if axisRange.lengthDouble >= Double(MINUTES_IN_ONE_HOUR * HOURS_IN_ONE_DAY * DAYS_IN_ONE_WEEK * 8) {
             scale = .month
-        } else if axisRange.lengthDouble >= Double(MINUTES_IN_ONE_HOUR * HOURS_IN_ONE_DAY * 8) {
+        } else if axisRange.lengthDouble >= Double(MINUTES_IN_ONE_HOUR * HOURS_IN_ONE_DAY * 4) {
             scale = .week
         } else if axisRange.lengthDouble >= Double(MINUTES_IN_ONE_HOUR * HOURS_IN_ONE_DAY * 2) {
             scale = .day

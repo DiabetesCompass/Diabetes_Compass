@@ -31,16 +31,4 @@
  */
 + (NSArray *)bgReadings135:(NSDate *)endDate;
 
-/// Method name describes mg/dL, method converts units to mmol/L for BGReading.quantity
-+ (NSArray *)bgReadingsAlternating135and170:(NSDate *)endDate;
-
-/// Method name describes mg/dL, method converts units to mmol/L for BGReading.quantity
-+ (NSArray *)bgReadings30at150then70at50:(NSDate *)endDate;
-
-/// Method name describes mg/dL, method converts units to mmol/L for BGReading.quantity
-+ (NSArray *)bgReadings50at150then50at50:(NSDate *)endDate;
-
-/// Method name describes mg/dL, method converts units to mmol/L for BGReading.quantity
-+ (NSArray *)bgReadings50at50then50at150:(NSDate *)endDate;
-
 @end

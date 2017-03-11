@@ -114,7 +114,10 @@
 		DE1AD7FD1DFBB3C400720F5F /* TrendsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE1AD7FC1DFBB3C400720F5F /* TrendsViewController.swift */; };
 		DE758DF11DDABDE200135F5D /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DE758DF01DDABDE200135F5D /* Launch Screen.storyboard */; };
 		DEABA8A21DFCEEDC00B42AEA /* TrendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEABA8A11DFCEEDC00B42AEA /* TrendViewController.swift */; };
+		DEB106CF1E4813DD00B04669 /* BGReadingLightsHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEB106CE1E4813DD00B04669 /* BGReadingLightsHelper.swift */; };
 		DEB332DE1DFFC9EA00989771 /* TrendsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEB332DD1DFFC9EA00989771 /* TrendsViewControllerTests.swift */; };
+		DEB5A9F01E47C21A000C8369 /* BGReadingLight.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEB5A9EF1E47C21A000C8369 /* BGReadingLight.swift */; };
+		DEB5A9F21E47C4B3000C8369 /* BGReadingLightTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEB5A9F11E47C4B3000C8369 /* BGReadingLightTests.swift */; };
 		DEB8DEE51E19AE4700270CB6 /* TrendsAlgorithmModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEB8DEE41E19AE4700270CB6 /* TrendsAlgorithmModelTests.swift */; };
 		DEC553E21E215537009BE3BD /* BGReadingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEC553E11E215537009BE3BD /* BGReadingTests.swift */; };
 		DEDC8E4D1E20A93B003D9E88 /* BGReadingTestHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = DEDC8E4C1E20A93B003D9E88 /* BGReadingTestHelper.m */; };
@@ -306,8 +309,11 @@
 		DE1FE5011DCFEB0C000B6A8A /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		DE758DF01DDABDE200135F5D /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		DEABA8A11DFCEEDC00B42AEA /* TrendViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrendViewController.swift; sourceTree = "<group>"; };
+		DEB106CE1E4813DD00B04669 /* BGReadingLightsHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BGReadingLightsHelper.swift; sourceTree = "<group>"; };
 		DEB332DC1DFFC9E900989771 /* BGCompassTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BGCompassTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		DEB332DD1DFFC9EA00989771 /* TrendsViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrendsViewControllerTests.swift; sourceTree = "<group>"; };
+		DEB5A9EF1E47C21A000C8369 /* BGReadingLight.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BGReadingLight.swift; sourceTree = "<group>"; };
+		DEB5A9F11E47C4B3000C8369 /* BGReadingLightTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BGReadingLightTests.swift; sourceTree = "<group>"; };
 		DEB8DEE41E19AE4700270CB6 /* TrendsAlgorithmModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrendsAlgorithmModelTests.swift; sourceTree = "<group>"; };
 		DEC553E11E215537009BE3BD /* BGReadingTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BGReadingTests.swift; sourceTree = "<group>"; };
 		DEDC8E4B1E20A93B003D9E88 /* BGReadingTestHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BGReadingTestHelper.h; sourceTree = "<group>"; };
@@ -433,6 +439,7 @@
 			isa = PBXGroup;
 			children = (
 				833A3E471831FB7000C1FF5C /* BGAlgorithmTests.m */,
+				DEB5A9F11E47C4B3000C8369 /* BGReadingLightTests.swift */,
 				DEC553E11E215537009BE3BD /* BGReadingTests.swift */,
 				DEB8DEE41E19AE4700270CB6 /* TrendsAlgorithmModelTests.swift */,
 				83E3E68118A6B4C300F3C560 /* TrendsAlgorithmTests.m */,
@@ -639,6 +646,8 @@
 				8337DF3518EA701B00055E59 /* Barcode.m */,
 				83EAFAB9182F521000CE5FA9 /* BGReading.h */,
 				83EAFABA182F521000CE5FA9 /* BGReading.m */,
+				DEB5A9EF1E47C21A000C8369 /* BGReadingLight.swift */,
+				DEB106CE1E4813DD00B04669 /* BGReadingLightsHelper.swift */,
 				DEDC8E4B1E20A93B003D9E88 /* BGReadingTestHelper.h */,
 				DEDC8E4C1E20A93B003D9E88 /* BGReadingTestHelper.m */,
 				83EAFAB7182F521000CE5FA9 /* FoodReading.h */,
@@ -930,6 +939,7 @@
 				2C253FC918C0637800DB7D2A /* UIImage+BoxBlur.m in Sources */,
 				2C253FC818C0637800DB7D2A /* ANBlurredImageView.m in Sources */,
 				83EAFABD182F521000CE5FA9 /* BGReading.m in Sources */,
+				DEB5A9F01E47C21A000C8369 /* BGReadingLight.swift in Sources */,
 				2C4552D11831AF4900B16073 /* NutritionixSearchFood.m in Sources */,
 				2C253FC018C05B0300DB7D2A /* BlurTransitionDelegate.m in Sources */,
 				2C58E0A11846F6950091797A /* ZoomModalTransitionDelegate.m in Sources */,
@@ -953,6 +963,7 @@
 				DEABA8A21DFCEEDC00B42AEA /* TrendViewController.swift in Sources */,
 				2C233108182B6C82008A6F88 /* CompassRose.xcdatamodeld in Sources */,
 				839E349A182F61080083960E /* HomeViewController.m in Sources */,
+				DEB106CF1E4813DD00B04669 /* BGReadingLightsHelper.swift in Sources */,
 				845D246A1BA52C2F00981091 /* WarningViewController.m in Sources */,
 				833A3E4F183B3EFB00C1FF5C /* BGAlgorithmModel.m in Sources */,
 				2C51452C183052460028DAA4 /* ItemTableViewCell.m in Sources */,
@@ -984,6 +995,7 @@
 				DEB8DEE51E19AE4700270CB6 /* TrendsAlgorithmModelTests.swift in Sources */,
 				83E3E68218A6B4C300F3C560 /* TrendsAlgorithmTests.m in Sources */,
 				DEB332DE1DFFC9EA00989771 /* TrendsViewControllerTests.swift in Sources */,
+				DEB5A9F21E47C4B3000C8369 /* BGReadingLightTests.swift in Sources */,
 				DEC553E21E215537009BE3BD /* BGReadingTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

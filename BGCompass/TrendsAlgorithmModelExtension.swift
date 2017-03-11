@@ -21,6 +21,21 @@ extension TrendsAlgorithmModel {
     // MARK: get readings
 
     /**
+    Creates [BGReadingLight] from [BGReading]
+    - returns: array of BGReadingLight.
+    returns empty array [] if bgReadings is empty.
+    */
+    class func bgReadingLights(bgReadings: [BGReading]) -> [BGReadingLight] {
+        var bgLights: [BGReadingLight] = []
+
+        for bgReading in bgReadings {
+            let bgReadingLight = BGReadingLight(bgReading: bgReading)
+            bgLights.append(bgReadingLight)
+        }
+        return bgLights
+    }
+
+    /**
     - returns: first reading in blood glucose array, else nil
     based on index, not date
     */
@@ -62,7 +77,6 @@ extension TrendsAlgorithmModel {
         }
     }
 
-
     /**
      - returns: readings between startDate (inclusive) and endDate (inclusive)
      */
@@ -96,7 +110,10 @@ extension TrendsAlgorithmModel {
                                       date: Date,
                                       decayLifeSeconds: TimeInterval) -> Float {
 
-        let averageDecayedBG = TrendsAlgorithmModel.averageDecayedBGReadingQuantity(bgReadings,
+        // create [BGReadingLight] from [BGReading]
+        let bgReadingLights = TrendsAlgorithmModel.bgReadingLights(bgReadings: bgReadings)
+
+        let averageDecayedBG = TrendsAlgorithmModel.averageDecayedBGReadingQuantity(bgReadingLights,
                                                                                     date: date,
                                                                                     decayLifeSeconds: decayLifeSeconds)
 
@@ -105,48 +122,45 @@ extension TrendsAlgorithmModel {
     }
     
     /**
-     - parameter bgReadings: blood glucose readings to average.
+    This method uses BGReadingLight, and may be tested without a CoreData context.
+     - parameter bgReadingLights: BGReadingLight readings to average.
        readings may appear in any chronological order, the method reads their timeStamp
      - parameter date: date for quantity. Blood glucose readings after date are ignored.
      - parameter decayLifeSeconds: time for blood glucose from a reading to decay to 0.0.
      Typically hemoglobin lifespan seconds.
      - returns: average of decayed BG reading.quantity
      */
-    class func averageDecayedBGReadingQuantity(_ bgReadings: [BGReading],
+    class func averageDecayedBGReadingQuantity(_ bgReadingLights: [BGReadingLight],
                                         date: Date,
                                         decayLifeSeconds: TimeInterval) -> Float {
 
-        if bgReadings.count == 0 {
+        if bgReadingLights.count == 0 {
             return 0.0
         }
 
         var sumOfWeightedBgReadings: Float = 0.0
         var sumOfWeights: Float = 0.0
-        //var numBgReadingsInAverage: Int = 0
 
-        for bgReading in bgReadings {
+        for bgReadingLight in bgReadingLights {
 
-            if bgReading.timeStamp > date {
+            if bgReadingLight.timeStamp > date {
                 // skip this reading, continue loop
                 continue
             }
 
-            let weight = TrendsAlgorithmModel.weightLinearDecayFirstDate(bgReading.timeStamp,
+            let weight = TrendsAlgorithmModel.weightLinearDecayFirstDate(bgReadingLight.timeStamp,
                                                                          secondDate: date,
                                                                          decayLifeSeconds: decayLifeSeconds)
 
-            sumOfWeightedBgReadings += weight * bgReading.quantity.floatValue
+            sumOfWeightedBgReadings += weight * bgReadingLight.quantity
             sumOfWeights += weight
-            //numBgReadingsInAverage += 1
         }
 
         // avoid potential divide by 0
         if sumOfWeights == 0 {
-        //if numBgReadingsInAverage == 0 {
             return 0.0
         }
         let average = sumOfWeightedBgReadings / sumOfWeights
-        //let average = sumOfWeightedBgReadings / Float(numBgReadingsInAverage)
         print("averageDecayedBGReadingQuantity \(average)")
         return average
     }
