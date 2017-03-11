@@ -118,6 +118,8 @@
         [aString1 appendAttributedString:aString6];
     }
 
+    self.actionTextView.attributedText = aString1;
+    self.actionTextView.textAlignment = NSTextAlignmentCenter;
     if ([bgCurrentForTest doubleValue] < 1.7) {
         NSLog(@"mmol/L");
         NSMutableAttributedString *aString9 = [[NSMutableAttributedString new] initWithString:unknownBG attributes:thinBig];
