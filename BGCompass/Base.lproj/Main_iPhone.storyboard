@@ -462,45 +462,6 @@
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                         <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                         <color key="separatorColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <textView key="tableFooterView" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" editable="NO" usesAttributedText="YES" selectable="NO" id="Dnz-Qf-JKq">
-                            <rect key="frame" x="0.0" y="66" width="375" height="83"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
-                            <attributedString key="attributedText">
-                                <fragment content="Settles at ">
-                                    <attributes>
-                                        <font key="NSFont" size="17" name="HelveticaNeue-Thin"/>
-                                        <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
-                                    </attributes>
-                                </fragment>
-                                <fragment content="120 ">
-                                    <attributes>
-                                        <font key="NSFont" size="17" name="HelveticaNeue-Bold"/>
-                                        <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
-                                    </attributes>
-                                </fragment>
-                                <fragment content="mg/dL, your deficit ">
-                                    <attributes>
-                                        <font key="NSFont" size="17" name="HelveticaNeue-Thin"/>
-                                        <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
-                                    </attributes>
-                                </fragment>
-                                <fragment content="6">
-                                    <attributes>
-                                        <font key="NSFont" size="17" name="HelveticaNeue-Bold"/>
-                                        <font key="NSOriginalFont" size="17" name="HelveticaNeue-Bold"/>
-                                        <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
-                                    </attributes>
-                                </fragment>
-                                <fragment content=" carbs.">
-                                    <attributes>
-                                        <font key="NSFont" size="17" name="HelveticaNeue-Thin"/>
-                                        <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
-                                    </attributes>
-                                </fragment>
-                            </attributedString>
-                            <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                        </textView>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="none" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="PendingItemCell" id="0lt-73-tbi" customClass="PendingItemCell">
                                 <rect key="frame" x="0.0" y="22" width="375" height="44"/>
@@ -545,7 +506,6 @@
                         </connections>
                     </tableView>
                     <connections>
-                        <outlet property="actionTextView" destination="Dnz-Qf-JKq" id="Z0k-rm-bOy"/>
                         <segue destination="bZL-C9-NyJ" kind="push" identifier="EditItemSegue2" id="Iu2-Zh-K4U"/>
                     </connections>
                 </tableViewController>
