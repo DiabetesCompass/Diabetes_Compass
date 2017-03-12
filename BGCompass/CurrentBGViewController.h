@@ -11,6 +11,7 @@
 
 @interface CurrentBGViewController : UIViewController
 @property (weak, nonatomic) IBOutlet UITextView *bgTextView;
+@property (weak, nonatomic) IBOutlet UITextView *actionTextView;
 -(void) updateData;
 
 @end
