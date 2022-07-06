@@ -15,7 +15,7 @@ Measured BG data is also input to the app to make further adjustments as time go
 This app allows the user to choose adjustment doses more carefully and efficiently rather than just guessing.  
 The app also includes code for estimating hemoglobin A1c (HA1c) to further help users tune their diet and insulin dosing by visualizing trend curves of estimated HA1c on a daily basis.  This can be useful in longer term management.
 All recorded data entries can be recalled and used for later adjustments or to use for recuring items.  
-For example, if a person tends to eat the same thing for breakfast often, the nutritional content of that item can be gradually adjusted and saved in memory (as a favoritge) for future use.  
+For example, if a person tends to eat the same thing for breakfast often, the nutritional content of that item can be gradually adjusted and saved in memory (as a favorite) for future use.  
 This makes such future estimates more accurate as they are tuned to the individual.  
 Of course, any such estimates can be somewhat different from previous ones due to the many other variables that enter into BG levels.  
 Trend data and plots are available to review progress in tuning our management of BG levels.  
